@@ -1,109 +1,102 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
         <div 
           className="absolute inset-0 bg-cover bg-center z-0"
           style={{ 
-            backgroundImage: 'url("https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80")',
+            backgroundImage: 'url("https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&q=80")',
             filter: 'brightness(0.7)'
           }}
         />
-        <div className="relative z-10 text-center text-white fade-in">
-          <h1 className="text-5xl font-bold mb-4">認定経営革新等支援機関</h1>
-          <p className="text-xl max-w-2xl mx-auto">専門的知識と実務経験を活かし、中小企業の経営課題を解決します</p>
+        <div className="relative z-10 text-center text-white space-y-6 fade-in">
+          <h1 className="text-5xl font-bold mb-4">
+            創業から承継まで<br />
+            経営の羅針盤
+          </h1>
+          <p className="text-2xl mb-2">
+            PLANNINGJOY株式会社<br />
+            経済産業省認定 経営革新等支援機関
+          </p>
+          <p className="text-xl">
+            「生産性と資産に寄与する経営コンサルティング」
+          </p>
+          <Button 
+            variant="outline" 
+            className="mt-8 text-white border-white hover:bg-white hover:text-gray-900"
+            onClick={() => document.getElementById('message')?.scrollIntoView({ behavior: 'smooth' })}
+          >
+            メッセージを見る
+          </Button>
         </div>
       </section>
 
-      {/* Support Process Section */}
-      <section className="py-20 px-4 max-w-7xl mx-auto">
-        <h2 className="text-3xl font-bold text-center mb-12">支援の流れ</h2>
-        <div className="grid md:grid-cols-3 gap-8">
-          <Card className="fade-in hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="h-48 mb-4 overflow-hidden rounded-t-lg">
-                <img 
-                  src="https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d" 
-                  alt="経営課題の把握"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <CardTitle>経営課題の把握</CardTitle>
-              <CardDescription>財務分析、経営課題の抽出を行います</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">専門家による詳細な分析と、具体的な課題の特定を行います。</p>
-            </CardContent>
-          </Card>
-
-          <Card className="fade-in hover:shadow-lg transition-shadow delay-100">
-            <CardHeader>
-              <div className="h-48 mb-4 overflow-hidden rounded-t-lg">
-                <img 
-                  src="https://images.unsplash.com/photo-1498050108023-c5249f4df085" 
-                  alt="事業計画策定"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <CardTitle>事業計画策定</CardTitle>
-              <CardDescription>具体的な改善計画を立案します</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">経営状況に応じた実行可能な計画を策定し、実現までサポートします。</p>
-            </CardContent>
-          </Card>
-
-          <Card className="fade-in hover:shadow-lg transition-shadow delay-200">
-            <CardHeader>
-              <div className="h-48 mb-4 overflow-hidden rounded-t-lg">
-                <img 
-                  src="https://images.unsplash.com/photo-1581092795360-fd1ca04f0952" 
-                  alt="モニタリング"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <CardTitle>モニタリング</CardTitle>
-              <CardDescription>継続的な支援とフォローアップ</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">定期的な進捗確認と必要に応じた計画の見直しを行います。</p>
-            </CardContent>
-          </Card>
+      {/* Message Section */}
+      <section id="message" className="py-20 px-4 bg-white">
+        <div className="max-w-4xl mx-auto space-y-6 fade-in">
+          <h2 className="text-3xl font-bold text-center mb-8">メッセージ</h2>
+          <p className="text-gray-700">時代の変化により人・金・物を経営資源とした時代から、情報や時消費・事消費と消費者がお金を使う領域は変化して来ました。</p>
+          <p className="text-gray-700">昨今のAIの驚異的な進化一方で、思いもよらなかったビジネスや経営スタイル・働き方が生まれる時代となっています。</p>
+          <p className="text-gray-700">その一方で中央集権型に代表される、多くの企業の凋落が始まっています。</p>
+          <p className="text-gray-700">弊社は、おもに中小企業専門中心、商店や自営業など街に根付いたビジネスを専門にご支援させていただいていますが、どのような業種・業態でもAIの活用（AIとの共生）が生き残りの鍵だと考えています。</p>
+          <p className="text-gray-700">外部専門家として、知見と経験のみならず新たな知識やトレンドにアンテナを張り巡らせ。経営資源の効率化・最大化をサポート。進める方向や目的地・思いを大切にミッション達成に尽力させていただきます。</p>
         </div>
       </section>
 
-      {/* Support Programs Section */}
-      <section className="bg-white py-20 px-4">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">支援プログラム</h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            <Card className="fade-in">
+      {/* Company Profile Section */}
+      <section id="about-us" className="py-20 px-4 bg-gray-900 text-white">
+        <div className="max-w-4xl mx-auto fade-in">
+          <h2 className="text-3xl font-bold text-center mb-8">会社概要</h2>
+          <div className="space-y-4">
+            <p><strong>代表者：</strong>堀上 亮（経産省認定経営コンサルタント）</p>
+            <p><strong>所在地：</strong>〒651-0084 兵庫県神戸市中央区磯辺通1-1-18 カサベラ国際プラザビル707号室</p>
+            <p><strong>連絡先：</strong>TEL 090-3943-8853 / MAIL hori@planjoy.net</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Support Areas Section */}
+      <section id="services" className="py-20 px-4 bg-blue-900 text-white">
+        <div className="max-w-4xl mx-auto fade-in">
+          <h2 className="text-3xl font-bold text-center mb-8">支援領域</h2>
+          <p className="text-center text-xl mb-8"><strong>「経営のライフサイクルに寄り添う支援」</strong></p>
+          <div className="grid md:grid-cols-3 gap-8">
+            <Card className="bg-white/10 border-none">
               <CardHeader>
-                <CardTitle>経営改善計画策定支援事業</CardTitle>
-                <CardDescription>金融支援を伴う経営改善が必要な中小企業・小規模事業者向け</CardDescription>
+                <CardTitle className="text-white">創業期支援</CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="list-disc list-inside space-y-2 text-gray-600">
-                  <li>経営改善計画策定支援</li>
-                  <li>モニタリング支援</li>
-                  <li>金融支援アドバイス</li>
+                <ul className="list-disc list-inside">
+                  <li>事業計画策定</li>
+                  <li>資金調達サポート</li>
                 </ul>
               </CardContent>
             </Card>
-
-            <Card className="fade-in delay-100">
+            <Card className="bg-white/10 border-none">
               <CardHeader>
-                <CardTitle>先端設備導入計画</CardTitle>
-                <CardDescription>生産性向上のための設備投資を検討している事業者向け</CardDescription>
+                <CardTitle className="text-white">成長期支援</CardTitle>
               </CardHeader>
               <CardContent>
-                <ul className="list-disc list-inside space-y-2 text-gray-600">
-                  <li>設備投資計画の策定支援</li>
+                <ul className="list-disc list-inside">
+                  <li>経営改善計画サポート</li>
                   <li>補助金申請サポート</li>
-                  <li>導入後のフォローアップ</li>
+                  <li>業務効率化</li>
+                </ul>
+              </CardContent>
+            </Card>
+            <Card className="bg-white/10 border-none">
+              <CardHeader>
+                <CardTitle className="text-white">成熟期支援</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="list-disc list-inside">
+                  <li>事業承継準備</li>
+                  <li>M&A相談</li>
+                  <li>事業再生</li>
                 </ul>
               </CardContent>
             </Card>
@@ -111,19 +104,145 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section className="bg-gray-900 text-white py-20 px-4">
-        <div className="max-w-4xl mx-auto text-center fade-in">
-          <h2 className="text-3xl font-bold mb-6">経営課題の解決に向けて</h2>
-          <p className="mb-8 text-gray-300">まずはお気軽にご相談ください。経験豊富な専門家が対応いたします。</p>
-          <button 
-            className="bg-white text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-            onClick={() => window.location.href = 'mailto:contact@example.com'}
-          >
-            無料相談を予約する
-          </button>
+      {/* Features Section */}
+      <section id="features" className="py-20 px-4 bg-white">
+        <div className="max-w-4xl mx-auto fade-in">
+          <h2 className="text-3xl font-bold text-center mb-8">特徴</h2>
+          <p className="text-center text-xl mb-8">「公的支援の専門家として」</p>
+          <ul className="space-y-4 list-disc list-inside">
+            <li>経産省認定機関のネットワーク活用</li>
+            <li>行政要件を熟知した計画策定</li>
+            <li>継続的な改善サイクルの構築</li>
+            <li>多様な経営課題への横断的対応</li>
+          </ul>
         </div>
       </section>
+
+      {/* Service Details Section */}
+      <section id="service-details" className="py-20 px-4 bg-gray-900 text-white">
+        <div className="max-w-4xl mx-auto fade-in">
+          <h2 className="text-3xl font-bold text-center mb-8">サービス詳細</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <Card className="bg-white/10 border-none">
+              <CardHeader>
+                <CardTitle className="text-white">経営計画策定支援</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="list-disc list-inside">
+                  <li>経営改善計画（405事業）</li>
+                  <li>早期経営改善計画（ポストコロナ対応）</li>
+                  <li>事業再生計画 他</li>
+                </ul>
+              </CardContent>
+            </Card>
+            <Card className="bg-white/10 border-none">
+              <CardHeader>
+                <CardTitle className="text-white">資金調達支援</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="list-disc list-inside">
+                  <li>補助金/助成金申請代行</li>
+                  <li>金融機関向け事業計画書作成</li>
+                  <li>財務状況分析</li>
+                </ul>
+              </CardContent>
+            </Card>
+            <Card className="bg-white/10 border-none">
+              <CardHeader>
+                <CardTitle className="text-white">事業継承支援</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="list-disc list-inside">
+                  <li>3年・5年・10年単位の段階的プラン作成</li>
+                  <li>税務・法務専門家との連携体制</li>
+                </ul>
+              </CardContent>
+            </Card>
+            <Card className="bg-white/10 border-none">
+              <CardHeader>
+                <CardTitle className="text-white">業務改善支援</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <ul className="list-disc list-inside">
+                  <li>AI活用業務フロー改善（効率化や自動化）</li>
+                  <li>営業管理システム構築</li>
+                  <li>WEB活用戦略立案</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Consultation Flow Section */}
+      <section id="flow" className="py-20 px-4 bg-blue-900 text-white">
+        <div className="max-w-4xl mx-auto fade-in">
+          <h2 className="text-3xl font-bold text-center mb-8">相談の流れ</h2>
+          <div className="grid md:grid-cols-4 gap-4">
+            {["お問い合わせ（フォーム/電話）", "無料面談（60分・Zoom可）", "課題整理と支援プラン提示", "契約後サポート開始"].map((step, index) => (
+              <div key={index} className="text-center">
+                <div className="w-12 h-12 rounded-full bg-white text-blue-900 flex items-center justify-center mx-auto mb-4 font-bold">
+                  {index + 1}
+                </div>
+                <p>{step}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section id="faq" className="py-20 px-4 bg-white">
+        <div className="max-w-4xl mx-auto fade-in">
+          <h2 className="text-3xl font-bold text-center mb-8">よくあるご質問</h2>
+          <div className="space-y-8">
+            <Card>
+              <CardHeader>
+                <CardTitle>どういう支援サービスですか？</CardTitle>
+              </CardHeader>
+              <CardContent>
+                定期訪問やオブザーバー参加など以外にスポットでの対応も可能。再生など一刻を争う場合には、柔軟に対応いたします。
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>創業前でも相談可能ですか？</CardTitle>
+              </CardHeader>
+              <CardContent>
+                事業構想段階からのご相談を推奨しています。
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>地方企業でも対応可能？</CardTitle>
+              </CardHeader>
+              <CardContent>
+                オンライン相談で全国対応いたします（北海道・関東一円・関西・中国・九州地域に在住し支援した実績あり）。
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-20 px-4 bg-gray-900 text-white">
+        <div className="max-w-4xl mx-auto text-center fade-in">
+          <h2 className="text-3xl font-bold mb-8">お問い合わせ</h2>
+          <p className="mb-8">下記フォームに必要事項をご記入のうえ、お気軽にご相談ください。</p>
+          <Button 
+            variant="outline" 
+            className="text-white border-white hover:bg-white hover:text-gray-900"
+            onClick={() => window.location.href = 'mailto:hori@planjoy.net'}
+          >
+            メールでのお問い合わせ
+          </Button>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="py-8 px-4 bg-gray-900 text-white text-center">
+        <p>&copy; {new Date().getFullYear()} PLANNINGJOY株式会社</p>
+      </footer>
     </div>
   );
 };
