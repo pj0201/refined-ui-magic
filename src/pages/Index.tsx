@@ -35,23 +35,34 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Message Section */}
-      <section id="message" className="py-20 px-4 bg-white">
+      {/* Message Section with new gradient background */}
+      <section id="message" className="py-20 px-4" style={{ background: 'linear-gradient(109.6deg, rgba(223,234,247,1) 11.2%, rgba(244,248,252,1) 91.1%)' }}>
         <div className="max-w-4xl mx-auto space-y-6 fade-in">
           <h2 className="text-3xl font-bold text-center mb-8">メッセージ</h2>
-          <p className="text-gray-700">時代の変化により人・金・物を経営資源とした時代から、情報や時消費・事消費と消費者がお金を使う領域は変化して来ました。</p>
-          <p className="text-gray-700">昨今のAIの驚異的な進化一方で、思いもよらなかったビジネスや経営スタイル・働き方が生まれる時代となっています。</p>
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div className="space-y-4">
+              <p className="text-gray-700">時代の変化により人・金・物を経営資源とした時代から、情報や時消費・事消費と消費者がお金を使う領域は変化して来ました。</p>
+              <p className="text-gray-700">昨今のAIの驚異的な進化一方で、思いもよらなかったビジネスや経営スタイル・働き方が生まれる時代となっています。</p>
+            </div>
+            <div className="hidden md:block">
+              <img 
+                src="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7" 
+                alt="Technology" 
+                className="rounded-lg shadow-lg"
+              />
+            </div>
+          </div>
           <p className="text-gray-700">その一方で中央集権型に代表される、多くの企業の凋落が始まっています。</p>
           <p className="text-gray-700">弊社は、おもに中小企業専門中心、商店や自営業など街に根付いたビジネスを専門にご支援させていただいていますが、どのような業種・業態でもAIの活用（AIとの共生）が生き残りの鍵だと考えています。</p>
           <p className="text-gray-700">外部専門家として、知見と経験のみならず新たな知識やトレンドにアンテナを張り巡らせ。経営資源の効率化・最大化をサポート。進める方向や目的地・思いを大切にミッション達成に尽力させていただきます。</p>
         </div>
       </section>
 
-      {/* Company Profile Section */}
-      <section id="about-us" className="py-20 px-4 bg-gray-900 text-white">
+      {/* Company Profile Section with new design */}
+      <section id="about-us" className="py-20 px-4" style={{ background: 'linear-gradient(to right, #243949 0%, #517fa4 100%)' }}>
         <div className="max-w-4xl mx-auto fade-in">
-          <h2 className="text-3xl font-bold text-center mb-8">会社概要</h2>
-          <div className="space-y-4">
+          <h2 className="text-3xl font-bold text-center mb-8 text-white">会社概要</h2>
+          <div className="space-y-4 text-white">
             <p><strong>代表者：</strong>堀上 亮（経産省認定経営コンサルタント）</p>
             <p><strong>所在地：</strong>〒651-0084 兵庫県神戸市中央区磯辺通1-1-18 カサベラ国際プラザビル707号室</p>
             <p><strong>連絡先：</strong>TEL 090-3943-8853 / MAIL hori@planjoy.net</p>
@@ -104,17 +115,28 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section id="features" className="py-20 px-4 bg-white">
+      {/* Features Section with new design */}
+      <section id="features" className="py-20 px-4" style={{ background: 'linear-gradient(to top, #accbee 0%, #e7f0fd 100%)' }}>
         <div className="max-w-4xl mx-auto fade-in">
           <h2 className="text-3xl font-bold text-center mb-8">特徴</h2>
           <p className="text-center text-xl mb-8">「公的支援の専門家として」</p>
-          <ul className="space-y-4 list-disc list-inside">
-            <li>経産省認定機関のネットワーク活用</li>
-            <li>行政要件を熟知した計画策定</li>
-            <li>継続的な改善サイクルの構築</li>
-            <li>多様な経営課題への横断的対応</li>
-          </ul>
+          <div className="grid md:grid-cols-2 gap-8">
+            <div className="space-y-4">
+              <ul className="space-y-4 list-disc list-inside">
+                <li>経産省認定機関のネットワーク活用</li>
+                <li>行政要件を熟知した計画策定</li>
+                <li>継続的な改善サイクルの構築</li>
+                <li>多様な経営課題への横断的対応</li>
+              </ul>
+            </div>
+            <div className="hidden md:block">
+              <img 
+                src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158" 
+                alt="Professional workspace" 
+                className="rounded-lg shadow-lg"
+              />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -224,11 +246,11 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-20 px-4 bg-gray-900 text-white">
+      {/* Contact Section with updated design */}
+      <section id="contact" className="py-20 px-4" style={{ background: 'linear-gradient(to right, #243949 0%, #517fa4 100%)' }}>
         <div className="max-w-4xl mx-auto text-center fade-in">
-          <h2 className="text-3xl font-bold mb-8">お問い合わせ</h2>
-          <p className="mb-8">下記フォームに必要事項をご記入のうえ、お気軽にご相談ください。</p>
+          <h2 className="text-3xl font-bold mb-8 text-white">お問い合わせ</h2>
+          <p className="mb-8 text-white">下記フォームに必要事項をご記入のうえ、お気軽にご相談ください。</p>
           <Button 
             variant="outline" 
             className="text-white border-white hover:bg-white hover:text-gray-900"
@@ -239,7 +261,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* Footer with matching design */}
       <footer className="py-8 px-4 bg-gray-900 text-white text-center">
         <p>&copy; {new Date().getFullYear()} PLANNINGJOY株式会社</p>
       </footer>
