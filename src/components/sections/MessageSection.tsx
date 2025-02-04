@@ -8,7 +8,7 @@ export const MessageSection = () => {
         <div className="grid md:grid-cols-2 gap-8 items-center">
           <div className="space-y-4">
             <p className="text-gray-700">時代の変化により人・金・物を経営資源とした時代から、情報や時消費・事消費と消費者がお金を使う領域は変化して来ました。</p>
-            <p className="text-gray-700">昨今のAIの驚異的な進化一方で、思いもよらなかったビジネスや経営スタイル・働き方が生まれる時代となっています。</p>
+            <p className="text-gray-700">思いもよらなかったビジネスや経営モデル・働き方が生まれ、そのサイクルも早まっているのが特徴です。</p>
           </div>
           <div className="hidden md:block">
             <img 
@@ -18,9 +18,10 @@ export const MessageSection = () => {
             />
           </div>
         </div>
-        <p className="text-gray-700">その一方で中央集権型に代表される、多くの企業の凋落が始まっています。</p>
-        <p className="text-gray-700">弊社は、おもに中小企業専門中心、商店や自営業など街に根付いたビジネスを専門にご支援させていただいていますが、どのような業種・業態でもAIの活用（AIとの共生）が生き残りの鍵だと考えています。</p>
-        <p className="text-gray-700">外部専門家として、知見と経験のみならず新たな知識やトレンドにアンテナを張り巡らせ。経営資源の効率化・最大化をサポート。進める方向や目的地・思いを大切にミッション達成に尽力させていただきます。</p>
+        <p className="text-gray-700">これらは、業種・業態だけに限らず、世界中で起こっている事実です。</p>
+        <p className="text-gray-700">それらの中軸にあるのは、AIの進化。</p>
+        <p className="text-gray-700">今後の未来はAIの活用からAIとの共存へ向かっていくものと考えられます。</p>
+        <p className="text-gray-700">外部専門家として知見と経験のみならず、新たな知識やトレンドにアンテナを張り巡らせ、経営資源の効率化・最大化をサポートいたします。クライアント様の目指す方向や目的地、かけがえのない思いを大切に、ミッション達成に向けて弊社は全力を尽くします。</p>
       </div>
     </section>
   );
