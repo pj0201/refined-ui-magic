@@ -2,29 +2,13 @@ import { Card } from "@/components/ui/card";
 
 export const MessageSection = () => {
   return (
-    <section id="message" className="relative py-24 px-4 overflow-hidden">
-      <div 
-        className="absolute inset-0 bg-cover bg-center opacity-20"
-        style={{ 
-          backgroundImage: `url("https://images.unsplash.com/photo-1497604401993-f2e922e5cb0a")`,
-          filter: 'blur(8px) brightness(1.1)'
-        }}
-      />
-      <div className="absolute inset-0" style={{ 
-        background: 'linear-gradient(to right, #243949 0%, #517fa4 100%)',
-        opacity: 0.97
-      }}></div>
-      <div className="relative z-10 max-w-6xl mx-auto space-y-12">
-        <div className="text-center space-y-4">
-          <h2 className="text-4xl font-bold text-white relative inline-block">
-            メッセージ
-            <span className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500/50 to-purple-500/50"></span>
-          </h2>
-        </div>
-        <Card className="p-12 bg-white/90 backdrop-blur-md shadow-xl border-[#aaadb0]/20" style={{ fontFamily: '"Hiragino Mincho ProN", serif' }}>
-          <div className="grid md:grid-cols-2 gap-16 items-center">
-            <div className="space-y-8 text-[#8E9196] leading-relaxed text-lg">
-              <p className="first-letter:text-3xl first-letter:font-bold first-letter:mr-1">
+    <section id="message" className="py-20 px-4" style={{ background: 'linear-gradient(109.6deg, #F1F0FB 11.2%, #eee 91.1%)' }}>
+      <div className="max-w-4xl mx-auto space-y-8">
+        <h2 className="text-3xl font-bold text-center mb-12 text-[#8E9196]">メッセージ</h2>
+        <Card className="p-8 bg-white/90 backdrop-blur-sm shadow-lg border-[#aaadb0]/20" style={{ fontFamily: '"Hiragino Mincho ProN", serif' }}>
+          <div className="grid md:grid-cols-2 gap-12 items-start">
+            <div className="space-y-6 text-[#8E9196] leading-relaxed">
+              <p>
                 思いもよらなかったビジネスや経営モデル・働き方が生まれ、そのサイクルも早まっているのが特徴です。
               </p>
               <p>
@@ -34,12 +18,11 @@ export const MessageSection = () => {
                 外部専門家として知見と経験のみならず、新たな知識やトレンドにアンテナを張り巡らせ、経営資源の効率化・最大化をサポートいたします。クライアント様の目指す方向や目的地、かけがえのない思いを大切に、ミッション達成に向けて弊社は全力を尽くします。
               </p>
             </div>
-            <div className="hidden md:block relative">
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 rounded-xl backdrop-blur-sm"></div>
+            <div className="hidden md:block">
               <img 
                 src="https://images.unsplash.com/photo-1497366216548-37526070297c" 
                 alt="Modern office interior" 
-                className="rounded-xl shadow-2xl object-cover h-[500px] w-full"
+                className="rounded-xl shadow-2xl object-cover h-[400px] w-full"
               />
             </div>
           </div>
