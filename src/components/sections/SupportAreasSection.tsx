@@ -2,8 +2,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const SupportAreasSection = () => {
   return (
-    <section id="services" className="py-20 px-4" style={{ background: 'linear-gradient(to right, #243949 0%, #517fa4 100%)' }}>
-      <div className="max-w-4xl mx-auto fade-in">
+    <section id="services" className="relative py-20 px-4 overflow-hidden">
+      <div 
+        className="absolute inset-0 bg-cover bg-center opacity-20"
+        style={{ 
+          backgroundImage: `url("https://images.unsplash.com/photo-1473177104440-ffee2f376098")`,
+        }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#243949]/95 to-[#517fa4]/95 backdrop-blur-sm"></div>
+      <div className="relative z-10 max-w-4xl mx-auto fade-in">
         <h2 className="text-3xl font-bold text-center mb-8 text-white">支援領域</h2>
         <p className="text-center text-xl mb-12 text-white"><strong>「経営のライフサイクルに寄り添う支援」</strong></p>
         <div className="grid md:grid-cols-3 gap-8">

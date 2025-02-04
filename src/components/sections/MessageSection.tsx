@@ -2,15 +2,21 @@ import { Card } from "@/components/ui/card";
 
 export const MessageSection = () => {
   return (
-    <section id="message" className="py-24 px-4" style={{ background: 'linear-gradient(109.6deg, #F1F0FB 11.2%, #eee 91.1%)' }}>
-      <div className="max-w-6xl mx-auto space-y-12">
+    <section id="message" className="relative py-24 px-4 overflow-hidden">
+      <div 
+        className="absolute inset-0 bg-cover bg-center opacity-30 blur-sm"
+        style={{ 
+          backgroundImage: `url("https://images.unsplash.com/photo-1497604401993-f2e922e5cb0a")`,
+        }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-sm"></div>
+      <div className="relative z-10 max-w-6xl mx-auto space-y-12">
         <div className="text-center space-y-4">
           <h2 className="text-4xl font-bold text-[#8E9196] relative inline-block">
             メッセージ
             <span className="absolute bottom-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500/50 to-purple-500/50"></span>
           </h2>
         </div>
-        
         <Card className="p-12 bg-white/90 backdrop-blur-sm shadow-xl border-[#aaadb0]/20" style={{ fontFamily: '"Hiragino Mincho ProN", serif' }}>
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <div className="space-y-8 text-[#8E9196] leading-relaxed text-lg">

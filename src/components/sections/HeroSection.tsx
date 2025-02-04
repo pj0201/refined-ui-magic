@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 
 export const HeroSection = () => {
-  const imageUrl = "https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?auto=format&fit=crop&w=2000&q=80&brightness=150";
+  const imageUrl = "https://images.unsplash.com/photo-1439337153520-7082a56a81f4";
 
   const scrollToMessage = () => {
     document.getElementById('message')?.scrollIntoView({ behavior: 'smooth' });
@@ -14,10 +14,10 @@ export const HeroSection = () => {
         className="absolute inset-0 bg-cover bg-center z-0 transition-opacity duration-500"
         style={{ 
           backgroundImage: `url("${imageUrl}")`,
-          filter: 'brightness(0.9)'
+          filter: 'brightness(0.7)'
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-transparent z-[1]"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-transparent z-[1]"></div>
       <div className="relative z-10 text-center text-white space-y-12 px-4 max-w-4xl mx-auto">
         <h1 className="text-5xl md:text-7xl font-bold mb-4 text-shadow-lg tracking-tight leading-tight">
           創業から承継まで<br />
