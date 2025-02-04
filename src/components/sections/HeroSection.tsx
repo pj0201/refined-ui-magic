@@ -40,7 +40,7 @@ export const HeroSection = () => {
       </div>
       <Button 
         variant="ghost" 
-        className="absolute bottom-4 right-4 text-white hover:bg-white/20"
+        className="absolute bottom-4 right-4 z-20 text-white hover:bg-white/20"
         onClick={handleNextImage}
       >
         次の画像を表示
