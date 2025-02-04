@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 
 export const HeroSection = () => {
   // Single, fixed image URL
-  const imageUrl = "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=2000&q=80&brightness=120";
+  const imageUrl = "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=2000&q=80&brightness=150";
 
   return (
     <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
@@ -10,10 +10,10 @@ export const HeroSection = () => {
         className="absolute inset-0 bg-cover bg-center z-0 transition-opacity duration-500"
         style={{ 
           backgroundImage: `url("${imageUrl}")`,
-          filter: 'brightness(0.7)' // Adjusted brightness for better visibility
+          filter: 'brightness(0.9)' // Increased brightness from 0.7 to 0.9
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-transparent z-[1]"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-transparent z-[1]"></div>
       <div className="relative z-10 text-center text-white space-y-8 fade-in px-4">
         <h1 className="text-6xl font-bold mb-4 text-shadow-lg tracking-tight">
           創業から承継まで<br />
