@@ -5,9 +5,9 @@ export const HeroSection = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   
   const images = [
-    "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
-    "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
-    "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b"
+    "https://images.unsplash.com/photo-1600880292203-757bb62b4baf", // Professional office meeting
+    "https://images.unsplash.com/photo-1573167243872-43c6433b9d40", // Business handshake
+    "https://images.unsplash.com/photo-1542744173-8e7e53415bb0"  // Team collaboration
   ];
 
   const handleNextImage = () => {
