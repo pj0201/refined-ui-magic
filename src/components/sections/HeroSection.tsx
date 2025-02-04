@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 
 export const HeroSection = () => {
-  // Single, fixed image URL - showing local office building exterior
   const imageUrl = "https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?auto=format&fit=crop&w=2000&q=80&brightness=150";
 
   return (
@@ -13,17 +12,17 @@ export const HeroSection = () => {
           filter: 'brightness(0.9)'
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-transparent z-[1]"></div>
-      <div className="relative z-10 text-center text-white space-y-8 fade-in px-4">
-        <h1 className="text-6xl font-bold mb-4 text-shadow-lg tracking-tight">
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/20 z-[1]"></div>
+      <div className="relative z-10 text-center text-white space-y-6 fade-in px-4 -mt-20">
+        <h1 className="text-6xl font-bold tracking-tight">
           創業から承継まで<br />
           経営の羅針盤
         </h1>
-        <div className="space-y-4">
-          <p className="text-2xl text-shadow-md font-medium">
+        <div className="space-y-4 bg-black/30 py-4 rounded-lg backdrop-blur-sm">
+          <p className="text-2xl font-medium">
             PLANNINGJOY株式会社
           </p>
-          <p className="text-xl text-shadow-md text-gray-200">
+          <p className="text-xl text-gray-100">
             「生産性と資産に寄与する経営コンサルティング」
           </p>
         </div>
