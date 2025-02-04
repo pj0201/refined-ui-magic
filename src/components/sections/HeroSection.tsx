@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 
 export const HeroSection = () => {
   // Single, fixed image URL
-  const imageUrl = "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=2000&q=80&brightness=150";
+  const imageUrl = "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=2000&q=80&brightness=150";
 
   return (
     <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
