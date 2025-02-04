@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 
 export const HeroSection = () => {
-  // Single, fixed image URL
-  const imageUrl = "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=2000&q=80&brightness=150";
+  // Single, fixed image URL - showing local office building exterior
+  const imageUrl = "https://images.unsplash.com/photo-1464938050520-ef2270bb8ce8?auto=format&fit=crop&w=2000&q=80&brightness=150";
 
   return (
     <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
@@ -10,7 +10,7 @@ export const HeroSection = () => {
         className="absolute inset-0 bg-cover bg-center z-0 transition-opacity duration-500"
         style={{ 
           backgroundImage: `url("${imageUrl}")`,
-          filter: 'brightness(0.9)' // Increased brightness from 0.7 to 0.9
+          filter: 'brightness(0.9)'
         }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-transparent z-[1]"></div>
