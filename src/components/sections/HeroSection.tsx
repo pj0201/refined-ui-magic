@@ -1,12 +1,25 @@
 import { Button } from "@/components/ui/button";
+import { useState } from "react";
 
 export const HeroSection = () => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  
+  const images = [
+    "https://images.unsplash.com/photo-1498050108023-c5249f4df085",
+    "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158",
+    "https://images.unsplash.com/photo-1581090464777-f3220bbe1b8b"
+  ];
+
+  const handleNextImage = () => {
+    setCurrentImageIndex((prev) => (prev + 1) % images.length);
+  };
+
   return (
     <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
       <div 
-        className="absolute inset-0 bg-cover bg-center z-0"
+        className="absolute inset-0 bg-cover bg-center z-0 transition-opacity duration-500"
         style={{ 
-          backgroundImage: 'url("https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80")',
+          backgroundImage: `url("${images[currentImageIndex]}")`,
           filter: 'brightness(0.5)'
         }}
       />
@@ -25,6 +38,13 @@ export const HeroSection = () => {
           </p>
         </div>
       </div>
+      <Button 
+        variant="ghost" 
+        className="absolute bottom-4 right-4 text-white hover:bg-white/20"
+        onClick={handleNextImage}
+      >
+        次の画像を表示
+      </Button>
     </section>
   );
 };
