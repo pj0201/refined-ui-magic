@@ -14,16 +14,16 @@ export const HeroSection = () => {
         className="absolute inset-0 bg-cover bg-center z-0 transition-opacity duration-500"
         style={{ 
           backgroundImage: `url("${imageUrl}")`,
-          filter: 'brightness(0.7)'
+          filter: 'brightness(0.7) contrast(1.1)'
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-transparent z-[1]"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-transparent z-[1] backdrop-blur-[2px]"></div>
       <div className="relative z-10 text-center text-white space-y-12 px-4 max-w-4xl mx-auto">
         <h1 className="text-5xl md:text-7xl font-bold mb-4 text-shadow-lg tracking-tight leading-tight">
           創業から承継まで<br />
           経営の羅針盤
         </h1>
-        <div className="space-y-6">
+        <div className="space-y-6 backdrop-blur-sm bg-white/5 p-8 rounded-xl">
           <p className="text-2xl md:text-3xl text-shadow-md font-medium">
             PLANNINGJOY株式会社
           </p>
@@ -33,7 +33,7 @@ export const HeroSection = () => {
         </div>
         <button 
           onClick={scrollToMessage}
-          className="animate-bounce mt-12 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-300"
+          className="animate-bounce mt-12 p-2 rounded-full bg-white/10 hover:bg-white/20 transition-all duration-300 backdrop-blur-md"
           aria-label="Scroll to content"
         >
           <ChevronDown className="w-8 h-8 text-white" />

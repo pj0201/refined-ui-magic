@@ -7,12 +7,13 @@ export const CompanyProfileSection = () => {
         className="absolute inset-0 bg-cover bg-center opacity-20"
         style={{ 
           backgroundImage: `url("https://images.unsplash.com/photo-1527576539890-dfa815648363")`,
+          filter: 'blur(8px) brightness(0.9)'
         }}
       />
       <div className="absolute inset-0 bg-gradient-to-br from-[#243949]/95 to-[#517fa4]/95 backdrop-blur-sm"></div>
       <div className="relative z-10 max-w-4xl mx-auto fade-in">
         <h2 className="text-3xl font-bold text-center mb-12 text-white">会社概要</h2>
-        <div className="space-y-6 text-white bg-white/10 p-8 rounded-lg backdrop-blur-sm border border-white/20">
+        <div className="space-y-6 text-white bg-white/10 p-8 rounded-lg backdrop-blur-sm border border-white/20 hover:bg-white/15 transition-all duration-300">
           <p className="flex items-center gap-4">
             <strong className="min-w-24">代表者：</strong>
             <span>堀上 亮（経済産業省認定 経営革新等支援機関）</span>
