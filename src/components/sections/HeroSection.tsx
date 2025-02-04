@@ -1,29 +1,19 @@
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
 
 export const HeroSection = () => {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  
-  const images = [
-    "https://images.unsplash.com/photo-1527576539890-dfa815648363", // グレースケールのビルを下から見上げた写真
-    "https://images.unsplash.com/photo-1487958449943-2429e8be8625", // モダンな白いビル
-    "https://images.unsplash.com/photo-1496307653780-42ee777d4833"  // ガラス張りのビルを下から見上げた写真
-  ];
-
-  const handleNextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % images.length);
-  };
+  // Single, fixed image URL
+  const imageUrl = "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=2000&q=80&brightness=120";
 
   return (
     <section className="relative h-[600px] flex items-center justify-center overflow-hidden">
       <div 
         className="absolute inset-0 bg-cover bg-center z-0 transition-opacity duration-500"
         style={{ 
-          backgroundImage: `url("${images[currentImageIndex]}")`,
-          filter: 'brightness(0.5)'
+          backgroundImage: `url("${imageUrl}")`,
+          filter: 'brightness(0.7)' // Adjusted brightness for better visibility
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-transparent z-[1]"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-transparent z-[1]"></div>
       <div className="relative z-10 text-center text-white space-y-8 fade-in px-4">
         <h1 className="text-6xl font-bold mb-4 text-shadow-lg tracking-tight">
           創業から承継まで<br />
@@ -38,13 +28,6 @@ export const HeroSection = () => {
           </p>
         </div>
       </div>
-      <Button 
-        variant="ghost" 
-        className="absolute bottom-4 right-4 z-20 text-white hover:bg-white/20"
-        onClick={handleNextImage}
-      >
-        次の画像を表示
-      </Button>
     </section>
   );
 };
