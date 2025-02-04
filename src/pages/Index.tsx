@@ -1,5 +1,7 @@
 import { HeroSection } from "@/components/sections/HeroSection";
 import { MessageSection } from "@/components/sections/MessageSection";
+import { CompanyProfileSection } from "@/components/sections/CompanyProfileSection";
+import { SupportAreasSection } from "@/components/sections/SupportAreasSection";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
@@ -8,65 +10,10 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <HeroSection />
       <MessageSection />
+      <CompanyProfileSection />
+      <SupportAreasSection />
       
-      {/* Company Profile Section with new design */}
-      <section id="about-us" className="py-20 px-4" style={{ background: 'linear-gradient(to right, #243949 0%, #517fa4 100%)' }}>
-        <div className="max-w-4xl mx-auto fade-in">
-          <h2 className="text-3xl font-bold text-center mb-8 text-white">会社概要</h2>
-          <div className="space-y-4 text-white">
-            <p><strong>代表者：</strong>堀上 亮（経産省認定経営コンサルタント）</p>
-            <p><strong>所在地：</strong>〒651-0084 兵庫県神戸市中央区磯辺通1-1-18 カサベラ国際プラザビル707号室</p>
-            <p><strong>連絡先：</strong>TEL 090-3943-8853 / MAIL hori@planjoy.net</p>
-          </div>
-        </div>
-      </section>
-
-      {/* Support Areas Section */}
-      <section id="services" className="py-20 px-4 bg-blue-900 text-white">
-        <div className="max-w-4xl mx-auto fade-in">
-          <h2 className="text-3xl font-bold text-center mb-8">支援領域</h2>
-          <p className="text-center text-xl mb-8"><strong>「経営のライフサイクルに寄り添う支援」</strong></p>
-          <div className="grid md:grid-cols-3 gap-8">
-            <Card className="bg-white/10 border-none">
-              <CardHeader>
-                <CardTitle className="text-white">創業期支援</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="list-disc list-inside">
-                  <li>事業計画策定</li>
-                  <li>資金調達サポート</li>
-                </ul>
-              </CardContent>
-            </Card>
-            <Card className="bg-white/10 border-none">
-              <CardHeader>
-                <CardTitle className="text-white">成長期支援</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="list-disc list-inside">
-                  <li>経営改善計画サポート</li>
-                  <li>補助金申請サポート</li>
-                  <li>業務効率化</li>
-                </ul>
-              </CardContent>
-            </Card>
-            <Card className="bg-white/10 border-none">
-              <CardHeader>
-                <CardTitle className="text-white">成熟期支援</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <ul className="list-disc list-inside">
-                  <li>事業承継準備</li>
-                  <li>M&A相談</li>
-                  <li>事業再生</li>
-                </ul>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section with new design */}
+      {/* Features Section */}
       <section id="features" className="py-20 px-4" style={{ background: 'linear-gradient(to top, #accbee 0%, #e7f0fd 100%)' }}>
         <div className="max-w-4xl mx-auto fade-in">
           <h2 className="text-3xl font-bold text-center mb-8">特徴</h2>
@@ -197,7 +144,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Contact Section with updated design */}
+      {/* Contact Section */}
       <section id="contact" className="py-20 px-4" style={{ background: 'linear-gradient(to right, #243949 0%, #517fa4 100%)' }}>
         <div className="max-w-4xl mx-auto text-center fade-in">
           <h2 className="text-3xl font-bold mb-8 text-white">お問い合わせ</h2>
@@ -212,7 +159,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Footer with matching design */}
+      {/* Footer */}
       <footer className="py-8 px-4 bg-gray-900 text-white text-center">
         <p>&copy; {new Date().getFullYear()} PLANNINGJOY株式会社</p>
       </footer>
