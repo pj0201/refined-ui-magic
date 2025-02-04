@@ -17,19 +17,12 @@ export const HeroSection = () => {
           創業から承継まで<br />
           経営の羅針盤
         </h1>
-        <p className="text-2xl mb-2 text-shadow-md">
-          PLANNINGJOY株式会社
-        </p>
         <p className="text-xl text-shadow-md">
           「生産性と資産に寄与する経営コンサルティング」
         </p>
-        <Button 
-          variant="outline" 
-          className="mt-8 text-white border-white hover:bg-white hover:text-gray-900 backdrop-blur-sm"
-          onClick={() => document.getElementById('message')?.scrollIntoView({ behavior: 'smooth' })}
-        >
-          メッセージを見る
-        </Button>
+        <p className="text-2xl mb-2 text-shadow-md">
+          PLANNINGJOY株式会社
+        </p>
       </div>
     </section>
   );
