@@ -9,6 +9,9 @@ export const MessageSection = () => {
           <div className="grid md:grid-cols-2 gap-12 items-start">
             <div className="space-y-6 text-[#8E9196] leading-relaxed">
               <p>
+                時代の変化により人・金・物を経営資源とした時代から、情報や時消費・事消費と消費者がお金を使う領域は変化して来ました。
+              </p>
+              <p>
                 思いもよらなかったビジネスや経営モデル・働き方が生まれ、そのサイクルも早まっているのが特徴です。
               </p>
               <p>

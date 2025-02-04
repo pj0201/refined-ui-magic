@@ -32,7 +32,6 @@ export const CompanyProfileSection = () => {
             <strong className="min-w-24">業務内容：</strong>
             <div className="grid grid-cols-2 gap-x-8 gap-y-2">
               <span>経営コンサルティング</span>
-              <span>定期訪問・オブザーバー</span>
               <span>業務改善全般</span>
               <span>資金調達サポート</span>
               <span>キャッシュフロー改善</span>
