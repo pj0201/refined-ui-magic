@@ -10,7 +10,7 @@ export const CompanyProfileSection = () => {
           <p><strong>所在地：</strong>〒651-0084 兵庫県神戸市中央区磯辺通1-1-18 カサベラ国際プラザビル707号室</p>
           <p className="space-y-2">
             <span className="block"><strong>連絡先：</strong>TEL/FAX　078-600-0611</span>
-            <span className="flex items-center gap-2">
+            <span className="flex items-center gap-2 pl-[4.2rem]">
               <Mail size={18} className="inline-block" />
               <span>MAIL hori@planjoy.net（代表者直通）</span>
             </span>
