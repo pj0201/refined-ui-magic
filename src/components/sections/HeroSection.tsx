@@ -11,8 +11,8 @@ export const HeroSection = () => {
         }}
       />
       <div className="absolute inset-0 bg-black/40 z-[1]"></div>
-      <div className="relative z-10 text-center text-white space-y-6 fade-in px-4">
-        <h1 className="text-5xl font-bold mb-4 text-shadow-lg">
+      <div className="relative z-10 text-center text-white space-y-8 fade-in px-4 -mt-12">
+        <h1 className="text-6xl font-bold mb-4 text-shadow-lg">
           創業から承継まで<br />
           経営の羅針盤
         </h1>
