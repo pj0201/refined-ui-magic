@@ -13,17 +13,16 @@ export const HeroSection = () => {
         }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/20 z-[1]"></div>
-      <div className="relative z-10 text-center text-white space-y-6 fade-in px-4 -mt-20">
+      <div className="relative z-10 text-center text-white space-y-12 px-4 -mt-20">
         <h1 className="text-6xl font-bold tracking-tight">
           創業から承継まで<br />
           経営の羅針盤
         </h1>
-        <div className="space-y-4 bg-gradient-to-r from-blue-900/80 via-blue-800/80 to-blue-900/80 py-6 px-8 rounded-lg backdrop-blur-sm border border-white/10 shadow-2xl transform hover:scale-105 transition-all duration-300">
-          <p className="text-3xl font-medium bg-clip-text text-transparent bg-gradient-to-r from-blue-100 to-white">
+        <div className="space-y-6">
+          <p className="text-4xl font-medium tracking-wide fade-in">
             PLANNINGJOY株式会社
           </p>
-          <div className="w-24 h-0.5 mx-auto bg-gradient-to-r from-transparent via-white/50 to-transparent my-4"></div>
-          <p className="text-xl text-blue-50 font-medium">
+          <p className="text-xl font-medium tracking-wide fade-in delay-100">
             「生産性と資産に寄与する経営コンサルティング」
           </p>
         </div>
