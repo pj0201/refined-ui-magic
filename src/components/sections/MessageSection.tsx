@@ -12,9 +12,9 @@ export const MessageSection = () => {
           </div>
           <div className="hidden md:block">
             <img 
-              src="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7" 
-              alt="Technology" 
-              className="rounded-lg shadow-lg"
+              src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158" 
+              alt="Professional workspace" 
+              className="rounded-lg shadow-lg object-cover h-64 w-full"
             />
           </div>
         </div>

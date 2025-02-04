@@ -7,10 +7,10 @@ export const HeroSection = () => {
         className="absolute inset-0 bg-cover bg-center z-0"
         style={{ 
           backgroundImage: 'url("https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&q=80")',
-          filter: 'brightness(0.7)'
+          filter: 'brightness(0.6)'
         }}
       />
-      <div className="absolute inset-0 bg-black/40 z-[1]"></div>
+      <div className="absolute inset-0 bg-gradient-to-b from-black/50 to-transparent z-[1]"></div>
       <div className="relative z-10 text-center text-white space-y-8 fade-in px-4 -mt-12">
         <h1 className="text-6xl font-bold mb-4 text-shadow-lg">
           創業から承継まで<br />
