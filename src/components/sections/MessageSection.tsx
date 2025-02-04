@@ -20,7 +20,7 @@ export const MessageSection = () => {
             </div>
             <div className="hidden md:block">
               <img 
-                src="https://images.unsplash.com/photo-1498050108023-c5249f4df085" 
+                src="https://images.unsplash.com/photo-1488972685288-c3fd157d7c7a" 
                 alt="Professional workspace" 
                 className="rounded-xl shadow-2xl object-cover h-[400px] w-full"
               />
