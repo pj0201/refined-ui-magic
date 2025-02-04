@@ -5,9 +5,9 @@ export const HeroSection = () => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   
   const images = [
-    "https://images.unsplash.com/photo-1600880292203-757bb62b4baf", // Professional office meeting
-    "https://images.unsplash.com/photo-1573167243872-43c6433b9d40", // Business handshake
-    "https://images.unsplash.com/photo-1542744173-8e7e53415bb0"  // Team collaboration
+    "https://images.unsplash.com/photo-1517022812141-23620dba5c23", // 日本のオフィスビル
+    "https://images.unsplash.com/photo-1582562124811-c09040d0a901", // モダンな会議室
+    "https://images.unsplash.com/photo-1618160702438-9b02ab6515c9"  // ビジネス街の風景
   ];
 
   const handleNextImage = () => {
