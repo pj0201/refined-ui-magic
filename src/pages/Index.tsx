@@ -10,7 +10,6 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <HeroSection />
       <MessageSection />
-      <CompanyProfileSection />
       <SupportAreasSection />
       
       {/* Features Section */}
@@ -143,6 +142,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* Company Profile Section - Moved here */}
+      <CompanyProfileSection />
 
       {/* Contact Section */}
       <section id="contact" className="py-20 px-4" style={{ background: 'linear-gradient(to right, #243949 0%, #517fa4 100%)' }}>
