@@ -18,11 +18,11 @@ export const HeroSection = () => {
           創業から承継まで<br />
           経営の羅針盤
         </h1>
-        <div className="space-y-6">
-          <p className="text-4xl font-medium tracking-wide fade-in backdrop-blur-sm bg-white/10 py-3 px-6 rounded-lg inline-block">
+        <div className="space-y-6 flex flex-col items-center">
+          <p className="text-4xl font-medium tracking-wide fade-in backdrop-blur-sm bg-white/10 py-3 px-6 rounded-lg">
             PLANNINGJOY株式会社
           </p>
-          <p className="text-xl font-medium tracking-wide fade-in delay-100 backdrop-blur-sm bg-white/10 py-2 px-4 rounded-lg inline-block">
+          <p className="text-xl font-medium tracking-wide fade-in delay-100 backdrop-blur-sm bg-white/10 py-2 px-4 rounded-lg">
             「生産性と資産に寄与する経営コンサルティング」
           </p>
         </div>
