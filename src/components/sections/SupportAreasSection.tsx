@@ -1,3 +1,4 @@
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const SupportAreasSection = () => {
@@ -13,8 +14,9 @@ export const SupportAreasSection = () => {
             </CardHeader>
             <CardContent>
               <ul className="list-disc list-inside text-[#8E9196] space-y-2">
-                <li>事業計画策定</li>
+                <li>事業計画策定サポート</li>
                 <li>資金調達サポート</li>
+                <li>什器・機器・ツール導入の助言</li>
               </ul>
             </CardContent>
           </Card>
