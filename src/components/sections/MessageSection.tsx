@@ -1,13 +1,14 @@
+
 import { Card } from "@/components/ui/card";
 
 export const MessageSection = () => {
   return (
     <section id="message" className="py-20 px-4" style={{ background: 'linear-gradient(109.6deg, #F1F0FB 11.2%, #eee 91.1%)' }}>
       <div className="max-w-4xl mx-auto space-y-8">
-        <h2 className="text-3xl font-bold text-center mb-12 text-[#8E9196]">メッセージ</h2>
+        <h2 className="text-3xl font-bold text-center mb-12 text-[#403E43]">メッセージ</h2>
         <Card className="p-8 bg-white/90 backdrop-blur-sm shadow-lg border-[#aaadb0]/20" style={{ fontFamily: '"Hiragino Mincho ProN", serif' }}>
           <div className="grid md:grid-cols-2 gap-12 items-start">
-            <div className="space-y-6 text-[#8E9196] leading-relaxed">
+            <div className="space-y-6 text-[#403E43] leading-relaxed">
               <p>
                 時代の変化により人・金・物を経営資源とした時代から、情報や時消費・事消費と消費者がお金を使う領域は変化して来ました。
               </p>
