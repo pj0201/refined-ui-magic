@@ -13,6 +13,7 @@ Version: 1.0
     --foreground: 240 10% 3.9%;
     --primary: 240 5.9% 10%;
     --primary-foreground: 0 0% 98%;
+    --text-color: #403E43;
 }
 
 body {
@@ -20,6 +21,7 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    color: var(--text-color);
 }
 
 /* Animation Classes */
@@ -42,5 +44,3 @@ body {
 .min-h-screen {
     min-height: 100vh;
 }
-
-/* ... その他のTailwindクラスのカスタム実装 ... */
