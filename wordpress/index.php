@@ -57,50 +57,10 @@
     </section>
 
     <!-- Support Areas Section -->
-    <section id="services" class="py-20 px-4" style="background: linear-gradient(109.6deg, #F1F0FB 11.2%, #eee 91.1%);">
-        <div class="max-w-4xl mx-auto fade-in">
-            <h2 class="text-3xl font-bold text-center mb-8 text-[#403E43]">支援領域</h2>
-            <p class="text-center text-xl mb-12 text-[#403E43]"><strong>「経営のライフサイクルに寄り添う支援」</strong></p>
-            <div class="grid md:grid-cols-3 gap-8">
-                <?php get_template_part('template-parts/support-area-card', null, array(
-                    'title' => '創業期支援',
-                    'items' => array(
-                        '事業計画策定サポート',
-                        '資金調達サポート',
-                        '什器・機器・ツール導入の助言'
-                    )
-                )); ?>
-                
-                <?php get_template_part('template-parts/support-area-card', null, array(
-                    'title' => '成長期支援',
-                    'items' => array(
-                        '経営改善計画サポート',
-                        '補助金申請サポート',
-                        '業務効率化'
-                    )
-                )); ?>
-                
-                <?php get_template_part('template-parts/support-area-card', null, array(
-                    'title' => '成熟期支援',
-                    'items' => array(
-                        '事業承継準備',
-                        'M&A相談',
-                        '事業再生'
-                    )
-                )); ?>
-            </div>
-        </div>
-    </section>
+    <?php get_template_part('template-parts/support-area-card'); ?>
 
     <!-- Company Profile Section -->
-    <section id="about-us" class="py-20 px-4" style="background: linear-gradient(109.6deg, #F1F0FB 11.2%, #eee 91.1%);">
-        <div class="max-w-4xl mx-auto fade-in">
-            <h2 class="text-3xl font-bold text-center mb-12 text-[#403E43]">会社概要</h2>
-            <div class="space-y-6 text-[#403E43] bg-white/80 p-8 rounded-lg backdrop-blur-sm border border-gray-200/20">
-                <?php get_template_part('template-parts/company-profile'); ?>
-            </div>
-        </div>
-    </section>
+    <?php get_template_part('template-parts/company-profile'); ?>
 
     <!-- Contact Section -->
     <section id="contact" class="py-20 px-4" style="background: linear-gradient(to right, #243949 0%, #517fa4 100%);">
