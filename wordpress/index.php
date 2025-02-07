@@ -2,102 +2,108 @@
 
 <div class="min-h-screen bg-background">
     <!-- Hero Section -->
-    <section class="relative h-screen bg-blue-900 text-white overflow-hidden">
-        <div class="absolute inset-0">
-            <div class="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-blue-800/75"></div>
-        </div>
-        <div class="relative max-w-4xl mx-auto h-full flex flex-col justify-center items-center px-4 text-center">
-            <h1 class="text-4xl md:text-5xl font-bold mb-6 fade-in">
-                経営者の良き理解者として<br>
-                お客様と共に歩む
+    <section class="relative h-[600px] flex items-center justify-center overflow-hidden">
+        <div 
+            class="absolute inset-0 bg-cover bg-center z-0 transition-opacity duration-500"
+            style="background-image: url('<?php echo get_theme_file_uri('images/hero-bg.jpg'); ?>'); filter: brightness(0.9);"
+        ></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/20 z-[1]"></div>
+        <div class="relative z-10 text-center text-white space-y-12 px-4 -mt-20">
+            <h1 class="text-6xl font-bold tracking-tight">
+                創業から承継まで<br>
+                経営の羅針盤
             </h1>
-            <p class="text-xl mb-8 fade-in">
-                経営に関する様々なお悩み・ご相談に<br class="md:hidden">ワンストップで対応いたします
-            </p>
+            <div class="space-y-6 flex flex-col items-center">
+                <p class="text-xl font-medium tracking-wide fade-in backdrop-blur-sm bg-white/10 py-2 px-4 rounded-lg">
+                    「生産性と資産に寄与する経営コンサルティング」
+                </p>
+                <p class="text-4xl font-medium tracking-wide fade-in delay-100 backdrop-blur-sm bg-white/10 py-3 px-6 rounded-lg">
+                    PLANNINGJOY株式会社
+                </p>
+            </div>
         </div>
     </section>
 
     <!-- Message Section -->
-    <section class="py-20 px-4">
-        <div class="max-w-4xl mx-auto text-center fade-in">
-            <h2 class="text-3xl font-bold mb-8">経営者の皆様へ</h2>
-            <p class="mb-6" style="color: var(--text-color)">
-                日々の経営において、様々な課題に直面されていることと存じます。<br>
-                私たちは、そんな経営者の皆様に寄り添い、共に解決策を見出していきます。
-            </p>
-            <p class="mb-6" style="color: var(--text-color)">
-                会社の未来を左右する重要な経営判断から、日々の業務改善まで。<br>
-                経営者様の良き理解者として、実践的なアドバイスと具体的な解決策を提供いたします。
-            </p>
+    <section id="message" class="py-20 px-4" style="background: linear-gradient(109.6deg, #F1F0FB 11.2%, #eee 91.1%);">
+        <div class="max-w-4xl mx-auto space-y-8">
+            <h2 class="text-3xl font-bold text-center mb-12 text-[#403E43]">メッセージ</h2>
+            <div class="p-8 bg-white/90 backdrop-blur-sm shadow-lg border-[#aaadb0]/20" style="font-family: 'Hiragino Mincho ProN', serif;">
+                <div class="grid md:grid-cols-2 gap-12 items-start">
+                    <div class="space-y-6 text-[#403E43] leading-relaxed">
+                        <p>
+                            時代の変化により人・金・物を経営資源とした時代から、情報や時消費・事消費と消費者がお金を使う領域は変化して来ました。
+                        </p>
+                        <p>
+                            思いもよらなかったビジネスや経営モデル・働き方が生まれ、そのサイクルも早まっているのが特徴です。
+                        </p>
+                        <p>
+                            これらは、業種・業態だけに限らず、世界中で起こっている事実です。それらの中軸にあるのは、AIの進化。今後の未来はAIの活用からAIとの共存へ向かっていくものと考えられます。
+                        </p>
+                        <p>
+                            外部専門家として知見と経験のみならず、新たな知識やトレンドにアンテナを張り巡らせ、経営資源の効率化・最大化をサポートいたします。クライアント様の目指す方向や目的地、かけがえのない思いを大切に、ミッション達成に向けて弊社は全力を尽くします。
+                        </p>
+                    </div>
+                    <div class="hidden md:block">
+                        <img 
+                            src="<?php echo get_theme_file_uri('images/message-image.jpg'); ?>" 
+                            alt="Modern office interior" 
+                            class="rounded-xl shadow-2xl object-cover h-[400px] w-full"
+                        />
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Support Areas Section -->
-    <section class="py-20 px-4 bg-gray-50">
+    <section id="services" class="py-20 px-4" style="background: linear-gradient(109.6deg, #F1F0FB 11.2%, #eee 91.1%);">
         <div class="max-w-4xl mx-auto fade-in">
-            <h2 class="text-3xl font-bold text-center mb-12" style="color: var(--text-color)">主な支援領域</h2>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="bg-white p-6 rounded-lg shadow-md">
-                    <h3 class="text-xl font-bold mb-4" style="color: var(--text-color)">創業期支援</h3>
-                    <ul class="list-disc list-inside space-y-2" style="color: var(--text-color)">
-                        <li>事業計画策定サポート</li>
-                        <li>資金調達支援</li>
-                        <li>許認可取得支援</li>
-                        <li>什器・機器・ツール導入の助言</li>
-                    </ul>
-                </div>
-                <?php include(get_template_directory() . '/template-parts/support-areas.php'); ?>
+            <h2 class="text-3xl font-bold text-center mb-8 text-[#403E43]">支援領域</h2>
+            <p class="text-center text-xl mb-12 text-[#403E43]"><strong>「経営のライフサイクルに寄り添う支援」</strong></p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <?php get_template_part('template-parts/support-area-card', null, array(
+                    'title' => '創業期支援',
+                    'items' => array(
+                        '事業計画策定サポート',
+                        '資金調達サポート',
+                        '什器・機器・ツール導入の助言'
+                    )
+                )); ?>
+                
+                <?php get_template_part('template-parts/support-area-card', null, array(
+                    'title' => '成長期支援',
+                    'items' => array(
+                        '経営改善計画サポート',
+                        '補助金申請サポート',
+                        '業務効率化'
+                    )
+                )); ?>
+                
+                <?php get_template_part('template-parts/support-area-card', null, array(
+                    'title' => '成熟期支援',
+                    'items' => array(
+                        '事業承継準備',
+                        'M&A相談',
+                        '事業再生'
+                    )
+                )); ?>
             </div>
         </div>
     </section>
 
     <!-- Company Profile Section -->
-    <section class="py-20 px-4 bg-gray-50">
+    <section id="about-us" class="py-20 px-4" style="background: linear-gradient(109.6deg, #F1F0FB 11.2%, #eee 91.1%);">
         <div class="max-w-4xl mx-auto fade-in">
-            <h2 class="text-3xl font-bold text-center mb-12" style="color: var(--text-color)">会社概要</h2>
-            <div class="space-y-6 bg-white/80 p-8 rounded-lg">
-                <p class="flex items-center gap-4" style="color: var(--text-color)">
-                    <strong>法人名：</strong>
-                    <span>PLANNINGJOY株式会社</span>
-                </p>
-                <p class="flex items-center gap-4" style="color: var(--text-color)">
-                    <strong>代表者：</strong>
-                    <span>堀上 亮（経済産業省認定 経営革新等支援機関）</span>
-                </p>
-                <p class="flex items-center gap-4" style="color: var(--text-color)">
-                    <strong>所在地：</strong>
-                    <span>〒651-0084 兵庫県神戸市中央区磯辺通1-1-18 カサベラ国際プラザビル707号室</span>
-                </p>
-                <div class="flex items-start gap-4">
-                    <strong>連絡先：</strong>
-                    <div class="space-y-2">
-                        <p>TEL/FAX　078-600-0611</p>
-                        <p class="flex items-center gap-2">
-                            <i class="fas fa-envelope"></i>
-                            <span>MAIL hori@planjoy.net（代表者直通）</span>
-                        </p>
-                    </div>
-                </div>
-                <div class="flex items-start gap-4">
-                    <strong>業務内容：</strong>
-                    <div class="grid grid-cols-2 gap-x-8 gap-y-2">
-                        <span>経営コンサルティング</span>
-                        <span>業務改善全般</span>
-                        <span>資金調達サポート</span>
-                        <span>キャッシュフロー改善</span>
-                        <span>補助金申請サポート</span>
-                        <span>各種計画策定サポート</span>
-                        <span>事業承継サポート</span>
-                        <span>業務ツール開発（AIを使った駆動開発）</span>
-                        <span>M&Aサポート</span>
-                    </div>
-                </div>
+            <h2 class="text-3xl font-bold text-center mb-12 text-[#403E43]">会社概要</h2>
+            <div class="space-y-6 text-[#403E43] bg-white/80 p-8 rounded-lg backdrop-blur-sm border border-gray-200/20">
+                <?php get_template_part('template-parts/company-profile'); ?>
             </div>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-20 px-4" style="background: linear-gradient(to right, #243949 0%, #517fa4 100%)">
+    <section id="contact" class="py-20 px-4" style="background: linear-gradient(to right, #243949 0%, #517fa4 100%);">
         <div class="max-w-4xl mx-auto text-center fade-in">
             <h2 class="text-3xl font-bold mb-8 text-white">お問い合わせ</h2>
             <p class="mb-8 text-white">下記フォームに必要事項をご記入のうえ、お気軽にご相談ください。</p>
@@ -106,6 +112,10 @@
             </a>
         </div>
     </section>
+
+    <footer class="py-8 px-4 bg-gray-900 text-white text-center">
+        <p>&copy; <?php echo date('Y'); ?> PLANNINGJOY株式会社</p>
+    </footer>
 </div>
 
 <?php get_footer(); ?>
