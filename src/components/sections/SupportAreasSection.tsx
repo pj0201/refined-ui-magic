@@ -1,12 +1,17 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useWordPressData } from "@/hooks/useWordPressData";
 
 export const SupportAreasSection = () => {
+  const { supportData } = useWordPressData();
+
   return (
     <section id="services" className="py-20 px-4" style={{ background: 'linear-gradient(109.6deg, #F1F0FB 11.2%, #eee 91.1%)' }}>
       <div className="max-w-4xl mx-auto fade-in">
         <h2 className="text-3xl font-bold text-center mb-8 text-[#403E43]">支援領域</h2>
-        <p className="text-center text-xl mb-12 text-[#403E43]"><strong>「経営のライフサイクルに寄り添う支援」</strong></p>
+        <div 
+          className="text-center text-xl mb-12 text-[#403E43]"
+          dangerouslySetInnerHTML={{ __html: supportData?.content?.rendered || "" }}
+        />
         <div className="grid md:grid-cols-3 gap-8">
           <Card className="bg-white/80 border-gray-200/20 backdrop-blur-sm hover:bg-white/90 transition-all duration-300">
             <CardHeader>
