@@ -1,3 +1,4 @@
+
 <section id="about-us" class="py-20 px-4" style="background: linear-gradient(109.6deg, #F1F0FB 11.2%, #eee 91.1%);">
     <div class="max-w-4xl mx-auto fade-in">
         <h2 class="text-3xl font-bold text-center mb-12 text-[#403E43]">会社概要</h2>
@@ -41,6 +42,7 @@
                     <span>事業承継サポート</span>
                     <span>業務ツール開発（AIを使った駆動開発）</span>
                     <span>M&Aサポート</span>
+                    <span>広告代理業</span>
                 </div>
             </div>
         </div>

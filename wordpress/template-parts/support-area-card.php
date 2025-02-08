@@ -11,7 +11,7 @@
                     <ul class="list-disc list-inside text-[#403E43] space-y-2">
                         <li>事業計画策定サポート</li>
                         <li>資金調達サポート</li>
-                        <li>什器・機器・ツール導入の助言</li>
+                        <li>機器・ツール・物件の調査</li>
                     </ul>
                 </div>
             </div>

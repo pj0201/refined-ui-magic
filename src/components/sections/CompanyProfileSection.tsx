@@ -41,6 +41,7 @@ export const CompanyProfileSection = () => {
               <span>事業承継サポート</span>
               <span>業務ツール開発（AIを使った駆動開発）</span>
               <span>M&Aサポート</span>
+              <span>広告代理業</span>
             </div>
           </div>
         </div>
