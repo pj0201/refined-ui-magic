@@ -6,12 +6,12 @@ $hero_image = get_theme_image_url('hero-bg.jpg');
     <div class="hero-overlay"></div>
     <div class="container">
         <div class="hero-content fade-in">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6">
-                創業から承継まで<br>
-                経営の羅針盤
+            <h1 class="text-4xl md:text-6xl font-bold mb-6 text-white">
+                創業から承継まで経営の羅針盤
             </h1>
-            <p class="text-xl mb-8">「生産性と資産に寄与する経営コンサルティング」</p>
-            <p class="text-2xl">PLANNINGJOY株式会社</p>
+            <p class="text-xl mb-8 text-white">「生産性と資産に寄与する経営コンサルティング」</p>
+            <p class="text-2xl text-white">PLANNINGJOY株式会社</p>
         </div>
     </div>
 </section>
+
