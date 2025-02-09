@@ -14,6 +14,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: var(--text-color);
+    background-color: #FFFFFF;
 }
 
 /* Animation Classes */
@@ -40,6 +41,43 @@ body {
 /* Custom Styles */
 .message-text {
     font-family: "Hiragino Mincho ProN", serif;
+}
+
+/* Hero Section Styles */
+.hero-section {
+    position: relative;
+    height: 600px;
+    background-size: cover;
+    background-position: center;
+    background-color: #FFFFFF;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+}
+
+/* Section Styles */
+.section {
+    background-color: #FFFFFF;
+    padding: 5rem 0;
+}
+
+/* Card Styles */
+.card {
+    background: #FFFFFF;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid #F1F1F1;
 }
 
 /* Responsive Design */
