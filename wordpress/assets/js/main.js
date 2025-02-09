@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', function() {
     // フェードインアニメーション
     const fadeElements = document.querySelectorAll('.fade-in');
