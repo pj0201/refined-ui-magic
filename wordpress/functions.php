@@ -14,20 +14,44 @@ function planningjoy_setup() {
         'gallery',
         'caption',
     ));
+    
+    // ナビゲーションメニューの登録
+    register_nav_menus(array(
+        'primary' => 'メインメニュー',
+    ));
 }
 add_action('after_setup_theme', 'planningjoy_setup');
 
-function planningjoy_enqueue_assets() {
-    // スタイルシートの読み込み
+function planningjoy_scripts() {
+    // メインのスタイルシート
     wp_enqueue_style('planningjoy-style', get_stylesheet_uri());
-    wp_enqueue_style('planningjoy-main', get_template_directory_uri() . '/assets/css/style.css');
     
-    // JavaScriptの読み込み
+    // カスタムCSS
+    wp_enqueue_style('planningjoy-custom', get_template_directory_uri() . '/assets/css/style.css');
+    
+    // JavaScript
     wp_enqueue_script('planningjoy-main', get_template_directory_uri() . '/assets/js/main.js', array(), '1.0.0', true);
 }
-add_action('wp_enqueue_scripts', 'planningjoy_enqueue_assets');
+add_action('wp_enqueue_scripts', 'planningjoy_scripts');
 
-// 画像ディレクトリのURL取得用関数
+// 画像URLを取得するためのヘルパー関数
 function get_theme_image_url($image) {
     return get_template_directory_uri() . '/assets/images/' . $image;
 }
+
+// TailwindCSSのクラスを許可
+function planningjoy_allow_tailwind_classes($kses_allowed_protocols) {
+    global $allowedposttags;
+    
+    $tailwind_attrs = array(
+        'class' => true,
+        'style' => true,
+    );
+    
+    foreach($allowedposttags as $tag => &$attrs) {
+        $attrs = array_merge($attrs, $tailwind_attrs);
+    }
+    
+    return $kses_allowed_protocols;
+}
+add_filter('kses_allowed_protocols', 'planningjoy_allow_tailwind_classes');
