@@ -72,6 +72,10 @@ body {
 
 .hero-content h1 {
     line-height: 1.4;
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Section Styles */
@@ -103,8 +107,13 @@ body {
         padding: 0 1rem;
     }
     
+    .hero-content h1 {
+        font-size: 1.75rem;
+        white-space: normal;
+        letter-spacing: -0.02em;
+    }
+    
     .grid-cols-2 {
         grid-template-columns: 1fr;
     }
 }
-
