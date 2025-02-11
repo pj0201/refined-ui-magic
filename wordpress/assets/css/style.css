@@ -60,22 +60,19 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgba(0, 0, 0, 0.4);
 }
 
 .hero-content {
     position: relative;
     z-index: 1;
     width: 100%;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
 .hero-content h1 {
     line-height: 1.4;
-    display: inline-block;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    letter-spacing: 0.02em;
 }
 
 /* Section Styles */
@@ -108,9 +105,10 @@ body {
     }
     
     .hero-content h1 {
-        font-size: 1.75rem;
+        font-size: 2rem;
+        line-height: 1.4;
+        letter-spacing: 0;
         white-space: normal;
-        letter-spacing: -0.02em;
     }
     
     .grid-cols-2 {

@@ -1,3 +1,4 @@
+
 import { Button } from "@/components/ui/button";
 
 export const HeroSection = () => {
@@ -15,7 +16,7 @@ export const HeroSection = () => {
       <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/30 to-black/20 z-[1]"></div>
       <div className="relative z-10 text-center text-white space-y-12 px-4 -mt-20">
         <h1 className="text-6xl font-bold tracking-tight">
-          創業から承継まで<br />
+          創業から承継まで<br className="hidden md:block" />
           経営の羅針盤
         </h1>
         <div className="space-y-6 flex flex-col items-center">
