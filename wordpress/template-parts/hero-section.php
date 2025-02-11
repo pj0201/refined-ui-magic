@@ -7,8 +7,8 @@ $hero_image = get_theme_image_url('hero-bg.jpg');
     <div class="container">
         <div class="hero-content fade-in">
             <h1 class="text-2xl md:text-6xl font-bold mb-6 text-white">
-                <span class="inline-block">創業から承継まで</span><br />
-                <span class="inline-block whitespace-nowrap">経営の羅針盤</span>
+                <span class="block">創業から承継まで</span>
+                <span class="block text-nowrap">経営の羅針盤</span>
             </h1>
             <p class="text-xl mb-8 text-white">「生産性と資産に寄与する経営コンサルティング」</p>
             <p class="text-2xl text-white">PLANNINGJOY株式会社</p>

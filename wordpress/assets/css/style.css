@@ -33,16 +33,6 @@ body {
     }
 }
 
-/* Utility Classes */
-.min-h-screen {
-    min-height: 100vh;
-}
-
-/* Custom Styles */
-.message-text {
-    font-family: "Hiragino Mincho ProN", serif;
-}
-
 /* Hero Section Styles */
 .hero-section {
     position: relative;
@@ -76,21 +66,11 @@ body {
 }
 
 .hero-content h1 span {
-    display: inline-block;
+    display: block;
 }
 
-/* Section Styles */
-.section {
-    background-color: #FFFFFF;
-    padding: 5rem 0;
-}
-
-/* Card Styles */
-.card {
-    background: #FFFFFF;
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border: 1px solid #F1F1F1;
+.text-nowrap {
+    white-space: nowrap;
 }
 
 /* Responsive Design */
@@ -112,3 +92,5 @@ body {
         grid-template-columns: 1fr;
     }
 }
+
+/* ... keep existing code */
