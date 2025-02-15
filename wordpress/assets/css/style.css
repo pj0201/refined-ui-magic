@@ -1,3 +1,4 @@
+
 /* Base Styles */
 :root {
     --background: 0 0% 100%;
@@ -35,7 +36,9 @@ body {
 /* Hero Section Styles */
 .hero-section {
     position: relative;
-    height: 600px;
+    height: 100vh;
+    min-height: 400px;
+    max-height: 800px;
     background-size: cover;
     background-position: center;
     background-color: #FFFFFF;
@@ -57,25 +60,25 @@ body {
     z-index: 1;
     width: 100%;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    padding: 0 1rem;
 }
 
 .hero-content h1 {
     line-height: 1.4;
     letter-spacing: 0.02em;
+    word-break: keep-all;
+    overflow-wrap: break-word;
 }
 
 .hero-content h1 span {
     display: block;
 }
 
-.text-nowrap {
-    white-space: nowrap;
-}
-
 /* Responsive Design */
 @media (max-width: 768px) {
     .hero-section {
-        height: 400px;
+        height: 100vh;
+        min-height: 400px;
     }
 
     .hero-content {
