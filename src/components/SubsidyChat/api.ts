@@ -2,6 +2,13 @@
 import { SubsidyInfo } from "./types";
 import { supabase } from "@/integrations/supabase/client";
 
+interface SecretRecord {
+  id: string;
+  name: string;
+  secret: string;
+  created_at: string;
+}
+
 interface GroqResponse {
   choices: [{
     message: {
@@ -34,7 +41,7 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
       .from('secrets')
       .select()
       .eq('name', 'GROQ_API_KEY')
-      .maybeSingle();
+      .maybeSingle() as { data: SecretRecord | null; error: any };
 
     if (error || !secretData || !secretData.secret) {
       throw new Error('Groq APIキーが設定されていません');
