@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -45,23 +44,21 @@ export const SubsidyChatbot = () => {
         return;
       }
 
-      // TODO: ここにデジタル庁APIとの連携を実装
-      // 実装までのモック応答
+      // モック応答（後でDeepSeek APIに置き換え）
       const mockResponse = {
-        name: "ものづくり補助金",
-        description: "中小企業・小規模事業者の革新的なものづくりやサービスの開発を支援する制度です。",
+        name: "補助金支援情報",
+        description: "ご質問の内容について、以下のような補助金支援が考えられます。",
         requirements: [
-          "中小企業・小規模事業者であること",
-          "革新的な事業計画を有すること",
-          "一定の経営基盤を有すること"
+          "事業規模や業種に応じて適用される要件が異なります",
+          "申請前に事業計画の準備が必要です",
+          "必要書類の準備と期限内の提出が必要です"
         ],
         period: {
-          start: "2024年4月1日",
-          end: "2024年5月31日"
+          start: "各補助金によって異なります",
+          end: "公募時期をご確認ください"
         },
-        amount: "最大1,000万円",
-        adoptionRate: "約40％",
-        url: "https://www.meti.go.jp/..."
+        amount: "事業内容と補助金の種類によって変動します",
+        url: "mailto:hori@planjoy.net"
       };
 
       const response = formatSubsidyResponse(mockResponse);
