@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -5,6 +6,7 @@ import { HelpCircle, X, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Message } from "./types";
 import { formatSubsidyResponse, isSubsidyRelatedQuestion } from "./utils";
+import { generateSubsidyResponse } from "./api";
 import { useToast } from "@/components/ui/use-toast";
 
 export const SubsidyChatbot = () => {
@@ -44,24 +46,8 @@ export const SubsidyChatbot = () => {
         return;
       }
 
-      // モック応答（後でDeepSeek APIに置き換え）
-      const mockResponse = {
-        name: "補助金支援情報",
-        description: "ご質問の内容について、以下のような補助金支援が考えられます。",
-        requirements: [
-          "事業規模や業種に応じて適用される要件が異なります",
-          "申請前に事業計画の準備が必要です",
-          "必要書類の準備と期限内の提出が必要です"
-        ],
-        period: {
-          start: "各補助金によって異なります",
-          end: "公募時期をご確認ください"
-        },
-        amount: "事業内容と補助金の種類によって変動します",
-        url: "mailto:hori@planjoy.net"
-      };
-
-      const response = formatSubsidyResponse(mockResponse);
+      const subsidyInfo = await generateSubsidyResponse(userMessage.content);
+      const response = formatSubsidyResponse(subsidyInfo);
       
       setMessages(prev => [...prev, {
         type: "bot",
