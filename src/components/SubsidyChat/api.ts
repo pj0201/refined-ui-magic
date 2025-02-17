@@ -18,9 +18,11 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
   try {
     const apiKey = import.meta.env.VITE_DEEPSEEK_API_KEY;
     if (!apiKey) {
-      throw new Error('DeepSeek APIキーが設定されていません');
+      console.error('DeepSeek APIキーが見つかりません');
+      throw new Error('DeepSeek APIキーが設定されていません。Project Settings -> Secrets から設定してください。');
     }
 
+    console.log('API Request starting...');
     const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -40,13 +42,17 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
 
     if (!response.ok) {
       const errorData = await response.json();
-      console.error('DeepSeek API Error:', errorData);
-      throw new Error(errorData.error?.message || 'API request failed');
+      console.error('DeepSeek API Error:', {
+        status: response.status,
+        statusText: response.statusText,
+        error: errorData
+      });
+      throw new Error(`APIリクエストエラー: ${response.status} ${response.statusText} - ${errorData.error?.message || '不明なエラー'}`);
     }
 
     const data: DeepSeekResponse = await response.json();
+    console.log('API Response received successfully');
     
-    // APIレスポンスから補助金情報を構造化
     return {
       name: "補助金支援情報",
       description: data.output,
@@ -63,7 +69,7 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
       url: "mailto:hori@planjoy.net"
     };
   } catch (error) {
-    console.error('Error calling DeepSeek API:', error);
+    console.error('Error in generateSubsidyResponse:', error);
     throw error;
   }
 };
