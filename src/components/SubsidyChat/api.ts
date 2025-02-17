@@ -1,11 +1,15 @@
 
 import { SubsidyInfo } from "./types";
 
-interface DeepSeekResponse {
-  output: string;
+interface GroqResponse {
+  choices: [{
+    message: {
+      content: string;
+    }
+  }]
 }
 
-interface DeepSeekError {
+interface GroqError {
   error: {
     message: string;
     type: string;
@@ -25,51 +29,51 @@ const SYSTEM_PROMPT = `
 
 export const generateSubsidyResponse = async (question: string): Promise<SubsidyInfo> => {
   try {
-    const apiKey = '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'; // テスト用のAPIキー
+    const apiKey = 'gsk_1234567890'; // GroqのAPIキーを設定してください
     if (!apiKey) {
-      throw new Error('DeepSeek APIキーが設定されていません');
+      throw new Error('Groq APIキーが設定されていません');
     }
 
     console.log('API Request starting...', { question });
-    const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
+    const response = await fetch('https://api.groq.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'deepseek-chat',
+        model: 'mixtral-8x7b-32768',
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           { role: 'user', content: question }
         ],
-        max_tokens: 1000,
         temperature: 0.7,
+        max_tokens: 1000,
       }),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('DeepSeek API Error:', {
+      console.error('Groq API Error:', {
         status: response.status,
         statusText: response.statusText,
         errorText
       });
 
       try {
-        const errorData: DeepSeekError = JSON.parse(errorText);
-        throw new Error(`DeepSeek APIエラー: ${errorData.error.message}`);
+        const errorData: GroqError = JSON.parse(errorText);
+        throw new Error(`Groq APIエラー: ${errorData.error.message}`);
       } catch (parseError) {
         throw new Error(`APIリクエストエラー: ${response.status} ${response.statusText} - ${errorText}`);
       }
     }
 
-    const data: DeepSeekResponse = await response.json();
+    const data: GroqResponse = await response.json();
     console.log('API Response received successfully');
     
     return {
       name: "補助金支援情報",
-      description: data.output,
+      description: data.choices[0].message.content,
       requirements: [
         "具体的な要件は事業内容により異なります",
         "申請前に事業計画の準備が必要です",
