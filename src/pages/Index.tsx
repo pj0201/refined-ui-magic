@@ -4,6 +4,7 @@ import { CompanyProfileSection } from "@/components/sections/CompanyProfileSecti
 import { SupportAreasSection } from "@/components/sections/SupportAreasSection";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { SubsidyChatbot } from "@/components/SubsidyChat/SubsidyChatbot";
 
 const Index = () => {
   return (
@@ -71,7 +72,7 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Company Profile Section - Moved here */}
+      {/* Company Profile Section */}
       <CompanyProfileSection />
 
       {/* Contact Section */}
@@ -92,6 +93,9 @@ const Index = () => {
       <footer className="py-8 px-4 bg-gray-900 text-white text-center">
         <p>&copy; {new Date().getFullYear()} PLANNINGJOY株式会社</p>
       </footer>
+
+      {/* Add Subsidy Chatbot */}
+      <SubsidyChatbot />
     </div>
   );
 };
