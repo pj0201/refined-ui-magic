@@ -4,29 +4,83 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { HelpCircle, X, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
-
-interface Message {
-  type: "bot" | "user";
-  content: string;
-}
+import { Message } from "./types";
+import { formatSubsidyResponse, isSubsidyRelatedQuestion } from "./utils";
+import { useToast } from "@/components/ui/use-toast";
 
 export const SubsidyChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     {
       type: "bot",
-      content: "補助金に関する質問をお気軽にどうぞ！"
+      content: "補助金に関する質問をお気軽にどうぞ！",
+      timestamp: new Date()
     }
   ]);
   const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!input.trim()) return;
+    if (!input.trim() || isLoading) return;
 
-    setMessages([...messages, { type: "user", content: input }]);
+    const userMessage = {
+      type: "user" as const,
+      content: input.trim(),
+      timestamp: new Date()
+    };
+
+    setMessages(prev => [...prev, userMessage]);
     setInput("");
-    // ここに実際のチャットボットのロジックを追加予定
+    setIsLoading(true);
+
+    try {
+      if (!isSubsidyRelatedQuestion(userMessage.content)) {
+        setMessages(prev => [...prev, {
+          type: "bot",
+          content: "申し訳ございません。私は補助金についての質問しかお答えできないのです。",
+          timestamp: new Date()
+        }]);
+        return;
+      }
+
+      // TODO: ここにデジタル庁APIとの連携を実装
+      // 実装までのモック応答
+      const mockResponse = {
+        name: "ものづくり補助金",
+        description: "中小企業・小規模事業者の革新的なものづくりやサービスの開発を支援する制度です。",
+        requirements: [
+          "中小企業・小規模事業者であること",
+          "革新的な事業計画を有すること",
+          "一定の経営基盤を有すること"
+        ],
+        period: {
+          start: "2024年4月1日",
+          end: "2024年5月31日"
+        },
+        amount: "最大1,000万円",
+        adoptionRate: "約40％",
+        url: "https://www.meti.go.jp/..."
+      };
+
+      const response = formatSubsidyResponse(mockResponse);
+      
+      setMessages(prev => [...prev, {
+        type: "bot",
+        content: response,
+        timestamp: new Date()
+      }]);
+    } catch (error) {
+      console.error('Error processing message:', error);
+      toast({
+        title: "エラーが発生しました",
+        description: "しばらく待ってから再度お試しください。",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -69,7 +123,7 @@ export const SubsidyChatbot = () => {
               >
                 <div
                   className={cn(
-                    "max-w-[80%] rounded-lg p-3",
+                    "max-w-[80%] rounded-lg p-3 whitespace-pre-wrap",
                     message.type === "user"
                       ? "bg-blue-600 text-white"
                       : "bg-gray-100 text-gray-900"
@@ -89,8 +143,9 @@ export const SubsidyChatbot = () => {
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="メッセージを入力..."
                 className="flex-1"
+                disabled={isLoading}
               />
-              <Button type="submit" disabled={!input.trim()}>
+              <Button type="submit" disabled={!input.trim() || isLoading}>
                 <Send className="w-4 h-4" />
               </Button>
             </div>
