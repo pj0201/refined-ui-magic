@@ -39,16 +39,18 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
   try {
     const { data: secretData, error } = await supabase
       .from('secrets')
-      .select()
+      .select('*')
       .eq('name', 'GROQ_API_KEY')
-      .maybeSingle() as { data: SecretRecord | null; error: any };
+      .single();
 
     if (error || !secretData || !secretData.secret) {
+      console.error('Supabase error:', error);
       throw new Error('Groq APIキーが設定されていません');
     }
 
     const apiKey = secretData.secret;
     console.log('API Request starting...', { question });
+    
     const response = await fetch('https://api.groq.com/v1/chat/completions', {
       method: 'POST',
       headers: {
