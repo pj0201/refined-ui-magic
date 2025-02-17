@@ -2,7 +2,6 @@
 import { SubsidyInfo } from "./types";
 import { supabase } from "@/integrations/supabase/client";
 
-// APIレスポンスの型定義
 interface GroqResponse {
   choices: [{
     message: {
@@ -37,8 +36,12 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
       .eq('name', 'GROQ_API_KEY')
       .single();
 
-    if (error || !secretData?.secret) {
+    if (error) {
       console.error('Supabase error:', error);
+      throw new Error('Groq APIキーの取得に失敗しました');
+    }
+
+    if (!secretData) {
       throw new Error('Groq APIキーが設定されていません');
     }
 
