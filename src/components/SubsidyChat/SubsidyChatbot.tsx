@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MessageCircle, X, Send, MessageSquare } from "lucide-react";
+import { HelpCircle, X, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Message {
@@ -40,7 +40,7 @@ export const SubsidyChatbot = () => {
             onClick={() => setIsOpen(true)}
             className="rounded-full w-12 h-12 shadow-lg bg-blue-600 hover:bg-blue-700"
           >
-            <MessageSquare className="w-5 h-5" />
+            <HelpCircle className="w-5 h-5" />
           </Button>
         </div>
       ) : (
