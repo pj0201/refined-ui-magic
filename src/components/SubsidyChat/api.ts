@@ -2,13 +2,6 @@
 import { SubsidyInfo } from "./types";
 import { supabase } from "@/integrations/supabase/client";
 
-interface SecretsRow {
-  id: string;
-  name: string;
-  secret: string;
-  created_at: string;
-}
-
 interface GroqResponse {
   choices: [{
     message: {
@@ -38,12 +31,12 @@ const SYSTEM_PROMPT = `
 export const generateSubsidyResponse = async (question: string): Promise<SubsidyInfo> => {
   try {
     const { data: secretData, error } = await supabase
-      .from<SecretsRow>('secrets')
-      .select('secret')
+      .from('secrets')
+      .select()
       .eq('name', 'GROQ_API_KEY')
-      .single();
+      .maybeSingle();
 
-    if (error || !secretData) {
+    if (error || !secretData || !secretData.secret) {
       throw new Error('Groq APIキーが設定されていません');
     }
 
