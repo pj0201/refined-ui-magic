@@ -5,6 +5,15 @@ interface DeepSeekResponse {
   output: string;
 }
 
+interface DeepSeekError {
+  error: {
+    message: string;
+    type: string;
+    param: string | null;
+    code: string;
+  };
+}
+
 const SYSTEM_PROMPT = `
 あなたは補助金の専門アドバイザーです。以下のルールに従って回答してください：
 1. 補助金に関する質問に対して、具体的で正確な情報を提供してください
@@ -16,12 +25,12 @@ const SYSTEM_PROMPT = `
 
 export const generateSubsidyResponse = async (question: string): Promise<SubsidyInfo> => {
   try {
-    const apiKey = 'sk-...'; // ここに実際のDeepSeek APIキーを入れてください
+    const apiKey = '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'; // テスト用のAPIキー
     if (!apiKey) {
       throw new Error('DeepSeek APIキーが設定されていません');
     }
 
-    console.log('API Request starting...');
+    console.log('API Request starting...', { question });
     const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -40,7 +49,19 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
     });
 
     if (!response.ok) {
-      throw new Error('APIリクエストに失敗しました');
+      const errorText = await response.text();
+      console.error('DeepSeek API Error:', {
+        status: response.status,
+        statusText: response.statusText,
+        errorText
+      });
+
+      try {
+        const errorData: DeepSeekError = JSON.parse(errorText);
+        throw new Error(`DeepSeek APIエラー: ${errorData.error.message}`);
+      } catch (parseError) {
+        throw new Error(`APIリクエストエラー: ${response.status} ${response.statusText} - ${errorText}`);
+      }
     }
 
     const data: DeepSeekResponse = await response.json();
