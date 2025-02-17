@@ -1,7 +1,13 @@
 
 import { SubsidyInfo } from "./types";
 import { supabase } from "@/integrations/supabase/client";
-import { Database } from "@/integrations/supabase/types";
+
+interface SecretsRow {
+  id: string;
+  name: string;
+  secret: string;
+  created_at: string;
+}
 
 interface GroqResponse {
   choices: [{
@@ -32,7 +38,7 @@ const SYSTEM_PROMPT = `
 export const generateSubsidyResponse = async (question: string): Promise<SubsidyInfo> => {
   try {
     const { data: secretData, error } = await supabase
-      .from('secrets')
+      .from<SecretsRow>('secrets')
       .select('secret')
       .eq('name', 'GROQ_API_KEY')
       .single();
