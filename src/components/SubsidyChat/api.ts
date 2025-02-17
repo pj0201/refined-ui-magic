@@ -2,6 +2,11 @@
 import { SubsidyInfo } from "./types";
 import { supabase } from "@/integrations/supabase/client";
 
+interface GroqChatMessage {
+  role: "system" | "user" | "assistant";
+  content: string;
+}
+
 interface GroqResponse {
   choices: [{
     message: {
@@ -20,24 +25,38 @@ interface GroqError {
 }
 
 const SYSTEM_PROMPT = `
-あなたは補助金の専門アドバイザーです。以下のルールに従って回答してください：
-1. 補助金に関する質問に対して、具体的で正確な情報を提供してください
+あなたは日本の補助金制度に詳しいアシスタントです。
+以下のルールに従って回答してください：
+
+1. 補助金に関する質問に対して、必要な場合は根拠となる情報を示しながら回答してください
 2. 情報が不確かな場合は、その旨を伝え、詳細は専門家への相談を推奨してください
 3. 回答には必ず申請要件、期間、補助金額の情報を含めてください
 4. 最新の情報については「hori@planjoy.net」への問い合わせを案内してください
 5. 丁寧な言葉遣いを心がけてください
+6. 関連する外部サイトがある場合はリンクを提示してください
 `;
 
 export const generateSubsidyResponse = async (question: string): Promise<SubsidyInfo> => {
   try {
-    const { data: secretData, error } = await supabase
+    // Supabaseから関連文書を検索（将来的にベクトル検索を実装予定）
+    const { data: documents, error: docError } = await supabase
+      .from('documents')
+      .select('*')
+      .limit(3);
+
+    if (docError) {
+      console.error('Document search error:', docError);
+    }
+
+    // Groq APIキーの取得
+    const { data: secretData, error: secretError } = await supabase
       .from('secrets')
       .select('secret')
       .eq('name', 'GROQ_API_KEY')
       .single();
 
-    if (error) {
-      console.error('Supabase error:', error);
+    if (secretError) {
+      console.error('Supabase error:', secretError);
       throw new Error('Groq APIキーの取得に失敗しました');
     }
 
@@ -48,6 +67,24 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
     const apiKey = secretData.secret;
     console.log('API Request starting...', { question });
     
+    // コンテキストの準備
+    let context = '';
+    if (documents && documents.length > 0) {
+      context = documents.map(doc => doc.content).join('\n---\n');
+    }
+
+    // Groq APIへのリクエスト
+    const messages: GroqChatMessage[] = [
+      { role: 'system', content: SYSTEM_PROMPT },
+      { role: 'user', content: `
+コンテキスト情報:
+${context}
+
+ユーザーからの質問:
+${question}
+      `.trim() }
+    ];
+
     const response = await fetch('https://api.groq.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -56,12 +93,9 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
       },
       body: JSON.stringify({
         model: 'mixtral-8x7b-32768',
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: question }
-        ],
+        messages: messages,
         temperature: 0.7,
-        max_tokens: 1000,
+        max_tokens: 2000,
       }),
     });
 
