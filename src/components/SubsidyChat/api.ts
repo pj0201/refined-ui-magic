@@ -1,4 +1,6 @@
 
+import { SubsidyInfo } from "./types";
+
 interface DeepSeekResponse {
   output: string;
 }
