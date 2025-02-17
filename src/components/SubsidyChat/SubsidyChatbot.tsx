@@ -32,12 +32,17 @@ export const SubsidyChatbot = () => {
   return (
     <div className="fixed bottom-4 right-4 z-50">
       {!isOpen ? (
-        <Button
-          onClick={() => setIsOpen(true)}
-          className="rounded-full w-16 h-16 shadow-lg bg-blue-600 hover:bg-blue-700"
-        >
-          <MessageCircle className="w-8 h-8" />
-        </Button>
+        <div className="flex flex-col items-end gap-2">
+          <div className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-md text-sm">
+            補助金についてのご質問はこちら
+          </div>
+          <Button
+            onClick={() => setIsOpen(true)}
+            className="rounded-full w-16 h-16 shadow-lg bg-blue-600 hover:bg-blue-700"
+          >
+            <MessageCircle className="w-8 h-8" />
+          </Button>
+        </div>
       ) : (
         <div className="bg-white rounded-lg shadow-xl w-[350px] max-w-[calc(100vw-2rem)] h-[500px] max-h-[calc(100vh-2rem)] flex flex-col">
           {/* Header */}
