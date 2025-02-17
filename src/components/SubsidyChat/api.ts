@@ -1,6 +1,7 @@
 
 import { SubsidyInfo } from "./types";
 import { supabase } from "@/integrations/supabase/client";
+import { Database } from "@/integrations/supabase/types";
 
 interface GroqResponse {
   choices: [{
@@ -30,16 +31,17 @@ const SYSTEM_PROMPT = `
 
 export const generateSubsidyResponse = async (question: string): Promise<SubsidyInfo> => {
   try {
-    const { data: { secret: apiKey } } = await supabase
+    const { data, error } = await supabase
       .from('secrets')
       .select('secret')
       .eq('name', 'GROQ_API_KEY')
       .single();
 
-    if (!apiKey) {
+    if (error || !data) {
       throw new Error('Groq APIキーが設定されていません');
     }
 
+    const apiKey = data.secret;
     console.log('API Request starting...', { question });
     const response = await fetch('https://api.groq.com/v1/chat/completions', {
       method: 'POST',
