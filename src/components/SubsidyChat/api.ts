@@ -16,10 +16,9 @@ const SYSTEM_PROMPT = `
 
 export const generateSubsidyResponse = async (question: string): Promise<SubsidyInfo> => {
   try {
-    const apiKey = import.meta.env.VITE_DEEPSEEK_API_KEY;
+    const apiKey = 'sk-...'; // ここに実際のDeepSeek APIキーを入れてください
     if (!apiKey) {
-      console.error('DeepSeek APIキーが見つかりません');
-      throw new Error('DeepSeek APIキーが設定されていません。Project Settings -> Secrets から設定してください。');
+      throw new Error('DeepSeek APIキーが設定されていません');
     }
 
     console.log('API Request starting...');
@@ -41,13 +40,7 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error('DeepSeek API Error:', {
-        status: response.status,
-        statusText: response.statusText,
-        error: errorData
-      });
-      throw new Error(`APIリクエストエラー: ${response.status} ${response.statusText} - ${errorData.error?.message || '不明なエラー'}`);
+      throw new Error('APIリクエストに失敗しました');
     }
 
     const data: DeepSeekResponse = await response.json();
