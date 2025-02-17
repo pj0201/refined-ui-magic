@@ -16,11 +16,16 @@ const SYSTEM_PROMPT = `
 
 export const generateSubsidyResponse = async (question: string): Promise<SubsidyInfo> => {
   try {
+    const apiKey = import.meta.env.VITE_DEEPSEEK_API_KEY;
+    if (!apiKey) {
+      throw new Error('DeepSeek APIキーが設定されていません');
+    }
+
     const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${import.meta.env.VITE_DEEPSEEK_API_KEY}`,
+        'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
         model: 'deepseek-chat',
@@ -34,7 +39,9 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
     });
 
     if (!response.ok) {
-      throw new Error('API request failed');
+      const errorData = await response.json();
+      console.error('DeepSeek API Error:', errorData);
+      throw new Error(errorData.error?.message || 'API request failed');
     }
 
     const data: DeepSeekResponse = await response.json();
