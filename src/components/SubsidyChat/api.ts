@@ -31,17 +31,17 @@ const SYSTEM_PROMPT = `
 
 export const generateSubsidyResponse = async (question: string): Promise<SubsidyInfo> => {
   try {
-    const { data, error } = await supabase
+    const { data: secretData, error } = await supabase
       .from('secrets')
       .select('secret')
       .eq('name', 'GROQ_API_KEY')
       .single();
 
-    if (error || !data) {
+    if (error || !secretData) {
       throw new Error('Groq APIキーが設定されていません');
     }
 
-    const apiKey = data.secret;
+    const apiKey = secretData.secret;
     console.log('API Request starting...', { question });
     const response = await fetch('https://api.groq.com/v1/chat/completions', {
       method: 'POST',
@@ -76,12 +76,12 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
       }
     }
 
-    const data: GroqResponse = await response.json();
+    const groqResponse: GroqResponse = await response.json();
     console.log('API Response received successfully');
     
     return {
       name: "補助金支援情報",
-      description: data.choices[0].message.content,
+      description: groqResponse.choices[0].message.content,
       requirements: [
         "具体的な要件は事業内容により異なります",
         "申請前に事業計画の準備が必要です",
