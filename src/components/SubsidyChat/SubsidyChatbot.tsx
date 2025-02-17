@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { MessageCircle, X, Send } from "lucide-react";
+import { MessageCircle, X, Send, MessageSquare } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface Message {
@@ -33,14 +33,14 @@ export const SubsidyChatbot = () => {
     <div className="fixed bottom-4 right-4 z-50">
       {!isOpen ? (
         <div className="flex flex-col items-end gap-2">
-          <div className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-md text-sm">
-            補助金についてのご質問はこちら
+          <div className="bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs">
+            補助金のご質問はコチラ
           </div>
           <Button
             onClick={() => setIsOpen(true)}
-            className="rounded-full w-16 h-16 shadow-lg bg-blue-600 hover:bg-blue-700"
+            className="rounded-full w-12 h-12 shadow-lg bg-blue-600 hover:bg-blue-700"
           >
-            <MessageCircle className="w-8 h-8" />
+            <MessageSquare className="w-5 h-5" />
           </Button>
         </div>
       ) : (
