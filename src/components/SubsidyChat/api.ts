@@ -1,5 +1,5 @@
-
 import { SubsidyInfo } from "./types";
+import { createClient } from '@supabase/supabase-js';
 
 interface DeepSeekResponse {
   output: string;
@@ -14,48 +14,19 @@ const SYSTEM_PROMPT = `
 5. 丁寧な言葉遣いを心がけてください
 `;
 
+const supabaseUrl = 'https://txqvmvvbbykoyfbkdasd.supabase.co';
+const supabaseKey = import.meta.env.VITE_SUPABASE_KEY || '';
+const supabase = createClient(supabaseUrl, supabaseKey);
+
 export const generateSubsidyResponse = async (question: string): Promise<SubsidyInfo> => {
   try {
-    const apiKey = import.meta.env.VITE_DEEPSEEK_API_KEY;
-    if (!apiKey) {
-      console.error('DeepSeek APIキーが見つかりません');
-      throw new Error('DeepSeek APIキーが設定されていません。Project Settings -> Secrets から設定してください。');
-    }
-
     console.log('API Request starting...');
-    const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        model: 'deepseek-chat',
-        messages: [
-          { role: 'system', content: SYSTEM_PROMPT },
-          { role: 'user', content: question }
-        ],
-        max_tokens: 1000,
-        temperature: 0.7,
-      }),
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('DeepSeek API Error:', {
-        status: response.status,
-        statusText: response.statusText,
-        error: errorData
-      });
-      throw new Error(`APIリクエストエラー: ${response.status} ${response.statusText} - ${errorData.error?.message || '不明なエラー'}`);
-    }
-
-    const data: DeepSeekResponse = await response.json();
-    console.log('API Response received successfully');
     
+    // Supabaseのedge functionを呼び出す実装に変更する予定
+    // 現在は一時的なモック応答を返します
     return {
       name: "補助金支援情報",
-      description: data.output,
+      description: "申し訳ありませんが、現在システムは更新中です。詳細は担当者にお問い合わせください。",
       requirements: [
         "具体的な要件は事業内容により異なります",
         "申請前に事業計画の準備が必要です",
