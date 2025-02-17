@@ -29,7 +29,7 @@ const SYSTEM_PROMPT = `
 
 export const generateSubsidyResponse = async (question: string): Promise<SubsidyInfo> => {
   try {
-    const apiKey = 'gsk_1234567890'; // GroqのAPIキーを設定してください
+    const apiKey = 'gsk_AhIkRIDVAqWT4fJAZrhhL8BBDorPG5Z1Fca5n1yw04NDuv5o'; // テスト用のAPIキー
     if (!apiKey) {
       throw new Error('Groq APIキーが設定されていません');
     }
