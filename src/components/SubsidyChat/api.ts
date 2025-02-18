@@ -45,7 +45,7 @@ const SYSTEM_PROMPT = `
 
 export const generateSubsidyResponse = async (question: string): Promise<SubsidyInfo> => {
   try {
-    // Groq APIキーの取得
+    // SupabaseからGroq APIキーを取得
     const { data: secretData, error: secretError } = await supabase
       .from('secrets')
       .select('secret')
@@ -53,7 +53,7 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
       .single();
 
     if (secretError) {
-      console.error('Supabase error:', secretError);
+      console.error('Supabaseエラー:', secretError);
       throw new Error('Groq APIキーの取得に失敗しました');
     }
 
@@ -62,9 +62,9 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
     }
 
     const apiKey = secretData.secret;
-    console.log('API Request starting...', { question });
+    console.log('APIリクエストを開始します...', { question });
     
-    // Groq APIへのリクエスト
+    // Groq APIにリクエストを送信
     const messages: GroqChatMessage[] = [
       { role: 'system', content: SYSTEM_PROMPT },
       { role: 'user', content: question.trim() }
@@ -86,7 +86,7 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('Groq API Error:', {
+      console.error('Groq APIエラー:', {
         status: response.status,
         statusText: response.statusText,
         errorText
@@ -101,7 +101,7 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
     }
 
     const groqResponse: GroqResponse = await response.json();
-    console.log('API Response received successfully');
+    console.log('APIレスポンスを正常に受信しました');
     
     return {
       name: "補助金支援情報",
@@ -119,7 +119,7 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
       url: "mailto:hori@planjoy.net"
     };
   } catch (error) {
-    console.error('Error in generateSubsidyResponse:', error);
+    console.error('generateSubsidyResponseでエラーが発生:', error);
     throw error;
   }
 };
