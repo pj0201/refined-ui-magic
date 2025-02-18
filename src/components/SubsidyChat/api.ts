@@ -46,24 +46,18 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
   try {
     console.log('補助金応答の生成を開始します...');
     
-    // データベースクエリを実行する前にログを追加
-    console.log('Supabaseからシークレットを取得します...');
-    
-    const { data: secrets, error: secretError } = await supabase
+    const { data: secretData, error: secretError } = await supabase
       .from('secrets')
-      .select('*');
+      .select('secret')
+      .eq('name', 'GROQ_API_KEY')
+      .maybeSingle();
 
     if (secretError) {
       console.error('Supabaseエラー:', secretError);
       throw new Error('APIキーの取得に失敗しました');
     }
 
-    console.log('取得したシークレット:', secrets);
-
-    const groqApiKey = secrets?.find(secret => secret.name === 'GROQ_API_KEY')?.secret;
-
-    if (!groqApiKey) {
-      console.error('GROQ_API_KEYが見つかりません');
+    if (!secretData?.secret) {
       throw new Error('APIキーが設定されていません');
     }
 
@@ -80,7 +74,7 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${groqApiKey}`,
+        'Authorization': `Bearer ${secretData.secret}`,
       },
       body: JSON.stringify({
         model: 'mixtral-8x7b-32768',
