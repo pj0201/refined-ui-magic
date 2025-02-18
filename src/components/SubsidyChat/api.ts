@@ -57,15 +57,15 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
       .from('secrets')
       .select('secret')
       .eq('name', 'GROQ_API_KEY')
-      .single();
+      .maybeSingle(); // single()からmaybeSingle()に変更
 
     if (secretError) {
       console.error('Supabaseエラー:', secretError);
       throw new Error('Groq APIキーの取得に失敗しました');
     }
 
-    if (!secretData) {
-      throw new Error('Groq APIキーが設定されていません');
+    if (!secretData?.secret) { // secretDataがnullの場合を考慮
+      throw new Error('Groq APIキーが設定されていません。システム管理者に連絡してください。');
     }
 
     const apiKey = secretData.secret;
@@ -85,7 +85,7 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
       body: JSON.stringify({
         model: 'mixtral-8x7b-32768',
         messages: messages,
-        temperature: 0.2, // より正確な回答のために温度を下げる
+        temperature: 0.2,
         max_tokens: 2000,
       }),
     });
@@ -109,7 +109,6 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
     const groqResponse: GroqResponse = await response.json();
     console.log('APIレスポンスを正常に受信しました');
     
-    // より詳細な補助金情報の構造化
     return {
       name: "補助金支援情報",
       description: groqResponse.choices[0].message.content,
@@ -124,7 +123,7 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
         end: "各補助金で異なります"
       },
       amount: "補助金額は事業規模や種類により異なります",
-      adoptionRate: "審査により決定", // 採択率情報を追加
+      adoptionRate: "審査により決定",
       url: "mailto:hori@planjoy.net"
     };
   } catch (error) {
