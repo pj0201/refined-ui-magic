@@ -8,6 +8,7 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
     console.log('1. Edge Function呼び出し開始');
     console.log('質問内容:', question);
     
+    // Edge Function の呼び出しパスを修正
     const response = await supabase.functions.invoke('chat', {
       body: { question }
     });
