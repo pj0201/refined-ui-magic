@@ -1,14 +1,39 @@
 
-import { serve } from "https://deno.fresh.dev/server/mod.ts";
-import { createClient } from 'https://esm.sh/@supabase/supabase-js';
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
 
-interface GroqChatMessage {
-  role: "system" | "user" | "assistant";
-  content: string;
+const corsHeaders = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-const SYSTEM_PROMPT = `
-あなたは日本の補助金制度に詳しいアシスタントです。
+serve(async (req) => {
+  // CORSプリフライトリクエストの処理
+  if (req.method === 'OPTIONS') {
+    return new Response(null, { headers: corsHeaders });
+  }
+
+  try {
+    const { question } = await req.json();
+    if (!question) {
+      return new Response('Question is required', { 
+        status: 400,
+        headers: corsHeaders
+      });
+    }
+
+    const groqApiKey = Deno.env.get('GROQ_API_KEY');
+    if (!groqApiKey) {
+      console.error('GROQ_API_KEY is not set');
+      return new Response('Configuration error', { 
+        status: 500,
+        headers: corsHeaders
+      });
+    }
+
+    const messages = [
+      { 
+        role: 'system', 
+        content: `あなたは日本の補助金制度に詳しいアシスタントです。
 以下のルールを厳密に守って回答してください：
 
 # 必須出力項目
@@ -31,52 +56,8 @@ const SYSTEM_PROMPT = `
 # エラー防止
 - 情報が不明確な場合は、その旨を明示すること
 - 誤った情報を提供しないこと
-- 推測に基づく回答を避けること
-`;
-
-serve(async (req) => {
-  try {
-    // CORSヘッダーの設定
-    if (req.method === 'OPTIONS') {
-      return new Response(null, {
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'POST',
-          'Access-Control-Allow-Headers': 'Content-Type',
-        },
-      });
-    }
-
-    // POSTリクエストのみを許可
-    if (req.method !== 'POST') {
-      return new Response('Method not allowed', { status: 405 });
-    }
-
-    const { question } = await req.json();
-    if (!question) {
-      return new Response('Question is required', { status: 400 });
-    }
-
-    // Supabaseクライアントの初期化
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? '',
-    );
-
-    // GROQ_API_KEYの取得
-    const { data: secretData, error: secretError } = await supabaseClient
-      .from('secrets')
-      .select('secret')
-      .eq('name', 'GROQ_API_KEY')
-      .maybeSingle();
-
-    if (secretError || !secretData?.secret) {
-      console.error('Failed to fetch GROQ_API_KEY:', secretError);
-      return new Response('Internal server error', { status: 500 });
-    }
-
-    const messages: GroqChatMessage[] = [
-      { role: 'system', content: SYSTEM_PROMPT },
+- 推測に基づく回答を避けること` 
+      },
       { role: 'user', content: question }
     ];
 
@@ -84,7 +65,7 @@ serve(async (req) => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${secretData.secret}`,
+        'Authorization': `Bearer ${groqApiKey}`,
       },
       body: JSON.stringify({
         model: 'mixtral-8x7b-32768',
@@ -97,20 +78,25 @@ serve(async (req) => {
     if (!response.ok) {
       const errorText = await response.text();
       console.error('Groq API error:', errorText);
-      return new Response('Failed to get response from Groq API', { status: response.status });
+      return new Response('Failed to get response from Groq API', { 
+        status: response.status,
+        headers: corsHeaders
+      });
     }
 
     const data = await response.json();
-
     return new Response(JSON.stringify(data), {
       headers: {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
+        ...corsHeaders
       },
     });
 
   } catch (error) {
     console.error('Error in chat function:', error);
-    return new Response('Internal server error', { status: 500 });
+    return new Response('Internal server error', { 
+      status: 500,
+      headers: corsHeaders
+    });
   }
 });

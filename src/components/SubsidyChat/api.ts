@@ -1,6 +1,5 @@
 
 import { SubsidyInfo } from "./types";
-import { supabase } from "@/integrations/supabase/client";
 
 export const generateSubsidyResponse = async (question: string): Promise<SubsidyInfo> => {
   try {
@@ -8,11 +7,13 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
     console.log('1. Edge Function呼び出し開始');
     console.log('質問内容:', question);
 
-    const response = await fetch(`${supabase.supabaseUrl}/functions/v1/chat`, {
+    // Supabase Edge Function URL
+    const EDGE_FUNCTION_URL = "https://txqvmvvbbykoyfbkdasd.supabase.co/functions/v1/chat";
+    
+    const response = await fetch(EDGE_FUNCTION_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${supabase.supabaseKey}`,
       },
       body: JSON.stringify({ question }),
     });
