@@ -24,6 +24,13 @@ interface GroqError {
   };
 }
 
+interface Document {
+  id: string;
+  title: string;
+  content: string;
+  created_at: string;
+}
+
 const SYSTEM_PROMPT = `
 あなたは日本の補助金制度に詳しいアシスタントです。
 以下のルールに従って回答してください：
@@ -42,7 +49,7 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
     const { data: documents, error: docError } = await supabase
       .from('documents')
       .select('*')
-      .limit(3);
+      .limit(3) as { data: Document[] | null; error: any };
 
     if (docError) {
       console.error('Document search error:', docError);
