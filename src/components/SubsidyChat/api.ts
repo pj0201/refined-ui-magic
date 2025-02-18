@@ -24,28 +24,35 @@ interface GroqError {
   };
 }
 
-interface Document {
-  id: string;
-  title: string;
-  content: string;
-  created_at: string;
-}
-
 const SYSTEM_PROMPT = `
 あなたは日本の補助金制度に詳しいアシスタントです。
-以下のルールに従って回答してください：
+以下のルールを厳密に守って回答してください：
 
-1. 補助金に関する質問に対して、必要な場合は根拠となる情報を示しながら回答してください
-2. 情報が不確かな場合は、その旨を伝え、詳細は専門家への相談を推奨してください
-3. 回答には必ず申請要件、期間、補助金額の情報を含めてください
-4. 最新の情報については「hori@planjoy.net」への問い合わせを案内してください
-5. 丁寧な言葉遣いを心がけてください
-6. 関連する外部サイトがある場合はリンクを提示してください
+# 必須出力項目
+1. 補助金名称
+2. 事業概要
+3. 補助対象者
+4. 補助対象経費
+5. 補助金額・補助率
+6. 申請期間
+7. 申請要件
+8. 参考URL・問い合わせ先
+
+# 回答ルール
+1. 上記の項目を必ず含め、構造化された形で回答すること
+2. 不確かな情報は「確認が必要です」と明示すること
+3. 古い情報の場合は、最新の情報の確認を促すこと
+4. 具体的な金額や期限は、出典と共に提示すること
+5. 問い合わせ先として「hori@planjoy.net」を必ず含めること
+
+# エラー防止
+- 情報が不明確な場合は、その旨を明示すること
+- 誤った情報を提供しないこと
+- 推測に基づく回答を避けること
 `;
 
 export const generateSubsidyResponse = async (question: string): Promise<SubsidyInfo> => {
   try {
-    // SupabaseからGroq APIキーを取得
     const { data: secretData, error: secretError } = await supabase
       .from('secrets')
       .select('secret')
@@ -64,7 +71,6 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
     const apiKey = secretData.secret;
     console.log('APIリクエストを開始します...', { question });
     
-    // Groq APIにリクエストを送信
     const messages: GroqChatMessage[] = [
       { role: 'system', content: SYSTEM_PROMPT },
       { role: 'user', content: question.trim() }
@@ -79,7 +85,7 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
       body: JSON.stringify({
         model: 'mixtral-8x7b-32768',
         messages: messages,
-        temperature: 0.7,
+        temperature: 0.2, // より正確な回答のために温度を下げる
         max_tokens: 2000,
       }),
     });
@@ -103,19 +109,22 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
     const groqResponse: GroqResponse = await response.json();
     console.log('APIレスポンスを正常に受信しました');
     
+    // より詳細な補助金情報の構造化
     return {
       name: "補助金支援情報",
       description: groqResponse.choices[0].message.content,
       requirements: [
-        "具体的な要件は事業内容により異なります",
-        "申請前に事業計画の準備が必要です",
-        "必要書類の準備と期限内の提出が必要です"
+        "事業計画の提出が必要です",
+        "必要書類の準備が必要です",
+        "申請期限を必ず確認してください",
+        "詳細は公募要領をご確認ください"
       ],
       period: {
-        start: "詳細は公募要領をご確認ください",
-        end: "詳細は公募要領をご確認ください"
+        start: "各補助金で異なります",
+        end: "各補助金で異なります"
       },
-      amount: "補助金額は事業内容により異なります",
+      amount: "補助金額は事業規模や種類により異なります",
+      adoptionRate: "審査により決定", // 採択率情報を追加
       url: "mailto:hori@planjoy.net"
     };
   } catch (error) {
