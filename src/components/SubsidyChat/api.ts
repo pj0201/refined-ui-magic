@@ -7,14 +7,6 @@ interface GroqChatMessage {
   content: string;
 }
 
-interface GroqResponse {
-  choices: [{
-    message: {
-      content: string;
-    }
-  }]
-}
-
 const SYSTEM_PROMPT = `
 あなたは日本の補助金制度に詳しいアシスタントです。
 以下のルールを厳密に守って回答してください：
@@ -44,41 +36,57 @@ const SYSTEM_PROMPT = `
 
 export const generateSubsidyResponse = async (question: string): Promise<SubsidyInfo> => {
   try {
-    console.log('補助金応答の生成を開始します...');
-    console.log('質問内容:', question);
+    console.log('===== デバッグ情報 =====');
+    console.log('1. Supabaseクエリ開始');
     
+    // まず全てのsecretsを取得して確認
+    const { data: allSecrets, error: allSecretsError } = await supabase
+      .from('secrets')
+      .select('*');
+    
+    console.log('全てのsecrets:', allSecrets);
+    console.log('エラー確認:', allSecretsError);
+
+    // 特定のキーを取得
     const { data: secretData, error: secretError } = await supabase
       .from('secrets')
       .select('secret')
       .eq('name', 'GROQ_API_KEY')
       .maybeSingle();
 
+    console.log('2. GROQ_API_KEY検索結果');
+    console.log('データ:', secretData);
+    console.log('エラー:', secretError);
+
     if (secretError) {
       console.error('Supabaseエラー:', secretError);
-      throw new Error('APIキーの取得に失敗しました');
+      throw new Error(`Supabaseエラー: ${secretError.message}`);
     }
 
     if (!secretData?.secret) {
-      console.error('APIキーが見つかりません');
+      console.error('APIキーが見つかりません。secretData:', secretData);
       throw new Error('APIキーが設定されていません');
     }
 
     const apiKey = secretData.secret.trim();
-    console.log('APIキーの長さ:', apiKey.length);
-    console.log('APIキーの先頭10文字:', apiKey.substring(0, 10));
-    
+    console.log('3. APIキー情報');
+    console.log('キーの長さ:', apiKey.length);
+    console.log('キーの形式確認:', apiKey.startsWith('sk-') ? 'OK (sk- で始まる)' : 'NG (sk- で始まっていない)');
+
     const messages: GroqChatMessage[] = [
       { role: 'system', content: SYSTEM_PROMPT },
       { role: 'user', content: question }
     ];
 
-    console.log('Groq APIリクエストの準備...');
-    console.log('リクエストボディ:', JSON.stringify({
+    console.log('4. Groq APIリクエスト準備');
+    const requestBody = {
       model: 'mixtral-8x7b-32768',
       messages: messages,
       temperature: 0.2,
       max_tokens: 2000,
-    }, null, 2));
+    };
+
+    console.log('リクエスト内容:', JSON.stringify(requestBody, null, 2));
 
     const response = await fetch('https://api.groq.com/v1/chat/completions', {
       method: 'POST',
@@ -86,23 +94,20 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${apiKey}`,
       },
-      body: JSON.stringify({
-        model: 'mixtral-8x7b-32768',
-        messages: messages,
-        temperature: 0.2,
-        max_tokens: 2000,
-      }),
+      body: JSON.stringify(requestBody),
     });
 
+    console.log('5. Groq APIレスポンス');
+    console.log('ステータス:', response.status, response.statusText);
+
     if (!response.ok) {
-      console.error('Groq APIエラー:', response.status, response.statusText);
       const errorText = await response.text();
-      console.error('エラーの詳細:', errorText);
+      console.error('Groq APIエラー詳細:', errorText);
       throw new Error(`Groq APIエラー: ${response.status} ${response.statusText}`);
     }
 
     const data = await response.json();
-    console.log('Groq APIからのレスポンス:', data);
+    console.log('レスポンスデータ:', data);
 
     if (!data.choices?.[0]?.message?.content) {
       console.error('不正なレスポンス形式:', data);
@@ -110,7 +115,7 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
     }
 
     const aiResponse = data.choices[0].message.content;
-    console.log('AI応答の内容:', aiResponse);
+    console.log('6. 処理完了');
 
     return {
       name: "補助金情報",
@@ -130,7 +135,7 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
       url: "mailto:hori@planjoy.net"
     };
   } catch (error) {
-    console.error('補助金応答の生成中にエラーが発生:', error);
+    console.error('エラー詳細:', error);
     throw error;
   }
 };
