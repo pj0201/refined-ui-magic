@@ -7,17 +7,12 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
     console.log('===== デバッグ情報 =====');
     console.log('1. Edge Function呼び出し開始');
     console.log('質問内容:', question);
-
-    // Supabase Edge Function URL
-    const EDGE_FUNCTION_URL = "https://txqvmvvbbykoyfbkdasd.supabase.co/functions/v1/chat";
     
     const response = await supabase.functions.invoke('chat', {
       body: { question }
     });
 
     console.log('2. Edge Functionレスポンス');
-    console.log('ステータス:', response.status || response.error?.status);
-
     if (response.error) {
       console.error('Edge Functionエラー:', response.error);
       throw new Error('チャットレスポンスの取得に失敗しました');
