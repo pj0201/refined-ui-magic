@@ -1,5 +1,6 @@
 
 import { SubsidyInfo } from "./types";
+import { supabase } from "@/integrations/supabase/client";
 
 export const generateSubsidyResponse = async (question: string): Promise<SubsidyInfo> => {
   try {
@@ -10,27 +11,22 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
     // Supabase Edge Function URL
     const EDGE_FUNCTION_URL = "https://txqvmvvbbykoyfbkdasd.supabase.co/functions/v1/chat";
     
-    const response = await fetch(EDGE_FUNCTION_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ question }),
+    const response = await supabase.functions.invoke('chat', {
+      body: { question }
     });
 
     console.log('2. Edge Functionレスポンス');
-    console.log('ステータス:', response.status, response.statusText);
+    console.log('ステータス:', response.status || response.error?.status);
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Edge Functionエラー:', errorText);
+    if (response.error) {
+      console.error('Edge Functionエラー:', response.error);
       throw new Error('チャットレスポンスの取得に失敗しました');
     }
 
-    const data = await response.json();
+    const data = response.data;
     console.log('3. レスポンスデータ:', data);
 
-    if (!data.choices?.[0]?.message?.content) {
+    if (!data?.choices?.[0]?.message?.content) {
       console.error('不正なレスポンス形式:', data);
       throw new Error('APIからの応答が不正な形式です');
     }
