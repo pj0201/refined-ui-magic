@@ -45,17 +45,6 @@ const SYSTEM_PROMPT = `
 
 export const generateSubsidyResponse = async (question: string): Promise<SubsidyInfo> => {
   try {
-    // Supabaseから関連文書を検索（将来的にベクトル検索を実装予定）
-    const { data: documents, error: docError } = await supabase
-      .from('documents')
-      .select('*')
-      .limit(3) as { data: Document[] | null; error: any };
-
-    if (docError) {
-      console.error('Document search error:', docError);
-      throw new Error('文書の検索中にエラーが発生しました');
-    }
-
     // Groq APIキーの取得
     const { data: secretData, error: secretError } = await supabase
       .from('secrets')
@@ -75,22 +64,10 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
     const apiKey = secretData.secret;
     console.log('API Request starting...', { question });
     
-    // コンテキストの準備
-    let context = '';
-    if (documents && documents.length > 0) {
-      context = documents.map(doc => doc.content).join('\n---\n');
-    }
-
     // Groq APIへのリクエスト
     const messages: GroqChatMessage[] = [
       { role: 'system', content: SYSTEM_PROMPT },
-      { role: 'user', content: `
-コンテキスト情報:
-${context}
-
-ユーザーからの質問:
-${question}
-      `.trim() }
+      { role: 'user', content: question.trim() }
     ];
 
     const response = await fetch('https://api.groq.com/v1/chat/completions', {
