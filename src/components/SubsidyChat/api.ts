@@ -45,6 +45,7 @@ const SYSTEM_PROMPT = `
 export const generateSubsidyResponse = async (question: string): Promise<SubsidyInfo> => {
   try {
     console.log('補助金応答の生成を開始します...');
+    console.log('質問内容:', question);
     
     const { data: secretData, error: secretError } = await supabase
       .from('secrets')
@@ -58,23 +59,32 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
     }
 
     if (!secretData?.secret) {
+      console.error('APIキーが見つかりません');
       throw new Error('APIキーが設定されていません');
     }
 
-    console.log('APIキーの取得に成功しました');
+    const apiKey = secretData.secret.trim();
+    console.log('APIキーの長さ:', apiKey.length);
+    console.log('APIキーの先頭10文字:', apiKey.substring(0, 10));
     
     const messages: GroqChatMessage[] = [
       { role: 'system', content: SYSTEM_PROMPT },
       { role: 'user', content: question }
     ];
 
-    console.log('Groq APIにリクエストを送信します...');
+    console.log('Groq APIリクエストの準備...');
+    console.log('リクエストボディ:', JSON.stringify({
+      model: 'mixtral-8x7b-32768',
+      messages: messages,
+      temperature: 0.2,
+      max_tokens: 2000,
+    }, null, 2));
 
     const response = await fetch('https://api.groq.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${secretData.secret}`,
+        'Authorization': `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
         model: 'mixtral-8x7b-32768',
