@@ -53,6 +53,7 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
 
     if (docError) {
       console.error('Document search error:', docError);
+      throw new Error('文書の検索中にエラーが発生しました');
     }
 
     // Groq APIキーの取得
