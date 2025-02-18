@@ -38,7 +38,6 @@ export const SubsidyChatbot = () => {
 
     try {
       if (!isSubsidyRelatedQuestion(userMessage.content)) {
-        // 一般的な会話の応答を返す
         const generalResponses = [
           "はい、承知しました。補助金についてお聞きになりたい場合は、お気軽にお申し付けください。",
           "ご用件は承りました。補助金に関するご相談も随時受け付けておりますので、お気軽にどうぞ。",
@@ -55,7 +54,10 @@ export const SubsidyChatbot = () => {
         return;
       }
 
+      console.log('補助金関連の質問を処理します:', userMessage.content);
       const subsidyInfo = await generateSubsidyResponse(userMessage.content);
+      console.log('生成された補助金情報:', subsidyInfo);
+      
       const response = formatSubsidyResponse(subsidyInfo);
       
       setMessages(prev => [...prev, {
@@ -64,7 +66,13 @@ export const SubsidyChatbot = () => {
         timestamp: new Date()
       }]);
     } catch (error) {
-      console.error('Error processing message:', error);
+      console.error('メッセージ処理中にエラーが発生:', error);
+      setMessages(prev => [...prev, {
+        type: "bot",
+        content: "申し訳ございません。現在システムに問題が発生しています。時間をおいて再度お試しください。",
+        timestamp: new Date()
+      }]);
+      
       toast({
         title: "エラーが発生しました",
         description: "しばらく待ってから再度お試しください。",

@@ -15,15 +15,6 @@ interface GroqResponse {
   }]
 }
 
-interface GroqError {
-  error: {
-    message: string;
-    type: string;
-    param: string | null;
-    code: string;
-  };
-}
-
 const SYSTEM_PROMPT = `
 あなたは日本の補助金制度に詳しいアシスタントです。
 以下のルールを厳密に守って回答してください：
@@ -53,34 +44,37 @@ const SYSTEM_PROMPT = `
 
 export const generateSubsidyResponse = async (question: string): Promise<SubsidyInfo> => {
   try {
+    console.log('補助金応答の生成を開始します...');
+    
     const { data: secretData, error: secretError } = await supabase
       .from('secrets')
       .select('secret')
       .eq('name', 'GROQ_API_KEY')
-      .maybeSingle(); // single()からmaybeSingle()に変更
+      .maybeSingle();
 
     if (secretError) {
       console.error('Supabaseエラー:', secretError);
-      throw new Error('Groq APIキーの取得に失敗しました');
+      throw new Error('APIキーの取得に失敗しました');
     }
 
-    if (!secretData?.secret) { // secretDataがnullの場合を考慮
-      throw new Error('Groq APIキーが設定されていません。システム管理者に連絡してください。');
+    if (!secretData?.secret) {
+      throw new Error('APIキーが設定されていません');
     }
 
-    const apiKey = secretData.secret;
-    console.log('APIリクエストを開始します...', { question });
+    console.log('APIキーの取得に成功しました');
     
     const messages: GroqChatMessage[] = [
       { role: 'system', content: SYSTEM_PROMPT },
-      { role: 'user', content: question.trim() }
+      { role: 'user', content: question }
     ];
+
+    console.log('Groq APIにリクエストを送信します...');
 
     const response = await fetch('https://api.groq.com/v1/chat/completions', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
+        'Authorization': `Bearer ${secretData.secret}`,
       },
       body: JSON.stringify({
         model: 'mixtral-8x7b-32768',
@@ -91,43 +85,42 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
     });
 
     if (!response.ok) {
+      console.error('Groq APIエラー:', response.status, response.statusText);
       const errorText = await response.text();
-      console.error('Groq APIエラー:', {
-        status: response.status,
-        statusText: response.statusText,
-        errorText
-      });
-
-      try {
-        const errorData: GroqError = JSON.parse(errorText);
-        throw new Error(`Groq APIエラー: ${errorData.error.message}`);
-      } catch (parseError) {
-        throw new Error(`APIリクエストエラー: ${response.status} ${response.statusText} - ${errorText}`);
-      }
+      console.error('エラーの詳細:', errorText);
+      throw new Error(`Groq APIエラー: ${response.status} ${response.statusText}`);
     }
 
-    const groqResponse: GroqResponse = await response.json();
-    console.log('APIレスポンスを正常に受信しました');
-    
+    const data = await response.json();
+    console.log('Groq APIからのレスポンス:', data);
+
+    if (!data.choices?.[0]?.message?.content) {
+      console.error('不正なレスポンス形式:', data);
+      throw new Error('APIからの応答が不正な形式です');
+    }
+
+    const aiResponse = data.choices[0].message.content;
+    console.log('AI応答の内容:', aiResponse);
+
     return {
-      name: "補助金支援情報",
-      description: groqResponse.choices[0].message.content,
+      name: "補助金情報",
+      description: aiResponse,
       requirements: [
-        "事業計画の提出が必要です",
-        "必要書類の準備が必要です",
-        "申請期限を必ず確認してください",
-        "詳細は公募要領をご確認ください"
+        "事業計画の提出",
+        "必要書類の準備",
+        "申請期限の確認",
+        "詳細は個別にご確認ください"
       ],
       period: {
-        start: "各補助金で異なります",
-        end: "各補助金で異なります"
+        start: "各補助金により異なります",
+        end: "各補助金により異なります"
       },
-      amount: "補助金額は事業規模や種類により異なります",
-      adoptionRate: "審査により決定",
+      amount: "補助金額は案件により異なります",
+      adoptionRate: "審査により決定されます",
       url: "mailto:hori@planjoy.net"
     };
   } catch (error) {
-    console.error('generateSubsidyResponseでエラーが発生:', error);
+    console.error('補助金応答の生成中にエラーが発生:', error);
     throw error;
   }
 };
