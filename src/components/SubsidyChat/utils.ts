@@ -37,6 +37,13 @@ export const isSubsidyRelatedQuestion = (text: string): boolean => {
     "IT導入",
     "事業再構築",
   ];
-  return subsidyKeywords.some(keyword => text.includes(keyword));
+  
+  // 補助金関連のキーワードがある場合は true を返す
+  if (subsidyKeywords.some(keyword => text.includes(keyword))) {
+    return true;
+  }
+  
+  // それ以外の一般的な会話の場合は false を返す
+  return false;
 };
 

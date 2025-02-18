@@ -14,7 +14,7 @@ export const SubsidyChatbot = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       type: "bot",
-      content: "補助金に関する質問をお気軽にどうぞ！",
+      content: "補助金に関する質問をお気軽にどうぞ！一般的な会話もお待ちしております。",
       timestamp: new Date()
     }
   ]);
@@ -38,11 +38,20 @@ export const SubsidyChatbot = () => {
 
     try {
       if (!isSubsidyRelatedQuestion(userMessage.content)) {
+        // 一般的な会話の応答を返す
+        const generalResponses = [
+          "はい、承知しました。補助金についてお聞きになりたい場合は、お気軽にお申し付けください。",
+          "ご用件は承りました。補助金に関するご相談も随時受け付けておりますので、お気軽にどうぞ。",
+          "どのようなお話でも承ります。補助金のことで気になることがありましたら、いつでもお聞きください。"
+        ];
+        const randomResponse = generalResponses[Math.floor(Math.random() * generalResponses.length)];
+        
         setMessages(prev => [...prev, {
           type: "bot",
-          content: "申し訳ございません。私は補助金についての質問しかお答えできないのです。",
+          content: randomResponse,
           timestamp: new Date()
         }]);
+        setIsLoading(false);
         return;
       }
 
