@@ -8,18 +8,26 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
     console.log('1. Edge Function呼び出し開始');
     console.log('質問内容:', question);
     
-    // Edge Function の呼び出しパスを修正
-    const response = await supabase.functions.invoke('chat', {
-      body: { question }
-    });
+    // Edge Function を直接呼び出す
+    const response = await fetch(
+      'https://txqvmvvbbykoyfbkdasd.functions.supabase.co/chat',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${process.env.SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify({ question })
+      }
+    );
 
     console.log('2. Edge Functionレスポンス');
-    if (response.error) {
-      console.error('Edge Functionエラー:', response.error);
+    if (!response.ok) {
+      console.error('Edge Functionエラー:', response.status, response.statusText);
       throw new Error('チャットレスポンスの取得に失敗しました');
     }
 
-    const data = response.data;
+    const data = await response.json();
     console.log('3. レスポンスデータ:', data);
 
     if (!data?.choices?.[0]?.message?.content) {
