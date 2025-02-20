@@ -15,19 +15,21 @@ serve(async (req) => {
   try {
     const { question } = await req.json();
     if (!question) {
-      return new Response('Question is required', { 
+      return new Response('質問が必要です', { 
         status: 400,
         headers: corsHeaders
       });
     }
 
-    // NotebookLMのAPIエンドポイントとキーを環境変数から取得
+    console.log('受信した質問:', question);
+
+    // NotebookLM APIの設定を取得
     const notebookLMApiKey = Deno.env.get('NOTEBOOK_LM_API_KEY');
     const notebookLMEndpoint = Deno.env.get('NOTEBOOK_LM_ENDPOINT');
 
     if (!notebookLMApiKey || !notebookLMEndpoint) {
-      console.error('NotebookLM credentials are not set');
-      return new Response('Configuration error', { 
+      console.error('NotebookLM認証情報が設定されていません');
+      return new Response('設定エラー', { 
         status: 500,
         headers: corsHeaders
       });
@@ -59,6 +61,8 @@ serve(async (req) => {
 - 誤った情報を提供しないこと
 - 推測に基づく回答を避けること`;
 
+    console.log('APIリクエスト開始');
+
     // NotebookLM APIを呼び出す
     const response = await fetch(notebookLMEndpoint, {
       method: 'POST',
@@ -77,16 +81,20 @@ serve(async (req) => {
       })
     });
 
+    console.log('APIレスポンスステータス:', response.status);
+
     if (!response.ok) {
-      console.error('NotebookLM API error:', response.status);
+      console.error('NotebookLM APIエラー:', await response.text());
       throw new Error('NotebookLMからの応答の取得に失敗しました');
     }
 
     const data = await response.json();
+    console.log('APIレスポンスデータ:', data);
+
     return new Response(JSON.stringify({
       choices: [{
         message: {
-          content: data.response
+          content: data.response || data.text || '申し訳ありません。回答を生成できませんでした。'
         }
       }]
     }), {
@@ -97,10 +105,16 @@ serve(async (req) => {
     });
 
   } catch (error) {
-    console.error('Error in chat function:', error);
-    return new Response('Internal server error', { 
+    console.error('チャット関数でエラーが発生:', error);
+    return new Response(JSON.stringify({
+      error: 'Internal server error',
+      details: error.message
+    }), { 
       status: 500,
-      headers: corsHeaders
+      headers: {
+        'Content-Type': 'application/json',
+        ...corsHeaders
+      }
     });
   }
 });
