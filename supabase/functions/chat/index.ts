@@ -33,6 +33,32 @@ serve(async (req) => {
       });
     }
 
+    // プロンプトの設定
+    const systemPrompt = `あなたは日本の補助金制度に詳しいアシスタントです。
+以下のルールを厳密に守って回答してください：
+
+# 必須出力項目
+1. 補助金名称
+2. 事業概要
+3. 補助対象者
+4. 補助対象経費
+5. 補助金額・補助率
+6. 申請期間
+7. 申請要件
+8. 参考URL・問い合わせ先
+
+# 回答ルール
+1. 上記の項目を必ず含め、構造化された形で回答すること
+2. 不確かな情報は「確認が必要です」と明示すること
+3. 古い情報の場合は、最新の情報の確認を促すこと
+4. 具体的な金額や期限は、出典と共に提示すること
+5. 問い合わせ先として「hori@planjoy.net」を必ず含めること
+
+# エラー防止
+- 情報が不明確な場合は、その旨を明示すること
+- 誤った情報を提供しないこと
+- 推測に基づく回答を避けること`;
+
     // NotebookLM APIを呼び出す
     const response = await fetch(notebookLMEndpoint, {
       method: 'POST',
@@ -42,6 +68,7 @@ serve(async (req) => {
       },
       body: JSON.stringify({
         query: question,
+        system_prompt: systemPrompt,
         sources: [
           "application_guidelines_jppan.pdf",
           "faq_jppan.pdf",
