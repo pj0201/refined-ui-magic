@@ -87,8 +87,9 @@ export const SubsidyChatbot = () => {
     <div className="fixed bottom-4 right-4 z-50">
       {!isOpen ? (
         <div className="flex flex-col items-end gap-2">
-          <div className="bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs">
-            補助金のご質問はコチラ
+          <div className="bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center">
+            <span>省力化投資補助金</span>
+            <span>一般形の質問はコチラ</span>
           </div>
           <Button
             onClick={() => setIsOpen(true)}
