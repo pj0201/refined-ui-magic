@@ -6,8 +6,9 @@ const corsHeaders = {
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
+const GROQ_API_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
+
 serve(async (req) => {
-  // CORSプリフライトリクエストの処理
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
@@ -23,69 +24,74 @@ serve(async (req) => {
 
     console.log('受信した質問:', question);
 
-    // NotebookLM APIの設定を取得
-    const notebookLMApiKey = Deno.env.get('NOTEBOOK_LM_API_KEY');
-    const notebookLMEndpoint = Deno.env.get('NOTEBOOK_LM_ENDPOINT');
-
-    if (!notebookLMApiKey || !notebookLMEndpoint) {
-      console.error('NotebookLM認証情報が設定されていません');
-      return new Response('設定エラー', { 
+    const groqApiKey = Deno.env.get('GROQ_API_KEY');
+    if (!groqApiKey) {
+      console.error('GROQ APIキーが設定されていません');
+      return new Response('APIキー未設定', { 
         status: 500,
         headers: corsHeaders
       });
     }
 
-    // プロンプトの設定
-    const systemPrompt = `あなたは日本の補助金制度に詳しいアシスタントです。
-以下のルールを厳密に守って回答してください：
-
-# 必須出力項目
-1. 補助金名称
-2. 事業概要
-3. 補助対象者
-4. 補助対象経費
-5. 補助金額・補助率
-6. 申請期間
-7. 申請要件
-8. 参考URL・問い合わせ先
-
-# 回答ルール
-1. 上記の項目を必ず含め、構造化された形で回答すること
-2. 不確かな情報は「確認が必要です」と明示すること
-3. 古い情報の場合は、最新の情報の確認を促すこと
-4. 具体的な金額や期限は、出典と共に提示すること
-5. 問い合わせ先として「hori@planjoy.net」を必ず含めること
-
-# エラー防止
-- 情報が不明確な場合は、その旨を明示すること
-- 誤った情報を提供しないこと
-- 推測に基づく回答を避けること`;
-
-    console.log('APIリクエスト開始');
-
-    // NotebookLM APIを呼び出す
-    const response = await fetch(notebookLMEndpoint, {
+    const response = await fetch(GROQ_API_ENDPOINT, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${notebookLMApiKey}`,
+        'Authorization': `Bearer ${groqApiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        query: question,
-        system_prompt: systemPrompt,
-        sources: [
-          "application_guidelines_jppan.pdf",
-          "faq_jppan.pdf",
-          "省力化補助金一般形Chatbot.txt"
-        ]
+        model: "mixtral-8x7b-32768",
+        messages: [
+          {
+            role: "system",
+            content: `あなたは日本の補助金制度に詳しいアシスタントです。
+以下のフォーマットで回答を構成してください：
+
+【補助金名称】
+該当する補助金の正式名称
+
+【概要】
+補助金の目的と概要
+
+【対象者】
+- 対象となる事業者や条件
+- 除外される事業者がある場合はその条件
+
+【補助金額・補助率】
+- 補助金額の上限
+- 補助率
+- 特記事項
+
+【申請期間】
+現在の募集期間や次回の予定（わかる範囲で）
+
+【申請方法】
+主な申請手順と必要書類
+
+【備考】
+その他の重要な注意事項
+
+【お問い合わせ】
+メール：hori@planjoy.net
+
+必ず上記の項目に沿って、簡潔かつ正確な情報を提供してください。不確かな情報は「確認が必要です」と明記してください。`
+          },
+          {
+            role: "user",
+            content: question
+          }
+        ],
+        temperature: 0.7,
+        max_tokens: 2048,
       })
     });
 
     console.log('APIレスポンスステータス:', response.status);
 
     if (!response.ok) {
-      console.error('NotebookLM APIエラー:', await response.text());
-      throw new Error('NotebookLMからの応答の取得に失敗しました');
+      const errorText = await response.text();
+      console.error('GROQ APIエラー:', errorText);
+      throw new Error('応答の生成に失敗しました');
     }
 
     const data = await response.json();
@@ -94,18 +100,18 @@ serve(async (req) => {
     return new Response(JSON.stringify({
       choices: [{
         message: {
-          content: data.response || data.text || '申し訳ありません。回答を生成できませんでした。'
+          content: data.choices[0].message.content
         }
       }]
     }), {
       headers: {
         'Content-Type': 'application/json',
         ...corsHeaders
-      },
+      }
     });
 
   } catch (error) {
-    console.error('チャット関数でエラーが発生:', error);
+    console.error('エラーが発生:', error);
     return new Response(JSON.stringify({
       error: 'Internal server error',
       details: error.message
