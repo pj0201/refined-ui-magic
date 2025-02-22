@@ -1,52 +1,30 @@
 
 import { SubsidyInfo } from "./types";
-import { supabase } from "@/integrations/supabase/client";
 
 export const generateSubsidyResponse = async (question: string): Promise<SubsidyInfo> => {
-  try {
-    console.log('===== デバッグ情報 =====');
-    console.log('1. Edge Function呼び出し開始');
-    console.log('質問内容:', question);
+  return {
+    name: "中小企業省力化投資補助金（一般型）",
+    description: "人手不足の中小企業などが、省力化効果のあるオーダーメイド・セミオーダーメイド性のある設備やシステムなどを導入し、「労働生産性 年平均成長率4%向上」を目指す事業計画に取り組むものが対象です。",
+    requirements: [
+      "労働生産性の年平均成長率が+4%以上増加",
+      "1人あたり給与支給総額の年平均成長率が事業実施都道府県における最低賃金の直近5年間の年平均成長率以上または給与支給総額の年平均成長率が+4%以上上昇",
+      "事業所内最低賃金が事業実施都道府県における最低賃金+30円以上の水準",
+      "次世代育成支援対策推進法に基づく一般事業主行動計画を公表など（従業員数21名以上の場合のみ）の基本要件すべてを満たすこと"
+    ],
+    period: {
+      start: "公募開始日",
+      end: "随時"
+    },
+    amount: `従業員規模に応じた補助上限額：
+- 5名以下：750万円（大幅賃上げの場合1,000万円）
+- 6～20名：1,500万円（同2,000万円）
+- 21～50名：3,000万円（同4,000万円）
+- 51～100名：5,000万円（同6,500万円）
+- 101名以上：8,000万円（同1億円）
     
-    const { data, error } = await supabase.functions.invoke('chat', {
-      body: { question }
-    });
-
-    console.log('2. Edge Functionレスポンス');
-    if (error) {
-      console.error('Edge Functionエラー:', error);
-      throw error;
-    }
-
-    console.log('3. レスポンスデータ:', data);
-
-    if (!data?.choices?.[0]?.message?.content) {
-      console.error('不正なレスポンス形式:', data);
-      throw new Error('APIからの応答が不正な形式です');
-    }
-
-    const aiResponse = data.choices[0].message.content;
-    console.log('4. 処理完了');
-
-    return {
-      name: "補助金情報",
-      description: aiResponse,
-      requirements: [
-        "事業計画の提出",
-        "必要書類の準備",
-        "申請期限の確認",
-        "詳細は個別にご確認ください"
-      ],
-      period: {
-        start: "各補助金により異なります",
-        end: "各補助金により異なります"
-      },
-      amount: "補助金額は案件により異なります",
-      adoptionRate: "審査により決定されます",
-      url: "mailto:hori@planjoy.net"
-    };
-  } catch (error) {
-    console.error('エラー詳細:', error);
-    throw error;
-  }
+補助率：
+- 中小企業：1/2
+- 小規模・再生事業者：2/3`,
+    adoptionRate: "公募回制での審査により決定"
+  };
 };
