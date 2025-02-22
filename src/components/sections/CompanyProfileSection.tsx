@@ -25,7 +25,7 @@ export const CompanyProfileSection = () => {
               <p>TEL/FAX　078-600-0611</p>
               <p className="flex items-center gap-2">
                 <Mail size={18} className="inline-block" />
-                <span>MAIL hori@planjoy.net（代表者直通）</span>
+                <span>MAIL hori@planjoy.net</span>
               </p>
             </div>
           </div>
