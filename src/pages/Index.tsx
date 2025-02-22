@@ -6,11 +6,13 @@ import { SupportAreasSection } from "@/components/sections/SupportAreasSection";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { SubsidyChatbot } from "@/components/SubsidyChat/SubsidyChatbot";
+import { TopicSection } from "@/components/sections/TopicSection";
 
 const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <HeroSection />
+      <TopicSection />
       <MessageSection />
       <SupportAreasSection />
       
