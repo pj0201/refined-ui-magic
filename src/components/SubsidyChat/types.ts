@@ -6,6 +6,7 @@ export interface Message {
 }
 
 export interface SubsidyInfo {
+  question?: string;
   name: string;
   description: string;
   requirements: string[];
@@ -16,5 +17,5 @@ export interface SubsidyInfo {
   amount: string;
   adoptionRate?: string;
   url?: string;
+  content?: string;
 }
-

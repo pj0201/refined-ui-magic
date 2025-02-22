@@ -2,46 +2,89 @@
 import { SubsidyInfo } from "./types";
 
 export const formatSubsidyResponse = (info: SubsidyInfo): string => {
-  return `
-【補助金名称】
-${info.name}
+  const { question, content } = info;
+  
+  // 質問に応じて適切な情報を抽出
+  if (question.includes("経費") || question.includes("対象")) {
+    return `補助対象となる経費は以下の通りです：
 
-【制度概要】
-${info.description}
+1. 機械装置・システム構築費
+   - 専用ソフトウェア購入費
+   - 設計・製造・改良・据付工事費
 
-【対象者】
-${info.requirements.map(req => `・${req}`).join('\n')}
+2. 技術導入費
+   - 知的財産権導入費
+   - ノウハウ購入費
 
-【補助金額・補助率】
-${info.amount}
+3. クラウドサービス利用費
+   - クラウドシステム利用料（最大2年分）
 
-${info.adoptionRate ? `【採択率】\n${info.adoptionRate}\n` : ''}
+4. 専門家経費
+   - 謝金、旅費等
 
-【申請期間】
-${info.period.start} から ${info.period.end} まで
+※補助対象経費は税抜きの金額となります`;
+  }
+  
+  if (question.includes("補助率") || question.includes("金額") || question.includes("いくら")) {
+    return `補助金の支援内容は以下の通りです：
 
-より詳しい内容については、お気軽にメールにてお問い合わせください。
-メール：hori@planjoy.net
-  `.trim();
+【補助率】
+・中小企業：1/2
+・小規模事業者・再生事業者：2/3
+
+【従業員規模別の補助上限額】
+・5名以下：750万円（大幅賃上げの場合1,000万円）
+・6～20名：1,500万円（同2,000万円）
+・21～50名：3,000万円（同4,000万円）
+・51～100名：5,000万円（同6,500万円）
+・101名以上：8,000万円（同1億円）`;
+  }
+
+  if (question.includes("要件") || question.includes("条件")) {
+    return `申請要件は以下の通りです：
+
+1. 労働生産性の年平均成長率が+4%以上増加
+
+2. 以下のいずれかを満たすこと
+   - 1人あたり給与支給総額の年平均成長率が事業実施都道府県の最低賃金の直近5年間の年平均成長率以上
+   - 給与支給総額の年平均成長率が+4%以上上昇
+
+3. 事業所内最低賃金が事業実施都道府県の最低賃金+30円以上
+
+4. 従業員数21名以上の場合
+   - 次世代育成支援対策推進法に基づく一般事業主行動計画の公表が必要`;
+  }
+
+  // デフォルトの応答
+  return content || `
+中小企業省力化投資補助金（一般型）は、人手不足に直面する中小企業の生産性向上を支援する制度です。
+
+主な特徴：
+・省力化効果のある設備・システムの導入を支援
+・労働生産性の向上を目指す事業が対象
+・補助率1/2～2/3
+・従業員規模に応じた補助上限額の設定
+
+詳しい情報が必要な場合は、以下のような質問をお試しください：
+・補助対象となる経費は？
+・補助金額はいくらですか？
+・申請要件を教えてください`;
 };
 
 export const isSubsidyRelatedQuestion = (text: string): boolean => {
-  const subsidyKeywords = [
-    "補助金",
-    "助成金",
-    "支援金",
-    "給付金",
-    "ものづくり",
-    "持続化",
-    "IT導入",
-    "事業再構築",
+  const keywords = [
+    "補助",
+    "助成",
+    "経費",
+    "要件",
+    "条件",
+    "金額",
+    "対象",
+    "申請",
+    "いくら",
+    "省力化",
+    "生産性"
   ];
   
-  // 補助金関連のキーワードがある場合は true を返す
-  if (subsidyKeywords.some(keyword => text.includes(keyword))) {
-    return true;
-  }
-  
-  // それ以外の一般的な会話の場合は false を返す
-  return false;
+  return keywords.some(keyword => text.includes(keyword));
 };

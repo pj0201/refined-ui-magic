@@ -3,6 +3,7 @@ import { SubsidyInfo } from "./types";
 
 export const generateSubsidyResponse = async (question: string): Promise<SubsidyInfo> => {
   return {
+    question,
     name: "中小企業省力化投資補助金（一般型）",
     description: "人手不足の中小企業などが、省力化効果のあるオーダーメイド・セミオーダーメイド性のある設備やシステムなどを導入し、「労働生産性 年平均成長率4%向上」を目指す事業計画に取り組むものが対象です。",
     requirements: [
@@ -25,6 +26,7 @@ export const generateSubsidyResponse = async (question: string): Promise<Subsidy
 補助率：
 - 中小企業：1/2
 - 小規模・再生事業者：2/3`,
-    adoptionRate: "公募回制での審査により決定"
+    adoptionRate: "公募回制での審査により決定",
+    content: ""
   };
 };
