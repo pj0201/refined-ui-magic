@@ -24,7 +24,7 @@ export const HeroSection = () => {
             「生産性と資産に寄与する経営コンサルティング」
           </p>
           <p className="text-4xl font-medium tracking-wide fade-in delay-100 backdrop-blur-sm bg-white/10 py-3 px-6 rounded-lg">
-            PLANNING<span className="text-red-500 font-extrabold text-4xl mx-[-2px]">J</span>OY株式会社
+            PLANNING<span className="text-red-500 font-extrabold text-4xl mx-[-2px] font-serif italic">J</span>OY株式会社
           </p>
         </div>
       </div>
