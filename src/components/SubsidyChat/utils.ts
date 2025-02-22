@@ -13,9 +13,39 @@ export const formatSubsidyResponse = (info: SubsidyInfo): string => {
     amount: ['補助率', '金額', 'いくら', '上限', '額'],
   };
 
+  // 対象に関する曖昧な質問の判定
+  if (hasKeywords(question, keywordSets.target) && 
+      !hasKeywords(question, keywordSets.company) && 
+      !hasKeywords(question, keywordSets.expense)) {
+    return `「対象」について、より具体的に知りたい内容をお選びください：
+
+1. 対象となる企業の条件について
+2. 対象となる経費について
+
+以下のように質問を具体的にしていただけますと幸いです：
+・「どのような企業が対象ですか？」
+・「補助対象となる経費を教えてください」`;
+  }
+
+  // 金額に関する曖昧な質問の判定
+  if (hasKeywords(question, ['金']) && 
+      !hasKeywords(question, ['経費', '費用']) && 
+      !hasKeywords(question, ['補助率', '上限'])) {
+    return `「金額」について、より具体的に知りたい内容をお選びください：
+
+1. 補助金の補助率について
+2. 補助金の上限額について
+3. 補助対象となる経費について
+
+以下のように質問を具体的にしていただけますと幸いです：
+・「補助率はいくらですか？」
+・「補助金の上限額を教えてください」
+・「対象となる経費を教えてください」`;
+  }
+
   // 対象企業に関する質問
   if (hasKeywords(question, keywordSets.company) || 
-      (hasKeywords(question, keywordSets.target) && !hasKeywords(question, keywordSets.expense))) {
+      (hasKeywords(question, keywordSets.target) && hasKeywords(question, ['企業', '会社']))) {
     return `本補助金の対象となる企業は以下の通りです：
 
 1. 中小企業者（中小企業基本法に定める中小企業者）
@@ -36,7 +66,7 @@ export const formatSubsidyResponse = (info: SubsidyInfo): string => {
   
   // 補助対象経費に関する質問
   if (hasKeywords(question, keywordSets.expense) || 
-      (hasKeywords(question, keywordSets.target) && hasKeywords(question, ['経費', '費用', '金']))) {
+      (hasKeywords(question, keywordSets.target) && hasKeywords(question, ['経費', '費用']))) {
     return `補助対象となる経費は以下の通りです：
 
 1. 機械装置・システム構築費
