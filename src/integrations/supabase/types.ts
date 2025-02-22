@@ -35,18 +35,21 @@ export type Database = {
           content: string | null
           embedding: string | null
           id: number
+          image_url: string | null
           source: string | null
         }
         Insert: {
           content?: string | null
           embedding?: string | null
           id?: number
+          image_url?: string | null
           source?: string | null
         }
         Update: {
           content?: string | null
           embedding?: string | null
           id?: number
+          image_url?: string | null
           source?: string | null
         }
         Relationships: []
