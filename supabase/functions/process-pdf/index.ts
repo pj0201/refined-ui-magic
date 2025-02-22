@@ -34,15 +34,31 @@ serve(async (req) => {
     const fileName = file.name
     const fileExt = fileName.split('.').pop()?.toLowerCase()
 
-    if (fileExt !== 'pdf') {
+    if (fileExt !== 'png') {
       return new Response(
-        JSON.stringify({ error: 'PDFファイルのみアップロード可能です' }),
+        JSON.stringify({ error: 'PNGファイルのみアップロード可能です' }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
       )
     }
 
     // ファイルパスの生成（一意のIDを使用）
     const filePath = `${crypto.randomUUID()}.${fileExt}`
+
+    // ストレージバケットの作成（存在しない場合）
+    const { data: bucketExists } = await supabase
+      .storage
+      .listBuckets()
+
+    if (!bucketExists.find(b => b.name === 'subsidy_docs')) {
+      const { error: createBucketError } = await supabase
+        .storage
+        .createBucket('subsidy_docs', { public: true })
+
+      if (createBucketError) {
+        console.error('バケット作成エラー:', createBucketError)
+        throw createBucketError
+      }
+    }
 
     // ファイルのアップロード
     const { data: uploadData, error: uploadError } = await supabase.storage
@@ -57,8 +73,14 @@ serve(async (req) => {
       )
     }
 
-    // PDFの内容をテキストに変換（この部分は簡易的な実装です）
-    const fileContent = "PDFの内容をテキストに変換した結果がここに入ります"
+    // PNGファイルのURLを取得
+    const { data: { publicUrl } } = supabase.storage
+      .from('subsidy_docs')
+      .getPublicUrl(filePath)
+
+    // ここでOCRやテキスト抽出の処理を追加することができます
+    // 現在はダミーのテキストを返しています
+    const fileContent = "PNGファイルの内容をテキストに変換した結果がここに入ります"
 
     // OpenAI APIを使用してテキストをベクトル化
     const openAIApiKey = Deno.env.get('OPENAI_API_KEY')
@@ -83,7 +105,8 @@ serve(async (req) => {
       .insert({
         content: fileContent,
         embedding: embedding,
-        source: fileName
+        source: fileName,
+        image_url: publicUrl
       })
 
     if (dbError) {
@@ -97,7 +120,8 @@ serve(async (req) => {
     return new Response(
       JSON.stringify({ 
         message: 'ファイルが正常に処理されました',
-        filePath: filePath
+        filePath: filePath,
+        publicUrl: publicUrl
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
