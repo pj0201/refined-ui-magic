@@ -43,26 +43,18 @@ export const FileUploader = () => {
         }
       }
 
-      // 結果を表示
-      if (successCount > 0) {
-        toast({
-          title: "アップロード完了",
-          description: `${successCount}個のファイルが正常にアップロードされました${errorCount > 0 ? `\n${errorCount}個のファイルでエラーが発生しました` : ''}`,
-          variant: errorCount > 0 ? "destructive" : "default"
-        });
-      } else if (errorCount > 0) {
-        toast({
-          title: "エラー",
-          description: "すべてのファイルのアップロードに失敗しました",
-          variant: "destructive"
-        });
-      }
+      // 全ての処理が完了したときのみ結果を表示
+      toast({
+        title: "処理完了",
+        description: `${files.length}個中${successCount}個のファイルの処理が完了しました${errorCount > 0 ? `\n${errorCount}個のファイルでエラーが発生` : ''}`,
+        variant: errorCount > 0 ? "destructive" : "default"
+      });
 
     } catch (error) {
       console.error('アップロードエラー:', error);
       toast({
         title: "エラー",
-        description: "ファイルのアップロードに失敗しました",
+        description: "ファイルの処理中にエラーが発生しました",
         variant: "destructive"
       });
     } finally {
@@ -79,13 +71,13 @@ export const FileUploader = () => {
         className="hidden"
         id="pdf-upload"
         disabled={isUploading}
-        multiple // 複数ファイルの選択を許可
+        multiple
       />
       <label htmlFor="pdf-upload">
         <Button asChild variant="outline" disabled={isUploading}>
           <span>
             <Upload className="w-4 h-4 mr-2" />
-            {isUploading ? 'アップロード中...' : 'PNGをアップロード'}
+            {isUploading ? '処理中...' : 'PNGをアップロード'}
           </span>
         </Button>
       </label>
