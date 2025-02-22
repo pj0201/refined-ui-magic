@@ -34,8 +34,8 @@ serve(async (req) => {
       });
     }
 
-    // GPT-4を使用して質問に回答
-    const response = await fetch(OPENAI_API_ENDPOINT, {
+    // Step 1: キーワード抽出と質問意図の分析
+    const analysisResponse = await fetch(OPENAI_API_ENDPOINT, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${openAIApiKey}`,
@@ -46,8 +46,57 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: `あなたは省力化投資補助金の専門アシスタントです。
-以下の情報を元に、質問に対して具体的で実用的な回答を提供してください。
+            content: `あなたは質問分析の専門家です。
+補助金に関する質問から以下の情報を抽出し、JSON形式で返してください：
+
+1. キーワード: 質問文から重要なキーワードを抽出
+2. 質問カテゴリ: 以下のいずれかを選択
+   - 補助金額・補助率
+   - 申請要件・対象者
+   - 申請手続き・書類
+   - 補助対象経費
+   - その他
+3. 質問の具体性: "具体的" または "一般的"
+4. 確認が必要な追加情報（ある場合）
+
+回答は必ず以下のJSON形式で返してください：
+{
+  "keywords": ["キーワード1", "キーワード2", ...],
+  "category": "カテゴリ名",
+  "specificity": "具体的/一般的",
+  "additionalInfo": "追加で確認が必要な情報（なければ空文字）"
+}`
+          },
+          {
+            role: "user",
+            content: question
+          }
+        ],
+        temperature: 0.3,
+        max_tokens: 500,
+      })
+    });
+
+    if (!analysisResponse.ok) {
+      throw new Error('質問分析に失敗しました');
+    }
+
+    const analysisData = await analysisResponse.json();
+    const analysis = JSON.parse(analysisData.choices[0].message.content);
+    console.log('質問分析結果:', analysis);
+
+    // Step 2: 分析結果に基づいて回答を生成
+    const responsePrompt = `
+質問: "${question}"
+
+分析結果:
+- キーワード: ${analysis.keywords.join(', ')}
+- カテゴリ: ${analysis.category}
+- 具体性: ${analysis.specificity}
+${analysis.additionalInfo ? `- 追加確認事項: ${analysis.additionalInfo}` : ''}
+
+以下の情報を元に、上記の質問に対して具体的で的確な回答を提供してください。
+特に、抽出されたキーワードに関連する情報を重点的に説明してください。
 
 # 補助金制度の詳細情報
 
@@ -87,23 +136,35 @@ serve(async (req) => {
 5. 経営革新計画（該当する場合）
 
 回答のルール：
-1. 質問の種類（補助金額、申請要件、対象経費など）に応じて、関連する情報を優先的に提供してください。
+1. まず質問の意図を確認し、キーワードに関連する情報を優先的に説明してください。
 2. 具体的な数値や要件を含めて回答してください。
-3. 曖昧な表現は避け、明確な情報を提供してください。
-4. 質問の内容が不明確な場合は、関連する複数の観点から情報を提供してください。
-5. 回答は簡潔に、かつ実用的な情報を中心にまとめてください。`
+3. 質問が一般的な場合は、関連する複数の観点から情報を提供してください。
+4. 回答は簡潔かつ実用的な情報を中心にまとめてください。
+5. 追加の確認が必要な場合は、その旨を明記してください。`;
+
+    // 回答の生成
+    const response = await fetch(OPENAI_API_ENDPOINT, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${openAIApiKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: "gpt-4o-mini",
+        messages: [
+          {
+            role: "system",
+            content: responsePrompt
           },
           {
             role: "user",
-            content: question
+            content: "この情報を元に、質問に対する具体的な回答を提供してください。"
           }
         ],
         temperature: 0.5,
         max_tokens: 1000,
       })
     });
-
-    console.log('APIレスポンスステータス:', response.status);
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -112,7 +173,7 @@ serve(async (req) => {
     }
 
     const data = await response.json();
-    console.log('APIレスポンスデータ:', data);
+    console.log('生成された回答:', data.choices[0].message.content);
 
     return new Response(JSON.stringify({
       choices: [{
