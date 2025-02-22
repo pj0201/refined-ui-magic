@@ -1,3 +1,4 @@
+
 import { HeroSection } from "@/components/sections/HeroSection";
 import { MessageSection } from "@/components/sections/MessageSection";
 import { CompanyProfileSection } from "@/components/sections/CompanyProfileSection";
@@ -48,8 +49,11 @@ const Index = () => {
               <CardHeader>
                 <CardTitle>どういう支援サービスですか？</CardTitle>
               </CardHeader>
-              <CardContent>
-                定期訪問やオブザーバー参加など以外にスポットでの対応も可能。再生など一刻を争う場合には、柔軟に対応いたします。
+              <CardContent className="space-y-4">
+                <p>各帳票を精査させていただき、問題解決や実績向上につながる改善提案を行います。目標設定からKPIなどの予実のチェック。数値に現れない要因も探りながら、分析を重ねたうえで真因をつかみ、確度の高い効果的な戦略に落とし込みます。</p>
+                <p>一例を挙げますと、計画策定のサポートでは、目的とリソース、対象に合わせた策定が重要となりますし、セールスやプロモーションにおいては、ポジションやターゲットの特定が重要となります。</p>
+                <p>弊社は成功モデルに固執せず、安易な真似事のような提案を良しとしない、根拠や再現性の高いロジックを追求し、創意・工夫を重ねてクライアント様のサポートに貢献させていただきます。</p>
+                <p>定期訪問や会議へのオブザーバー参加などの外にスポットでの対応（セミナーの開催など）も対応いたします。また再生など一刻を争う場合には、柔軟に対応いたします。</p>
               </CardContent>
             </Card>
             <Card>
