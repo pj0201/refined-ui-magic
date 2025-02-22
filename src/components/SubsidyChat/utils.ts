@@ -3,23 +3,22 @@ import { SubsidyInfo } from "./types";
 
 export const formatSubsidyResponse = (info: SubsidyInfo): string => {
   return `
-${info.name}について説明させていただきます：
+【補助金名称】
+${info.name}
 
 【制度概要】
 ${info.description}
 
-【申請要件】
+【対象者】
 ${info.requirements.map(req => `・${req}`).join('\n')}
+
+【補助金額・補助率】
+${info.amount}
+
+${info.adoptionRate ? `【採択率】\n${info.adoptionRate}\n` : ''}
 
 【申請期間】
 ${info.period.start} から ${info.period.end} まで
-
-【補助金額】
-${info.amount}
-
-${info.adoptionRate ? `【採択率】\n${info.adoptionRate}` : ''}
-
-${info.url ? `\n詳細はこちらをご確認ください：${info.url}` : ''}
 
 より詳しい内容については、お気軽にメールにてお問い合わせください。
 メール：hori@planjoy.net
@@ -46,4 +45,3 @@ export const isSubsidyRelatedQuestion = (text: string): boolean => {
   // それ以外の一般的な会話の場合は false を返す
   return false;
 };
-
