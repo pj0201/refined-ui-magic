@@ -1,12 +1,13 @@
 
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts"
+import "https://deno.land/x/xhr@0.1.0/mod.ts"
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
 }
 
-const GROQ_API_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
+const OPENAI_API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
 
 serve(async (req) => {
   if (req.method === 'OPTIONS') {
@@ -24,70 +25,29 @@ serve(async (req) => {
 
     console.log('受信した質問:', question);
 
-    const groqApiKey = Deno.env.get('GROQ_API_KEY');
-    if (!groqApiKey) {
-      console.error('GROQ APIキーが設定されていません');
+    const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+    if (!openAIApiKey) {
+      console.error('OpenAI APIキーが設定されていません');
       return new Response('APIキー未設定', { 
         status: 500,
         headers: corsHeaders
       });
     }
 
-    // 最初に質問の意図を理解するためのプロンプト
-    const intentResponse = await fetch(GROQ_API_ENDPOINT, {
+    // GPT-4を使用して質問に回答
+    const response = await fetch(OPENAI_API_ENDPOINT, {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${groqApiKey}`,
+        'Authorization': `Bearer ${openAIApiKey}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        model: "mixtral-8x7b-32768",
+        model: "gpt-4o-mini",
         messages: [
           {
             role: "system",
-            content: `あなたは補助金に関する質問の意図を理解し、適切なカテゴリに分類する専門家です。
-以下のカテゴリから最も適切なものを選んでください：
-
-1. 補助金額・補助率に関する質問
-2. 申請要件・対象者に関する質問
-3. 申請手続き・必要書類に関する質問
-4. 補助対象経費に関する質問
-5. 申請期間・スケジュールに関する質問
-6. その他の一般的な質問
-
-回答は数字のみを返してください。`
-          },
-          {
-            role: "user",
-            content: question
-          }
-        ],
-        temperature: 0.3,
-        max_tokens: 10,
-      })
-    });
-
-    if (!intentResponse.ok) {
-      throw new Error('意図分析に失敗しました');
-    }
-
-    const intentData = await intentResponse.json();
-    const questionCategory = intentData.choices[0].message.content.trim();
-    console.log('質問カテゴリ:', questionCategory);
-
-    // カテゴリに基づいて詳細な回答を生成
-    const response = await fetch(GROQ_API_ENDPOINT, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${groqApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: "mixtral-8x7b-32768",
-        messages: [
-          {
-            role: "system",
-            content: `あなたは省力化投資補助金の専門家です。以下の情報に基づいて、質問に対して具体的で正確な回答を提供してください。
+            content: `あなたは省力化投資補助金の専門アシスタントです。
+以下の情報を元に、質問に対して具体的で実用的な回答を提供してください。
 
 # 補助金制度の詳細情報
 
@@ -126,17 +86,20 @@ serve(async (req) => {
 4. 納税証明書
 5. 経営革新計画（該当する場合）
 
-ユーザーの質問カテゴリは${questionCategory}です。
-この分類に基づいて、特に関連性の高い情報を中心に、具体的で実用的な回答を提供してください。
-曖昧な表現は避け、できるだけ具体的な数値や要件を含めて回答してください。`
+回答のルール：
+1. 質問の種類（補助金額、申請要件、対象経費など）に応じて、関連する情報を優先的に提供してください。
+2. 具体的な数値や要件を含めて回答してください。
+3. 曖昧な表現は避け、明確な情報を提供してください。
+4. 質問の内容が不明確な場合は、関連する複数の観点から情報を提供してください。
+5. 回答は簡潔に、かつ実用的な情報を中心にまとめてください。`
           },
           {
             role: "user",
             content: question
           }
         ],
-        temperature: 0.7,
-        max_tokens: 2048,
+        temperature: 0.5,
+        max_tokens: 1000,
       })
     });
 
@@ -144,7 +107,7 @@ serve(async (req) => {
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error('GROQ APIエラー:', errorText);
+      console.error('OpenAI APIエラー:', errorText);
       throw new Error('応答の生成に失敗しました');
     }
 
