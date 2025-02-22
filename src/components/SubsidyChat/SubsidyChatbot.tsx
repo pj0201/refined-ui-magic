@@ -124,13 +124,23 @@ export const SubsidyChatbot = () => {
               >
                 <div
                   className={cn(
-                    "max-w-[80%] rounded-lg p-3 whitespace-pre-wrap",
+                    "max-w-[80%] rounded-lg p-3",
                     message.type === "user"
                       ? "bg-blue-600 text-white"
-                      : "bg-gray-100 text-gray-900"
+                      : "bg-gray-100 text-gray-900",
+                    "flex flex-col"
                   )}
                 >
-                  {message.content}
+                  <div className="whitespace-pre-wrap break-words">{message.content}</div>
+                  {message.imageUrl && (
+                    <div className="mt-2 max-h-[200px] overflow-hidden rounded">
+                      <img 
+                        src={message.imageUrl} 
+                        alt="Uploaded content"
+                        className="w-full h-auto object-contain"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             ))}

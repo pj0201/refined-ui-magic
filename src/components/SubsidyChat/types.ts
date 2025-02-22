@@ -3,6 +3,7 @@ export interface Message {
   type: "bot" | "user";
   content: string;
   timestamp: Date;
+  imageUrl?: string;
 }
 
 export interface SubsidyInfo {
