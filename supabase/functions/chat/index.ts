@@ -34,8 +34,8 @@ serve(async (req) => {
       });
     }
 
-    // Step 1: キーワード抽出と質問意図の詳細分析
-    const analysisResponse = await fetch(OPENAI_API_ENDPOINT, {
+    // Step 1: 質問の直接的な意図とキーワードの抽出
+    const keywordResponse = await fetch(OPENAI_API_ENDPOINT, {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${openAIApiKey}`,
@@ -46,112 +46,100 @@ serve(async (req) => {
         messages: [
           {
             role: "system",
-            content: `あなたは質問分析の専門家です。
-補助金に関する質問を詳細に分析し、以下の情報をJSON形式で抽出してください：
+            content: `補助金に関する質問から、以下の情報を抽出してください：
 
-1. メインキーワード: 質問の主要な対象や概念（例：申請期間、補助率、対象経費）
-2. 関連キーワード: メインキーワードに関連する重要な単語や表現
-3. 質問の種類: 以下のカテゴリから最も適切なものを選択
-   - 申請期間・スケジュール
-   - 補助金額・補助率
-   - 申請要件・対象者
-   - 申請手続き・書類
-   - 補助対象経費
+1. 質問の種類: 必ず以下のいずれかを選択（複数選択不可）
+   - 申請期間
+   - 補助金額
+   - 補助率
+   - 申請要件
+   - 対象経費
    - その他
-4. 質問の具体性: "具体的" または "一般的"
-5. 必要な回答要素: 質問に適切に回答するために必要な情報項目をリスト
 
-回答は以下のJSON形式で返してください：
+2. 主要な質問キーワード: 質問の核となる単語を1つだけ抽出
+   例：「申請期間」「補助率」「対象経費」など
+
+3. 回答に必要な最低限の情報を指定
+   例：申請期間の場合 → "開始日、終了日"
+   例：補助率の場合 → "企業規模別の補助率"
+
+回答は必ず以下のJSON形式で返してください：
 {
-  "mainKeyword": "主要キーワード",
-  "relatedKeywords": ["関連キーワード1", "関連キーワード2"],
-  "questionType": "質問の種類",
-  "specificity": "具体的/一般的",
+  "questionType": "申請期間 | 補助金額 | 補助率 | 申請要件 | 対象経費 | その他",
+  "keyword": "主要なキーワード1つのみ",
   "requiredInfo": ["必要な情報1", "必要な情報2"]
-}`
+}
+絶対に上記以外のフォーマットで返さないでください。`
           },
           {
             role: "user",
             content: question
           }
         ],
-        temperature: 0.3,
+        temperature: 0.1,
         max_tokens: 500,
       })
     });
 
-    if (!analysisResponse.ok) {
-      throw new Error('質問分析に失敗しました');
-    }
+    const keywordData = await keywordResponse.json();
+    const analysis = JSON.parse(keywordData.choices[0].message.content);
+    console.log('キーワード分析結果:', analysis);
 
-    const analysisData = await analysisResponse.json();
-    const analysis = JSON.parse(analysisData.choices[0].message.content);
-    console.log('質問分析結果:', analysis);
+    // 申請期間に関する具体的な情報
+    const scheduleInfo = {
+      "申請期間": {
+        "開始": "令和6年4月1日",
+        "受付期間": "令和6年4月中旬～5月末日",
+        "審査期間": "約1～2ヶ月",
+        "交付決定": "令和6年7月下旬"
+      }
+    };
 
-    // Step 2: 分析結果に基づいて回答を生成
-    const responsePrompt = `
+    // 補助金額・補助率に関する具体的な情報
+    const amountInfo = {
+      "補助金額": {
+        "上限": "1,000万円",
+        "下限": "100万円"
+      },
+      "補助率": {
+        "中小企業": "1/2以内",
+        "小規模事業者": "2/3以内"
+      }
+    };
+
+    // Step 2: 質問タイプに基づいて回答を生成
+    let responsePrompt = `
+あなたは補助金の専門家です。以下の質問に対して、具体的な情報を提供してください。
+
 質問: "${question}"
 
 分析結果:
-主要キーワード: ${analysis.mainKeyword}
-関連キーワード: ${analysis.relatedKeywords.join(', ')}
 質問タイプ: ${analysis.questionType}
-具体性: ${analysis.specificity}
-必要な情報: ${analysis.requiredInfo.join(', ')}
+キーワード: ${analysis.keyword}
 
-以下の情報を元に、上記の質問に対して具体的で的確な回答を提供してください。
-特に、主要キーワード「${analysis.mainKeyword}」に関する情報を最優先で説明してください。
+`;
 
-# 補助金制度の詳細情報
+    // 質問タイプに応じて適切な情報を追加
+    if (analysis.questionType === "申請期間") {
+      responsePrompt += `
+具体的な申請スケジュールは以下の通りです：
+・公募開始：${scheduleInfo.申請期間.開始}（予定）
+・申請受付期間：${scheduleInfo.申請期間.受付期間}（予定）
+・審査期間：${scheduleInfo.申請期間.審査期間}
+・交付決定：${scheduleInfo.申請期間.交付決定}（予定）
 
-【申請期間・スケジュール】
-- 公募開始：令和6年4月1日（予定）
-- 申請受付：令和6年4月中旬～5月末日（予定）
-- 審査期間：約1～2ヶ月
-- 交付決定：令和6年7月下旬（予定）
-※スケジュールは変更となる可能性があります
+※スケジュールは変更となる可能性があります。
+`;
+    }
 
-【補助金額・補助率】
-- 補助上限額：1,000万円
-- 補助下限額：100万円
-- 補助率：
-  * 中小企業 1/2以内
-  * 小規模事業者 2/3以内
-
-【申請要件・対象者】
-対象となる事業者：
-- 中小企業者（製造業、建設業、運輸業等）
-- 中小企業経営強化法に基づく経営革新計画の承認を受けた事業者
-- 特定事業者（個人事業主を含む）
-
-必須要件：
-1. 事業計画の策定・提出
-2. 付加価値額年率3%以上の向上
-3. 給与支給総額年率1.5%以上の向上
-4. 事業場内最低賃金の地域別最低賃金＋30円以上の達成
-
-【補助対象経費】
-以下の経費が補助対象となります：
-- 機械装置・システム構築費
-- 技術導入費
-- 専門家経費
-- 運搬費
-- クラウドサービス利用費
-
-【申請手続き】
-必要書類：
-1. 事業計画書
-2. 決算書（直近2年分）
-3. 登記簿謄本
-4. 納税証明書
-5. 経営革新計画（該当する場合）
-
-回答のルール：
-1. ${analysis.mainKeyword}に関する情報を最優先で説明してください。
-2. 具体的な数値、期間、要件を明確に示してください。
-3. 回答は簡潔かつ実用的な情報を中心にまとめてください。
-4. 不確定要素がある場合は、その旨を明記してください。
-5. メールでの問い合わせ先も必ず記載してください。`;
+    responsePrompt += `
+回答の注意点：
+1. ${analysis.keyword}に関する情報を最優先で説明してください。
+2. 具体的な数値や期間を明確に示してください。
+3. 予定や変更の可能性がある場合は、その旨を明記してください。
+4. 簡潔かつ分かりやすい言葉で説明してください。
+5. 最後に、より詳しい情報についてメール（hori@planjoy.net）での問い合わせが可能な旨を付記してください。
+`;
 
     // 回答の生成
     const response = await fetch(OPENAI_API_ENDPOINT, {
@@ -166,13 +154,9 @@ serve(async (req) => {
           {
             role: "system",
             content: responsePrompt
-          },
-          {
-            role: "user",
-            content: "この情報を元に、質問に対する具体的な回答を提供してください。"
           }
         ],
-        temperature: 0.5,
+        temperature: 0.3,
         max_tokens: 1000,
       })
     });
