@@ -10,33 +10,53 @@ export const FileUploader = () => {
   const { toast } = useToast();
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (!file) return;
-
-    if (file.type !== 'application/pdf') {
-      toast({
-        title: "エラー",
-        description: "PDFファイルのみアップロード可能です",
-        variant: "destructive"
-      });
-      return;
-    }
+    const files = event.target.files;
+    if (!files || files.length === 0) return;
 
     setIsUploading(true);
+    let successCount = 0;
+    let errorCount = 0;
+
     try {
-      const formData = new FormData();
-      formData.append('file', file);
+      // 複数ファイルを順次処理
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        
+        if (!file.type.includes('image/png')) {
+          errorCount++;
+          console.error(`${file.name}はPNGファイルではありません`);
+          continue;
+        }
 
-      const { data, error } = await supabase.functions.invoke('process-pdf', {
-        body: formData,
-      });
+        const formData = new FormData();
+        formData.append('file', file);
 
-      if (error) throw error;
+        const { data, error } = await supabase.functions.invoke('process-pdf', {
+          body: formData,
+        });
 
-      toast({
-        title: "成功",
-        description: "ファイルが正常にアップロードされました",
-      });
+        if (error) {
+          errorCount++;
+          console.error(`${file.name}のアップロードに失敗:`, error);
+        } else {
+          successCount++;
+        }
+      }
+
+      // 結果を表示
+      if (successCount > 0) {
+        toast({
+          title: "アップロード完了",
+          description: `${successCount}個のファイルが正常にアップロードされました${errorCount > 0 ? `\n${errorCount}個のファイルでエラーが発生しました` : ''}`,
+          variant: errorCount > 0 ? "destructive" : "default"
+        });
+      } else if (errorCount > 0) {
+        toast({
+          title: "エラー",
+          description: "すべてのファイルのアップロードに失敗しました",
+          variant: "destructive"
+        });
+      }
 
     } catch (error) {
       console.error('アップロードエラー:', error);
@@ -54,17 +74,18 @@ export const FileUploader = () => {
     <div className="flex items-center gap-2">
       <input
         type="file"
-        accept=".pdf"
+        accept="image/png"
         onChange={handleFileUpload}
         className="hidden"
         id="pdf-upload"
         disabled={isUploading}
+        multiple // 複数ファイルの選択を許可
       />
       <label htmlFor="pdf-upload">
         <Button asChild variant="outline" disabled={isUploading}>
           <span>
             <Upload className="w-4 h-4 mr-2" />
-            PDFをアップロード
+            {isUploading ? 'アップロード中...' : 'PNGをアップロード'}
           </span>
         </Button>
       </label>
