@@ -60,6 +60,15 @@ const Index = () => {
             </Card>
             <Card>
               <CardHeader>
+                <CardTitle>業務ツール開発はどんなものが作れますか？</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p>業務の自動化や省力化に関するものや、分析ツールや管理システム、マニュアルなどのBボット化など、ヒヤリングを経て、案件定義・要件定義をさせていただきます。</p>
+                <p>工数や納期短縮のために、AIを活用した駆動開発がメインとなります。</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
                 <CardTitle>創業前でも相談可能ですか？</CardTitle>
               </CardHeader>
               <CardContent>
