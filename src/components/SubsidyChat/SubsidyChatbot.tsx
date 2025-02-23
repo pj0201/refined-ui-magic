@@ -8,7 +8,6 @@ import { Message } from "./types";
 import { formatSubsidyResponse, isSubsidyRelatedQuestion } from "./utils";
 import { generateSubsidyResponse } from "./api";
 import { useToast } from "@/components/ui/use-toast";
-import { FileUploader } from "./FileUploader";
 
 export const SubsidyChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -101,7 +100,6 @@ export const SubsidyChatbot = () => {
           <div className="flex items-center justify-between p-4 border-b">
             <div className="flex items-center gap-4">
               <h3 className="font-bold text-lg">補助金相談Bot</h3>
-              <FileUploader />
             </div>
             <Button
               variant="ghost"
