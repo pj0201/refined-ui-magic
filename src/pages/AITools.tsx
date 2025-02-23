@@ -1,3 +1,4 @@
+
 import { Bot, Brain, Code, FileVideo, Home, Image, MessageSquare, ScrollText, Zap } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -73,7 +74,7 @@ const toolCategories = [
         description: "ビジネスプロセスの自動化を実現するRPAプラットフォーム。カスタマイズ性が高い" 
       },
       { 
-        name: "GENSPRK",
+        name: "GENSPARK",
         description: "AIを活用した高度な検索エンジン。業界特化型の情報収集と分析が可能" 
       },
       { 
