@@ -21,12 +21,12 @@ const topics: Topic[] = [
   },
   {
     id: 2,
-    content: "AI用語についてのまとめ（準備中）",
+    content: "AI用語について",
     link: "/ai-glossary"
   },
   {
     id: 3,
-    content: "おすすめのAIツール一覧（準備中）",
+    content: "おすすめのAIツール一覧",
     link: "/ai-tools"
   }
 ];
