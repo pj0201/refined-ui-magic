@@ -1,4 +1,3 @@
-
 import { Bot, Brain, Code, FileVideo, Home, Image, MessageSquare, ScrollText, Zap } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -115,7 +114,7 @@ const toolCategories = [
       },
       { 
         name: "GEAR.indigo",
-        description: "エンタープライズアプリケーション開発向けAIプラットフォーム" 
+        description: "開発プロジェクトの費用見積もりと工程管理を支援するAI。予算・進捗の最適化を実現" 
       }
     ]
   },
