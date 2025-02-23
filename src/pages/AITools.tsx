@@ -6,65 +6,78 @@ import { Link } from "react-router-dom";
 
 const toolCategories = [
   {
-    category: "テキスト生成・対話",
+    category: "アイデア",
     tools: [
+      { name: "Bing Chat", description: "Microsoftの対話型AI。Bingの検索機能と組み合わせて使用可能" },
+      { name: "Perplexity", description: "最新情報を含めた高精度な検索と回答が可能なAI" },
       { name: "ChatGPT", description: "OpenAIの対話型言語モデル。様々なタスクに対応可能" },
-      { name: "Claude", description: "Anthropicの高性能言語モデル。長文処理と分析が得意" },
-      { name: "Bard", description: "Googleの対話型AI。検索と情報アクセスが強み" },
-      { name: "Notion AI", description: "文書作成支援に特化したAI。アイデア出しやコンテンツ生成をサポート" },
+      { name: "Claude", description: "Anthropicの高性能言語モデル。長文処理と分析が得意" }
+    ]
+  },
+  {
+    category: "プレゼン",
+    tools: [
+      { name: "Prezi", description: "ダイナミックなプレゼンテーション作成ツール" },
+      { name: "Pitch", description: "AIを活用したプレゼンテーション作成支援ツール" },
+      { name: "Gamma AI", description: "AIパワードのプレゼンテーション生成ツール" },
+      { name: "Slides AI", description: "AIによるスライド作成の自動化ツール" },
+      { name: "Slidebean", description: "プレゼンテーションのデザインと構成をAIがサポート" }
+    ]
+  },
+  {
+    category: "Webサイト",
+    tools: [
+      { name: "Dora", description: "AIを活用したWebサイト制作ツール" },
+      { name: "10Web", description: "WordPressサイトの自動最適化とデザイン" },
+      { name: "Wejic", description: "AIによるWebサイト生成プラットフォーム" },
+      { name: "Framer", description: "AIを活用したWebデザインとプロトタイピング" }
+    ]
+  },
+  {
+    category: "ライティング",
+    tools: [
+      { name: "Rytr", description: "AIによるコンテンツ作成支援ツール" },
       { name: "Jasper", description: "マーケティングコンテンツの生成に特化したAI" },
-      { name: "Perplexity AI", description: "最新情報を含めた高精度な検索と回答が可能なAI" }
+      { name: "Copy AI", description: "広告やSNSコピーの生成に特化したAI" },
+      { name: "Textbase", description: "テキスト生成と最適化のためのAIツール" },
+      { name: "Writesonic", description: "ブログや記事作成を支援するAIツール" }
     ]
   },
   {
-    category: "画像生成",
+    category: "AIモデル",
     tools: [
-      { name: "DALL-E", description: "OpenAIのテキストから画像を生成するAI" },
-      { name: "Midjourney", description: "高品質なアート作品を生成できるAIツール" },
-      { name: "Stable Diffusion", description: "オープンソースの画像生成AI。カスタマイズ可能" },
-      { name: "Canva AI", description: "デザイン作成に特化したAI機能を搭載" },
-      { name: "Adobe Firefly", description: "Adobeが提供する創造的なAI画像生成ツール" },
-      { name: "Leonardo.ai", description: "ゲームアセットやキャラクターデザインに特化したAI" }
+      { name: "Rendered.ai", description: "AIモデルのトレーニングとデプロイメントプラットフォーム" },
+      { name: "Gaussian", description: "3DモデルとAIの統合ツール" },
+      { name: "Stable", description: "安定した画像生成AIモデル" },
+      { name: "Deepnote", description: "データサイエンスとAIモデル開発環境" }
     ]
   },
   {
-    category: "コード開発支援",
+    category: "ミーティング",
     tools: [
-      { name: "GitHub Copilot", description: "AIによるコード補完と生成支援ツール" },
-      { name: "Amazon CodeWhisperer", description: "AWSのAIコーディング支援ツール" },
-      { name: "Tabnine", description: "機械学習ベースのコード補完ツール" },
-      { name: "Replit Ghost", description: "AIを活用したコード生成と問題解決支援" },
-      { name: "Codeium", description: "オープンソースのAIコーディング支援ツール" },
-      { name: "Cursor", description: "AIパワードのコードエディタ。開発効率を向上" }
+      { name: "Fey", description: "AIを活用したミーティング支援ツール" },
+      { name: "Krisp", description: "ノイズキャンセリングとミーティング分析AI" },
+      { name: "Fireflies", description: "ミーティングの自動記録と分析ツール" },
+      { name: "Aroma", description: "会議の要約と行動項目の抽出AI" }
     ]
   },
   {
-    category: "音声・音楽",
+    category: "デザイン",
     tools: [
-      { name: "Whisper", description: "OpenAIの高精度音声認識モデル" },
-      { name: "Mubert", description: "AIによる音楽生成プラットフォーム" },
-      { name: "Descript", description: "AI搭載の音声・動画編集ツール" },
-      { name: "Soundraw", description: "AIによるロイヤリティフリーの音楽生成" },
-      { name: "Vocally", description: "AIを使用した声質変換・音声合成ツール" },
-      { name: "Synthesia", description: "AIによる動画ナレーション生成ツール" }
+      { name: "Looka", description: "ロゴデザインのAIツール" },
+      { name: "Canva", description: "AIを活用したデザイン制作プラットフォーム" },
+      { name: "Autodraw", description: "簡単な描画をAIが洗練されたイラストに変換" },
+      { name: "Vance AI", description: "画像編集と最適化のAIツール" },
+      { name: "Designs AI", description: "ブランディングデザインのAIソリューション" }
     ]
   },
   {
-    category: "ビジネス・生産性",
+    category: "コーディング",
     tools: [
-      { name: "Microsoft Copilot", description: "Microsoft 365アプリに統合されたAIアシスタント" },
-      { name: "Duet AI", description: "Googleワークスペース向けAIツール" },
-      { name: "Tome", description: "AIを活用したプレゼンテーション作成ツール" },
-      { name: "Beautiful.ai", description: "AIによるスライド作成支援ツール" }
-    ]
-  },
-  {
-    category: "データ分析・可視化",
-    tools: [
-      { name: "Obviously AI", description: "ノーコードでAI分析が可能なプラットフォーム" },
-      { name: "MindsDB", description: "データベースに直接AIを統合できるツール" },
-      { name: "Tableau AI", description: "データ可視化にAIを活用するツール" },
-      { name: "Power BI AI", description: "MicrosoftのBIツールに搭載されたAI機能" }
+      { name: "Codeium", description: "AIによるコード補完と生成支援" },
+      { name: "Copilot", description: "GitHubのAIコーディング支援ツール" },
+      { name: "x0.dev", description: "AIパワードの開発環境" },
+      { name: "Refraction", description: "コードのリファクタリングを支援するAI" }
     ]
   }
 ];
