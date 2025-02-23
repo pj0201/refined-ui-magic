@@ -1,11 +1,15 @@
 
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { ExternalLink } from "lucide-react";
 
 interface Topic {
   id: number;
   isNew?: boolean;
   content: string;
   date?: string;
+  link?: string;
 }
 
 const topics: Topic[] = [
@@ -18,10 +22,12 @@ const topics: Topic[] = [
   {
     id: 2,
     content: "AI用語についてのまとめ（準備中）",
+    link: "/ai-glossary"
   },
   {
     id: 3,
     content: "おすすめのAIツール一覧（準備中）",
+    link: "/ai-tools"
   }
 ];
 
@@ -51,7 +57,17 @@ export const TopicSection = () => {
                   </span>
                 )}
               </div>
-              <p className="text-gray-800">{topic.content}</p>
+              <div className="flex items-center justify-between">
+                <p className="text-gray-800">{topic.content}</p>
+                {topic.link && (
+                  <Link to={topic.link}>
+                    <Button variant="outline" size="sm" className="ml-4">
+                      <ExternalLink className="h-4 w-4 mr-2" />
+                      詳細を見る
+                    </Button>
+                  </Link>
+                )}
+              </div>
             </div>
           ))}
         </div>
