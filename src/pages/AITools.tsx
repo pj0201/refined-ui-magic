@@ -1,83 +1,164 @@
 
-import { Database, ExternalLink, Home } from "lucide-react";
+import { Brain, Code, FileVideo, Image, MessageSquare, Robot, ScrollText, Zap } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 
 const toolCategories = [
   {
-    category: "アイデア",
+    category: "全般での活用",
+    icon: <Brain className="w-6 h-6" />,
     tools: [
-      { name: "Bing Chat", description: "Microsoftの対話型AI。Bingの検索機能と組み合わせて使用可能" },
-      { name: "Perplexity", description: "最新情報を含めた高精度な検索と回答が可能なAI" },
-      { name: "ChatGPT", description: "OpenAIの対話型言語モデル。様々なタスクに対応可能" },
-      { name: "Claude", description: "Anthropicの高性能言語モデル。長文処理と分析が得意" }
+      { 
+        name: "ChatGPT-4",
+        description: "OpenAIの最新モデル。高度な理解力と生成能力を持ち、画像認識も可能。複雑なタスクに対応" 
+      },
+      { 
+        name: "ChatGPT-3.5",
+        description: "基本的なタスクに最適な高速モデル。コストパフォーマンスに優れる" 
+      },
+      { 
+        name: "GEMINI",
+        description: "Googleの最新AI。マルチモーダル対応で、テキスト・画像・音声を統合的に処理" 
+      },
+      { 
+        name: "Grok 3",
+        description: "リアルタイムデータを活用した対話型AI。ユーモアのある応答が特徴" 
+      },
+      { 
+        name: "Claude Sonnet",
+        description: "Anthropicの高性能モデル。長文処理と分析が得意で、高い正確性を実現" 
+      },
+      { 
+        name: "DeepSeek",
+        description: "深い文脈理解と専門知識を備えたAI。研究開発向けの高度な機能を提供" 
+      },
+      { 
+        name: "Hunyuan",
+        description: "中国語と英語のバイリンガルAI。アジア圏のビジネス利用に最適" 
+      }
     ]
   },
   {
-    category: "プレゼン",
+    category: "クリエイティブ開発",
+    icon: <Code className="w-6 h-6" />,
     tools: [
-      { name: "Prezi", description: "ダイナミックなプレゼンテーション作成ツール" },
-      { name: "Pitch", description: "AIを活用したプレゼンテーション作成支援ツール" },
-      { name: "Gamma AI", description: "AIパワードのプレゼンテーション生成ツール" },
-      { name: "Slides AI", description: "AIによるスライド作成の自動化ツール" },
-      { name: "Slidebean", description: "プレゼンテーションのデザインと構成をAIがサポート" }
+      { 
+        name: "v0",
+        description: "AIを活用したウェブアプリケーション開発プラットフォーム。直感的なインターフェース" 
+      },
+      { 
+        name: "Cursor",
+        description: "AIパワードのコードエディタ。リアルタイムのコード補完と最適化を提供" 
+      },
+      { 
+        name: "Roocode",
+        description: "効率的なコード生成と最適化を行うAIツール。開発プロセスを加速" 
+      },
+      { 
+        name: "Windsurf",
+        description: "フロントエンド開発に特化したAIツール。モダンなUIコンポーネントを自動生成" 
+      }
     ]
   },
   {
-    category: "Webサイト",
+    category: "業務自動化",
+    icon: <Robot className="w-6 h-6" />,
     tools: [
-      { name: "Dora", description: "AIを活用したWebサイト制作ツール" },
-      { name: "10Web", description: "WordPressサイトの自動最適化とデザイン" },
-      { name: "Wejic", description: "AIによるWebサイト生成プラットフォーム" },
-      { name: "Framer", description: "AIを活用したWebデザインとプロトタイピング" }
+      { 
+        name: "Dify",
+        description: "ビジネスプロセスの自動化を実現するRPAプラットフォーム。カスタマイズ性が高い" 
+      },
+      { 
+        name: "GENSPRK",
+        description: "業務フローの最適化とタスク自動化を支援するAIツール" 
+      },
+      { 
+        name: "Felo",
+        description: "ワークフロー自動化とプロセス最適化のためのAIソリューション" 
+      }
     ]
   },
   {
-    category: "ライティング",
+    category: "議事録・文書管理",
+    icon: <ScrollText className="w-6 h-6" />,
     tools: [
-      { name: "Rytr", description: "AIによるコンテンツ作成支援ツール" },
-      { name: "Jasper", description: "マーケティングコンテンツの生成に特化したAI" },
-      { name: "Copy AI", description: "広告やSNSコピーの生成に特化したAI" },
-      { name: "Textbase", description: "テキスト生成と最適化のためのAIツール" },
-      { name: "Writesonic", description: "ブログや記事作成を支援するAIツール" }
+      { 
+        name: "tl;dv",
+        description: "会議の自動文字起こしと要約を行うAIツール。重要ポイントを抽出" 
+      },
+      { 
+        name: "Notion",
+        description: "AIを活用した次世代のナレッジマネジメントプラットフォーム" 
+      },
+      { 
+        name: "NotebookLM",
+        description: "AIによる文書解析と知識管理を統合したツール" 
+      }
     ]
   },
   {
-    category: "AIモデル",
+    category: "アプリケーション開発",
+    icon: <Zap className="w-6 h-6" />,
     tools: [
-      { name: "Rendered.ai", description: "AIモデルのトレーニングとデプロイメントプラットフォーム" },
-      { name: "Gaussian", description: "3DモデルとAIの統合ツール" },
-      { name: "Stable", description: "安定した画像生成AIモデル" },
-      { name: "Deepnote", description: "データサイエンスとAIモデル開発環境" }
+      { 
+        name: "Lovable",
+        description: "AIを活用したWebアプリケーション開発プラットフォーム。効率的な開発を実現" 
+      },
+      { 
+        name: "Ray2",
+        description: "分散システム開発のためのAIパワードフレームワーク" 
+      },
+      { 
+        name: "GEAR.indigo",
+        description: "エンタープライズアプリケーション開発向けAIプラットフォーム" 
+      }
     ]
   },
   {
-    category: "ミーティング",
+    category: "動画生成",
+    icon: <FileVideo className="w-6 h-6" />,
     tools: [
-      { name: "Fey", description: "AIを活用したミーティング支援ツール" },
-      { name: "Krisp", description: "ノイズキャンセリングとミーティング分析AI" },
-      { name: "Fireflies", description: "ミーティングの自動記録と分析ツール" },
-      { name: "Aroma", description: "会議の要約と行動項目の抽出AI" }
+      { 
+        name: "Kling",
+        description: "AIによる高品質な動画生成ツール。編集も自動化" 
+      },
+      { 
+        name: "Veo2",
+        description: "スポーツ分析や動画編集に特化したAI動画処理ツール" 
+      }
     ]
   },
   {
-    category: "デザイン",
+    category: "画像生成",
+    icon: <Image className="w-6 h-6" />,
     tools: [
-      { name: "Looka", description: "ロゴデザインのAIツール" },
-      { name: "Canva", description: "AIを活用したデザイン制作プラットフォーム" },
-      { name: "Autodraw", description: "簡単な描画をAIが洗練されたイラストに変換" },
-      { name: "Vance AI", description: "画像編集と最適化のAIツール" },
-      { name: "Designs AI", description: "ブランディングデザインのAIソリューション" }
+      { 
+        name: "Flux",
+        description: "高品質な画像生成AIツール。商用利用に適した権利処理付き" 
+      },
+      { 
+        name: "Goku AI",
+        description: "アニメ風イラスト生成に特化したAIツール" 
+      }
     ]
   },
   {
-    category: "コーディング",
+    category: "特殊用途",
+    icon: <MessageSquare className="w-6 h-6" />,
     tools: [
-      { name: "Codeium", description: "AIによるコード補完と生成支援" },
-      { name: "Copilot", description: "GitHubのAIコーディング支援ツール" },
-      { name: "x0.dev", description: "AIパワードの開発環境" },
-      { name: "Refraction", description: "コードのリファクタリングを支援するAI" }
+      { 
+        name: "Kotaba",
+        description: "日本語に特化した自然言語処理AI。文脈理解が優れている" 
+      },
+      { 
+        name: "Geospy",
+        description: "地理空間データ分析のためのAIツール" 
+      },
+      { 
+        name: "Firecrawl",
+        description: "Webクローリングと情報抽出に特化したAIツール" 
+      }
     ]
   }
 ];
@@ -94,12 +175,16 @@ export default function AITools() {
             </Button>
           </Link>
           <h1 className="text-4xl font-bold text-gray-900 mb-4">おすすめAIツール一覧</h1>
+          <p className="text-gray-600">目的別に最適なAIツールをご紹介します</p>
         </div>
 
         <div className="grid gap-8">
           {toolCategories.map((category, index) => (
             <div key={index}>
-              <h2 className="text-2xl font-semibold mb-4 text-gray-800">{category.category}</h2>
+              <h2 className="text-2xl font-semibold mb-4 text-gray-800 flex items-center gap-2">
+                {category.icon}
+                <span>{category.category}</span>
+              </h2>
               <div className="grid gap-4">
                 {category.tools.map((tool, toolIndex) => (
                   <Card key={toolIndex} className="backdrop-blur-md bg-white/80 hover:bg-white/90 transition-colors">
