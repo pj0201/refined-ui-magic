@@ -1,7 +1,10 @@
+
 import { SubsidyInfo } from "./types";
 
+type QuestionIntent = "" | "limit_amount" | "basic_amount" | "expense" | "requirement" | "target" | "general";
+
 // 質問の意図を分析する関数
-const analyzeQuestionIntent = (question: string): string => {
+const analyzeQuestionIntent = (question: string): QuestionIntent => {
   // 質問をセンテンスに分割（。や？で区切る）
   const sentences = question.split(/[。？]/).filter(s => s.trim().length > 0);
   
@@ -26,26 +29,26 @@ const analyzeQuestionIntent = (question: string): string => {
 
     // 金額関連の質問を優先的に判定
     if ((matches.amount > 0 && matches.limit > 0) || matches.limit > 0) {
-      return 'limit_amount';
+      return 'limit_amount' as const;
     }
     if (matches.amount > 0 || matches.rate > 0) {
-      return 'basic_amount';
+      return 'basic_amount' as const;
     }
     if (matches.expense > 0) {
-      return 'expense';
+      return 'expense' as const;
     }
     if (matches.requirement > 0) {
-      return 'requirement';
+      return 'requirement' as const;
     }
     if (matches.target > 0) {
-      return 'target';
+      return 'target' as const;
     }
 
-    return '';
+    return '' as const;
   });
 
   // 最も関連性の高い意図を返す
-  const priorityOrder = ['limit_amount', 'basic_amount', 'expense', 'requirement', 'target'];
+  const priorityOrder: QuestionIntent[] = ['limit_amount', 'basic_amount', 'expense', 'requirement', 'target'];
   for (const priority of priorityOrder) {
     if (keywordResults.includes(priority)) {
       return priority;
