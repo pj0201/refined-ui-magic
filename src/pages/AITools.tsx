@@ -9,12 +9,16 @@ const toolCategories = [
     icon: <Brain className="w-6 h-6" />,
     tools: [
       { 
-        name: "ChatGPT-4",
-        description: "OpenAIの最新モデル。高度な理解力と生成能力を持ち、画像認識も可能。複雑なタスクに対応" 
+        name: "ChatGPT-o1",
+        description: "OpenAIの基本モデル。一般的な会話や文章生成に最適。コストパフォーマンスに優れる" 
       },
       { 
-        name: "ChatGPT-3.5",
-        description: "基本的なタスクに最適な高速モデル。コストパフォーマンスに優れる" 
+        name: "ChatGPT-o1pro",
+        description: "高度な分析と専門的なタスクに対応。長文処理と複雑な指示に強い上位モデル" 
+      },
+      { 
+        name: "ChatGPT-o3mini",
+        description: "軽量で高速な応答が特徴。シンプルなタスクや短い会話に最適化された省コストモデル" 
       },
       { 
         name: "GEMINI",
@@ -70,11 +74,11 @@ const toolCategories = [
       },
       { 
         name: "GENSPRK",
-        description: "業務フローの最適化とタスク自動化を支援するAIツール" 
+        description: "AIを活用した高度な検索エンジン。業界特化型の情報収集と分析が可能" 
       },
       { 
         name: "Felo",
-        description: "ワークフロー自動化とプロセス最適化のためのAIソリューション" 
+        description: "マルチソース検索と情報統合のAIプラットフォーム。複数のデータソースを横断的に分析" 
       }
     ]
   },
