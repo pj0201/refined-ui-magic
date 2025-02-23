@@ -1,4 +1,3 @@
-
 import { Book, ExternalLink, Home } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -7,11 +6,17 @@ import { Link } from "react-router-dom";
 const glossaryTerms = [
   {
     term: "機械学習 (Machine Learning)",
-    definition: "データから規則性やパターンを学習し、新しいデータに対して予測や判断を行うAIの中核技術"
+    definition: "データから規則性やパターンを学習し、新しいデータに対して予測や判断を行うAIの中核技術",
+    links: [
+      { text: "Googleの機械学習入門", url: "https://developers.google.com/machine-learning/crash-course?hl=ja" }
+    ]
   },
   {
     term: "ディープラーニング (Deep Learning)",
-    definition: "多層のニューラルネットワークを用いた機械学習手法。画像認識や自然言語処理などで高い性能を発揮"
+    definition: "多層のニューラルネットワークを用いた機械学習手法。画像認識や自然言語処理などで高い性能を発揮",
+    links: [
+      { text: "Deep Learningの基礎", url: "https://www.tensorflow.org/tutorials/quickstart/beginner?hl=ja" }
+    ]
   },
   {
     term: "自然言語処理 (NLP)",
@@ -110,7 +115,25 @@ export default function AIGlossary() {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">{item.definition}</p>
+                <div className="mb-4">
+                  <p className="text-gray-600">{item.definition}</p>
+                </div>
+                {item.links && item.links.length > 0 && (
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {item.links.map((link, linkIndex) => (
+                      <a
+                        key={linkIndex}
+                        href={link.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                        {link.text}
+                      </a>
+                    ))}
+                  </div>
+                )}
               </CardContent>
             </Card>
           ))}
