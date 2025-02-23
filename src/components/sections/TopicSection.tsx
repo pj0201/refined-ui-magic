@@ -17,11 +17,11 @@ const topics: Topic[] = [
   },
   {
     id: 2,
-    content: "AI用語についてのチャットボット新設",
+    content: "AI用語についてのまとめ（準備中）",
   },
   {
     id: 3,
-    content: "おすすめのAIツール一覧更新",
+    content: "おすすめのAIツール一覧（準備中）",
   }
 ];
 
