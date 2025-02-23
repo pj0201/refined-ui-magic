@@ -96,7 +96,9 @@ export default function AITools() {
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-gray-600">{tool.description}</p>
+                      <div className="mb-4">
+                        <p className="text-gray-600">{tool.description}</p>
+                      </div>
                     </CardContent>
                   </Card>
                 ))}
