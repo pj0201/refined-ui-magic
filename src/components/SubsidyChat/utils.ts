@@ -1,22 +1,67 @@
 import { SubsidyInfo } from "./types";
 
+// 質問の意図を分析する関数
+const analyzeQuestionIntent = (question: string): string => {
+  // 質問をセンテンスに分割（。や？で区切る）
+  const sentences = question.split(/[。？]/).filter(s => s.trim().length > 0);
+  
+  // センテンスごとにキーワードを分析
+  const keywordResults = sentences.map(sentence => {
+    const amountKeywords = ['いくら', '金額', '額', '補助金額', '補助額'];
+    const limitKeywords = ['上限', '限度', 'まで'];
+    const rateKeywords = ['補助率', '割合', 'パーセント', '％'];
+    const expenseKeywords = ['経費', '費用', '対象'];
+    const requirementKeywords = ['要件', '条件', '基準'];
+    const targetKeywords = ['対象者', '企業', '会社'];
+
+    // キーワードごとの重みづけ
+    const matches = {
+      amount: amountKeywords.some(k => sentence.includes(k)) ? 2 : 0,
+      limit: limitKeywords.some(k => sentence.includes(k)) ? 3 : 0,
+      rate: rateKeywords.some(k => sentence.includes(k)) ? 2 : 0,
+      expense: expenseKeywords.some(k => sentence.includes(k)) ? 1 : 0,
+      requirement: requirementKeywords.some(k => sentence.includes(k)) ? 1 : 0,
+      target: targetKeywords.some(k => sentence.includes(k)) ? 1 : 0
+    };
+
+    // 金額関連の質問を優先的に判定
+    if ((matches.amount > 0 && matches.limit > 0) || matches.limit > 0) {
+      return 'limit_amount';
+    }
+    if (matches.amount > 0 || matches.rate > 0) {
+      return 'basic_amount';
+    }
+    if (matches.expense > 0) {
+      return 'expense';
+    }
+    if (matches.requirement > 0) {
+      return 'requirement';
+    }
+    if (matches.target > 0) {
+      return 'target';
+    }
+
+    return '';
+  });
+
+  // 最も関連性の高い意図を返す
+  const priorityOrder = ['limit_amount', 'basic_amount', 'expense', 'requirement', 'target'];
+  for (const priority of priorityOrder) {
+    if (keywordResults.includes(priority)) {
+      return priority;
+    }
+  }
+
+  return 'general';
+};
+
 export const formatSubsidyResponse = (info: SubsidyInfo): string => {
   const { question } = info;
-  
-  // キーワードの組み合わせによる判定を詳細化
-  const keywordSets = {
-    company: ['企業', '会社', 'だれ', 'どんな', '誰', '対象者'],
-    expense: ['経費', '費用', '金', '対象経費', '対象となる経費'],
-    target: ['対象', '該当', '要件'],
-    requirements: ['要件', '条件', '基準', '申請要件'],
-    amount: ['補助率', '金額', 'いくら', '上限', '額', '補助上限'],
-    limit: ['上限額', '上限金額', '限度額', 'いくらまで']
-  };
+  const intent = analyzeQuestionIntent(question || '');
 
-  // 補助金額・上限額に関する詳細な質問の判定
-  if (hasKeywords(question, keywordSets.limit) || 
-      (hasKeywords(question, ['金額', '補助']) && hasKeywords(question, ['上限', 'まで', '最大']))) {
-    return `補助金の上限額は従業員規模に応じて設定されています：
+  switch (intent) {
+    case 'limit_amount':
+      return `補助金の上限額は従業員規模に応じて設定されています：
 
 【従業員規模別の補助上限額】
 ■ 5名以下の場合
@@ -39,17 +84,24 @@ export const formatSubsidyResponse = (info: SubsidyInfo): string => {
 ・通常: 8,000万円
 ・大幅賃上げの場合: 1億円
 
+※大幅賃上げとは、補助事業期間終了後3～5年で最低賃金を年額45円以上上げる計画の場合です。`;
+
+    case 'basic_amount':
+      return `本補助金の基本的な補助内容は以下の通りです：
+
 【補助率】
-・中小企業: 1/2
-・小規模事業者・再生事業者: 2/3
+・中小企業: 事業費の1/2
+・小規模事業者: 事業費の2/3
+・再生事業者: 事業費の2/3
 
-※大幅賃上げとは、補助事業期間終了後の事業年度から3～5年の間に、事業場内最低賃金を年額45円以上の水準とすることを事業計画書に記載した場合を指します。`;
-  }
+【補助金額の範囲】
+・最小: 100万円から
+・最大: 従業員規模により750万円～1億円
 
-  // 補助対象経費に関する詳細な質問の判定
-  if (hasKeywords(question, keywordSets.expense) || 
-      (hasKeywords(question, keywordSets.target) && hasKeywords(question, ['経費', '費用', '金額']))) {
-    return `本補助金の対象となる経費は以下の通りです：
+より詳しい上限額をお知りになりたい場合は、「補助金の上限額を教えてください」とお尋ねください。`;
+
+    case 'expense':
+      return `本補助金の対象となる経費は以下の通りです：
 
 1. 機械装置・システム構築費
    - 専用ソフトウェア購入費
@@ -71,42 +123,23 @@ export const formatSubsidyResponse = (info: SubsidyInfo): string => {
 
 ※補助対象経費は全て税抜きの金額となります
 ※補助事業の実施期間内に発注、支払いが完了している必要があります`;
-  }
 
-  // 対象に関する曖昧な質問の判定
-  if (hasKeywords(question, keywordSets.target) && 
-      !hasKeywords(question, keywordSets.company) && 
-      !hasKeywords(question, keywordSets.expense)) {
-    return `「対象」について、より具体的に知りたい内容をお選びください：
+    case 'requirement':
+      return `申請要件は以下の通りです：
 
-1. 対象となる企業の条件について
-2. 対象となる経費について
+1. 労働生産性の年平均成長率が+4%以上増加
 
-以下のように質問を具体的にしていただけますと幸いです：
-・「どのような企業が対象ですか？」
-・「補助対象となる経費を教えてください」`;
-  }
+2. 以下のいずれかを満たすこと
+   - 1人あたり給与支給総額の年平均成長率が事業実施都道府県の最低賃金の直近5年間の年平均成長率以上
+   - 給与支給総額の年平均成長率が+4%以上上昇
 
-  // 金額に関する曖昧な質問の判定
-  if (hasKeywords(question, ['金']) && 
-      !hasKeywords(question, ['経費', '費用']) && 
-      !hasKeywords(question, ['補助率', '上限'])) {
-    return `「金額」について、より具体的に知りたい内容をお選びください：
+3. 事業所内最低賃金が事業実施都道府県の最低賃金+30円以上
 
-1. 補助金の補助率について
-2. 補助金の上限額について
-3. 補助対象となる経費について
+4. 従業員数21名以上の場合
+   - 次世代育成支援対策推進法に基づく一般事業主行動計画の公表が必要`;
 
-以下のように質問を具体的にしていただけますと幸いです：
-・「補助率はいくらですか？」
-・「補助金の上限額を教えてください」
-・「対象となる経費を教えてください」`;
-  }
-
-  // 対象企業に関する質問
-  if (hasKeywords(question, keywordSets.company) || 
-      (hasKeywords(question, keywordSets.target) && hasKeywords(question, ['企業', '会社']))) {
-    return `本補助金の対象となる企業は以下の通りです：
+    case 'target':
+      return `本補助金の対象となる企業は以下の通りです：
 
 1. 中小企業者（中小企業基本法に定める中小企業者）
   ・製造業、建設業、運輸業その他：資本金3億円以下 または 従業員300人以下
@@ -122,54 +155,16 @@ export const formatSubsidyResponse = (info: SubsidyInfo): string => {
 ・発行済株式の総数又は出資価格の総額の2分の1以上を同一の大企業が所有している中小企業者
 ・発行済株式の総数又は出資価格の総額の3分の2以上を大企業が所有している中小企業者
 ・大企業の役員又は職員を兼ねている者が、役員総数の2分の1以上を占めている中小企業者`;
+
+    default:
+      return `中小企業省力化投資補助金（一般型）について、具体的な情報をお知りになりたい場合は、以下のような質問をお試しください：
+
+・補助金の上限額はいくらですか？
+・従業員規模別の補助金額を教えてください
+・補助率はどのくらいですか？
+・どのような経費が対象になりますか？
+・申請要件を教えてください`;
   }
-  
-  // 補助金額・補助率に関する質問
-  if (hasKeywords(question, keywordSets.amount)) {
-    return `補助金の支援内容は以下の通りです：
-
-【補助率】
-・中小企業：1/2
-・小規模事業者・再生事業者：2/3
-
-【従業員規模別の補助上限額】
-・5名以下：750万円（大幅賃上げの場合1,000万円）
-・6～20名：1,500万円（同2,000万円）
-・21～50名：3,000万円（同4,000万円）
-・51～100名：5,000万円（同6,500万円）
-・101名以上：8,000万円（同1億円）`;
-  }
-
-  // 申請要件に関する質問
-  if (hasKeywords(question, keywordSets.requirements)) {
-    return `申請要件は以下の通りです：
-
-1. 労働生産性の年平均成長率が+4%以上増加
-
-2. 以下のいずれかを満たすこと
-   - 1人あたり給与支給総額の年平均成長率が事業実施都道府県の最低賃金の直近5年間の年平均成長率以上
-   - 給与支給総額の年平均成長率が+4%以上上昇
-
-3. 事業所内最低賃金が事業実施都道府県の最低賃金+30円以上
-
-4. 従業員数21名以上の場合
-   - 次世代育成支援対策推進法に基づく一般事業主行動計画の公表が必要`;
-  }
-
-  // デフォルトの応答も改善
-  return `中小企業省力化投資補助金（一般型）は、人手不足に直面する中小企業の生産性向上を支援する制度です。
-
-主な特徴：
-・省力化効果のある設備・システムの導入を支援
-・労働生産性の向上（年平均成長率4%以上）を目指す事業が対象
-・補助率は中小企業1/2、小規模事業者2/3
-・従業員規模に応じた補助上限額の設定（750万円～1億円）
-
-具体的な情報が必要な場合は、以下のような質問をお試しください：
-・「補助金の上限額を教えてください」
-・「どのような経費が補助対象になりますか？」
-・「申請要件を詳しく知りたいです」
-・「対象となる企業の条件を教えてください」`;
 };
 
 // キーワードの組み合わせをチェックする関数
