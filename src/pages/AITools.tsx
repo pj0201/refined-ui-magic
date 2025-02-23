@@ -1,5 +1,4 @@
-
-import { Brain, Code, FileVideo, Image, MessageSquare, Robot, ScrollText, Zap } from "lucide-react";
+import { Bot, Brain, Code, FileVideo, Home, Image, MessageSquare, ScrollText, Zap } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -63,7 +62,7 @@ const toolCategories = [
   },
   {
     category: "業務自動化",
-    icon: <Robot className="w-6 h-6" />,
+    icon: <Bot className="w-6 h-6" />,
     tools: [
       { 
         name: "Dify",
