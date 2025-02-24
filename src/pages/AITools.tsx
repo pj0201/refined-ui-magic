@@ -1,5 +1,5 @@
 
-import { Brain, Code, FileVideo, Home, Image, MessageSquare, ScrollText, Zap } from "lucide-react";
+import { Brain, Code, FileVideo, Home, Image, MessageSquare, ScrollText, Zap, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { CategorySection } from "@/components/AITools/CategorySection";
@@ -85,6 +85,20 @@ const toolCategories = [
     ]
   },
   {
+    category: "サーチツール",
+    icon: Search,
+    tools: [
+      { 
+        name: "GENSPARK",
+        description: "AIを活用した高度な検索エンジン。業界特化型の情報収集と分析が可能" 
+      },
+      { 
+        name: "Felo",
+        description: "マルチソース検索と情報統合のAIプラットフォーム。複数のデータソースを横断的に分析" 
+      }
+    ]
+  },
+  {
     category: "動画生成",
     icon: FileVideo,
     tools: [
@@ -119,14 +133,6 @@ const toolCategories = [
       { 
         name: "Kotaba",
         description: "日本語に特化した自然言語処理AI。文脈理解が優れている" 
-      },
-      { 
-        name: "GENSPARK",
-        description: "AIを活用した高度な検索エンジン。業界特化型の情報収集と分析が可能" 
-      },
-      { 
-        name: "Felo",
-        description: "マルチソース検索と情報統合のAIプラットフォーム。複数のデータソースを横断的に分析" 
       },
       { 
         name: "Geospy",
