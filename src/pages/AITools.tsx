@@ -1,12 +1,14 @@
-import { Bot, Brain, Code, FileVideo, Home, Image, MessageSquare, ScrollText, Zap } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+import { Brain, Code, FileVideo, Home, Image, MessageSquare, ScrollText, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import { CategorySection } from "@/components/AITools/CategorySection";
+import { BusinessAutomationSection } from "@/components/AITools/BusinessAutomationSection";
 
 const toolCategories = [
   {
     category: "全般での活用",
-    icon: <Brain className="w-6 h-6" />,
+    icon: Brain,
     tools: [
       { 
         name: "ChatGPT-o1",
@@ -44,7 +46,7 @@ const toolCategories = [
   },
   {
     category: "クリエイティブ開発",
-    icon: <Code className="w-6 h-6" />,
+    icon: Code,
     tools: [
       { 
         name: "v0",
@@ -65,44 +67,8 @@ const toolCategories = [
     ]
   },
   {
-    category: "業務自動化",
-    icon: <Bot className="w-6 h-6" />,
-    tools: [
-      { 
-        name: "Dify",
-        description: "ビジネスプロセスの自動化を実現するRPAプラットフォーム。カスタマイズ性が高い" 
-      },
-      { 
-        name: "GENSPARK",
-        description: "AIを活用した高度な検索エンジン。業界特化型の情報収集と分析が可能" 
-      },
-      { 
-        name: "Felo",
-        description: "マルチソース検索と情報統合のAIプラットフォーム。複数のデータソースを横断的に分析" 
-      }
-    ]
-  },
-  {
-    category: "議事録・文書管理",
-    icon: <ScrollText className="w-6 h-6" />,
-    tools: [
-      { 
-        name: "tl;dv",
-        description: "会議の自動文字起こしと要約を行うAIツール。重要ポイントを抽出" 
-      },
-      { 
-        name: "Notion",
-        description: "AIを活用した次世代のナレッジマネジメントプラットフォーム" 
-      },
-      { 
-        name: "NotebookLM",
-        description: "AIによる文書解析と知識管理を統合したツール" 
-      }
-    ]
-  },
-  {
     category: "アプリケーション開発",
-    icon: <Zap className="w-6 h-6" />,
+    icon: Zap,
     tools: [
       { 
         name: "Lovable",
@@ -120,7 +86,7 @@ const toolCategories = [
   },
   {
     category: "動画生成",
-    icon: <FileVideo className="w-6 h-6" />,
+    icon: FileVideo,
     tools: [
       { 
         name: "Kling",
@@ -134,7 +100,7 @@ const toolCategories = [
   },
   {
     category: "画像生成",
-    icon: <Image className="w-6 h-6" />,
+    icon: Image,
     tools: [
       { 
         name: "Flux",
@@ -148,7 +114,7 @@ const toolCategories = [
   },
   {
     category: "特殊用途",
-    icon: <MessageSquare className="w-6 h-6" />,
+    icon: MessageSquare,
     tools: [
       { 
         name: "Kotaba",
@@ -183,29 +149,14 @@ export default function AITools() {
 
         <div className="grid gap-8">
           {toolCategories.map((category, index) => (
-            <div key={index}>
-              <h2 className="text-2xl font-semibold mb-4 text-gray-800 flex items-center gap-2">
-                {category.icon}
-                <span>{category.category}</span>
-              </h2>
-              <div className="grid gap-4">
-                {category.tools.map((tool, toolIndex) => (
-                  <Card key={toolIndex} className="backdrop-blur-md bg-white/80 hover:bg-white/90 transition-colors">
-                    <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
-                        <span>{tool.name}</span>
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="mb-4">
-                        <p className="text-gray-600">{tool.description}</p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
+            <CategorySection 
+              key={index}
+              category={category.category}
+              icon={category.icon}
+              tools={category.tools}
+            />
           ))}
+          <BusinessAutomationSection />
         </div>
       </div>
     </div>
