@@ -7,6 +7,7 @@
     get_template_part('template-parts/message-section');
     get_template_part('template-parts/support-area-card');
     get_template_part('template-parts/company-profile');
+    get_template_part('template-parts/chatbot');
     ?>
     
     <!-- Contact Section -->
