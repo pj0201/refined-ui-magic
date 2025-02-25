@@ -31,7 +31,7 @@ export const CompanyProfileSection = () => {
           </div>
           <div className="flex items-start gap-4">
             <strong className="min-w-24">業務内容：</strong>
-            <div className="grid grid-cols-2 gap-x-8 gap-y-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
               <span>経営コンサルティング</span>
               <span>業務改善全般（AIを活用した効率化や省力化）</span>
               <span>資金調達サポート</span>
