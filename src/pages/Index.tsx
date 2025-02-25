@@ -1,3 +1,4 @@
+
 import { HeroSection } from "@/components/sections/HeroSection";
 import { MessageSection } from "@/components/sections/MessageSection";
 import { CompanyProfileSection } from "@/components/sections/CompanyProfileSection";
@@ -80,6 +81,14 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 オンライン相談で全国対応いたします（北海道・関東一円・関西・中国・九州地域に在住し支援した実績あり）。
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle>費用の目安を教えてください</CardTitle>
+              </CardHeader>
+              <CardContent>
+                弊社への依頼内容によりますが、顧問契約の場合、月々25万円（税別）が目安となります。
               </CardContent>
             </Card>
           </div>
