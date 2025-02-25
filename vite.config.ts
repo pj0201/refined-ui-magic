@@ -2,21 +2,25 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
+import { componentTagger } from "lovable-tagger";
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   base: './',
   server: {
     host: "::",
     port: 8080,
   },
-  plugins: [react()],
+  plugins: [
+    react(),
+    mode === 'development' && componentTagger(),
+  ].filter(Boolean),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
   build: {
-    outDir: 'wordpress/assets/dist', // WordPressテーマのアセットディレクトリに出力
+    outDir: 'wordpress/assets/dist',
     emptyOutDir: true,
     assetsDir: '',
     rollupOptions: {
@@ -24,15 +28,15 @@ export default defineConfig({
         index: path.resolve(__dirname, 'index.html')
       },
       output: {
-        entryFileNames: `index.js`,  // index.jsとして出力
+        entryFileNames: `index.js`,
         chunkFileNames: `chunks/[name].[hash].js`,
         assetFileNames: (assetInfo) => {
           if (assetInfo.name === 'index.css') {
-            return 'style.css';  // style.cssとして出力
+            return 'style.css';
           }
           return `assets/[name].[ext]`;
         }
       }
     }
   }
-});
+}));
