@@ -3,7 +3,6 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 
-// componentTaggerを削除（ビルドエラーの原因となる可能性があるため）
 export default defineConfig({
   base: './',
   server: {
@@ -17,7 +16,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: 'dist', // WordPressのディレクトリを一時的に変更
+    outDir: 'wordpress/assets/dist', // WordPressテーマのアセットディレクトリに出力
     emptyOutDir: true,
     assetsDir: '',
     rollupOptions: {
@@ -25,11 +24,11 @@ export default defineConfig({
         index: path.resolve(__dirname, 'index.html')
       },
       output: {
-        entryFileNames: `[name].js`,
+        entryFileNames: `index.js`,  // index.jsとして出力
         chunkFileNames: `chunks/[name].[hash].js`,
         assetFileNames: (assetInfo) => {
           if (assetInfo.name === 'index.css') {
-            return 'style.css';
+            return 'style.css';  // style.cssとして出力
           }
           return `assets/[name].[ext]`;
         }
