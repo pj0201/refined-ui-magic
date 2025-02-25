@@ -11,21 +11,23 @@ import AITools from "./pages/AITools";
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <HashRouter>
-        <Routes>
-          <Route path="/" element={<Index />} />
-          <Route path="/ai-glossary" element={<AIGlossary />} />
-          <Route path="/ai-tools" element={<AITools />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </HashRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <HashRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+            <Route path="/ai-glossary" element={<AIGlossary />} />
+            <Route path="/ai-tools" element={<AITools />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </HashRouter>
+        <Toaster />
+        <Sonner />
+      </TooltipProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;
