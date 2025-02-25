@@ -2,25 +2,22 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
-import { componentTagger } from "lovable-tagger";
 
-export default defineConfig(({ mode }) => ({
+// componentTaggerを削除（ビルドエラーの原因となる可能性があるため）
+export default defineConfig({
   base: './',
   server: {
     host: "::",
     port: 8080,
   },
-  plugins: [
-    react(),
-    mode === 'development' && componentTagger(),
-  ].filter(Boolean),
+  plugins: [react()],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
   build: {
-    outDir: 'wordpress/assets/dist',
+    outDir: 'dist', // WordPressのディレクトリを一時的に変更
     emptyOutDir: true,
     assetsDir: '',
     rollupOptions: {
@@ -39,4 +36,4 @@ export default defineConfig(({ mode }) => ({
       }
     }
   }
-}));
+});

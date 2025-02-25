@@ -9,7 +9,14 @@ import NotFound from "./pages/NotFound";
 import AIGlossary from "./pages/AIGlossary";
 import AITools from "./pages/AITools";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 const App = () => {
   return (
