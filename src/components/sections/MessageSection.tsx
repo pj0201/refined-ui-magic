@@ -1,12 +1,12 @@
 
-import { Card } from "@/components/ui/card";
+import { FC } from 'react';
 
-export const MessageSection = () => {
+export const MessageSection: FC = () => {
   return (
     <section id="message" className="py-20 px-4" style={{ background: 'linear-gradient(109.6deg, #F1F0FB 11.2%, #eee 91.1%)' }}>
       <div className="max-w-4xl mx-auto space-y-8">
         <h2 className="text-3xl font-bold text-center mb-12 text-[#403E43]">AIに強い経営コンサルティング</h2>
-        <Card className="p-8 bg-white/90 backdrop-blur-sm shadow-lg border-[#aaadb0]/20" style={{ fontFamily: '"Hiragino Mincho ProN", serif' }}>
+        <div className="p-8 bg-white/90 backdrop-blur-sm shadow-lg border-[#aaadb0]/20 rounded-lg" style={{ fontFamily: '"Hiragino Mincho ProN", serif' }}>
           <div className="grid md:grid-cols-2 gap-12 items-start">
             <div className="space-y-6 text-[#403E43] leading-relaxed">
               <p>
@@ -30,8 +30,10 @@ export const MessageSection = () => {
               />
             </div>
           </div>
-        </Card>
+        </div>
       </div>
     </section>
   );
 };
+
+export default MessageSection;
