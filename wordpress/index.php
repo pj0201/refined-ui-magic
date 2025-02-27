@@ -4,8 +4,11 @@
 <main id="primary" class="site-main">
     <?php 
     get_template_part('template-parts/hero-section');
+    get_template_part('template-parts/topic-section');
     get_template_part('template-parts/message-section');
     get_template_part('template-parts/support-area-card');
+    get_template_part('template-parts/consultation-flow');
+    get_template_part('template-parts/faq-section');
     get_template_part('template-parts/company-profile');
     get_template_part('template-parts/chatbot');
     ?>
