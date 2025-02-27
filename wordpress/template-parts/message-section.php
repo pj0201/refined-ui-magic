@@ -1,7 +1,7 @@
 
 <section id="message" class="py-20 px-4" style="background: linear-gradient(109.6deg, #F1F0FB 11.2%, #eee 91.1%);">
     <div class="max-w-4xl mx-auto space-y-8">
-        <h2 class="text-3xl font-bold text-center mb-12 text-[#403E43]">メッセージ</h2>
+        <h2 class="text-3xl font-bold text-center mb-12 text-[#403E43]">AIに強い経営コンサルティング</h2>
         <div class="card p-8 bg-white/90 backdrop-blur-sm shadow-lg border-[#aaadb0]/20" style="font-family: 'Hiragino Mincho ProN', serif">
             <div class="grid md:grid-cols-2 gap-12 items-start">
                 <div class="space-y-6 text-[#403E43] leading-relaxed">
