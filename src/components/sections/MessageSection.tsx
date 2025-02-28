@@ -1,7 +1,7 @@
 
 import React from 'react';
 
-const MessageSection = () => {
+export const MessageSection = () => {
   return (
     <section id="message" className="py-20 px-4">
       <div className="max-w-4xl mx-auto text-center fade-in">

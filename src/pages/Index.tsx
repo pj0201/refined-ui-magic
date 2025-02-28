@@ -1,6 +1,6 @@
 
 import { HeroSection } from "@/components/sections/HeroSection";
-import MessageSection from "@/components/sections/MessageSection";
+import { MessageSection } from "@/components/sections/MessageSection";
 import { CompanyProfileSection } from "@/components/sections/CompanyProfileSection";
 import { SupportAreasSection } from "@/components/sections/SupportAreasSection";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
