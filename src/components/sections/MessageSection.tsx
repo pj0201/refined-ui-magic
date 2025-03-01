@@ -18,4 +18,5 @@ export const MessageSection = () => {
   );
 };
 
+// This ensures we have both a named export and a default export
 export default MessageSection;
