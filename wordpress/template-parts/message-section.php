@@ -1,4 +1,5 @@
 
+
 <section id="message" class="py-20 px-4 bg-slate-50">
     <div class="max-w-6xl mx-auto fade-in">
         <h2 class="text-3xl font-bold mb-12 text-center">AIに強い経営コンサルティング</h2>
@@ -34,3 +35,4 @@
         </div>
     </div>
 </section>
+
