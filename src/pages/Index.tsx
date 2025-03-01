@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { SubsidyChatbot } from "@/components/SubsidyChat/SubsidyChatbot";
 import { TopicSection } from "@/components/sections/TopicSection";
+import { HelpCircle, Box, Sprout, MapPin, DollarSign } from "lucide-react";
 
 const Index = () => {
   return (
@@ -49,7 +50,10 @@ const Index = () => {
           <div className="space-y-8">
             <Card>
               <CardHeader>
-                <CardTitle>どういう支援サービスですか？</CardTitle>
+                <CardTitle className="flex items-center">
+                  <HelpCircle className="mr-2 text-blue-600" size={24} />
+                  どういう支援サービスですか？
+                </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <p>各帳票を精査させていただき、問題解決や実績向上につながる改善提案を行います。目標設定からKPIなどの予実のチェック。数値に現れない要因も探りながら、分析を重ねたうえで真因をつかみ、確度の高い効果的な戦略に落とし込みます。</p>
@@ -60,7 +64,10 @@ const Index = () => {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>業務ツール開発はどんなものが作れますか？</CardTitle>
+                <CardTitle className="flex items-center">
+                  <Box className="mr-2 text-blue-600" size={24} />
+                  業務ツール開発はどんなものが作れますか？
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <p>業務の自動化や省力化に関するものや、分析ツールや管理システム、マニュアルなどのボット化など、ヒヤリングを経て、案件定義・要件定義をさせていただきます。</p>
@@ -69,7 +76,10 @@ const Index = () => {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>創業前でも相談可能ですか？</CardTitle>
+                <CardTitle className="flex items-center">
+                  <Sprout className="mr-2 text-blue-600" size={24} />
+                  創業前でも相談可能ですか？
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 事業構想段階からのご相談を推奨しています。
@@ -77,7 +87,10 @@ const Index = () => {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>地方企業でも対応可能？</CardTitle>
+                <CardTitle className="flex items-center">
+                  <MapPin className="mr-2 text-blue-600" size={24} />
+                  地方企業でも対応可能？
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 オンライン相談で全国対応いたします（北海道・関東一円・関西・中国・九州地域に在住し支援した実績あり）。
@@ -85,7 +98,10 @@ const Index = () => {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>費用の目安を教えてください</CardTitle>
+                <CardTitle className="flex items-center">
+                  <DollarSign className="mr-2 text-blue-600" size={24} />
+                  費用の目安を教えてください
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 弊社への依頼内容によりますが、顧問契約の場合、月々25万円（税別）が目安となります。
