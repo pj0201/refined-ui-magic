@@ -1,9 +1,9 @@
 
 <section id="message" class="py-20 px-4 bg-slate-50">
     <div class="max-w-6xl mx-auto fade-in">
-        <div class="flex flex-col md:flex-row gap-8 items-center">
-            <div class="md:w-1/2 text-left space-y-6">
-                <h2 class="text-3xl font-bold mb-8">AIに強い経営コンサルティング</h2>
+        <h2 class="text-3xl font-bold mb-12 text-center">AIに強い経営コンサルティング</h2>
+        <div class="flex flex-col md:flex-row gap-8 items-center justify-center">
+            <div class="md:w-1/2 text-center md:text-left space-y-6">
                 <div class="message-text text-lg leading-relaxed space-y-4">
                     <p>
                         時代の変化により人・金・物を経営資源とした時代から、情報や時消費・事消費と消費者がお金を使う領域は変化して来ました。
@@ -19,11 +19,16 @@
                     </p>
                 </div>
             </div>
-            <div class="md:w-1/2">
+            <div class="md:w-1/2 flex flex-col gap-4">
                 <img 
                     src="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7" 
                     alt="AI-driven consulting visualization" 
-                    class="rounded-xl shadow-lg w-full object-cover"
+                    class="rounded-xl shadow-lg w-full object-cover h-60"
+                />
+                <img 
+                    src="https://images.unsplash.com/photo-1488229297570-58520851e868?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80" 
+                    alt="Data analysis and AI implementation" 
+                    class="rounded-xl shadow-lg w-full object-cover h-60"
                 />
             </div>
         </div>
