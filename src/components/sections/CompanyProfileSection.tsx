@@ -6,13 +6,21 @@ export const CompanyProfileSection = () => {
     <section id="about-us" className="py-20 px-4" style={{ background: 'linear-gradient(109.6deg, #F1F0FB 11.2%, #eee 91.1%)' }}>
       <div className="max-w-4xl mx-auto fade-in">
         <h2 className="text-3xl font-bold text-center mb-12 text-[#403E43]">会社概要</h2>
-        <div className="grid grid-cols-1 md:grid-cols-[1fr_1fr] gap-8 mb-8">
-          <div className="bg-white/90 rounded-lg shadow-lg border-2 border-gray-200 p-0 overflow-hidden">
-            {/* Frame top */}
-            <div className="h-4 w-full bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100"></div>
-            
-            {/* Content area */}
-            <div className="p-6 space-y-6 text-[#403E43]">
+        
+        <div className="relative">
+          {/* Top frame images */}
+          <div className="absolute -top-3 left-0 right-0 h-3 w-full overflow-hidden">
+            <div className="h-full w-full bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100"></div>
+          </div>
+          
+          {/* Left frame images */}
+          <div className="absolute top-0 -left-3 bottom-0 w-3 overflow-hidden">
+            <div className="h-full w-full bg-gradient-to-b from-blue-100 via-blue-200 to-blue-100"></div>
+          </div>
+          
+          {/* Content area with 5% padding */}
+          <div className="bg-white/90 rounded-lg shadow-lg border-2 border-gray-200 p-6 relative">
+            <div className="text-[#403E43] space-y-6">
               <p className="flex items-center gap-4">
                 <strong className="min-w-24">法人名：</strong>
                 <span>PLANNINGJOY株式会社</span>
@@ -53,21 +61,16 @@ export const CompanyProfileSection = () => {
                 </div>
               </div>
             </div>
-            
-            {/* Frame bottom */}
-            <div className="h-4 w-full bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100"></div>
           </div>
           
-          <div className="flex flex-col gap-6 justify-center">
-            <div className="aspect-video rounded-lg shadow-lg overflow-hidden border-2 border-gray-200">
-              <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="オフィスビル" className="w-full h-full object-cover" />
-            </div>
-            <div className="aspect-video rounded-lg shadow-lg overflow-hidden border-2 border-gray-200">
-              <img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="オフィス内部" className="w-full h-full object-cover" />
-            </div>
-            <div className="aspect-video rounded-lg shadow-lg overflow-hidden border-2 border-gray-200">
-              <img src="https://images.unsplash.com/photo-1568992687947-868a62a9f521?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="ビジネスミーティング" className="w-full h-full object-cover" />
-            </div>
+          {/* Right frame images */}
+          <div className="absolute top-0 -right-3 bottom-0 w-3 overflow-hidden">
+            <div className="h-full w-full bg-gradient-to-b from-blue-100 via-blue-200 to-blue-100"></div>
+          </div>
+          
+          {/* Bottom frame images */}
+          <div className="absolute -bottom-3 left-0 right-0 h-3 w-full overflow-hidden">
+            <div className="h-full w-full bg-gradient-to-r from-blue-100 via-blue-200 to-blue-100"></div>
           </div>
         </div>
       </div>
