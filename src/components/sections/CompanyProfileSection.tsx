@@ -46,18 +46,26 @@ export const CompanyProfileSection = () => {
               <div className="flex items-start gap-4">
                 <strong className="min-w-24">業務内容：</strong>
                 <div className="w-full">
-                  <ul className="list-none space-y-2">
-                    <li>経営コンサルティング</li>
-                    <li>業務改善全般（AIを活用した効率化や省力化）</li>
-                    <li>資金調達サポート</li>
-                    <li>キャッシュフロー改善</li>
-                    <li>補助金申請サポート</li>
-                    <li>各種計画策定サポート</li>
-                    <li>事業承継サポート</li>
-                    <li>業務ツール開発（AIを使った駆動開発）</li>
-                    <li>M&Aサポート</li>
-                    <li>広告代理業</li>
-                  </ul>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
+                    <div className="col-span-1">
+                      <ul className="list-none space-y-2">
+                        <li>経営コンサルティング</li>
+                        <li>業務改善全般（AIを活用した効率化や省力化）</li>
+                        <li>資金調達サポート</li>
+                        <li>キャッシュフロー改善</li>
+                        <li>補助金申請サポート</li>
+                      </ul>
+                    </div>
+                    <div className="col-span-1">
+                      <ul className="list-none space-y-2">
+                        <li>各種計画策定サポート</li>
+                        <li>事業承継サポート</li>
+                        <li>業務ツール開発（AIを使った駆動開発）</li>
+                        <li>M&Aサポート</li>
+                        <li>広告代理業</li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
