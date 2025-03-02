@@ -2,8 +2,9 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
+import type { ConfigEnv, UserConfig } from 'vite';
 
-export default defineConfig(({ mode }) => ({
+export default defineConfig(({ mode }: ConfigEnv): UserConfig => ({
   base: './',
   server: {
     host: "::",
@@ -16,7 +17,7 @@ export default defineConfig(({ mode }) => ({
       name: 'lovable-tagger',
       apply: 'serve',
       // 必要最小限の設定でダミー実装
-      enforce: 'post'
+      enforce: 'post' as const
     }
   ].filter(Boolean),
   resolve: {
