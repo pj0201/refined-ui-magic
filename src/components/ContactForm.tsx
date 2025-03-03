@@ -1,8 +1,6 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Mail } from "lucide-react";
 
@@ -19,97 +17,55 @@ export const ContactForm = ({
   borderColor = "border-blue-600",
   hoverColor = "hover:bg-blue-50"
 }: ContactFormProps) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (!name || !email || !message) {
-      toast({
-        title: "入力エラー",
-        description: "すべての項目を入力してください",
-        variant: "destructive"
-      });
-      return;
-    }
+  // Google Form URLs - replace these with your actual Google Form URLs
+  const formBaseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfYB1RLSvB-jPvBgCj_c1hxYzJYB-H5V_7_uy0DrU1TqTPjVw/viewform?usp=pp_url";
+  
+  // Build the URL with prefilled subject
+  const formUrlWithSubject = `${formBaseUrl}&entry.1234567890=${encodeURIComponent(subject)}`;
 
-    setIsSubmitting(true);
-
-    try {
-      // ここではフォームデータを単純にコンソールに出力するだけ
-      // 実際にはバックエンド連携などが必要
-      console.log({
-        name,
-        email,
-        message,
-        subject
-      });
-
-      // 送信成功のフィードバック
-      toast({
-        title: "送信完了",
-        description: "お問い合わせありがとうございます。折り返しご連絡いたします。",
-      });
-
-      // フォームをクリア
-      setName("");
-      setEmail("");
-      setMessage("");
-    } catch (error) {
-      console.error("Form submission error:", error);
-      toast({
-        title: "エラーが発生しました",
-        description: "送信に失敗しました。後ほど再度お試しください。",
-        variant: "destructive"
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
+  const handleShowForm = () => {
+    setIsLoading(true);
+    // Simulate loading the form
+    setTimeout(() => {
+      setShowForm(true);
+      setIsLoading(false);
+    }, 500);
   };
 
-  return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <Input
-          type="text"
-          placeholder="お名前"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="w-full"
-        />
-      </div>
-      <div>
-        <Input
-          type="email"
-          placeholder="メールアドレス"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full"
-        />
-      </div>
-      <div>
-        <Textarea
-          placeholder="お問い合わせ内容"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          className="w-full h-32"
-        />
-      </div>
-      <div className="text-center">
-        <Button 
-          type="submit"
-          variant="outline"
-          className={`bg-white ${buttonColor} ${borderColor} ${hoverColor}`}
-          disabled={isSubmitting}
+  if (showForm) {
+    return (
+      <div className="w-full h-full">
+        <iframe 
+          src={formUrlWithSubject}
+          width="100%" 
+          height="650" 
+          frameBorder="0" 
+          marginHeight={0} 
+          marginWidth={0}
+          className="mt-2"
         >
-          <Mail className="mr-2 h-4 w-4" />
-          {isSubmitting ? "送信中..." : "お問い合わせを送信"}
-        </Button>
+          読み込んでいます...
+        </iframe>
       </div>
-    </form>
+    );
+  }
+
+  return (
+    <div className="text-center">
+      <p className="mb-4">お問い合わせには、セキュアなGoogleフォームを使用しております。</p>
+      <Button 
+        variant="outline"
+        className={`bg-white ${buttonColor} ${borderColor} ${hoverColor}`}
+        disabled={isLoading}
+        onClick={handleShowForm}
+      >
+        <Mail className="mr-2 h-4 w-4" />
+        {isLoading ? "読み込み中..." : "お問い合わせフォームを表示"}
+      </Button>
+    </div>
   );
 };
