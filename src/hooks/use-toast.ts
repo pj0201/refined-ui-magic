@@ -1,19 +1,16 @@
 import * as React from "react"
 
-import type {
-  ToastActionElement,
-  ToastProps,
-} from "@/components/ui/toast"
-
-const TOAST_LIMIT = 1
-const TOAST_REMOVE_DELAY = 1000000
-
-type ToasterToast = ToastProps & {
+// Define and export the types
+export type ToastProps = {
   id: string
   title?: React.ReactNode
   description?: React.ReactNode
-  action?: ToastActionElement
+  action?: React.ReactElement
+  open: boolean
+  onOpenChange: (open: boolean) => void
 }
+
+export type ToastActionElement = React.ReactElement
 
 const actionTypes = {
   ADD_TOAST: "ADD_TOAST",
@@ -53,6 +50,17 @@ interface State {
   toasts: ToasterToast[]
 }
 
+// Define ToasterToast type with our exported types
+type ToasterToast = ToastProps & {
+  id: string
+  title?: React.ReactNode
+  description?: React.ReactNode
+  action?: ToastActionElement
+}
+
+const TOAST_LIMIT = 1
+const TOAST_REMOVE_DELAY = 1000000
+
 const toastTimeouts = new Map<string, ReturnType<typeof setTimeout>>()
 
 const addToRemoveQueue = (toastId: string) => {
@@ -90,8 +98,6 @@ export const reducer = (state: State, action: Action): State => {
     case "DISMISS_TOAST": {
       const { toastId } = action
 
-      // ! Side effects ! - This could be extracted into a dismissToast() action,
-      // but I'll keep it here for simplicity
       if (toastId) {
         addToRemoveQueue(toastId)
       } else {

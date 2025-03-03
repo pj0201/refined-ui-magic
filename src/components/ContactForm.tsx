@@ -1,7 +1,6 @@
-
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/ui/use-toast";
 import { Mail, AlertCircle, ExternalLink, RefreshCw } from "lucide-react";
 
 interface ContactFormProps {
@@ -23,10 +22,8 @@ export const ContactForm = ({
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const { toast } = useToast();
 
-  // Google Form URL - iframe埋め込み用
   const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfGctjmssSGu73JcGfPeECrLstNGZF5w_36ePFOZLw7s-1HPg/viewform?embedded=true";
   
-  // Google Form URL - 直接アクセス用
   const directFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfGctjmssSGu73JcGfPeECrLstNGZF5w_36ePFOZLw7s-1HPg/viewform";
 
   const handleShowForm = () => {
@@ -38,7 +35,6 @@ export const ContactForm = ({
     }, 500);
   };
 
-  // iframeのエラーハンドリング
   const handleIframeError = () => {
     setIframeError(true);
     toast({
@@ -48,24 +44,18 @@ export const ContactForm = ({
     });
   };
 
-  // iframeのロード完了
   const handleIframeLoad = () => {
     setIsLoading(false);
   };
 
-  // 新しいタブでGoogleフォームを開く
   const openFormInNewTab = () => {
-    // 件名をクエリパラメータとして渡す
-    // 実際のGoogleフォームのフィールドIDを使用（entry.123456789など）
     const url = `${directFormUrl}?usp=pp_url&entry.1234567890=${encodeURIComponent(subject)}`;
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
-  // フォーム表示を再試行
   const retryLoadForm = () => {
     setIframeError(false);
     setIsLoading(true);
-    // iframe再読み込みのためにURLを一度リセットして再設定
     if (iframeRef.current) {
       iframeRef.current.src = "";
       setTimeout(() => {
@@ -77,17 +67,14 @@ export const ContactForm = ({
   };
 
   useEffect(() => {
-    // iframeが表示されている場合のみイベントリスナーを追加
     if (showForm && iframeRef.current) {
       const iframe = iframeRef.current;
       
-      // エラーイベントの適切な処理
       const handleError = () => {
         console.log("iframe error event triggered");
         handleIframeError();
       };
       
-      // ロード完了イベントの処理
       const handleLoad = () => {
         console.log("iframe loaded successfully");
         handleIframeLoad();
@@ -103,7 +90,6 @@ export const ContactForm = ({
     }
   }, [showForm]);
 
-  // スクリーンサイズに応じたiframeの高さ調整
   const getIframeHeight = () => {
     return window.innerWidth < 768 ? "1600px" : "1498px";
   };
