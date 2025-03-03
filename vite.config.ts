@@ -3,6 +3,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import type { ConfigEnv, UserConfig } from 'vite';
+import { componentTagger } from "lovable-tagger";
 
 export default defineConfig(({ mode }: ConfigEnv): UserConfig => ({
   base: './',
@@ -12,13 +13,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => ({
   },
   plugins: [
     react(),
-    // componentTaggerプラグインは開発モードでのみ使用
-    mode === 'development' && {
-      name: 'lovable-tagger',
-      apply: 'serve',
-      // 必要最小限の設定でダミー実装
-      enforce: 'post' as const
-    }
+    mode === 'development' && componentTagger(),
   ].filter(Boolean),
   resolve: {
     alias: {
