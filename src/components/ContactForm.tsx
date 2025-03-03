@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, AlertCircle } from "lucide-react";
+import { Mail, AlertCircle, ExternalLink } from "lucide-react";
 
 interface ContactFormProps {
   subject?: string;
@@ -25,6 +25,9 @@ export const ContactForm = ({
 
   // Google Form URL provided by user
   const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfGctjmssSGu73JcGfPeECrLstNGZF5w_36ePFOZLw7s-1HPg/viewform?embedded=true";
+  
+  // 直接アクセス用のURL
+  const directFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfGctjmssSGu73JcGfPeECrLstNGZF5w_36ePFOZLw7s-1HPg/viewform";
 
   const handleShowForm = () => {
     setIsLoading(true);
@@ -41,7 +44,7 @@ export const ContactForm = ({
     setIframeError(true);
     toast({
       title: "読み込みエラー",
-      description: "フォームの読み込みに失敗しました。再度お試しいただくか、メールでのお問い合わせをご利用ください。",
+      description: "フォームの読み込みに失敗しました。再度お試しいただくか、フォームを直接開いてご利用ください。",
       variant: "destructive",
     });
   };
@@ -49,6 +52,13 @@ export const ContactForm = ({
   // iframeのロード完了
   const handleIframeLoad = () => {
     setIsLoading(false);
+  };
+
+  // 新しいタブでGoogleフォームを開く
+  const openFormInNewTab = () => {
+    // クエリパラメータとして件名を渡す（必要に応じて）
+    const url = `${directFormUrl}?usp=pp_url&entry.xxx=${encodeURIComponent(subject)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
   };
 
   useEffect(() => {
@@ -64,6 +74,12 @@ export const ContactForm = ({
       };
     }
   }, [showForm]);
+
+  // スクリーンサイズに応じたiframeの高さ調整
+  const getIframeHeight = () => {
+    // モバイルとデスクトップで高さを変える
+    return window.innerWidth < 768 ? "1600px" : "1498px";
+  };
 
   if (showForm) {
     return (
@@ -84,10 +100,10 @@ export const ContactForm = ({
               <Button 
                 variant="outline"
                 className={`bg-white ${buttonColor} ${borderColor} ${hoverColor}`}
-                onClick={() => window.location.href = `mailto:hori@planjoy.net?subject=${encodeURIComponent(subject)}`}
+                onClick={openFormInNewTab}
               >
-                <Mail className="mr-2 h-4 w-4" />
-                メールでのお問い合わせ
+                <ExternalLink className="mr-2 h-4 w-4" />
+                フォームを新しいタブで開く
               </Button>
               <div className="block">
                 <Button 
@@ -107,7 +123,7 @@ export const ContactForm = ({
             ref={iframeRef}
             src={googleFormUrl}
             width="100%" 
-            height="1498" 
+            height={getIframeHeight()}
             frameBorder="0" 
             marginHeight={0} 
             marginWidth={0}
