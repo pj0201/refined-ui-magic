@@ -1,3 +1,4 @@
+
 import * as React from "react"
 
 // Define and export the types
@@ -8,6 +9,7 @@ export type ToastProps = {
   action?: React.ReactElement
   open: boolean
   onOpenChange: (open: boolean) => void
+  variant?: "default" | "destructive"
 }
 
 export type ToastActionElement = React.ReactElement
