@@ -1,13 +1,14 @@
+
 import { HeroSection } from "@/components/sections/HeroSection";
 import { ConsultingSection } from "@/components/sections/ConsultingSection";
 import { CompanyProfileSection } from "@/components/sections/CompanyProfileSection";
 import { SupportAreasSection } from "@/components/sections/SupportAreasSection";
 import { BusinessPlansSection } from "@/components/sections/BusinessPlansSection";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { SubsidyChatbot } from "@/components/SubsidyChat/SubsidyChatbot";
 import { TopicSection } from "@/components/sections/TopicSection";
 import { HelpCircle, Box, Sprout, MapPin, DollarSign } from "lucide-react";
+import { ContactForm } from "@/components/ContactForm";
 
 const Index = () => {
   return (
@@ -120,13 +121,12 @@ const Index = () => {
         <div className="max-w-4xl mx-auto text-center fade-in">
           <h2 className="text-3xl font-bold mb-8 text-white">お問い合わせ</h2>
           <p className="mb-8 text-white">下記フォームに必要事項をご記入のうえ、お気軽にご相談ください。</p>
-          <Button 
-            variant="outline" 
-            className="text-white border-white hover:bg-white hover:text-gray-900"
-            onClick={() => window.location.href = 'mailto:hori@planjoy.net'}
-          >
-            メールでのお問い合わせ
-          </Button>
+          <ContactForm 
+            subject="ウェブサイトからのお問い合わせ"
+            buttonColor="text-white"
+            borderColor="border-white"
+            hoverColor="hover:bg-white/10"
+          />
         </div>
       </section>
 

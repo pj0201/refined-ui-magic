@@ -2,7 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Mail, AlertCircle, ExternalLink } from "lucide-react";
+import { Mail, AlertCircle, ExternalLink, RefreshCw } from "lucide-react";
 
 interface ContactFormProps {
   subject?: string;
@@ -23,16 +23,15 @@ export const ContactForm = ({
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const { toast } = useToast();
 
-  // Google Form URL provided by user
+  // Google Form URL - iframe埋め込み用
   const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfGctjmssSGu73JcGfPeECrLstNGZF5w_36ePFOZLw7s-1HPg/viewform?embedded=true";
   
-  // 直接アクセス用のURL
+  // Google Form URL - 直接アクセス用
   const directFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfGctjmssSGu73JcGfPeECrLstNGZF5w_36ePFOZLw7s-1HPg/viewform";
 
   const handleShowForm = () => {
     setIsLoading(true);
     setIframeError(false);
-    // Simulate loading the form
     setTimeout(() => {
       setShowForm(true);
       setIsLoading(false);
@@ -56,9 +55,25 @@ export const ContactForm = ({
 
   // 新しいタブでGoogleフォームを開く
   const openFormInNewTab = () => {
-    // クエリパラメータとして件名を渡す（必要に応じて）
+    // 件名をクエリパラメータとして渡す
+    // 注: 実際のフォームのフィールドIDに合わせて調整が必要です (entry.xxx)
     const url = `${directFormUrl}?usp=pp_url&entry.xxx=${encodeURIComponent(subject)}`;
     window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
+  // フォーム表示を再試行
+  const retryLoadForm = () => {
+    setIframeError(false);
+    setIsLoading(true);
+    // iframe再読み込みのためにURLを一度リセットして再設定
+    if (iframeRef.current) {
+      iframeRef.current.src = "";
+      setTimeout(() => {
+        if (iframeRef.current) {
+          iframeRef.current.src = googleFormUrl;
+        }
+      }, 100);
+    }
   };
 
   useEffect(() => {
@@ -77,7 +92,6 @@ export const ContactForm = ({
 
   // スクリーンサイズに応じたiframeの高さ調整
   const getIframeHeight = () => {
-    // モバイルとデスクトップで高さを変える
     return window.innerWidth < 768 ? "1600px" : "1498px";
   };
 
@@ -99,21 +113,20 @@ export const ContactForm = ({
             <div className="space-y-3">
               <Button 
                 variant="outline"
-                className={`bg-white ${buttonColor} ${borderColor} ${hoverColor}`}
-                onClick={openFormInNewTab}
+                className="w-full md:w-auto bg-white text-red-600 border-red-600 hover:bg-red-50"
+                onClick={retryLoadForm}
               >
-                <ExternalLink className="mr-2 h-4 w-4" />
-                フォームを新しいタブで開く
+                <RefreshCw className="mr-2 h-4 w-4" />
+                再試行する
               </Button>
               <div className="block">
                 <Button 
-                  variant="ghost"
-                  onClick={() => {
-                    setIframeError(false);
-                    handleShowForm();
-                  }}
+                  variant="outline"
+                  className={`w-full md:w-auto bg-white ${buttonColor} ${borderColor} ${hoverColor}`}
+                  onClick={openFormInNewTab}
                 >
-                  再試行する
+                  <ExternalLink className="mr-2 h-4 w-4" />
+                  フォームを新しいタブで開く
                 </Button>
               </div>
             </div>
