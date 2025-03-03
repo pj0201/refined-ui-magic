@@ -1,8 +1,8 @@
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { Mail } from "lucide-react";
+import { Mail, AlertCircle } from "lucide-react";
 
 interface ContactFormProps {
   subject?: string;
@@ -19,6 +19,8 @@ export const ContactForm = ({
 }: ContactFormProps) => {
   const [showForm, setShowForm] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [iframeError, setIframeError] = useState(false);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const { toast } = useToast();
 
   // Google Form URL provided by user
@@ -26,6 +28,7 @@ export const ContactForm = ({
 
   const handleShowForm = () => {
     setIsLoading(true);
+    setIframeError(false);
     // Simulate loading the form
     setTimeout(() => {
       setShowForm(true);
@@ -33,20 +36,88 @@ export const ContactForm = ({
     }, 500);
   };
 
+  // iframeのエラーハンドリング
+  const handleIframeError = () => {
+    setIframeError(true);
+    toast({
+      title: "読み込みエラー",
+      description: "フォームの読み込みに失敗しました。再度お試しいただくか、メールでのお問い合わせをご利用ください。",
+      variant: "destructive",
+    });
+  };
+
+  // iframeのロード完了
+  const handleIframeLoad = () => {
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    // iframeが表示されている場合のみイベントリスナーを追加
+    if (showForm && iframeRef.current) {
+      const iframe = iframeRef.current;
+      iframe.addEventListener('error', handleIframeError);
+      iframe.addEventListener('load', handleIframeLoad);
+
+      return () => {
+        iframe.removeEventListener('error', handleIframeError);
+        iframe.removeEventListener('load', handleIframeLoad);
+      };
+    }
+  }, [showForm]);
+
   if (showForm) {
     return (
-      <div className="w-full h-full">
-        <iframe 
-          src={googleFormUrl}
-          width="100%" 
-          height="650" 
-          frameBorder="0" 
-          marginHeight={0} 
-          marginWidth={0}
-          className="mt-2"
-        >
-          読み込んでいます...
-        </iframe>
+      <div className="w-full max-w-3xl mx-auto">
+        {isLoading && (
+          <div className="flex justify-center items-center py-10">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-700"></div>
+            <span className="ml-3">読み込み中...</span>
+          </div>
+        )}
+        
+        {iframeError ? (
+          <div className="text-center p-6 border border-red-300 rounded-lg bg-red-50">
+            <AlertCircle className="mx-auto h-10 w-10 text-red-500 mb-3" />
+            <h3 className="text-lg font-bold mb-2">フォームの読み込みに失敗しました</h3>
+            <p className="mb-4">申し訳ありませんが、フォームの読み込みに問題が発生しました。</p>
+            <div className="space-y-3">
+              <Button 
+                variant="outline"
+                className={`bg-white ${buttonColor} ${borderColor} ${hoverColor}`}
+                onClick={() => window.location.href = `mailto:hori@planjoy.net?subject=${encodeURIComponent(subject)}`}
+              >
+                <Mail className="mr-2 h-4 w-4" />
+                メールでのお問い合わせ
+              </Button>
+              <div className="block">
+                <Button 
+                  variant="ghost"
+                  onClick={() => {
+                    setIframeError(false);
+                    handleShowForm();
+                  }}
+                >
+                  再試行する
+                </Button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <iframe 
+            ref={iframeRef}
+            src={googleFormUrl}
+            width="100%" 
+            height="1498" 
+            frameBorder="0" 
+            marginHeight={0} 
+            marginWidth={0}
+            className="mt-2 rounded-md shadow-sm"
+            onError={handleIframeError}
+            onLoad={handleIframeLoad}
+          >
+            読み込んでいます...
+          </iframe>
+        )}
       </div>
     );
   }
