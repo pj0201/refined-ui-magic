@@ -21,11 +21,8 @@ export const ContactForm = ({
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  // Google Form URLs - replace these with your actual Google Form URLs
-  const formBaseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfYB1RLSvB-jPvBgCj_c1hxYzJYB-H5V_7_uy0DrU1TqTPjVw/viewform?usp=pp_url";
-  
-  // Build the URL with prefilled subject
-  const formUrlWithSubject = `${formBaseUrl}&entry.1234567890=${encodeURIComponent(subject)}`;
+  // Google Form URL provided by user
+  const googleFormUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfGctjmssSGu73JcGfPeECrLstNGZF5w_36ePFOZLw7s-1HPg/viewform?embedded=true";
 
   const handleShowForm = () => {
     setIsLoading(true);
@@ -40,7 +37,7 @@ export const ContactForm = ({
     return (
       <div className="w-full h-full">
         <iframe 
-          src={formUrlWithSubject}
+          src={googleFormUrl}
           width="100%" 
           height="650" 
           frameBorder="0" 
