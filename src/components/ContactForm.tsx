@@ -56,8 +56,8 @@ export const ContactForm = ({
   // 新しいタブでGoogleフォームを開く
   const openFormInNewTab = () => {
     // 件名をクエリパラメータとして渡す
-    // 注: 実際のフォームのフィールドIDに合わせて調整が必要です (entry.xxx)
-    const url = `${directFormUrl}?usp=pp_url&entry.xxx=${encodeURIComponent(subject)}`;
+    // 実際のGoogleフォームのフィールドIDを使用（entry.123456789など）
+    const url = `${directFormUrl}?usp=pp_url&entry.1234567890=${encodeURIComponent(subject)}`;
     window.open(url, '_blank', 'noopener,noreferrer');
   };
 
@@ -80,12 +80,25 @@ export const ContactForm = ({
     // iframeが表示されている場合のみイベントリスナーを追加
     if (showForm && iframeRef.current) {
       const iframe = iframeRef.current;
-      iframe.addEventListener('error', handleIframeError);
-      iframe.addEventListener('load', handleIframeLoad);
+      
+      // エラーイベントの適切な処理
+      const handleError = () => {
+        console.log("iframe error event triggered");
+        handleIframeError();
+      };
+      
+      // ロード完了イベントの処理
+      const handleLoad = () => {
+        console.log("iframe loaded successfully");
+        handleIframeLoad();
+      };
+      
+      iframe.addEventListener('error', handleError);
+      iframe.addEventListener('load', handleLoad);
 
       return () => {
-        iframe.removeEventListener('error', handleIframeError);
-        iframe.removeEventListener('load', handleIframeLoad);
+        iframe.removeEventListener('error', handleError);
+        iframe.removeEventListener('load', handleLoad);
       };
     }
   }, [showForm]);
