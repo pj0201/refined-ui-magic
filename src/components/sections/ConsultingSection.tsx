@@ -1,14 +1,14 @@
 
 import React from 'react';
 
-export const MessageSection = () => {
+export const ConsultingSection = () => {
   return (
-    <section id="message" className="py-20 px-4 bg-slate-50">
+    <section id="consulting" className="py-20 px-4 bg-slate-50">
       <div className="max-w-6xl mx-auto fade-in">
         <h2 className="text-3xl font-bold mb-12 text-center">AIに強い経営コンサルティング</h2>
         <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
           <div className="md:w-1/2 text-center md:text-left space-y-6">
-            <div className="message-text text-lg leading-relaxed space-y-4">
+            <div className="consulting-text text-lg leading-relaxed space-y-4">
               <p>
                 時代の変化により人・金・物を経営資源とした時代から、情報や時消費・事消費と消費者がお金を使う領域は変化して来ました。
               </p>
@@ -44,4 +44,4 @@ export const MessageSection = () => {
   );
 };
 
-export default MessageSection;
+export default ConsultingSection;

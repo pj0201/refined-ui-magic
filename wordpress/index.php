@@ -5,7 +5,7 @@
     <?php 
     get_template_part('template-parts/hero-section');
     get_template_part('template-parts/topic-section');
-    get_template_part('template-parts/message-section');
+    get_template_part('template-parts/consulting-section');
     get_template_part('template-parts/support-area-card');
     get_template_part('template-parts/consultation-flow');
     get_template_part('template-parts/faq-section');
