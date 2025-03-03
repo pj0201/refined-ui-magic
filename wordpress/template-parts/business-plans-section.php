@@ -1,11 +1,11 @@
 
 <section id="business-plans" class="py-20 px-4 bg-gray-50">
     <div class="max-w-6xl mx-auto fade-in">
-        <h2 class="text-3xl font-bold mb-4 text-center">事業計画支援</h2>
+        <h2 class="text-3xl font-bold mb-4 text-center">計画策定で公的な制度活用へ</h2>
         <p class="text-lg text-center mb-12 max-w-3xl mx-auto">
-            各種計画策定について、経営コンサルタントとして豊富な実績と専門知識を活かしサポートいたします
+            以下の計画については、「融資」「税制」「保険」「補助金の加点」など、経営における様々なメリットがございます。
         </p>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             <!-- Plan 1: Posucoro -->
             <a href="/plans/posucoro" class="card h-full transition-all duration-300 bg-blue-50 hover:bg-blue-100 rounded-lg border-t-4 border-blue-500 hover:shadow-lg">
                 <div class="p-6 flex flex-col h-full">
@@ -167,6 +167,54 @@
                         </div>
                         <div>
                             <h3 class="font-bold text-lg">先端設備等導入計画</h3>
+                        </div>
+                    </div>
+                    <div class="mt-auto flex justify-end items-center">
+                        <span class="text-sm font-medium">詳細を見る</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1">
+                            <path d="M5 12h14"></path>
+                            <path d="m12 5 7 7-7 7"></path>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Plan 7: 経営革新計画 -->
+            <a href="/plans/keiei-kakushin" class="card h-full transition-all duration-300 bg-yellow-50 hover:bg-yellow-100 rounded-lg border-t-4 border-yellow-500 hover:shadow-lg">
+                <div class="p-6 flex flex-col h-full">
+                    <div class="flex items-start mb-4">
+                        <div class="mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#eab308" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-briefcase">
+                                <rect width="20" height="14" x="2" y="7" rx="2" ry="2"></rect>
+                                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">経営革新計画</h3>
+                        </div>
+                    </div>
+                    <div class="mt-auto flex justify-end items-center">
+                        <span class="text-sm font-medium">詳細を見る</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="ml-1">
+                            <path d="M5 12h14"></path>
+                            <path d="m12 5 7 7-7 7"></path>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+
+            <!-- Plan 8: DDS（資本性劣後ローン） -->
+            <a href="/plans/dds" class="card h-full transition-all duration-300 bg-emerald-50 hover:bg-emerald-100 rounded-lg border-t-4 border-emerald-500 hover:shadow-lg">
+                <div class="p-6 flex flex-col h-full">
+                    <div class="flex items-start mb-4">
+                        <div class="mr-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-dollar-sign">
+                                <line x1="12" x2="12" y1="2" y2="22"></line>
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">DDS（資本性劣後ローン）</h3>
                         </div>
                     </div>
                     <div class="mt-auto flex justify-end items-center">

@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,6 +14,8 @@ import BCPPage from "./pages/plans/BCPPage";
 import JigyouKeizokuPage from "./pages/plans/JigyouKeizokuPage";
 import KeieiRyokuPage from "./pages/plans/KeieiRyokuPage";
 import SentanSetsubiPage from "./pages/plans/SentanSetsubiPage";
+import KeieiKakushinPage from "./pages/plans/KeieiKakushinPage";
+import DDSPage from "./pages/plans/DDSPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -39,6 +42,8 @@ function App() {
             <Route path="/plans/jigyou-keizoku" element={<JigyouKeizokuPage />} />
             <Route path="/plans/keiei-ryoku" element={<KeieiRyokuPage />} />
             <Route path="/plans/sentan-setsubi" element={<SentanSetsubiPage />} />
+            <Route path="/plans/keiei-kakushin" element={<KeieiKakushinPage />} />
+            <Route path="/plans/dds" element={<DDSPage />} />
             
             <Route path="*" element={<NotFound />} />
           </Routes>
