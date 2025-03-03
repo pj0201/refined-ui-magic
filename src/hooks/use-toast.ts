@@ -53,12 +53,15 @@ interface State {
 }
 
 // Define ToasterToast type with our exported types
-type ToasterToast = ToastProps & {
+export type ToasterToast = Omit<ToastProps, "id"> & {
   id: string
   title?: React.ReactNode
   description?: React.ReactNode
   action?: ToastActionElement
 }
+
+// Define a simpler Toast type for the toast function
+export type Toast = Omit<ToasterToast, "id" | "open" | "onOpenChange">
 
 const TOAST_LIMIT = 1
 const TOAST_REMOVE_DELAY = 1000000
@@ -144,8 +147,6 @@ function dispatch(action: Action) {
     listener(memoryState)
   })
 }
-
-type Toast = Omit<ToasterToast, "id">
 
 function toast({ ...props }: Toast) {
   const id = genId()
