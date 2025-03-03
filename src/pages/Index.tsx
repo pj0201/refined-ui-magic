@@ -1,8 +1,8 @@
-
 import { HeroSection } from "@/components/sections/HeroSection";
 import { ConsultingSection } from "@/components/sections/ConsultingSection";
 import { CompanyProfileSection } from "@/components/sections/CompanyProfileSection";
 import { SupportAreasSection } from "@/components/sections/SupportAreasSection";
+import { BusinessPlansSection } from "@/components/sections/BusinessPlansSection";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { SubsidyChatbot } from "@/components/SubsidyChat/SubsidyChatbot";
@@ -16,6 +16,7 @@ const Index = () => {
       <TopicSection />
       <ConsultingSection />
       <SupportAreasSection />
+      <BusinessPlansSection />
       
       {/* Consultation Flow Section */}
       <section id="flow" className="py-20 px-4 bg-blue-900 text-white">

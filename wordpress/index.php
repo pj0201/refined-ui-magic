@@ -7,6 +7,7 @@
     get_template_part('template-parts/topic-section');
     get_template_part('template-parts/consulting-section');
     get_template_part('template-parts/support-area-card');
+    get_template_part('template-parts/business-plans-section');
     get_template_part('template-parts/consultation-flow');
     get_template_part('template-parts/faq-section');
     get_template_part('template-parts/company-profile');
