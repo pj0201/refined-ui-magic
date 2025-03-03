@@ -1,7 +1,7 @@
 
 import { PlanLayout } from "@/components/plans/PlanLayout";
 import { FileCheck, Award, CreditCard, Building2, Bookmark, Mail } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ContactForm } from "@/components/ContactForm";
 
 const KeieiKakushinPage = () => {
   return (
@@ -112,15 +112,14 @@ const KeieiKakushinPage = () => {
             <li>申請後のフォローアップと実行支援</li>
           </ul>
           <p className="mt-4">豊富な申請実績と専門知識を活かし、お客様の経営革新を成功に導きます。</p>
-          <div className="mt-6 text-center">
-            <Button 
-              variant="outline" 
-              className="bg-white text-yellow-600 border-yellow-600 hover:bg-yellow-50"
-              onClick={() => window.location.href = 'mailto:hori@planjoy.net'}
-            >
-              <Mail className="mr-2 h-4 w-4" />
-              お問い合わせはこちら
-            </Button>
+          <div className="mt-6">
+            <h3 className="font-bold text-lg mb-3">お問い合わせフォーム</h3>
+            <ContactForm 
+              subject="経営革新計画について相談したい" 
+              buttonColor="text-yellow-600" 
+              borderColor="border-yellow-600" 
+              hoverColor="hover:bg-yellow-50"
+            />
           </div>
         </section>
       </div>

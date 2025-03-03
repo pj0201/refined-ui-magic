@@ -2,7 +2,7 @@
 import { PlanLayout } from "@/components/plans/PlanLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { FileText, CheckCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ContactForm } from "@/components/ContactForm";
 
 const KeieiKaizenPage = () => {
   return (
@@ -96,12 +96,12 @@ const KeieiKaizenPage = () => {
           経営改善計画策定について専門的なサポートが必要な場合は、お気軽にご相談ください。
           弊社の経営コンサルタントが金融機関との調整も含めて、計画策定から実行までトータルでサポートいたします。
         </p>
-        <Button 
-          className="bg-green-600 hover:bg-green-700"
-          onClick={() => window.location.href = 'mailto:hori@planjoy.net?subject=経営改善計画策定について相談したい'}
-        >
-          メールでのお問い合わせ
-        </Button>
+        <ContactForm 
+          subject="経営改善計画策定について相談したい"
+          buttonColor="text-green-600"
+          borderColor="border-green-600"
+          hoverColor="hover:bg-green-50"
+        />
       </div>
     </PlanLayout>
   );

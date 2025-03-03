@@ -2,7 +2,7 @@
 import { PlanLayout } from "@/components/plans/PlanLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { FileText, CheckCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ContactForm } from "@/components/ContactForm";
 
 const PosucoroPage = () => {
   return (
@@ -94,12 +94,12 @@ const PosucoroPage = () => {
           早期経営改善計画策定について専門的なサポートが必要な場合は、お気軽にご相談ください。
           弊社の経営コンサルタントが計画策定から申請までトータルでサポートいたします。
         </p>
-        <Button 
-          className="bg-blue-600 hover:bg-blue-700"
-          onClick={() => window.location.href = 'mailto:hori@planjoy.net?subject=早期経営改善計画策定について相談したい'}
-        >
-          メールでのお問い合わせ
-        </Button>
+        <ContactForm 
+          subject="早期経営改善計画策定について相談したい"
+          buttonColor="text-blue-600"
+          borderColor="border-blue-600"
+          hoverColor="hover:bg-blue-50"
+        />
       </div>
     </PlanLayout>
   );
