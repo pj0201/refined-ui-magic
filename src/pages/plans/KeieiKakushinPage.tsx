@@ -1,6 +1,6 @@
 
 import { PlanLayout } from "@/components/plans/PlanLayout";
-import { FileCheck, Award, CreditCard, Bank, Bookmark } from "lucide-react";
+import { FileCheck, Award, CreditCard, Building2, Bookmark } from "lucide-react";
 
 const KeieiKakushinPage = () => {
   return (
@@ -20,7 +20,7 @@ const KeieiKakushinPage = () => {
           <div className="grid gap-4 md:grid-cols-2">
             <div className="bg-yellow-50 p-4 rounded-lg">
               <div className="flex items-center mb-2">
-                <Bank className="text-yellow-600 mr-2" />
+                <Building2 className="text-yellow-600 mr-2" />
                 <h3 className="font-bold">政府系金融機関による低利融資</h3>
               </div>
               <p>日本政策金融公庫の「新事業活動促進資金」などが利用可能になります。</p>
