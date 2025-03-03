@@ -1,6 +1,7 @@
 
 import { PlanLayout } from "@/components/plans/PlanLayout";
-import { DollarSign, TrendingUp, Scale, PiggyBank, FileText } from "lucide-react";
+import { DollarSign, TrendingUp, Scale, PiggyBank, FileText, Mail } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const DDSPage = () => {
   return (
@@ -64,7 +65,7 @@ const DDSPage = () => {
 
         <section>
           <h2 className="text-2xl font-bold mb-4">適用要件と対象企業</h2>
-          <p className="mb-4">以下のような企業がDDSの対象となることが多いです：</p>
+          <p className="mb-4">以下のような企業がDDSの対象となることが多いです</p>
           <ul className="list-disc pl-5 space-y-2">
             <li>財務状況に課題があるが事業の継続性や成長性が認められる企業</li>
             <li>経営改善計画や再生計画を策定・実行している企業</li>
@@ -120,6 +121,16 @@ const DDSPage = () => {
             <li>実行後のモニタリングと継続的な改善支援</li>
           </ul>
           <p className="mt-4">豊富な経験と専門知識を活かし、お客様の財務体質強化と事業成長を包括的にサポートいたします。</p>
+          <div className="mt-6 text-center">
+            <Button 
+              variant="outline" 
+              className="bg-white text-emerald-700 border-emerald-700 hover:bg-emerald-50"
+              onClick={() => window.location.href = 'mailto:hori@planjoy.net'}
+            >
+              <Mail className="mr-2 h-4 w-4" />
+              お問い合わせはこちら
+            </Button>
+          </div>
         </section>
       </div>
     </PlanLayout>
