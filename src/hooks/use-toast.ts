@@ -2,7 +2,7 @@
 "use client"
 
 import * as React from "react"
-import { toast as sonnerToast, type ToastT } from "sonner"
+import { toast as sonnerToast } from "sonner"
 
 // シンプルな型定義
 export type ToastProps = {
