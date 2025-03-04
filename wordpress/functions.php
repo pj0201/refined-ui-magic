@@ -1,3 +1,4 @@
+
 <?php
 if (!defined('ABSPATH')) {
     exit;
@@ -24,12 +25,17 @@ add_action('after_setup_theme', 'planningjoy_setup');
 // ファイルのバージョン管理をより確実にするためのヘルパー関数
 function planningjoy_file_version($file_path) {
     $full_path = get_template_directory() . $file_path;
-    return file_exists($full_path) ? filemtime($full_path) : '1.0.0';
+    return file_exists($full_path) ? filemtime($full_path) : (time() . '.' . rand(100, 999));
+}
+
+// キャッシュバスターのためのカスタムバージョン番号生成
+function planningjoy_cache_buster() {
+    return defined('WP_DEBUG') && WP_DEBUG ? time() : get_theme_mod('planningjoy_theme_version', '1.0.0');
 }
 
 function planningjoy_scripts() {
     // メインのスタイルシート
-    wp_enqueue_style('planningjoy-style', get_stylesheet_uri());
+    wp_enqueue_style('planningjoy-style', get_stylesheet_uri(), array(), planningjoy_cache_buster());
     
     // ReactアプリのCSS - キャッシュ対策として一意のバージョン番号を使用
     $css_version = planningjoy_file_version('/assets/dist/style.css');
@@ -43,17 +49,24 @@ function planningjoy_scripts() {
     $js_version = planningjoy_file_version('/assets/dist/index.js');
     wp_enqueue_script('planningjoy-react', get_template_directory_uri() . '/assets/dist/index.js', array(), $js_version, true);
     
-    // カスタムJavaScript
+    // カスタムJavaScript - 修正済みバージョン番号
     $custom_js_version = planningjoy_file_version('/assets/js/main.js');
     wp_enqueue_script('planningjoy-main', get_template_directory_uri() . '/assets/js/main.js', array('planningjoy-react'), $custom_js_version, true);
     
-    // ページ情報をJavaScriptに渡す
+    // ページ情報をJavaScriptに渡す - より堅牢な実装
     wp_localize_script('planningjoy-react', 'planningJoyData', array(
         'ajaxUrl' => admin_url('admin-ajax.php'),
         'homeUrl' => home_url(),
         'isHome' => is_front_page() || is_home(),
-        'version' => $js_version, // バージョン情報も渡して、フロントエンドでもキャッシュ制御ができるようにする
+        'version' => $js_version,
+        'nonce' => wp_create_nonce('planningjoy-nonce'),
+        'timestamp' => time(),
     ));
+    
+    // プレビューモードの検出とスペシャルフラグ設定
+    if (is_preview()) {
+        wp_add_inline_script('planningjoy-react', 'window.planningJoyIsPreview = true;', 'before');
+    }
 }
 add_action('wp_enqueue_scripts', 'planningjoy_scripts');
 
@@ -78,11 +91,6 @@ function planningjoy_allow_tailwind_classes($kses_allowed_protocols) {
     return $kses_allowed_protocols;
 }
 add_filter('kses_allowed_protocols', 'planningjoy_allow_tailwind_classes');
-
-// キャッシュクリア用のバージョン番号
-function planningjoy_resource_version() {
-    return '1.0.' . wp_rand(1, 1000);
-}
 
 // エラーハンドリングを強化
 function planningjoy_error_handling() {
@@ -109,9 +117,32 @@ function planningjoy_register_rest_routes() {
                 'homeUrl' => home_url(),
                 'isHome' => is_front_page() || is_home(),
                 'themePath' => get_template_directory_uri(),
+                'version' => planningjoy_cache_buster(),
+                'nonce' => wp_create_nonce('planningjoy-nonce'),
+                'timestamp' => time(),
+            );
+        },
+        'permission_callback' => '__return_true',
+    ));
+    
+    // アセットバージョンを取得するためのエンドポイント
+    register_rest_route('planningjoy/v1', '/asset-versions', array(
+        'methods' => 'GET',
+        'callback' => function() {
+            return array(
+                'js' => planningjoy_file_version('/assets/dist/index.js'),
+                'css' => planningjoy_file_version('/assets/dist/style.css'),
+                'timestamp' => time(),
             );
         },
         'permission_callback' => '__return_true',
     ));
 }
 add_action('rest_api_init', 'planningjoy_register_rest_routes');
+
+// ビルドバージョンを自動更新するためのアクション
+function planningjoy_update_theme_version() {
+    set_theme_mod('planningjoy_theme_version', time() . '.' . rand(100, 999));
+}
+add_action('after_switch_theme', 'planningjoy_update_theme_version');
+add_action('customize_save_after', 'planningjoy_update_theme_version');

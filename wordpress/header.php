@@ -15,11 +15,13 @@
                 'homeUrl' => home_url(),
                 'isHome' => is_front_page() || is_home(),
                 'themePath' => get_template_directory_uri(),
+                'nonce' => wp_create_nonce('planningjoy-nonce'),
+                'timestamp' => time(), // Add timestamp for cache control
             )); ?>
         };
     </script>
 </head>
 <body <?php body_class(); ?>>
-    <!-- React アプリ用のルート要素 -->
-    <div id="root"></div>
+    <!-- React アプリ用のルート要素 - より予測可能なID -->
+    <div id="wp-react-app"></div>
     <?php wp_body_open(); ?>

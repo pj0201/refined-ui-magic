@@ -2,7 +2,7 @@
 <?php get_header(); ?>
 
 <main id="primary" class="site-main">
-    <!-- Reactアプリケーションのルートコンテナ -->
+    <!-- Reactアプリケーションのルートコンテナ - ID一貫性のために修正 -->
     <div id="react-root"></div>
     
     <!-- WordPressのコンテンツ -->

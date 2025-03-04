@@ -39,7 +39,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => ({
         }
       }
     },
-    minify: false, // 開発中はminifyを無効化して問題を見つけやすくする
+    minify: mode === 'production', // Only minify in production
     sourcemap: true,
   }
 }));
