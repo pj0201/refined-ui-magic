@@ -13,7 +13,6 @@
                     <li>事業計画策定サポート</li>
                     <li>資金調達サポート</li>
                     <li>機器・ツール・物件の調査</li>
-                    <li>各種申請手続き代行</li>
                 </ul>
             </div>
             
@@ -23,8 +22,7 @@
                 <ul class="list-disc list-inside text-[#403E43] space-y-2">
                     <li>経営改善計画サポート</li>
                     <li>補助金申請サポート</li>
-                    <li>業務効率化支援</li>
-                    <li>人材育成支援</li>
+                    <li>業務効率化</li>
                 </ul>
             </div>
             
@@ -32,10 +30,9 @@
             <div class="bg-white/80 border border-gray-200/20 backdrop-blur-sm hover:bg-white/90 transition-all duration-300 rounded-lg p-6 shadow-lg">
                 <h3 class="text-[#403E43] text-center text-xl font-bold mb-4">成熟期支援</h3>
                 <ul class="list-disc list-inside text-[#403E43] space-y-2">
-                    <li>事業承継準備支援</li>
-                    <li>M&A相談・仲介</li>
-                    <li>事業再生支援</li>
-                    <li>組織再編支援</li>
+                    <li>事業承継準備</li>
+                    <li>M&A相談</li>
+                    <li>事業再生</li>
                 </ul>
             </div>
         </div>
