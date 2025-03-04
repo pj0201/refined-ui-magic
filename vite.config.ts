@@ -33,6 +33,11 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => ({
         entryFileNames: 'js/main.js', // メインJSファイルの出力パスを安定化
         chunkFileNames: 'js/chunks/[name].js', // チャンクファイルのパスをより明示的に
         assetFileNames: (assetInfo) => {
+          // assetInfo.name が undefined の場合のフォールバック処理
+          if (!assetInfo || !assetInfo.name) {
+            return 'assets/unknown.[ext]';
+          }
+          
           const info = assetInfo.name.split('.');
           const ext = info[info.length - 1];
           
