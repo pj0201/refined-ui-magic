@@ -8,7 +8,7 @@
     <?php wp_head(); ?>
     <!-- React Application Integration -->
     <script>
-        // React アプリケーションのためのグローバル設定
+        // React アプリケーションのためのグローバル設定 - バージョン管理を改善
         window.planningJoyConfig = {
             wpContent: <?php echo json_encode(array(
                 'ajaxUrl' => admin_url('admin-ajax.php'),
@@ -16,12 +16,15 @@
                 'isHome' => is_front_page() || is_home(),
                 'themePath' => get_template_directory_uri(),
                 'nonce' => wp_create_nonce('planningjoy-nonce'),
-                'timestamp' => time(), // Add timestamp for cache control
+                'timestamp' => time(),
+                'version' => wp_get_theme()->get('Version'),
+                'environment' => wp_get_environment_type(),
+                'isDev' => defined('WP_DEBUG') && WP_DEBUG,
             )); ?>
         };
     </script>
 </head>
 <body <?php body_class(); ?>>
-    <!-- React アプリ用のルート要素 - より予測可能なID -->
-    <div id="wp-react-app"></div>
     <?php wp_body_open(); ?>
+    <!-- React アプリのルート要素 - 単一の一貫したID -->
+    <div id="wp-react-app"></div>
