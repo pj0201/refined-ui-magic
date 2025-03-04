@@ -1,72 +1,48 @@
 
-import { Check } from "lucide-react";
+import { ExternalLink } from "lucide-react";
 
 export const TopicSection = () => {
   return (
     <section className="py-12 bg-gray-100">
-      <div className="max-w-6xl mx-auto px-4">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-4 flex items-center">
-              <Check className="text-green-500 mr-2" />
-              支援実績
-            </h3>
-            <ul className="space-y-2">
-              <li className="flex items-start">
-                <span className="text-green-500 mr-2">•</span>
-                神戸・兵庫エリアでの創業支援実績多数
-              </li>
-              <li className="flex items-start">
-                <span className="text-green-500 mr-2">•</span>
-                年間100社以上の経営相談に対応
-              </li>
-              <li className="flex items-start">
-                <span className="text-green-500 mr-2">•</span>
-                補助金申請サポート成功率80%以上
-              </li>
-            </ul>
+      <div className="max-w-4xl mx-auto px-4">
+        <h2 className="text-2xl font-bold mb-4 text-gray-900 text-center">トピック</h2>
+        <div className="bg-white rounded-lg shadow-sm p-6 space-y-4">
+          <div className="p-4 rounded-lg border bg-blue-50 border-blue-200">
+            <div className="flex items-center gap-2 mb-1">
+              <span className="text-red-600 text-sm font-semibold">
+                NEW
+              </span>
+              <span className="text-gray-500 text-sm">
+                2025/03
+              </span>
+            </div>
+            <div>
+              <p className="text-gray-800">2025年3月より申請開始　新たに一般形が追加され利用しやすくなった「中小企業省力化投資補助金一般形」が始まります。（詳細は本ページのチャットボットへどうぞ)</p>
+            </div>
           </div>
           
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-4 flex items-center">
-              <Check className="text-green-500 mr-2" />
-              AI活用
-            </h3>
-            <ul className="space-y-2">
-              <li className="flex items-start">
-                <span className="text-green-500 mr-2">•</span>
-                AIを活用した業務改善事例多数
-              </li>
-              <li className="flex items-start">
-                <span className="text-green-500 mr-2">•</span>
-                生成AIによる業務効率化サポート
-              </li>
-              <li className="flex items-start">
-                <span className="text-green-500 mr-2">•</span>
-                データ分析・予測モデル構築支援
-              </li>
-            </ul>
+          <div className="p-4 rounded-lg border bg-white border-gray-200">
+            <div className="flex items-center justify-between">
+              <p className="text-gray-800">AI用語について</p>
+              <a href="/ai-glossary" className="inline-block px-3 py-2 text-sm border border-gray-200 hover:bg-gray-100 transition-colors rounded ml-4">
+                <span className="flex items-center">
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  詳細を見る
+                </span>
+              </a>
+            </div>
           </div>
           
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h3 className="text-xl font-semibold mb-4 flex items-center">
-              <Check className="text-green-500 mr-2" />
-              事業承継
-            </h3>
-            <ul className="space-y-2">
-              <li className="flex items-start">
-                <span className="text-green-500 mr-2">•</span>
-                兵庫県内での事業承継支援実績豊富
-              </li>
-              <li className="flex items-start">
-                <span className="text-green-500 mr-2">•</span>
-                円滑な事業承継のための計画策定
-              </li>
-              <li className="flex items-start">
-                <span className="text-green-500 mr-2">•</span>
-                M&A・親族内承継のアドバイス提供
-              </li>
-            </ul>
+          <div className="p-4 rounded-lg border bg-white border-gray-200">
+            <div className="flex items-center justify-between">
+              <p className="text-gray-800">おすすめのAIツール一覧</p>
+              <a href="/ai-tools" className="inline-block px-3 py-2 text-sm border border-gray-200 hover:bg-gray-100 transition-colors rounded ml-4">
+                <span className="flex items-center">
+                  <ExternalLink className="h-4 w-4 mr-2" />
+                  詳細を見る
+                </span>
+              </a>
+            </div>
           </div>
         </div>
       </div>
