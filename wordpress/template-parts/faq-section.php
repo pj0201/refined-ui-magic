@@ -1,3 +1,4 @@
+
 <section id="faq" class="py-20 px-4 bg-white">
     <div class="max-w-4xl mx-auto fade-in">
         <h2 class="text-3xl font-bold text-center mb-8">よくあるご質問</h2>
@@ -55,7 +56,7 @@
                     </span>
                     費用の目安を教えてください
                 </h3>
-                <p>弊社への依頼内容によりますが、顧問契約の場合、月々25万円（税別）が目安となります。セミナーやスポットはご相談下さい。</p>
+                <p>弊社への依頼内容によりますが、顧問契約の場合、月々25万円（税別）が目安となります。セミナーやスポットはご相談ください。</p>
             </div>
         </div>
     </div>
