@@ -1,3 +1,4 @@
+
 import { HeroSection } from "@/components/sections/HeroSection";
 import { ConsultingSection } from "@/components/sections/ConsultingSection";
 import { CompanyProfileSection } from "@/components/sections/CompanyProfileSection";
@@ -60,11 +61,11 @@ const Index = () => {
               <CardHeader>
                 <CardTitle className="flex items-center">
                   <HelpCircle className="mr-2 text-blue-600" size={24} />
-                  どういう支援サービスですか？
+                  支援サービスの内容を教えてほしい
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                <p>各帳票を精査させていただき、問題解決や実績向上につながる改善提案を行います。目標設定からKPIなどの予実のチェック。数値に現れない要因も探りながら、分析を重ねたうえで真因をつかみ、確度の高い効果的な戦略に落とし込みます。</p>
+                <p>経営改善や営業支援のケースですと、ご相談をいただいた内容を元に、方向性やご要望を確認させていただきます。その後弊社は支援内容をご提案させていただき、合意（契約締結）を経て支援に入らせていただきます。支援ではまず各帳票を精査させていただき、問題解決や実績向上につながる改善提案を行います。目標設定からKPIなどの予実のチェック。数値に現れない要因も探りながら、分析を重ねたうえで真因をつかみ、確度の高い効果的な戦略に落とし込みます。</p>
                 <p>一例を挙げますと、計画策定のサポートでは、目的とリソース、対象に合わせた策定が重要となりますし、セールスやプロモーションにおいては、ポジションやターゲットの特定が重要となります。</p>
                 <p>弊社は成功モデルに固執せず、安易な真似事のような提案を良しとしない、根拠や再現性の高いロジックを追求し、創意・工夫を重ねてクライアント様のサポートに貢献させていただきます。</p>
                 <p>定期訪問や会議へのオブザーバー参加などの外にスポットでの対応（セミナーの開催など）も対応いたします。また再生など一刻を争う場合には、柔軟に対応いたします。</p>
