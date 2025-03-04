@@ -1,85 +1,49 @@
 
-import { cn } from "@/lib/utils";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import { ExternalLink } from "lucide-react";
-
-interface Topic {
-  id: number;
-  isNew?: boolean;
-  content: string;
-  date?: string;
-  link?: string;
-  keywords?: string[];
-}
-
-const topics: Topic[] = [
-  {
-    id: 1,
-    isNew: true,
-    content: "2025年3月より申請開始 　新たに一般形が追加され利用しやすくなった「中小企業省力化投資補助金一般形」が始まります。（詳細は本ページのチャットボットへどうぞ)",
-    date: "2025/03",
-    keywords: ["補助金", "融資", "中小企業", "神戸", "兵庫"]
-  },
-  {
-    id: 2,
-    content: "AI用語について",
-    link: "/ai-glossary",
-    keywords: ["AI", "経営コンサルティング"]
-  },
-  {
-    id: 3,
-    content: "おすすめのAIツール一覧",
-    link: "/ai-tools",
-    keywords: ["AI", "業務効率化", "神戸", "兵庫"]
-  }
-];
+import { Check } from "lucide-react";
 
 export const TopicSection = () => {
   return (
-    <section className="py-8 px-4 bg-gray-50">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold mb-4 text-gray-900 text-center">トピック</h2>
-        <div className="bg-white rounded-lg shadow-sm p-6 space-y-4">
-          {topics.map((topic) => (
-            <div
-              key={topic.id}
-              className={cn(
-                "p-4 rounded-lg border",
-                topic.isNew ? "bg-blue-50 border-blue-200" : "bg-white border-gray-200"
-              )}
-            >
-              <div className="flex items-center gap-2 mb-1">
-                {topic.isNew && (
-                  <span className="text-red-600 text-sm font-semibold">
-                    NEW
-                  </span>
-                )}
-                {topic.date && (
-                  <span className="text-gray-500 text-sm">
-                    {topic.date}
-                  </span>
-                )}
-              </div>
-              <div className="flex items-center justify-between">
-                <p className="text-gray-800">{topic.content}</p>
-                {topic.link && (
-                  <Link to={topic.link}>
-                    <Button variant="outline" size="sm" className="ml-4">
-                      <ExternalLink className="h-4 w-4 mr-2" />
-                      詳細を見る
-                    </Button>
-                  </Link>
-                )}
-              </div>
-              {/* Hidden SEO keywords */}
-              {topic.keywords && (
-                <span className="sr-only">
-                  {topic.keywords.join(', ')}
-                </span>
-              )}
-            </div>
-          ))}
+    <section className="py-12 bg-gray-100">
+      <div className="max-w-6xl mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-4 flex items-center">
+              <Check className="text-green-500 mr-2" />
+              支援実績
+            </h3>
+            <ul className="space-y-2">
+              <li className="flex items-start">
+                <span className="text-green-500 mr-2">•</span>
+                神戸・兵庫エリアでの創業支援実績多数
+              </li>
+            </ul>
+          </div>
+          
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-4 flex items-center">
+              <Check className="text-green-500 mr-2" />
+              AI活用
+            </h3>
+            <ul className="space-y-2">
+              <li className="flex items-start">
+                <span className="text-green-500 mr-2">•</span>
+                AIを活用した業務改善事例多数
+              </li>
+            </ul>
+          </div>
+          
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <h3 className="text-xl font-semibold mb-4 flex items-center">
+              <Check className="text-green-500 mr-2" />
+              事業承継
+            </h3>
+            <ul className="space-y-2">
+              <li className="flex items-start">
+                <span className="text-green-500 mr-2">•</span>
+                兵庫県内での事業承継支援実績豊富
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
