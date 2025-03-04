@@ -1,4 +1,3 @@
-
 import { HeroSection } from "@/components/sections/HeroSection";
 import { ConsultingSection } from "@/components/sections/ConsultingSection";
 import { CompanyProfileSection } from "@/components/sections/CompanyProfileSection";
@@ -7,7 +6,7 @@ import { BusinessPlansSection } from "@/components/sections/BusinessPlansSection
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { SubsidyChatbot } from "@/components/SubsidyChat/SubsidyChatbot";
 import { TopicSection } from "@/components/sections/TopicSection";
-import { HelpCircle, Box, Sprout, MapPin, DollarSign } from "lucide-react";
+import { HelpCircle, Box, Sprout, MapPin, DollarSign, GraduationCap } from "lucide-react";
 import { ContactForm } from "@/components/ContactForm";
 import { Helmet } from 'react-helmet';
 
@@ -69,6 +68,17 @@ const Index = () => {
                 <p>一例を挙げますと、計画策定のサポートでは、目的とリソース、対象に合わせた策定が重要となりますし、セールスやプロモーションにおいては、ポジションやターゲットの特定が重要となります。</p>
                 <p>弊社は成功モデルに固執せず、安易な真似事のような提案を良しとしない、根拠や再現性の高いロジックを追求し、創意・工夫を重ねてクライアント様のサポートに貢献させていただきます。</p>
                 <p>定期訪問や会議へのオブザーバー参加などの外にスポットでの対応（セミナーの開催など）も対応いたします。また再生など一刻を争う場合には、柔軟に対応いたします。</p>
+              </CardContent>
+            </Card>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <GraduationCap className="mr-2 text-blue-600" size={24} />
+                  研修や勉強会などは依頼できますか？
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                これまでにも経営陣や幹部の皆様を対象に、要望に応じたオーダー型の研修や勉強会を行っております。「事業計画の作り方」「営業計画の作り方」「営業戦略の策定」「補助金活用」「AIスキル習得」「顧客調査」「市場調査」などの実績がございます。内容につきましては、ヒヤリングをさせていただき、ご要望に応じた研修メニューをご提案させていただきます。
               </CardContent>
             </Card>
             <Card>

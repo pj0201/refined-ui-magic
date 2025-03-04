@@ -1,4 +1,5 @@
 
+
 <section id="faq" class="py-20 px-4 bg-white">
     <div class="max-w-4xl mx-auto fade-in">
         <h2 class="text-3xl font-bold text-center mb-8">よくあるご質問</h2>
@@ -16,6 +17,16 @@
                     <p>弊社は成功モデルに固執せず、安易な真似事のような提案を良しとしない、根拠や再現性の高いロジックを追求し、創意・工夫を重ねてクライアント様のサポートに貢献させていただきます。</p>
                     <p>定期訪問や会議へのオブザーバー参加などの外にスポットでの対応（セミナーの開催など）も対応いたします。また再生など一刻を争う場合には、柔軟に対応いたします。</p>
                 </div>
+            </div>
+            
+            <div class="bg-white/80 border border-gray-200/20 backdrop-blur-sm hover:bg-white/90 transition-all duration-300 rounded-lg p-6 shadow-lg">
+                <h3 class="text-[#403E43] text-xl font-bold mb-4 flex items-center">
+                    <span class="inline-block w-6 h-6 mr-2 text-blue-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-graduation-cap"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+                    </span>
+                    研修や勉強会などは依頼できますか？
+                </h3>
+                <p>これまでにも経営陣や幹部の皆様を対象に、要望に応じたオーダー型の研修や勉強会を行っております。「事業計画の作り方」「営業計画の作り方」「営業戦略の策定」「補助金活用」「AIスキル習得」「顧客調査」「市場調査」などの実績がございます。内容につきましては、ヒヤリングをさせていただき、ご要望に応じた研修メニューをご提案させていただきます。</p>
             </div>
             
             <div class="bg-white/80 border border-gray-200/20 backdrop-blur-sm hover:bg-white/90 transition-all duration-300 rounded-lg p-6 shadow-lg">
@@ -61,3 +72,4 @@
         </div>
     </div>
 </section>
+
