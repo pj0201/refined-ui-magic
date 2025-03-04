@@ -17,6 +17,7 @@ export const SupportAreasSection = () => {
                 <li>事業計画策定サポート</li>
                 <li>資金調達サポート</li>
                 <li>機器・ツール・物件の調査</li>
+                <li className="text-sm text-gray-500">神戸・兵庫エリアでの創業支援実績多数</li>
               </ul>
             </CardContent>
           </Card>
@@ -29,6 +30,7 @@ export const SupportAreasSection = () => {
                 <li>経営改善計画サポート</li>
                 <li>補助金申請サポート</li>
                 <li>業務効率化</li>
+                <li className="text-sm text-gray-500">AIを活用した業務改善事例多数</li>
               </ul>
             </CardContent>
           </Card>
@@ -41,6 +43,7 @@ export const SupportAreasSection = () => {
                 <li>事業承継準備</li>
                 <li>M&A相談</li>
                 <li>事業再生</li>
+                <li className="text-sm text-gray-500">兵庫県内での事業承継支援実績豊富</li>
               </ul>
             </CardContent>
           </Card>

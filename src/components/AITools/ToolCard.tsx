@@ -9,11 +9,15 @@ interface ToolCardProps {
 export function ToolCard({ name, description }: ToolCardProps) {
   return (
     <Card className="backdrop-blur-md bg-white/80 hover:bg-white/90 transition-colors">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-xl">{name}</CardTitle>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2">
+          <span>{name}</span>
+        </CardTitle>
       </CardHeader>
       <CardContent>
-        <p className="text-gray-600">{description}</p>
+        <div className="mb-4">
+          <p className="text-gray-600">{description}</p>
+        </div>
       </CardContent>
     </Card>
   );

@@ -1,5 +1,4 @@
 
-
 <section class="py-8 px-4 bg-gray-50">
     <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-bold mb-4 text-gray-900 text-center">トピック</h2>
@@ -13,7 +12,7 @@
                         2025/03
                     </span>
                 </div>
-                <div>
+                <div class="flex items-center justify-between">
                     <p class="text-gray-800">2025年3月より申請開始 　新たに一般形が追加され利用しやすくなった「中小企業省力化投資補助金一般形」が始まります。（詳細は本ページのチャットボットへどうぞ)</p>
                 </div>
             </div>
@@ -50,4 +49,3 @@
         </div>
     </div>
 </section>
-

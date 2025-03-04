@@ -1,3 +1,4 @@
+
 import { Book, ExternalLink, Home } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -192,13 +193,17 @@ export default function AIGlossary() {
         <div className="grid gap-6">
           {glossaryTerms.map((item, index) => (
             <Card key={index} className="backdrop-blur-md bg-white/80 hover:bg-white/90 transition-colors">
-              <CardHeader className="pb-2">
-                <CardTitle>{item.term}</CardTitle>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <span>{item.term}</span>
+                </CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-600">{item.definition}</p>
+                <div className="mb-4">
+                  <p className="text-gray-600">{item.definition}</p>
+                </div>
                 {item.links && item.links.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mt-4">
+                  <div className="flex flex-wrap gap-2 mt-2">
                     {item.links.map((link, linkIndex) => (
                       <a
                         key={linkIndex}
