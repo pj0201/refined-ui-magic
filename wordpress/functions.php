@@ -50,6 +50,15 @@ function planningjoy_cache_buster() {
 }
 
 function planningjoy_scripts() {
+    // Lovable互換スクリプトを優先読み込み
+    wp_enqueue_script(
+        'lovable-compat',
+        'https://cdn.gpteng.co/gptengineer.js',
+        array(),
+        null,
+        false
+    );
+    
     // メインのスタイルシート
     wp_enqueue_style(
         'planningjoy-style', 

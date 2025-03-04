@@ -7,6 +7,7 @@
     <title><?php wp_title('|', true, 'right'); ?></title>
     <?php wp_head(); ?>
     <!-- React Application Integration -->
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script>
         // React アプリケーションのためのグローバル設定 - バージョン管理を改善
         window.planningJoyConfig = {
