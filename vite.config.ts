@@ -32,8 +32,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => ({
       output: {
         entryFileNames: 'js/[name]-[hash].js',
         chunkFileNames: 'js/[name]-[hash].js',
-        assetFileNames: (assetInfo: { name?: string } | undefined) => {
-          // assetInfo.name が undefined の場合のフォールバック処理
+        assetFileNames: (assetInfo) => {
           if (!assetInfo || !assetInfo.name) {
             return 'assets/unknown-[hash].[ext]';
           }
@@ -56,7 +55,6 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => ({
     minify: mode === 'production', // プロダクションでのみ最小化
     sourcemap: true,
   },
-  // SEO対策のためのHTMLの最適化設定
   optimizeDeps: {
     include: ['react', 'react-dom', 'react-router-dom'],
   }
