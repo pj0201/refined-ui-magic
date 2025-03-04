@@ -10,6 +10,7 @@ interface Topic {
   content: string;
   date?: string;
   link?: string;
+  keywords?: string[];
 }
 
 const topics: Topic[] = [
@@ -17,17 +18,20 @@ const topics: Topic[] = [
     id: 1,
     isNew: true,
     content: "2025年3月より申請開始 　新たに一般形が追加され利用しやすくなった「中小企業省力化投資補助金一般形」が始まります。（詳細は本ページのチャットボットへどうぞ)",
-    date: "2025/03"
+    date: "2025/03",
+    keywords: ["補助金", "融資", "中小企業", "神戸", "兵庫"]
   },
   {
     id: 2,
     content: "AI用語について",
-    link: "/ai-glossary"
+    link: "/ai-glossary",
+    keywords: ["AI", "経営コンサルティング"]
   },
   {
     id: 3,
     content: "おすすめのAIツール一覧",
-    link: "/ai-tools"
+    link: "/ai-tools",
+    keywords: ["AI", "業務効率化", "神戸", "兵庫"]
   }
 ];
 
@@ -68,6 +72,12 @@ export const TopicSection = () => {
                   </Link>
                 )}
               </div>
+              {/* Hidden SEO keywords */}
+              {topic.keywords && (
+                <span className="sr-only">
+                  {topic.keywords.join(', ')}
+                </span>
+              )}
             </div>
           ))}
         </div>

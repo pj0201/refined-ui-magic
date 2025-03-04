@@ -1,0 +1,7 @@
+
+User-agent: *
+Allow: /
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+
+Sitemap: https://planjoy.net/sitemap.xml
