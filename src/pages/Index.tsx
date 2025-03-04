@@ -1,3 +1,4 @@
+
 import { HeroSection } from "@/components/sections/HeroSection";
 import { ConsultingSection } from "@/components/sections/ConsultingSection";
 import { CompanyProfileSection } from "@/components/sections/CompanyProfileSection";
@@ -112,7 +113,7 @@ const Index = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                弊社への依頼内容によりますが、顧問契約の場合、月々25万円（税別）が目安となります。神戸・兵庫エリアでは競争力のある料金設定です。
+                弊社への依頼内容によりますが、顧問契約の場合、月々25万円（税別）が目安となります。セミナーやスポットはご相談下さい。
               </CardContent>
             </Card>
           </div>
