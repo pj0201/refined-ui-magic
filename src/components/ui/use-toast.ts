@@ -4,6 +4,7 @@
 export { 
   useToast, 
   toast, 
+  toast as default,
   type ToastActionElement, 
   type ToastProps,
   type Toast
