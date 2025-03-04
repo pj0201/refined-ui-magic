@@ -5,18 +5,25 @@
     <!-- Reactアプリケーションのルートコンテナ -->
     <div id="react-root"></div>
     
+    <!-- WordPressのコンテンツ -->
     <?php if (!is_front_page() && !is_home()): ?>
         <?php 
-        // フロントページ以外のコンテンツを表示
-        get_template_part('template-parts/hero-section');
-        get_template_part('template-parts/topic-section');
-        get_template_part('template-parts/consulting-section');
-        get_template_part('template-parts/support-area-card');
-        get_template_part('template-parts/business-plans-section');
-        get_template_part('template-parts/consultation-flow');
-        get_template_part('template-parts/faq-section');
-        get_template_part('template-parts/company-profile');
-        get_template_part('template-parts/chatbot');
+        // テンプレートパーツの読み込み
+        $template_parts = array(
+            'hero-section',
+            'topic-section',
+            'consulting-section',
+            'support-area-card',
+            'business-plans-section',
+            'consultation-flow',
+            'faq-section',
+            'company-profile',
+            'chatbot'
+        );
+        
+        foreach ($template_parts as $part) {
+            get_template_part('template-parts/' . $part);
+        }
         ?>
         
         <!-- Contact Section -->
@@ -25,7 +32,7 @@
                 <h2 class="text-3xl font-bold mb-8 text-white">お問い合わせ</h2>
                 <p class="mb-8 text-white">下記フォームに必要事項をご記入のうえ、お気軽にご相談ください。</p>
                 
-                <!-- Google Form統合 - WordPressでの実装（iframeバージョン） -->
+                <!-- Google Form統合 -->
                 <div class="text-center">
                     <p class="mb-4 text-white">お問い合わせには、セキュアなGoogleフォームを使用しております。</p>
                     <button id="show-contact-form" 
@@ -53,8 +60,14 @@
                     
                     <script>
                         document.getElementById('show-contact-form').addEventListener('click', function() {
-                            document.getElementById('contact-form-container').classList.remove('hidden');
-                            document.getElementById('show-contact-form').classList.add('hidden');
+                            var container = document.getElementById('contact-form-container');
+                            var button = document.getElementById('show-contact-form');
+                            if (container && button) {
+                                container.classList.remove('hidden');
+                                button.classList.add('hidden');
+                            } else {
+                                console.error('Contact form elements not found');
+                            }
                         });
                     </script>
                 </div>

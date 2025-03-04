@@ -24,7 +24,6 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => ({
     outDir: 'wordpress/assets/dist',
     emptyOutDir: true,
     assetsDir: '',
-    // ハッシュを含めない - 更新時の問題を回避
     rollupOptions: {
       input: {
         index: path.resolve(__dirname, 'index.html')
@@ -40,8 +39,7 @@ export default defineConfig(({ mode }: ConfigEnv): UserConfig => ({
         }
       }
     },
-    // minifyの設定を緩和 - 不要なエラーの回避
-    minify: mode === 'production' ? 'esbuild' : false,
+    minify: false, // 開発中はminifyを無効化して問題を見つけやすくする
     sourcemap: true,
   }
 }));
