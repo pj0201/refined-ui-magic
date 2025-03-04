@@ -1,6 +1,7 @@
+
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/hooks/use-toast";
 import { Mail, AlertCircle, ExternalLink, RefreshCw } from "lucide-react";
 
 interface ContactFormProps {

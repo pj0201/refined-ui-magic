@@ -2,13 +2,14 @@
 "use client"
 
 import * as React from "react"
-import { toast as sonnerToast, type Toast as SonnerToast, type ToastOptions } from "sonner"
+import { toast as sonnerToast, type ToastT } from "sonner"
 
 // Sonnerの型定義を拡張した独自のToast型
-export interface ToastProps extends ToastOptions {
+export interface ToastProps {
   title?: React.ReactNode
   description?: React.ReactNode
   variant?: "default" | "destructive"
+  [key: string]: any // その他のSonnerが受け付けるオプション
 }
 
 export type ToastActionElement = React.ReactElement
