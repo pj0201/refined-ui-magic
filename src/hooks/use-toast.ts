@@ -29,7 +29,7 @@ export function toast(props: ToastProps) {
     typeof title === 'string' ? title : "通知", 
     {
       description,
-      // destructiveバリアントのスタイルを適用
+      // destructiveバリアントのスタイルを適用 - クラス名として渡す
       className: variant === "destructive" ? "destructive" : undefined,
       ...options,
     }
