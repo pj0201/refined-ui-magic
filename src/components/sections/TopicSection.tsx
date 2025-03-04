@@ -16,6 +16,14 @@ export const TopicSection = () => {
                 <span className="text-green-500 mr-2">•</span>
                 神戸・兵庫エリアでの創業支援実績多数
               </li>
+              <li className="flex items-start">
+                <span className="text-green-500 mr-2">•</span>
+                年間100社以上の経営相談に対応
+              </li>
+              <li className="flex items-start">
+                <span className="text-green-500 mr-2">•</span>
+                補助金申請サポート成功率80%以上
+              </li>
             </ul>
           </div>
           
@@ -29,6 +37,14 @@ export const TopicSection = () => {
                 <span className="text-green-500 mr-2">•</span>
                 AIを活用した業務改善事例多数
               </li>
+              <li className="flex items-start">
+                <span className="text-green-500 mr-2">•</span>
+                生成AIによる業務効率化サポート
+              </li>
+              <li className="flex items-start">
+                <span className="text-green-500 mr-2">•</span>
+                データ分析・予測モデル構築支援
+              </li>
             </ul>
           </div>
           
@@ -41,6 +57,14 @@ export const TopicSection = () => {
               <li className="flex items-start">
                 <span className="text-green-500 mr-2">•</span>
                 兵庫県内での事業承継支援実績豊富
+              </li>
+              <li className="flex items-start">
+                <span className="text-green-500 mr-2">•</span>
+                円滑な事業承継のための計画策定
+              </li>
+              <li className="flex items-start">
+                <span className="text-green-500 mr-2">•</span>
+                M&A・親族内承継のアドバイス提供
               </li>
             </ul>
           </div>
