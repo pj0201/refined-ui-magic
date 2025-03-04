@@ -30,7 +30,7 @@
         <section id="contact" class="py-20 px-4" style="background: linear-gradient(to right, #243949 0%, #517fa4 100%);">
             <div class="max-w-4xl mx-auto text-center fade-in">
                 <h2 class="text-3xl font-bold mb-8 text-white">お問い合わせ</h2>
-                <p class="mb-8 text-white">下記フォームに必要事項をご記入のうえ、お気軽にご相談ください。</p>
+                <p class="mb-8 text-white">下記フォームに必要事項をご記入のうえ、お気軽にご相談ください。経営に関するあらゆるご相談に対応いたします。</p>
                 
                 <!-- Google Form統合 -->
                 <div class="text-center">

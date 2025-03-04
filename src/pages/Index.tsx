@@ -1,4 +1,3 @@
-
 import { HeroSection } from "@/components/sections/HeroSection";
 import { ConsultingSection } from "@/components/sections/ConsultingSection";
 import { CompanyProfileSection } from "@/components/sections/CompanyProfileSection";
@@ -127,7 +126,7 @@ const Index = () => {
       <section id="contact" className="py-20 px-4" style={{ background: 'linear-gradient(to right, #243949 0%, #517fa4 100%)' }}>
         <div className="max-w-4xl mx-auto text-center fade-in">
           <h2 className="text-3xl font-bold mb-8 text-white">お問い合わせ</h2>
-          <p className="mb-8 text-white">下記フォームに必要事項をご記入のうえ、お気軽にご相談ください。神戸・兵庫を中心に、経営に関するあらゆるご相談に対応いたします。</p>
+          <p className="mb-8 text-white">下記フォームに必要事項をご記入のうえ、お気軽にご相談ください。経営に関するあらゆるご相談に対応いたします。</p>
           <ContactForm 
             subject="ウェブサイトからのお問い合わせ"
             buttonColor="text-white"
@@ -139,7 +138,6 @@ const Index = () => {
 
       <footer className="py-8 px-4 bg-gray-900 text-white text-center">
         <p>&copy; {new Date().getFullYear()} PLANNINGJOY株式会社</p>
-        <p className="text-sm mt-2">〒651-0084 兵庫県神戸市中央区磯辺通1-1-18 カサベラ国際プラザビル707号室</p>
       </footer>
 
       {/* Add Subsidy Chatbot */}
