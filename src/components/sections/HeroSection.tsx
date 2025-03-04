@@ -21,7 +21,7 @@ export const HeroSection = () => {
         </h1>
         <div className="space-y-6 flex flex-col items-center">
           <p className="text-xl font-medium tracking-wide fade-in backdrop-blur-sm bg-white/10 py-2 px-4 rounded-lg">
-            「神戸・兵庫の企業に寄り添う生産性と資産に寄与する経営コンサルティング」
+            「生産性と資産に寄与する経営コンサルティング」
           </p>
           <p className="text-4xl font-medium tracking-wide fade-in delay-100 backdrop-blur-sm bg-white/10 py-3 px-6 rounded-lg">
             PLANNING<span className="text-red-500 font-extrabold text-5xl" style={{ fontFamily: "'Noto Serif JP', serif", fontWeight: 900, display: 'inline-block', transform: 'scaleX(2)' }}>J</span>OY株式会社
