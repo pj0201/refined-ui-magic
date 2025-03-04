@@ -16,10 +16,10 @@ serve(async (req) => {
   try {
     const { question } = await req.json();
     if (!question) {
-      return new Response('質問が必要です', { 
-        status: 400,
-        headers: corsHeaders
-      });
+      return new Response(
+        JSON.stringify({ error: '質問が必要です' }), 
+        { status: 400, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     console.log('受信した質問:', question);
@@ -27,10 +27,10 @@ serve(async (req) => {
     const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
     if (!openAIApiKey) {
       console.error('OpenAI APIキーが設定されていません');
-      return new Response('APIキー未設定', { 
-        status: 500,
-        headers: corsHeaders
-      });
+      return new Response(
+        JSON.stringify({ error: 'APIキーが設定されていません' }), 
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     // 1. 質問をベクトル化
@@ -47,12 +47,21 @@ serve(async (req) => {
     });
 
     const embeddingData = await embeddingResponse.json();
+    
+    if (!embeddingData.data || !embeddingData.data[0]) {
+      console.error('Embedding APIエラー:', embeddingData);
+      return new Response(
+        JSON.stringify({ error: 'ベクトル化に失敗しました', details: embeddingData }), 
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+    
     const questionEmbedding = embeddingData.data[0].embedding;
 
     // 2. Supabaseクライアント初期化
     const supabaseClient = createClient(
       Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_ANON_KEY') ?? ''
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
     );
 
     // 3. 類似ドキュメントを検索
@@ -60,21 +69,34 @@ serve(async (req) => {
       'match_subsidy_docs',
       {
         query_embedding: questionEmbedding,
-        match_count: 3
+        match_count: 5
       }
     );
 
     if (searchError) {
       console.error('ドキュメント検索エラー:', searchError);
-      throw searchError;
+      return new Response(
+        JSON.stringify({ error: 'ドキュメント検索に失敗しました', details: searchError }), 
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
     }
 
     // 4. 関連ドキュメントをプロンプトに組み込む
     let contextText = '';
+    let relevantUrls = [];
+    
     if (documents && documents.length > 0) {
       contextText = documents
-        .map(doc => `\n[関連情報 (信頼度: ${doc.score.toFixed(2)})]\n${doc.content}`)
+        .map((doc, idx) => `\n\n[関連情報 ${idx + 1} (信頼度: ${doc.score.toFixed(2)})]\n${doc.content}`)
         .join('\n');
+      
+      // 関連する画像URLも収集
+      relevantUrls = documents
+        .filter(doc => doc.score > 0.7) // 信頼度が高いもののみ
+        .map(doc => ({
+          url: doc.source,
+          imageUrl: doc.image_url
+        }));
     }
 
     // 5. ChatGPTで回答を生成
@@ -103,32 +125,52 @@ ${contextText}`
     });
 
     const chatData = await chatResponse.json();
+    
+    if (!chatData.choices || chatData.choices.length === 0) {
+      console.error('ChatGPT APIエラー:', chatData);
+      return new Response(
+        JSON.stringify({ error: 'AIによる回答生成に失敗しました', details: chatData }), 
+        { status: 500, headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
+      );
+    }
+
     console.log('ChatGPT応答:', chatData);
 
-    return new Response(JSON.stringify({
-      choices: [{
-        message: {
-          content: chatData.choices[0].message.content
+    return new Response(
+      JSON.stringify({
+        choices: [{
+          message: {
+            content: chatData.choices[0].message.content
+          }
+        }],
+        relevantUrls: relevantUrls,
+        context: {
+          documentsCount: documents ? documents.length : 0,
+          topScore: documents && documents.length > 0 ? documents[0].score : 0
         }
-      }]
-    }), {
-      headers: {
-        'Content-Type': 'application/json',
-        ...corsHeaders
+      }), 
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          ...corsHeaders
+        }
       }
-    });
+    );
 
   } catch (error) {
     console.error('エラー発生:', error);
-    return new Response(JSON.stringify({
-      error: 'Internal server error',
-      details: error.message
-    }), { 
-      status: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        ...corsHeaders
+    return new Response(
+      JSON.stringify({
+        error: 'Internal server error',
+        details: error.message
+      }), 
+      { 
+        status: 500,
+        headers: {
+          'Content-Type': 'application/json',
+          ...corsHeaders
+        }
       }
-    });
+    );
   }
 });

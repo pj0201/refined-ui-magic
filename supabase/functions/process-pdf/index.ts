@@ -34,9 +34,10 @@ serve(async (req) => {
     const fileName = file.name
     const fileExt = fileName.split('.').pop()?.toLowerCase()
 
-    if (fileExt !== 'png') {
+    // PDFとPNGの両方をサポート
+    if (fileExt !== 'png' && fileExt !== 'pdf') {
       return new Response(
-        JSON.stringify({ error: 'PNGファイルのみアップロード可能です' }),
+        JSON.stringify({ error: 'PNGまたはPDFファイルのみアップロード可能です' }),
         { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 400 }
       )
     }
@@ -73,14 +74,88 @@ serve(async (req) => {
       )
     }
 
-    // PNGファイルのURLを取得
+    // ファイルのURLを取得
     const { data: { publicUrl } } = supabase.storage
       .from('subsidy_docs')
       .getPublicUrl(filePath)
 
-    // ここでOCRやテキスト抽出の処理を追加することができます
-    // 現在はダミーのテキストを返しています
-    const fileContent = "PNGファイルの内容をテキストに変換した結果がここに入ります"
+    // テキスト抽出処理
+    let fileContent = ""
+    
+    if (fileExt === 'pdf') {
+      // PDFの場合はOpenAIのDocument処理API（GPT-4 Vision API）を使用
+      const openAIApiKey = Deno.env.get('OPENAI_API_KEY')
+      
+      // OpenAIのAPIを使用してPDFの内容を抽出
+      const visionResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${openAIApiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'gpt-4-vision-preview',
+          messages: [
+            {
+              role: 'user',
+              content: [
+                {
+                  type: 'text', 
+                  text: '以下のPDF文書から補助金に関する情報を全て抽出してください。特に、補助金の名前、対象者、条件、申請期間、補助率、上限額などの重要情報を詳細に含めてください。'
+                },
+                {
+                  type: 'image_url',
+                  image_url: {
+                    url: publicUrl
+                  }
+                }
+              ]
+            }
+          ],
+          max_tokens: 4000
+        })
+      })
+      
+      const visionData = await visionResponse.json()
+      fileContent = visionData.choices[0].message.content
+    } else {
+      // PNGの場合も同様にVision APIを使用
+      const openAIApiKey = Deno.env.get('OPENAI_API_KEY')
+      
+      const visionResponse = await fetch('https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${openAIApiKey}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          model: 'gpt-4-vision-preview',
+          messages: [
+            {
+              role: 'user',
+              content: [
+                {
+                  type: 'text', 
+                  text: '以下の画像から補助金に関する情報を全て抽出してください。特に、補助金の名前、対象者、条件、申請期間、補助率、上限額などの重要情報を詳細に含めてください。'
+                },
+                {
+                  type: 'image_url',
+                  image_url: {
+                    url: publicUrl
+                  }
+                }
+              ]
+            }
+          ],
+          max_tokens: 4000
+        })
+      })
+      
+      const visionData = await visionResponse.json()
+      fileContent = visionData.choices[0].message.content
+    }
+
+    console.log('抽出されたコンテンツ:', fileContent)
 
     // OpenAI APIを使用してテキストをベクトル化
     const openAIApiKey = Deno.env.get('OPENAI_API_KEY')
@@ -121,7 +196,8 @@ serve(async (req) => {
       JSON.stringify({ 
         message: 'ファイルが正常に処理されました',
         filePath: filePath,
-        publicUrl: publicUrl
+        publicUrl: publicUrl,
+        content: fileContent
       }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
@@ -129,7 +205,7 @@ serve(async (req) => {
   } catch (error) {
     console.error('予期せぬエラー:', error)
     return new Response(
-      JSON.stringify({ error: '予期せぬエラーが発生しました' }),
+      JSON.stringify({ error: '予期せぬエラーが発生しました', details: error.message }),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' }, status: 500 }
     )
   }
