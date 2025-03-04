@@ -1,4 +1,3 @@
-
 <section id="faq" class="py-20 px-4 bg-white">
     <div class="max-w-4xl mx-auto fade-in">
         <h2 class="text-3xl font-bold text-center mb-8">よくあるご質問</h2>
@@ -18,7 +17,6 @@
                 </div>
             </div>
             
-            <!-- Additional FAQ items -->
             <div class="bg-white/80 border border-gray-200/20 backdrop-blur-sm hover:bg-white/90 transition-all duration-300 rounded-lg p-6 shadow-lg">
                 <h3 class="text-[#403E43] text-xl font-bold mb-4 flex items-center">
                     <span class="inline-block w-6 h-6 mr-2 text-blue-600">
@@ -37,7 +35,7 @@
                     </span>
                     創業前でも相談可能ですか？
                 </h3>
-                <p>事業構想段階からのご相談を推奨しています。神戸・兵庫での創業支援実績が豊富です。</p>
+                <p>事業構想段階からのご相談を推奨しています。創業後に活用できる制度や融資のポイントなどを知って、「早く相談すれば良かった」という声も多く伺います。ぜひ無料相談をご活用ください。</p>
             </div>
             
             <div class="bg-white/80 border border-gray-200/20 backdrop-blur-sm hover:bg-white/90 transition-all duration-300 rounded-lg p-6 shadow-lg">

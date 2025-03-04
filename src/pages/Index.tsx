@@ -1,4 +1,3 @@
-
 import { HeroSection } from "@/components/sections/HeroSection";
 import { ConsultingSection } from "@/components/sections/ConsultingSection";
 import { CompanyProfileSection } from "@/components/sections/CompanyProfileSection";
@@ -91,7 +90,7 @@ const Index = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent>
-                事業構想段階からのご相談を推奨しています。神戸・兵庫での創業支援実績が豊富です。
+                事業構想段階からのご相談を推奨しています。創業後に活用できる制度や融資のポイントなどを知って、「早く相談すれば良かった」という声も多く伺います。ぜひ無料相談をご活用ください。
               </CardContent>
             </Card>
             <Card>
