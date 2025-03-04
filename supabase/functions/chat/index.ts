@@ -6,14 +6,51 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.7.1'
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-}
+  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+  'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
+  'X-Content-Type-Options': 'nosniff',
+  'X-Frame-Options': 'DENY',
+  'X-XSS-Protection': '1; mode=block'
+};
 
 serve(async (req) => {
+  // CORS プリフライトリクエストの処理
   if (req.method === 'OPTIONS') {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
+    // 1. 認証チェック
+    const supabaseClient = createClient(
+      Deno.env.get('SUPABASE_URL') ?? '',
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
+    );
+
+    // 認証トークンの取得とユーザー検証
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      // 匿名アクセスを許可するが、ログに記録
+      console.log('認証なしでアクセスがありました');
+    } else {
+      // JWT トークンの検証
+      const token = authHeader.replace('Bearer ', '');
+      const { data: userData, error: authError } = await supabaseClient.auth.getUser(token);
+      
+      if (authError) {
+        console.error('認証エラー:', authError);
+        return new Response(
+          JSON.stringify({ error: '認証に失敗しました', details: authError.message }), 
+          { 
+            status: 401, 
+            headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
+          }
+        );
+      }
+      
+      console.log('認証済みユーザー:', userData?.user?.email);
+    }
+
+    // 2. リクエストボディの解析
     const { question } = await req.json();
     if (!question) {
       return new Response(
@@ -24,6 +61,7 @@ serve(async (req) => {
 
     console.log('受信した質問:', question);
 
+    // 3. API キーの確認
     const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
     if (!openAIApiKey) {
       console.error('OpenAI APIキーが設定されていません');
@@ -33,7 +71,7 @@ serve(async (req) => {
       );
     }
 
-    // 1. 質問をベクトル化
+    // 4. 質問をベクトル化
     const embeddingResponse = await fetch('https://api.openai.com/v1/embeddings', {
       method: 'POST',
       headers: {
@@ -58,13 +96,7 @@ serve(async (req) => {
     
     const questionEmbedding = embeddingData.data[0].embedding;
 
-    // 2. Supabaseクライアント初期化
-    const supabaseClient = createClient(
-      Deno.env.get('SUPABASE_URL') ?? '',
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? ''
-    );
-
-    // 3. 類似ドキュメントを検索
+    // 5. 類似ドキュメントを検索
     const { data: documents, error: searchError } = await supabaseClient.rpc(
       'match_subsidy_docs',
       {
@@ -81,7 +113,7 @@ serve(async (req) => {
       );
     }
 
-    // 4. 関連ドキュメントをプロンプトに組み込む
+    // 6. 関連ドキュメントをプロンプトに組み込む
     let contextText = '';
     let relevantUrls = [];
     
@@ -99,7 +131,7 @@ serve(async (req) => {
         }));
     }
 
-    // 5. ChatGPTで回答を生成
+    // 7. ChatGPTで回答を生成
     const chatResponse = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {
@@ -136,6 +168,7 @@ ${contextText}`
 
     console.log('ChatGPT応答:', chatData);
 
+    // 8. レスポンスの返却（セキュリティヘッダー付き）
     return new Response(
       JSON.stringify({
         choices: [{
