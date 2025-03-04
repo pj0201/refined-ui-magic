@@ -26,11 +26,17 @@ function planningjoy_scripts() {
     // メインのスタイルシート
     wp_enqueue_style('planningjoy-style', get_stylesheet_uri());
     
-    // カスタムCSS
+    // ReactアプリのCSS
+    wp_enqueue_style('planningjoy-react', get_template_directory_uri() . '/assets/dist/style.css');
+    
+    // カスタムCSS（上書き用）
     wp_enqueue_style('planningjoy-custom', get_template_directory_uri() . '/assets/css/style.css');
     
-    // JavaScript
-    wp_enqueue_script('planningjoy-main', get_template_directory_uri() . '/assets/js/main.js', array(), '1.0.0', true);
+    // ReactアプリのJS
+    wp_enqueue_script('planningjoy-react', get_template_directory_uri() . '/assets/dist/index.js', array(), '1.0.0', true);
+    
+    // カスタムJavaScript
+    wp_enqueue_script('planningjoy-main', get_template_directory_uri() . '/assets/js/main.js', array('planningjoy-react'), '1.0.0', true);
 }
 add_action('wp_enqueue_scripts', 'planningjoy_scripts');
 
