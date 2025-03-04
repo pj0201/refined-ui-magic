@@ -48,4 +48,4 @@ export const TopicSection = () => {
       </div>
     </section>
   );
-};
+}

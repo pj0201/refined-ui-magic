@@ -1,4 +1,5 @@
 
+
 <section class="py-8 px-4 bg-gray-50">
     <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-bold mb-4 text-gray-900 text-center">トピック</h2>
@@ -49,3 +50,4 @@
         </div>
     </div>
 </section>
+
