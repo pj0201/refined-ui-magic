@@ -12,7 +12,7 @@
                         2025/03
                     </span>
                 </div>
-                <div class="flex items-center justify-between">
+                <div>
                     <p class="text-gray-800">2025年3月より申請開始 　新たに一般形が追加され利用しやすくなった「中小企業省力化投資補助金一般形」が始まります。（詳細は本ページのチャットボットへどうぞ)</p>
                 </div>
             </div>
