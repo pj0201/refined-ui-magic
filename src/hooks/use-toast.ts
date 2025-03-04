@@ -2,42 +2,39 @@
 "use client"
 
 import * as React from "react"
-import { toast as sonnerToast } from "sonner"
+import { toast as sonnerToast, type Toast as SonnerToast, type ToastOptions } from "sonner"
 
-// シンプルな型定義
-export type ToastProps = {
+// Sonnerの型定義を拡張した独自のToast型
+export interface ToastProps extends ToastOptions {
   title?: React.ReactNode
   description?: React.ReactNode
-  action?: React.ReactElement
   variant?: "default" | "destructive"
 }
 
 export type ToastActionElement = React.ReactElement
 
-// Custom toast type
+// Sonnerの型定義を活用したToast型
 export type Toast = ToastProps
 
-// カスタム toast 関数
+// カスタム toast 関数 - Sonnerの型定義に準拠
 export function toast({ 
   title, 
   description, 
-  action,
   variant = "default", 
   ...props 
-}: Toast) {
+}: ToastProps) {
   return sonnerToast(title as string, {
     description,
-    action,
-    // Sonner の型に合わせて変換
+    // Sonnerのスタイル指定に合わせた実装
     className: variant === "destructive" ? "destructive" : undefined,
     ...props,
   })
 }
 
-// useToast フック - シンプル化
+// シンプル化したuseToastフック
 export function useToast() {
   return {
     toast,
-    dismiss: sonnerToast.dismiss
+    dismiss: sonnerToast.dismiss,
   }
 }
