@@ -14,7 +14,7 @@ export type ToastProps = {
 
 export type ToastActionElement = React.ReactElement
 
-// シンプルな Toast 型
+// Custom toast type
 export type Toast = ToastProps
 
 // カスタム toast 関数
