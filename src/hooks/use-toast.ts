@@ -1,32 +1,32 @@
-
 "use client"
 
 import * as React from "react"
 import { toast as sonnerToast, type ToastT, ExternalToast } from "sonner"
 
-// We'll correctly extend from Sonner's types to ensure compatibility
+// Define our customized ToastProps interface that extends Sonner's ExternalToast
 export interface ToastProps extends Omit<ExternalToast, "id" | "type" | "jsx" | "delete" | "promise"> {
   title?: React.ReactNode
   variant?: "default" | "destructive"
+  // We keep the variant property which isn't in Sonner's ExternalToast
 }
 
 export type ToastActionElement = React.ReactElement
 
-// Directly use Sonner's Toast type
+// Use our custom Toast type definition
 export type Toast = ToastProps
 
 export function toast(props: ToastProps) {
   const { title, description, variant = "default", ...options } = props
   
-  // Cast to string only if it's not already a string
-  return sonnerToast(title as string, {
+  // We handle the variant property here and convert it to className for Sonner
+  return sonnerToast(typeof title === 'string' ? title : "通知", {
     description,
     className: variant === "destructive" ? "destructive" : undefined,
     ...options,
   })
 }
 
-// Use Sonner's ExternalToast type directly for perfect compatibility
+// Define specific toast types using Sonner's ExternalToast type
 toast.success = (title: string, props?: ExternalToast) => {
   return sonnerToast.success(title, props)
 }
@@ -43,7 +43,7 @@ toast.info = (title: string, props?: ExternalToast) => {
   return sonnerToast.info(title, props)
 }
 
-// Simplified useToast hook
+// Clean useToast hook implementation
 export function useToast() {
   return {
     toast,
