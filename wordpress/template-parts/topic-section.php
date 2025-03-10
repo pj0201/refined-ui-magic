@@ -16,6 +16,19 @@
                     <p class="text-gray-800">2025年3月より申請開始 　新たに一般形が追加され利用しやすくなった「中小企業省力化投資補助金一般形」が始まります。（詳細は本ページのチャットボットへどうぞ)</p>
                 </div>
             </div>
+            <div class="p-4 rounded-lg border bg-blue-50 border-blue-200">
+                <div class="flex items-center gap-2 mb-1">
+                    <span class="text-red-600 text-sm font-semibold">
+                        NEW
+                    </span>
+                    <span class="text-gray-500 text-sm">
+                        2025/03
+                    </span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <p class="text-gray-800">NEW 2025/3 小規模持続化補助金公募要領（暫定版）が公表されました。（詳細は本ページのチャットボットへどうぞ)</p>
+                </div>
+            </div>
             <div class="p-4 rounded-lg border bg-white border-gray-200">
                 <div class="flex items-center justify-between">
                     <p class="text-gray-800">AI用語について</p>
