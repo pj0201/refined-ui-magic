@@ -46,7 +46,8 @@ export const SubsidyChatbot = () => {
       #dify-chatbot-bubble-window {
         width: 24rem !important;
         height: 40rem !important;
-        bottom: 5rem !important;
+        bottom: 6rem !important; /* 修正: 下部に余裕を持たせる */
+        max-height: 80vh !important; /* 画面高さの80%までに制限 */
       }
     `;
     document.head.appendChild(difyChatbotStyle);

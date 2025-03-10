@@ -24,7 +24,8 @@ if (!defined('ABSPATH')) {
   #dify-chatbot-bubble-window {
     width: 24rem !important;
     height: 40rem !important;
-    bottom: 5rem !important;
+    bottom: 6rem !important; /* 修正: 下部の切れ目を防ぐため */
+    max-height: 80vh !important; /* 修正: 画面高さの80%までに制限 */
   }
   /* ラベルのスタイリング - 位置調整 */
   .chatbot-label {
