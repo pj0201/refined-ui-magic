@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { HelpCircle, X, Send } from "lucide-react";
@@ -21,6 +21,43 @@ export const SubsidyChatbot = () => {
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+
+  // Dify chatbotの設定（React側）
+  useEffect(() => {
+    // Dify chatbotのスクリプトを追加
+    const difyChatbotConfig = document.createElement('script');
+    difyChatbotConfig.textContent = `window.difyChatbotConfig = { token: 'yXBz3rzpDBhMgYcB' }`;
+    document.head.appendChild(difyChatbotConfig);
+
+    const difyChatbotScript = document.createElement('script');
+    difyChatbotScript.src = 'https://udify.app/embed.min.js';
+    difyChatbotScript.id = 'yXBz3rzpDBhMgYcB';
+    difyChatbotScript.defer = true;
+    document.body.appendChild(difyChatbotScript);
+
+    // Dify chatbotのスタイル設定
+    const difyChatbotStyle = document.createElement('style');
+    difyChatbotStyle.textContent = `
+      #dify-chatbot-bubble-button {
+        background-color: #1C64F2 !important;
+        bottom: 5rem !important; 
+        right: 1rem !important;
+      }
+      #dify-chatbot-bubble-window {
+        width: 24rem !important;
+        height: 40rem !important;
+        bottom: 5rem !important;
+      }
+    `;
+    document.head.appendChild(difyChatbotStyle);
+
+    // クリーンアップ関数
+    return () => {
+      document.head.removeChild(difyChatbotConfig);
+      document.body.removeChild(difyChatbotScript);
+      document.head.removeChild(difyChatbotStyle);
+    };
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -81,6 +118,12 @@ export const SubsidyChatbot = () => {
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
+      {/* 小規模持続化補助金ラベル */}
+      <div className="fixed bottom-36 right-3 z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center">
+        <span>小規模持続化補助金</span>
+        <span>の質問はコチラ</span>
+      </div>
+      
       {!isOpen ? (
         <div className="flex flex-col items-end gap-2">
           <div className="bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center">
@@ -99,7 +142,7 @@ export const SubsidyChatbot = () => {
           {/* Header */}
           <div className="flex items-center justify-between p-4 border-b">
             <div className="flex items-center gap-4">
-              <h3 className="font-bold text-lg">補助金相談Bot</h3>
+              <h3 className="font-bold text-lg">省力化投資補助金相談Bot</h3>
             </div>
             <Button
               variant="ghost"

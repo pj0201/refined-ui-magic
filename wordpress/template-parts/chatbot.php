@@ -1,6 +1,54 @@
-
 <div id="subsidy-chatbot" class="fixed bottom-4 right-4 z-50">
     <!-- チャットボットのUIはJavaScriptで動的に生成されます -->
+</div>
+
+<!-- 小規模持続化補助金のDify Chatbot -->
+<script>
+ window.difyChatbotConfig = {
+  token: 'yXBz3rzpDBhMgYcB'
+ }
+</script>
+<script
+ src="https://udify.app/embed.min.js"
+ id="yXBz3rzpDBhMgYcB"
+ defer>
+</script>
+<style>
+  #dify-chatbot-bubble-button {
+    background-color: #1C64F2 !important;
+    bottom: 5rem !important; /* 省力化投資補助金チャットボットの上に配置 */
+    right: 1rem !important;
+  }
+  #dify-chatbot-bubble-window {
+    width: 24rem !important;
+    height: 40rem !important;
+    bottom: 5rem !important;
+  }
+  /* ラベルのスタイリング */
+  .chatbot-label {
+    position: fixed;
+    background-color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    z-index: 50;
+    backdrop-filter: blur(4px);
+  }
+  .small-subsidy-label {
+    bottom: 9rem;
+    right: 0.75rem;
+  }
+  .investment-subsidy-label {
+    bottom: 3.5rem;
+    right: 0.75rem;
+  }
+</style>
+
+<!-- ラベル -->
+<div class="chatbot-label small-subsidy-label bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center">
+  <span>小規模持続化補助金</span>
+  <span>の質問はコチラ</span>
 </div>
 
 <script>
@@ -119,7 +167,7 @@ async function handleFileUpload(file) {
     }
 }
 
-// チャットボットの初期化
+// 省力化投資補助金チャットボットの初期化
 document.addEventListener('DOMContentLoaded', function() {
     const chatbotContainer = document.getElementById('subsidy-chatbot');
     
@@ -155,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 初期状態のUIを構築
     chatbotContainer.innerHTML = `
         <div class="flex flex-col items-end gap-2">
-            <div class="bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center">
+            <div class="chatbot-label investment-subsidy-label bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center">
                 <span>省力化投資補助金</span>
                 <span>一般形の質問はコチラ</span>
             </div>
@@ -168,7 +216,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         <div id="chat-window" class="hidden absolute bottom-16 right-0 w-[350px] max-w-[calc(100vw-2rem)] h-[500px] max-h-[calc(100vh-2rem)] bg-gray-50 rounded-lg shadow-xl flex flex-col">
             <div class="flex items-center justify-between p-4 border-b bg-white rounded-t-lg">
-                <h3 class="font-bold text-lg">補助金相談Bot</h3>
+                <h3 class="font-bold text-lg">省力化投資補助金相談Bot</h3>
                 <button id="close-chat" class="text-gray-500 hover:text-gray-700">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
