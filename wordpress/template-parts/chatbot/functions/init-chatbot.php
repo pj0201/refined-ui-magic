@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
             </button>
         </div>
 
-        <div id="chat-window" class="hidden absolute bottom-16 right-0 w-[350px] max-w-[calc(100vw-2rem)] h-[500px] max-h-[calc(100vh-2rem)] bg-gray-50 rounded-lg shadow-xl flex flex-col">
+        <div id="chat-window" class="hidden absolute bottom-16 right-0 w-[350px] max-w-[calc(100vw-2rem)] h-[500px] max-h-[calc(100vh-4rem)] bg-gray-50 rounded-lg shadow-xl flex flex-col">
             <div class="flex items-center justify-between p-4 border-b bg-white rounded-t-lg">
                 <h3 class="font-bold text-lg">省力化投資補助金相談Bot</h3>
                 <button id="close-chat" class="text-gray-500 hover:text-gray-700">

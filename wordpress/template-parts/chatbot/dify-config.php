@@ -18,14 +18,14 @@ if (!defined('ABSPATH')) {
 <style>
   #dify-chatbot-bubble-button {
     background-color: #1C64F2 !important;
-    bottom: 6rem !important; /* 省力化投資補助金チャットボットの上に配置 - 調整済み */
+    bottom: 10rem !important; /* 省力化投資補助金チャットボットとの間隔を広げる */
     right: 1rem !important;
   }
   #dify-chatbot-bubble-window {
     width: 24rem !important;
     height: 40rem !important;
-    bottom: 6rem !important; /* 修正: 下部の切れ目を防ぐため */
-    max-height: 80vh !important; /* 修正: 画面高さの80%までに制限 */
+    bottom: 10rem !important; /* 画面下部に十分なスペースを確保 */
+    max-height: 70vh !important; /* 画面高さの70%までに制限して表示領域を確保 */
   }
   /* ラベルのスタイリング - 位置調整 */
   .chatbot-label {
@@ -39,7 +39,7 @@ if (!defined('ABSPATH')) {
     backdrop-filter: blur(4px);
   }
   .small-subsidy-label {
-    bottom: 13rem; /* 位置調整 */
+    bottom: 17rem; /* 小規模持続化補助金ラベルの位置を調整 */
     right: 0.75rem;
   }
   .investment-subsidy-label {

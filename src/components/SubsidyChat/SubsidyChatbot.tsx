@@ -40,14 +40,14 @@ export const SubsidyChatbot = () => {
     difyChatbotStyle.textContent = `
       #dify-chatbot-bubble-button {
         background-color: #1C64F2 !important;
-        bottom: 6rem !important; 
+        bottom: 10rem !important; /* 省力化投資補助金チャットボットとの間隔を広げる */
         right: 1rem !important;
       }
       #dify-chatbot-bubble-window {
         width: 24rem !important;
         height: 40rem !important;
-        bottom: 6rem !important; /* 修正: 下部に余裕を持たせる */
-        max-height: 80vh !important; /* 画面高さの80%までに制限 */
+        bottom: 10rem !important; /* 画面下部に十分なスペースを確保 */
+        max-height: 70vh !important; /* 画面高さの70%までに制限して表示領域を確保 */
       }
     `;
     document.head.appendChild(difyChatbotStyle);
@@ -120,7 +120,7 @@ export const SubsidyChatbot = () => {
   return (
     <div className="fixed bottom-4 right-4 z-50">
       {/* 小規模持続化補助金ラベル - 位置調整 */}
-      <div className="fixed bottom-52 right-3 z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center">
+      <div className="fixed bottom-[17rem] right-3 z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center">
         <span>小規模持続化補助金</span>
         <span>の質問はコチラ</span>
       </div>
