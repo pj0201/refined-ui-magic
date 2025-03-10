@@ -40,7 +40,7 @@ export const SubsidyChatbot = () => {
     difyChatbotStyle.textContent = `
       #dify-chatbot-bubble-button {
         background-color: #1C64F2 !important;
-        bottom: 5rem !important; 
+        bottom: 6rem !important; 
         right: 1rem !important;
       }
       #dify-chatbot-bubble-window {
@@ -118,14 +118,15 @@ export const SubsidyChatbot = () => {
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
-      {/* 小規模持続化補助金ラベル */}
-      <div className="fixed bottom-36 right-3 z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center">
+      {/* 小規模持続化補助金ラベル - 位置調整 */}
+      <div className="fixed bottom-52 right-3 z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center">
         <span>小規模持続化補助金</span>
         <span>の質問はコチラ</span>
       </div>
       
       {!isOpen ? (
-        <div className="flex flex-col items-end gap-2">
+        <div className="flex flex-col items-end gap-6">
+          {/* 省力化投資補助金ラベル - 位置調整 */}
           <div className="bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center">
             <span>省力化投資補助金</span>
             <span>一般形の質問はコチラ</span>
