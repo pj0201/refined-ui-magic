@@ -1,3 +1,4 @@
+
 import { scriptExists, createScript, createStyle, createElement } from "../utils/scriptManager";
 import { difyChatStyles } from "../styles/difyChatStyles";
 import { setupDomObserver, performInitialElementsCheck } from "../utils/domObserver";
@@ -14,14 +15,60 @@ export const applyDifyChatStyles = (): MutationObserver => {
   // 初期チェックを実行
   performInitialElementsCheck();
 
-  // 閉じるボタンが常に存在するように定期的にチェック
-  setInterval(() => {
+  // 閉じるボタンをチェックして再作成する
+  const checkCloseButton = () => {
     const chatWindow = document.getElementById('dify-chatbot-bubble-window');
-    if (chatWindow && !chatWindow.querySelector('.dify-chatbot-window-close-btn')) {
-      console.log('Close button not found, recreating...');
-      performInitialElementsCheck();
+    if (chatWindow && !document.querySelector('.dify-custom-close-btn')) {
+      console.log('Close button not found, creating custom close button...');
+      
+      // カスタム閉じるボタンの作成
+      const closeBtn = document.createElement('button');
+      closeBtn.className = 'dify-custom-close-btn';
+      closeBtn.innerHTML = '×';
+      closeBtn.style.position = 'absolute';
+      closeBtn.style.top = '15px';
+      closeBtn.style.right = '15px';
+      closeBtn.style.zIndex = '10000';
+      closeBtn.style.background = '#ff5252';
+      closeBtn.style.color = 'white';
+      closeBtn.style.border = '2px solid white';
+      closeBtn.style.borderRadius = '50%';
+      closeBtn.style.width = '32px';
+      closeBtn.style.height = '32px';
+      closeBtn.style.fontSize = '20px';
+      closeBtn.style.display = 'flex';
+      closeBtn.style.alignItems = 'center';
+      closeBtn.style.justifyContent = 'center';
+      closeBtn.style.cursor = 'pointer';
+      closeBtn.style.padding = '0';
+      closeBtn.style.lineHeight = '1';
+      
+      // クリックイベントを追加（チャットウィンドウを閉じる）
+      closeBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        console.log('Custom close button clicked');
+        
+        // チャットウィンドウを非表示にする
+        const chatWindow = document.getElementById('dify-chatbot-bubble-window');
+        if (chatWindow) {
+          chatWindow.style.display = 'none';
+        }
+        
+        // プラグインの状態も更新
+        const plugin = document.getElementById('dify-chatbot-bubble-button');
+        if (plugin) {
+          plugin.classList.remove('active');
+        }
+      });
+      
+      // ボタンをウィンドウに追加
+      chatWindow.appendChild(closeBtn);
     }
-  }, 1000);
+  };
+
+  // 定期的に閉じるボタンの存在をチェック
+  setInterval(checkCloseButton, 1000);
 
   return observer;
 };
