@@ -24,7 +24,7 @@ export const SubsidyChatbot = () => {
     smallSubsidyLabel: { bottom: "calc(40vh)", right: "1rem" },
     smallSubsidyIcon: { bottom: "calc(34vh)", right: "1rem" }, // 吹き出しの真下に配置
     investmentSubsidyLabel: { bottom: "calc(20vh)", right: "1rem" },
-    investmentSubsidyIcon: { bottom: "calc(10vh)", right: "1rem" } // 位置を固定
+    investmentSubsidyIcon: { bottom: "calc(14vh)", right: "1rem" } // 位置を固定
   });
 
   // 画面サイズに基づいて位置を調整
@@ -32,15 +32,17 @@ export const SubsidyChatbot = () => {
     const updatePositions = () => {
       const viewportHeight = window.innerHeight;
       
-      // 小規模持続化補助金の位置（吹き出しはそのまま）
+      // 小規模持続化補助金ラベル - 位置固定
       const smallSubsidyLabelBottom = Math.min(Math.max(viewportHeight * 0.4, 12 * 16), 16 * 16);
-      // アイコンを吹き出しの真下に配置（6remのオフセット）
-      const smallSubsidyIconBottom = smallSubsidyLabelBottom - (6 * 16);
       
-      // 省力化投資補助金の位置（位置を固定）
+      // 小規模持続化補助金アイコン - ラベルの真下に配置（オフセットを6remから9remに増加）
+      const smallSubsidyIconBottom = smallSubsidyLabelBottom - (9 * 16);
+      
+      // 省力化投資補助金ラベル - 位置固定
       const investmentSubsidyLabelBottom = Math.min(Math.max(viewportHeight * 0.2, 6 * 16), 8 * 16);
-      // アイコンを吹き出しの真下に配置（3remのオフセット）
-      const investmentSubsidyIconBottom = Math.min(Math.max(viewportHeight * 0.1, 3 * 16), 5 * 16);
+      
+      // 省力化投資補助金アイコン - ラベルの真下に配置（オフセットを固定）
+      const investmentSubsidyIconBottom = investmentSubsidyLabelBottom - (6 * 16);
 
       setStyles({
         smallSubsidyLabel: { bottom: `${smallSubsidyLabelBottom / 16}rem`, right: "1rem" },

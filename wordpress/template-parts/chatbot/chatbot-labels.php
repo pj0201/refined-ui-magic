@@ -27,16 +27,16 @@ function adjustLabelPositions() {
   const difyChatbotButton = document.getElementById('dify-chatbot-bubble-button');
   if (difyChatbotButton && smallSubsidyLabel) {
     const labelBottom = parseFloat(smallSubsidyLabel.style.bottom);
-    // ラベルの下に6rem分オフセットして配置
-    difyChatbotButton.style.bottom = `${labelBottom - 6}rem`;
+    // ラベルの下に9rem分オフセットして配置（オフセットを増加）
+    difyChatbotButton.style.bottom = `${labelBottom - 9}rem`;
   }
   
   // 省力化投資補助金のチャットボットアイコン
   const investmentSubsidyBot = document.querySelector('.investment-subsidy-bot');
   if (investmentSubsidyBot && investmentSubsidyLabel) {
     const labelBottom = parseFloat(investmentSubsidyLabel.style.bottom);
-    // ラベルの下に3rem分オフセットして配置
-    investmentSubsidyBot.style.bottom = `${labelBottom - 3}rem`;
+    // ラベルの下に6rem分オフセットして配置（オフセットを増加）
+    investmentSubsidyBot.style.bottom = `${labelBottom - 6}rem`;
   }
 }
 
