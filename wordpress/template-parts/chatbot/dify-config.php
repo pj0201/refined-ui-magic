@@ -24,18 +24,46 @@ if (!defined('ABSPATH')) {
   }
   #dify-chatbot-bubble-window {
     width: 24rem !important;
-    height: auto !important; /* 高さを自動調整に変更 */
-    max-height: 80vh !important; /* 画面高さの80%に制限 - 50vhよりも多めに設定 */
+    height: 550px !important; /* 固定高さを十分に確保 */
+    min-height: 500px !important; /* 最小高さを設定 */
+    max-height: 80vh !important; /* 画面高さの80%に制限 */
     bottom: 6rem !important; /* 下部の位置を調整 - 入力欄が見えるように */
     right: 1rem !important;
     transform: translateY(0) !important; /* 位置の強制調整 */
   }
   
+  /* チャット領域の表示調整 */
+  #dify-chatbot-bubble-window .dify-chatbot-window-content {
+    height: calc(100% - 50px) !important; /* ヘッダーの高さを引いた高さ */
+  }
+  
+  /* 入力エリアが常に表示されるように */
+  #dify-chatbot-bubble-window .dify-chatbot-window-footer {
+    position: sticky !important;
+    bottom: 0 !important;
+    background-color: white !important;
+  }
+  
   /* iOSおよびモバイルデバイス用の特別対応 */
   @supports (-webkit-overflow-scrolling: touch) {
     #dify-chatbot-bubble-window {
+      height: 550px !important;
+      min-height: 500px !important;
       max-height: 70vh !important; /* iOSではさらに制限 */
       bottom: 8rem !important; /* より大きめのマージン */
+    }
+  }
+  
+  /* 小さい画面用の調整 */
+  @media (max-height: 600px) {
+    #dify-chatbot-bubble-window {
+      height: 450px !important; /* 小さい画面でも十分な高さを確保 */
+      min-height: 400px !important;
+      max-height: 60vh !important;
+      bottom: 8rem !important; /* 下部の余白を増やす */
+    }
+    #dify-chatbot-bubble-button {
+      bottom: 11rem !important; /* 固定位置を維持 */
     }
   }
   
@@ -74,28 +102,21 @@ if (!defined('ABSPATH')) {
   }
   /* カスタマイズしたChatbotのボタン位置 - 位置を調整 */
   #subsidy-chatbot .rounded-full {
-    bottom: 3rem !important; /* 修正: 4rem → 3rem に変更 */
+    bottom: 3rem !important; /* 固定位置 */
     right: 1rem !important;
     position: fixed !important;
   }
 
   /* 小さい画面用の調整 - 固定位置を維持 */
   @media (max-height: 600px) {
-    #dify-chatbot-bubble-window {
-      max-height: 60vh !important; /* 小さい画面ではさらに高さを制限 */
-      bottom: 8rem !important; /* 下部の余白を増やす */
-    }
     .small-subsidy-label {
       bottom: 15rem; /* 固定位置を維持 */
     }
     .investment-subsidy-label {
       bottom: 7rem; /* 固定位置を維持 */
     }
-    #dify-chatbot-bubble-button {
-      bottom: 11rem !important; /* 固定位置を維持 */
-    }
     #subsidy-chatbot .rounded-full {
-      bottom: 3rem !important; /* 修正: 4rem → 3rem に変更 */
+      bottom: 3rem !important;
     }
   }
 </style>

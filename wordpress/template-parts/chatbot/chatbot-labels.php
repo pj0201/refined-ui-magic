@@ -28,20 +28,36 @@ function adjustLabelPositions() {
   // 省力化投資補助金のチャットボットアイコン - ラベルのすぐ下に配置
   const investmentSubsidyBot = document.querySelector('.investment-subsidy-bot');
   if (investmentSubsidyBot) {
-    investmentSubsidyBot.style.bottom = '3rem'; // 修正: 省力化投資補助金ラベルから4rem下がった位置
+    investmentSubsidyBot.style.bottom = '3rem'; // 固定位置
   }
   
   // Difyのチャットウィンドウの位置とサイズを調整
   const difyChatbotWindow = document.getElementById('dify-chatbot-bubble-window');
   if (difyChatbotWindow) {
-    // ウィンドウの高さをビューポートに応じて調整
-    difyChatbotWindow.style.maxHeight = '80vh'; // 画面高さの80%に制限
-    difyChatbotWindow.style.height = 'auto'; // 高さを自動調整
+    // ウィンドウの高さを固定値で設定し、最大値を確保
+    difyChatbotWindow.style.height = '550px'; // 十分な高さを確保
+    difyChatbotWindow.style.minHeight = '500px'; // 最小高さを設定
+    difyChatbotWindow.style.maxHeight = '80vh'; // 画面高さの80%を上限
     difyChatbotWindow.style.bottom = '6rem'; // 下部に適切な余白を確保
     difyChatbotWindow.style.transform = 'translateY(0)'; // 位置を強制調整
     
+    // チャット入力部分が見えるようにスタイル調整
+    const chatContent = difyChatbotWindow.querySelector('.dify-chatbot-window-content');
+    if (chatContent) {
+      chatContent.style.height = 'calc(100% - 50px)'; // ヘッダー高さを引いた値
+    }
+    
+    const chatFooter = difyChatbotWindow.querySelector('.dify-chatbot-window-footer');
+    if (chatFooter) {
+      chatFooter.style.position = 'sticky';
+      chatFooter.style.bottom = '0';
+      chatFooter.style.backgroundColor = 'white';
+    }
+    
     // 画面の高さが小さい場合はさらに調整
     if (window.innerHeight < 600) {
+      difyChatbotWindow.style.height = '450px';
+      difyChatbotWindow.style.minHeight = '400px';
       difyChatbotWindow.style.maxHeight = '60vh';
       difyChatbotWindow.style.bottom = '8rem';
     }
@@ -64,8 +80,10 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // ウィンドウがクリックされた時にも位置調整（Difyボタンクリック対応）
   document.addEventListener('click', function() {
-    // クリック後に少し遅延を入れて調整
-    setTimeout(adjustLabelPositions, 500);
+    // クリック後に複数回調整を実行（確実に適用されるように）
+    setTimeout(adjustLabelPositions, 300);
+    setTimeout(adjustLabelPositions, 800);
+    setTimeout(adjustLabelPositions, 1500);
   });
 });
 </script>
