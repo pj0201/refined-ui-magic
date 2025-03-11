@@ -1,10 +1,8 @@
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { DifyConfig } from "./DifyConfig";
 import { ChatbotContainer } from "./ChatbotContainer";
 import { Message } from "./types";
-import { formatSubsidyResponse, isSubsidyRelatedQuestion } from "./utils";
-import { generateSubsidyResponse } from "./api";
 import { useToast } from "@/components/ui/use-toast";
 
 export const SubsidyChatbot = () => {
@@ -41,7 +39,7 @@ export const SubsidyChatbot = () => {
     }
   };
 
-  // 通常のチャットボット表示を管理するための関数
+  // 省力化投資補助金チャットボット用のメッセージ処理関数
   const handleSendMessage = async (message: string) => {
     if (isLoading) return;
 
@@ -55,21 +53,20 @@ export const SubsidyChatbot = () => {
     setIsLoading(true);
 
     try {
-      // Difyを使用しますが、UIは既存のものを使用します
-      console.log('省力化投資補助金の質問を処理:', userMessage.content);
-      
-      // 元々はここでAPIリクエストを送信していましたが、
-      // 実際にはDifyが裏側で処理するため、ダミーレスポンスを生成
-      const subsidyInfo = await generateSubsidyResponse(userMessage.content);
-      console.log('生成された回答:', subsidyInfo);
-      
-      const response = formatSubsidyResponse(subsidyInfo);
-      
-      setMessages(prev => [...prev, {
-        type: "bot",
-        content: response,
+      // メッセージがDifyに送信され、Difyが自動的に回答を生成します
+      // カスタムUIはそのまま使用する代わりに、"お問い合わせはDifyチャットボットをお使いください"と案内
+      const botResponse = {
+        type: "bot" as const,
+        content: "このチャットボットでは小規模持続化補助金のご質問にお答えしています。省力化投資補助金（一般型）については、上のチャットボットをご利用ください。",
         timestamp: new Date()
-      }]);
+      };
+      
+      // 少し遅延を入れて、より自然な会話フローを実現
+      setTimeout(() => {
+        setMessages(prev => [...prev, botResponse]);
+        setIsLoading(false);
+      }, 500);
+      
     } catch (error) {
       console.error('メッセージ処理中にエラーが発生:', error);
       setMessages(prev => [...prev, {
@@ -83,7 +80,6 @@ export const SubsidyChatbot = () => {
         description: "しばらく待ってから再度お試しください。",
         variant: "destructive"
       });
-    } finally {
       setIsLoading(false);
     }
   };
