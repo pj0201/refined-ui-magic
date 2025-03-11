@@ -19,49 +19,27 @@ export const SubsidyChatbot = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  // チャットボットの配置を調整するためのスタイル
+  // Styles for positioning chatbots
   const styles = {
-    smallSubsidyLabel: { bottom: "15rem", right: "1rem", zIndex: 1000 },
-    smallSubsidyIcon: { bottom: "11rem", right: "1rem", zIndex: 1000 },
-    investmentSubsidyLabel: { bottom: "7rem", right: "1rem", zIndex: 1000 }, 
-    investmentSubsidyIcon: { bottom: "2rem", right: "1rem", zIndex: 1000 }
+    // Small subsidy chatbot (Dify)
+    smallSubsidyLabel: { 
+      bottom: "15rem", 
+      right: "1rem", 
+      zIndex: 1000 
+    },
+    
+    // Investment subsidy chatbot (custom)
+    investmentSubsidyLabel: { 
+      bottom: "7rem", 
+      right: "1rem", 
+      zIndex: 1000 
+    }, 
+    investmentSubsidyIcon: { 
+      bottom: "2rem", 
+      right: "1rem", 
+      zIndex: 1000 
+    }
   };
-
-  // Difyチャットボットのスタイルを調整するための効果
-  useEffect(() => {
-    const adjustDifyChat = () => {
-      const difyChatWindow = document.getElementById('dify-chatbot-bubble-window');
-      const closeButton = difyChatWindow?.querySelector('.dify-chatbot-window-close-btn');
-      
-      if (difyChatWindow) {
-        difyChatWindow.style.maxHeight = '80vh';
-        difyChatWindow.style.height = '500px';
-        difyChatWindow.style.borderRadius = '0.5rem';
-        
-        if (closeButton) {
-          (closeButton as HTMLElement).style.zIndex = '9999';
-          (closeButton as HTMLElement).style.display = 'flex';
-          (closeButton as HTMLElement).style.visibility = 'visible';
-          (closeButton as HTMLElement).style.opacity = '1';
-          (closeButton as HTMLElement).style.position = 'absolute';
-          (closeButton as HTMLElement).style.top = '10px';
-          (closeButton as HTMLElement).style.right = '10px';
-        }
-      }
-    };
-    
-    // 定期的に調整を実行
-    const interval = setInterval(adjustDifyChat, 1000);
-    
-    // DOMの変更を監視して調整を適用
-    const observer = new MutationObserver(adjustDifyChat);
-    observer.observe(document.body, { childList: true, subtree: true });
-    
-    return () => {
-      clearInterval(interval);
-      observer.disconnect();
-    };
-  }, []);
 
   const handleSendMessage = async (message: string) => {
     if (isLoading) return;
@@ -77,7 +55,7 @@ export const SubsidyChatbot = () => {
 
     try {
       if (!isSubsidyRelatedQuestion(userMessage.content)) {
-        // 一般的な質問への対応を改善
+        // Improved response for general questions
         const generalResponse = "申し訳ありません。具体的な補助金に関する情報についてお答えできます。例えば以下のような質問をお試しください：\n\n・補助金の申請要件は？\n・補助対象となる経費は？\n・補助率はどのくらいですか？";
         
         setMessages(prev => [...prev, {
@@ -120,7 +98,7 @@ export const SubsidyChatbot = () => {
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
-      {/* 小規模持続化補助金ラベル - 固定位置 */}
+      {/* 小規模持続化補助金ラベル */}
       <div 
         className="fixed z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center"
         style={styles.smallSubsidyLabel}

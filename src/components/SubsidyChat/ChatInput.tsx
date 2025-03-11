@@ -20,17 +20,35 @@ export const ChatInput = ({ onSendMessage, isLoading }: ChatInputProps) => {
     setInput("");
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    // Send message on Enter key (without Shift key)
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (input.trim() && !isLoading) {
+        onSendMessage(input.trim());
+        setInput("");
+      }
+    }
+  };
+
   return (
     <form onSubmit={handleSubmit} className="w-full">
-      <div className="flex gap-2">
+      <div className="flex gap-2 items-center">
         <Input
           value={input}
           onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
           placeholder="メッセージを入力..."
-          className="flex-1 py-2 px-3 min-h-[40px]"
+          className="flex-1 py-2 px-3"
           disabled={isLoading}
+          autoComplete="off"
         />
-        <Button type="submit" disabled={!input.trim() || isLoading} className="h-[40px] w-[40px] p-0 flex-shrink-0">
+        <Button 
+          type="submit" 
+          disabled={!input.trim() || isLoading} 
+          className="h-10 w-10 p-0 flex-shrink-0"
+          variant="default"
+        >
           <Send className="w-4 h-4" />
         </Button>
       </div>

@@ -39,15 +39,15 @@ export const ChatbotContainer = ({
 
   return (
     <div 
-      className="bg-white rounded-lg shadow-xl flex flex-col fixed"
+      className="bg-white rounded-lg shadow-xl fixed"
       style={{ 
         width: '350px',
         maxWidth: 'calc(100vw - 2rem)',
-        bottom: '5rem', 
-        right: '1rem', 
-        zIndex: 1000,
         height: '500px',
         maxHeight: '80vh',
+        bottom: style.bottom || '5rem', 
+        right: style.right || '1rem', 
+        zIndex: 1000,
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
@@ -55,27 +55,27 @@ export const ChatbotContainer = ({
       }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b relative">
-        <div className="flex items-center gap-4">
-          <h3 className="font-bold text-lg">省力化投資補助金相談Bot</h3>
-        </div>
+      <div className="flex items-center justify-between p-4 border-b">
+        <h3 className="font-bold text-lg">省力化投資補助金相談Bot</h3>
         <Button
           variant="ghost"
           size="icon"
           onClick={onToggle}
-          className="z-50 absolute top-3 right-3"
+          className="ml-auto"
         >
           <X className="w-5 h-5" />
         </Button>
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto">
-        <ChatMessages messages={messages} />
+      {/* Messages - with proper scrollable area */}
+      <div className="flex-1 overflow-hidden">
+        <div className="h-full overflow-y-auto">
+          <ChatMessages messages={messages} />
+        </div>
       </div>
 
-      {/* Input */}
-      <div className="border-t bg-white p-3 sticky bottom-0 mt-auto">
+      {/* Input - fixed at bottom */}
+      <div className="border-t bg-white p-3 mt-auto">
         <ChatInput onSendMessage={onSendMessage} isLoading={isLoading} />
       </div>
     </div>
