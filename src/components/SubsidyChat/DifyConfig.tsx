@@ -1,6 +1,5 @@
 
 import { useEffect } from "react";
-import { X } from "lucide-react";
 
 export const DifyConfig = () => {
   useEffect(() => {
@@ -191,7 +190,10 @@ export const DifyConfig = () => {
     // Clean up on component unmount
     return () => {
       document.head.removeChild(difyChatbotConfig);
-      document.body.removeChild(difyChatbotScript);
+      const scriptElement = document.getElementById('yXBz3rzpDBhMgYcB');
+      if (scriptElement) {
+        document.body.removeChild(scriptElement);
+      }
       document.head.removeChild(difyChatbotStyle);
       observer.disconnect();
     };

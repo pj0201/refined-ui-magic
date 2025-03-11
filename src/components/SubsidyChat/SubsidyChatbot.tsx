@@ -29,7 +29,7 @@ export const SubsidyChatbot = () => {
       bottom: "15rem", 
       right: "1rem", 
       zIndex: 1000,
-      position: "fixed" // TypeScript expects a valid Position value
+      position: "fixed" // Valid Position type
     },
     
     // Investment subsidy chatbot (custom)
@@ -37,13 +37,13 @@ export const SubsidyChatbot = () => {
       bottom: "7rem", 
       right: "1rem", 
       zIndex: 1000,
-      position: "fixed" // TypeScript expects a valid Position value
+      position: "fixed" // Valid Position type
     }, 
     investmentSubsidyIcon: { 
       bottom: "2rem", 
       right: "1rem", 
       zIndex: 1000,
-      position: "fixed" // TypeScript expects a valid Position value
+      position: "fixed" // Valid Position type
     }
   };
 

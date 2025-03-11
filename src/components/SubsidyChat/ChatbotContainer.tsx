@@ -51,7 +51,7 @@ export const ChatbotContainer = ({
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
-        position: 'fixed', // Changed from "fixed !important" to "fixed"
+        position: 'fixed', // Changed to valid Position type
         ...style
       }}
     >
