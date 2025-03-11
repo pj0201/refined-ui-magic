@@ -46,7 +46,8 @@ export const SubsidyChatbot = () => {
       #dify-chatbot-bubble-window {
         width: 24rem !important;
         height: 40rem !important;
-        bottom: 10rem !important; /* 画面下部に十分なスペースを確保 */
+        bottom: 4rem !important; /* 省力化投資補助金チャットボットと同じ位置に表示 */
+        right: 1rem !important;
         max-height: 70vh !important; /* 画面高さの70%までに制限して表示領域を確保 */
       }
     `;
