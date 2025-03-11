@@ -30,7 +30,7 @@ export const ChatbotContainer = ({
       <Button
         onClick={onToggle}
         className={`rounded-full w-12 h-12 shadow-lg bg-blue-600 hover:bg-blue-700 fixed ${className}`}
-        style={style}
+        style={{ ...style, zIndex: 1000 }}
       >
         <HelpCircle className="w-5 h-5" />
       </Button>
@@ -39,15 +39,19 @@ export const ChatbotContainer = ({
 
   return (
     <div 
-      className="bg-white rounded-lg shadow-xl w-[350px] max-w-[calc(100vw-2rem)] flex flex-col fixed"
+      className="bg-white rounded-lg shadow-xl flex flex-col fixed"
       style={{ 
-        bottom: '5rem', // 位置を上に調整
+        width: '350px',
+        maxWidth: 'calc(100vw - 2rem)',
+        bottom: '70px', 
         right: '1rem', 
-        zIndex: 100,
-        height: '700px', // より大きな高さに設定
-        minHeight: '650px', // 最小高さも増加
-        maxHeight: '80vh', // 画面の80%までに制限
-        marginBottom: '1.5rem' // 下部のマージンを増加
+        zIndex: 1000,
+        height: '80vh',
+        minHeight: '500px',
+        maxHeight: '700px',
+        display: 'flex',
+        flexDirection: 'column',
+        ...style
       }}
     >
       {/* Header */}
@@ -64,13 +68,13 @@ export const ChatbotContainer = ({
         </Button>
       </div>
 
-      {/* Messages - さらに大きな領域を確保 */}
-      <div className="flex-1 overflow-y-auto">
+      {/* Messages - flexGrowを使用して余白をすべて使う */}
+      <div className="flex-grow overflow-y-auto">
         <ChatMessages messages={messages} />
       </div>
 
-      {/* Input - 十分な領域と余白を確保 */}
-      <div className="border-t bg-white py-4 px-4">
+      {/* Input - 固定位置で表示 */}
+      <div className="border-t bg-white p-4 sticky bottom-0 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
         <ChatInput onSendMessage={onSendMessage} isLoading={isLoading} />
       </div>
     </div>

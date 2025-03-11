@@ -14,66 +14,55 @@ export const DifyConfig = () => {
     difyChatbotScript.defer = true;
     document.body.appendChild(difyChatbotScript);
 
-    // Dify chatbotのスタイル設定
+    // Dify chatbotのスタイル設定 - !important を使って確実に適用
     const difyChatbotStyle = document.createElement('style');
     difyChatbotStyle.textContent = `
       #dify-chatbot-bubble-button {
         background-color: #1C64F2 !important;
-        /* 小規模持続化補助金アイコンの配置位置 - ラベルのすぐ下に */
+        /* 小規模持続化補助金アイコンの配置位置 - 固定位置 */
         bottom: 11rem !important;
         right: 1rem !important;
+        z-index: 1000 !important;
       }
       #dify-chatbot-bubble-window {
         width: 24rem !important;
-        height: 700px !important; /* 高さをさらに増加 */
-        min-height: 650px !important; /* 最小高さをさらに増加 */
-        max-height: 80vh !important; /* 画面の80%に制限 */
-        bottom: 5rem !important; /* 位置をさらに上に移動 */
+        height: 80vh !important; /* 画面の高さに対する割合で設定 */
+        min-height: 500px !important;
+        max-height: 700px !important;
+        bottom: 70px !important; /* 下部の位置を固定値に変更 */
         right: 1rem !important;
-        transform: translateY(0) !important; /* 位置を強制調整 */
-        margin-bottom: 1.5rem !important; /* 下部のマージンを増加 */
+        transform: none !important; /* transformをnoneに設定 */
+        margin-bottom: 10px !important;
+        z-index: 1000 !important;
+        display: flex !important;
+        flex-direction: column !important;
       }
-      /* チャット領域の表示調整 */
+      /* チャット領域の表示調整 - flex-growを使用 */
       #dify-chatbot-bubble-window .dify-chatbot-window-content {
-        height: calc(100% - 130px) !important; /* ヘッダーとフッターの高さを引いた高さ */
+        flex-grow: 1 !important;
         overflow: auto !important;
+        display: flex !important;
+        flex-direction: column !important;
       }
-      /* 入力エリアが常に表示されるように */
+      /* 入力エリアを固定表示 */
       #dify-chatbot-bubble-window .dify-chatbot-window-footer {
         position: sticky !important;
         bottom: 0 !important;
         background-color: white !important;
-        padding: 15px !important; /* パディングを増加 */
-        z-index: 10 !important; /* 重なり順序を確保 */
+        padding: 15px !important;
+        z-index: 1010 !important;
+        box-shadow: 0 -2px 10px rgba(0,0,0,0.1) !important;
       }
-      /* iOSおよびモバイルデバイス向けの調整 */
-      @supports (-webkit-overflow-scrolling: touch) {
+      /* モバイル向け調整 */
+      @media (max-width: 640px) {
         #dify-chatbot-bubble-window {
-          height: 700px !important;
-          min-height: 650px !important;
-          max-height: 80vh !important;
-          bottom: 5rem !important;
-        }
-      }
-      /* 小さい画面での調整 */
-      @media (max-height: 700px) {
-        #dify-chatbot-bubble-window {
-          height: 600px !important;
-          min-height: 550px !important;
-          max-height: 70vh !important;
-          bottom: 5rem !important;
-        }
-        #dify-chatbot-bubble-button {
-          bottom: 11rem !important;
-        }
-      }
-      /* さらに小さい画面での調整 */
-      @media (max-height: 500px) {
-        #dify-chatbot-bubble-window {
-          height: 450px !important;
+          width: 90vw !important;
+          height: 70vh !important;
           min-height: 400px !important;
-          max-height: 65vh !important;
-          bottom: 5rem !important;
+          max-height: 600px !important;
+          bottom: 70px !important;
+          right: 5vw !important;
+          left: 5vw !important;
         }
       }
     `;

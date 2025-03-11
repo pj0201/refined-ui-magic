@@ -22,15 +22,15 @@ export const ChatInput = ({ onSendMessage, isLoading }: ChatInputProps) => {
 
   return (
     <form onSubmit={handleSubmit} className="w-full">
-      <div className="flex gap-2">
+      <div className="flex gap-2 py-2">
         <Input
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="メッセージを入力..."
-          className="flex-1 py-2"
+          className="flex-1 py-3 px-3 min-h-[45px]"
           disabled={isLoading}
         />
-        <Button type="submit" disabled={!input.trim() || isLoading}>
+        <Button type="submit" disabled={!input.trim() || isLoading} className="h-[45px]">
           <Send className="w-4 h-4" />
         </Button>
       </div>
