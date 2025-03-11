@@ -7,36 +7,28 @@ if (!defined('ABSPATH')) {
 <script>
 // 画面サイズに応じてラベルの位置を調整する関数
 function adjustLabelPositions() {
-  const viewportHeight = window.innerHeight;
-  
-  // 小規模持続化補助金ラベル - 位置固定
+  // 小規模持続化補助金ラベル - 上部に配置
   const smallSubsidyLabel = document.querySelector('.small-subsidy-label');
   if (smallSubsidyLabel) {
-    const smallSubsidyBottom = Math.min(Math.max(viewportHeight * 0.4, 12 * 16), 16 * 16) / 16;
-    smallSubsidyLabel.style.bottom = `${smallSubsidyBottom}rem`;
+    smallSubsidyLabel.style.bottom = '15rem'; // 固定位置
   }
   
-  // 省力化投資補助金ラベル - 位置固定
+  // 省力化投資補助金ラベル - 中央に配置
   const investmentSubsidyLabel = document.querySelector('.investment-subsidy-label');
   if (investmentSubsidyLabel) {
-    const investmentSubsidyBottom = Math.min(Math.max(viewportHeight * 0.2, 6 * 16), 8 * 16) / 16;
-    investmentSubsidyLabel.style.bottom = `${investmentSubsidyBottom}rem`;
+    investmentSubsidyLabel.style.bottom = '10rem'; // 固定位置
   }
   
-  // Difyチャットボットのアイコンを小規模持続化補助金ラベルの下に配置
+  // Difyチャットボットのアイコン（小規模持続化補助金）を固定位置に
   const difyChatbotButton = document.getElementById('dify-chatbot-bubble-button');
-  if (difyChatbotButton && smallSubsidyLabel) {
-    const labelBottom = parseFloat(smallSubsidyLabel.style.bottom);
-    // ラベルの下に9rem分オフセットして配置（オフセットを増加）
-    difyChatbotButton.style.bottom = `${labelBottom - 9}rem`;
+  if (difyChatbotButton) {
+    difyChatbotButton.style.bottom = '5.5rem'; // 固定位置
   }
   
   // 省力化投資補助金のチャットボットアイコン
   const investmentSubsidyBot = document.querySelector('.investment-subsidy-bot');
-  if (investmentSubsidyBot && investmentSubsidyLabel) {
-    const labelBottom = parseFloat(investmentSubsidyLabel.style.bottom);
-    // ラベルの下に6rem分オフセットして配置（オフセットを増加）
-    investmentSubsidyBot.style.bottom = `${labelBottom - 6}rem`;
+  if (investmentSubsidyBot) {
+    investmentSubsidyBot.style.bottom = '2rem'; // 一番下に固定
   }
 }
 

@@ -19,44 +19,12 @@ export const SubsidyChatbot = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  // レスポンシブな位置設定のためのスタイル
-  const [styles, setStyles] = useState({
-    smallSubsidyLabel: { bottom: "calc(40vh)", right: "1rem" },
-    smallSubsidyIcon: { bottom: "calc(34vh)", right: "1rem" }, // 吹き出しの真下に配置
-    investmentSubsidyLabel: { bottom: "calc(20vh)", right: "1rem" },
-    investmentSubsidyIcon: { bottom: "calc(14vh)", right: "1rem" } // 位置を固定
-  });
-
-  // 画面サイズに基づいて位置を調整
-  useEffect(() => {
-    const updatePositions = () => {
-      const viewportHeight = window.innerHeight;
-      
-      // 小規模持続化補助金ラベル - 位置固定
-      const smallSubsidyLabelBottom = Math.min(Math.max(viewportHeight * 0.4, 12 * 16), 16 * 16);
-      
-      // 小規模持続化補助金アイコン - ラベルの真下に配置（オフセットを6remから9remに増加）
-      const smallSubsidyIconBottom = smallSubsidyLabelBottom - (9 * 16);
-      
-      // 省力化投資補助金ラベル - 位置固定
-      const investmentSubsidyLabelBottom = Math.min(Math.max(viewportHeight * 0.2, 6 * 16), 8 * 16);
-      
-      // 省力化投資補助金アイコン - ラベルの真下に配置（オフセットを固定）
-      const investmentSubsidyIconBottom = investmentSubsidyLabelBottom - (6 * 16);
-
-      setStyles({
-        smallSubsidyLabel: { bottom: `${smallSubsidyLabelBottom / 16}rem`, right: "1rem" },
-        smallSubsidyIcon: { bottom: `${smallSubsidyIconBottom / 16}rem`, right: "1rem" },
-        investmentSubsidyLabel: { bottom: `${investmentSubsidyLabelBottom / 16}rem`, right: "1rem" },
-        investmentSubsidyIcon: { bottom: `${investmentSubsidyIconBottom / 16}rem`, right: "1rem" }
-      });
-    };
-
-    // 初期化時と画面サイズ変更時に位置を調整
-    updatePositions();
-    window.addEventListener('resize', updatePositions);
-    return () => window.removeEventListener('resize', updatePositions);
-  }, []);
+  // 固定位置を使用
+  const styles = {
+    smallSubsidyLabel: { bottom: "15rem", right: "1rem" },  // 上部に固定
+    investmentSubsidyLabel: { bottom: "10rem", right: "1rem" }, // 中央に固定
+    investmentSubsidyIcon: { bottom: "2rem", right: "1rem" }  // 一番下に固定
+  };
 
   const handleSendMessage = async (message: string) => {
     if (isLoading) return;
@@ -115,7 +83,7 @@ export const SubsidyChatbot = () => {
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
-      {/* 小規模持続化補助金ラベル */}
+      {/* 小規模持続化補助金ラベル - 上部に固定 */}
       <div 
         className="fixed z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center"
         style={styles.smallSubsidyLabel}
@@ -124,7 +92,7 @@ export const SubsidyChatbot = () => {
         <span>の質問はコチラ</span>
       </div>
       
-      {/* 省力化投資補助金ラベル */}
+      {/* 省力化投資補助金ラベル - 中央に固定 */}
       <div 
         className="fixed z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center"
         style={styles.investmentSubsidyLabel}
