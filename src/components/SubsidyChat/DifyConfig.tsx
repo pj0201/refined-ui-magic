@@ -26,7 +26,7 @@ export const DifyConfig = () => {
       #dify-chatbot-bubble-window {
         width: 350px !important;
         height: 500px !important;
-        max-height: calc(100vh - 120px) !important;
+        max-height: 80vh !important;
         bottom: 5rem !important;
         right: 1rem !important;
         transform: none !important;
@@ -35,6 +35,7 @@ export const DifyConfig = () => {
         display: flex !important;
         flex-direction: column !important;
         overflow: hidden !important;
+        border-radius: 0.5rem !important;
       }
       #dify-chatbot-bubble-window .dify-chatbot-window-content {
         flex: 1 !important;
@@ -60,12 +61,15 @@ export const DifyConfig = () => {
         display: flex !important;
         visibility: visible !important;
         opacity: 1 !important;
+        position: absolute !important;
+        top: 10px !important;
+        right: 10px !important;
       }
       @media (max-width: 640px) {
         #dify-chatbot-bubble-window {
           width: calc(100vw - 2rem) !important;
-          height: 500px !important;
-          max-height: calc(100vh - 120px) !important;
+          height: 70vh !important;
+          max-height: 70vh !important;
           bottom: 5rem !important;
           right: 1rem !important;
           left: auto !important;
@@ -74,8 +78,28 @@ export const DifyConfig = () => {
     `;
     document.head.appendChild(difyChatbotStyle);
 
+    // 追加：定期的に調整を実行する（Difyのスクリプトが非同期でDOM変更するため）
+    const adjustInterval = setInterval(() => {
+      const difyChatbotWindow = document.getElementById('dify-chatbot-bubble-window');
+      const closeButton = difyChatbotWindow?.querySelector('.dify-chatbot-window-close-btn');
+      
+      if (difyChatbotWindow) {
+        // 閉じるボタンの位置とスタイルを確実に適用
+        if (closeButton) {
+          (closeButton as HTMLElement).style.zIndex = '9999';
+          (closeButton as HTMLElement).style.display = 'flex';
+          (closeButton as HTMLElement).style.visibility = 'visible';
+          (closeButton as HTMLElement).style.opacity = '1';
+          (closeButton as HTMLElement).style.position = 'absolute';
+          (closeButton as HTMLElement).style.top = '10px';
+          (closeButton as HTMLElement).style.right = '10px';
+        }
+      }
+    }, 500);
+
     // クリーンアップ関数
     return () => {
+      clearInterval(adjustInterval);
       document.head.removeChild(difyChatbotConfig);
       document.body.removeChild(difyChatbotScript);
       document.head.removeChild(difyChatbotStyle);

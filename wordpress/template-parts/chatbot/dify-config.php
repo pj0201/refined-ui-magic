@@ -26,7 +26,7 @@ if (!defined('ABSPATH')) {
   #dify-chatbot-bubble-window {
     width: 350px !important;
     height: 500px !important;
-    max-height: calc(100vh - 120px) !important;
+    max-height: 80vh !important;
     bottom: 5rem !important;
     right: 1rem !important;
     transform: none !important;
@@ -35,6 +35,7 @@ if (!defined('ABSPATH')) {
     display: flex !important;
     flex-direction: column !important;
     overflow: hidden !important;
+    border-radius: 0.5rem !important;
   }
   
   #dify-chatbot-bubble-window .dify-chatbot-window-content {
@@ -60,17 +61,20 @@ if (!defined('ABSPATH')) {
   }
   
   #dify-chatbot-bubble-window .dify-chatbot-window-close-btn {
-    z-index: 1020 !important;
+    z-index: 9999 !important;
     display: flex !important;
     visibility: visible !important;
     opacity: 1 !important;
+    position: absolute !important;
+    top: 10px !important;
+    right: 10px !important;
   }
   
   @media (max-width: 640px) {
     #dify-chatbot-bubble-window {
       width: calc(100vw - 2rem) !important;
-      height: 500px !important;
-      max-height: calc(100vh - 120px) !important;
+      height: 70vh !important;
+      max-height: 70vh !important;
       bottom: 5rem !important;
       right: 1rem !important;
       left: auto !important;
@@ -114,3 +118,59 @@ if (!defined('ABSPATH')) {
     position: fixed !important;
   }
 </style>
+
+<!-- Difyチャットボットの表示位置調整スクリプト -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // チャットボット表示の調整を定期的に実行
+  const adjustDifyChat = setInterval(function() {
+    const chatWindow = document.getElementById('dify-chatbot-bubble-window');
+    const closeButton = chatWindow?.querySelector('.dify-chatbot-window-close-btn');
+    
+    if (chatWindow) {
+      chatWindow.style.maxHeight = '80vh';
+      chatWindow.style.height = '500px';
+      chatWindow.style.width = '350px';
+      chatWindow.style.bottom = '5rem';
+      chatWindow.style.right = '1rem';
+      chatWindow.style.borderRadius = '0.5rem';
+      chatWindow.style.overflow = 'hidden';
+      
+      if (closeButton) {
+        closeButton.style.zIndex = '9999';
+        closeButton.style.display = 'flex';
+        closeButton.style.visibility = 'visible';
+        closeButton.style.opacity = '1';
+        closeButton.style.position = 'absolute';
+        closeButton.style.top = '10px';
+        closeButton.style.right = '10px';
+      }
+      
+      if (window.innerWidth <= 640) {
+        chatWindow.style.width = 'calc(100vw - 2rem)';
+        chatWindow.style.height = '70vh';
+        chatWindow.style.maxHeight = '70vh';
+      }
+    }
+  }, 500);
+  
+  // イベントリスナーでDOMの変更を監視
+  const observer = new MutationObserver(function() {
+    const chatWindow = document.getElementById('dify-chatbot-bubble-window');
+    if (chatWindow) {
+      const closeButton = chatWindow.querySelector('.dify-chatbot-window-close-btn');
+      if (closeButton) {
+        closeButton.style.zIndex = '9999';
+        closeButton.style.display = 'flex';
+        closeButton.style.visibility = 'visible';
+        closeButton.style.opacity = '1';
+        closeButton.style.position = 'absolute';
+        closeButton.style.top = '10px';
+        closeButton.style.right = '10px';
+      }
+    }
+  });
+  
+  observer.observe(document.body, { childList: true, subtree: true });
+});
+</script>

@@ -47,14 +47,15 @@ export const ChatbotContainer = ({
         right: '1rem', 
         zIndex: 1000,
         height: '500px',
-        maxHeight: 'calc(100vh - 120px)',
+        maxHeight: '80vh',
         display: 'flex',
         flexDirection: 'column',
+        overflow: 'hidden',
         ...style
       }}
     >
       {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b">
+      <div className="flex items-center justify-between p-4 border-b relative">
         <div className="flex items-center gap-4">
           <h3 className="font-bold text-lg">省力化投資補助金相談Bot</h3>
         </div>
@@ -62,7 +63,7 @@ export const ChatbotContainer = ({
           variant="ghost"
           size="icon"
           onClick={onToggle}
-          className="z-50"
+          className="z-50 absolute top-3 right-3"
         >
           <X className="w-5 h-5" />
         </Button>

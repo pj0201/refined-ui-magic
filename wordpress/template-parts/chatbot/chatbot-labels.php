@@ -40,7 +40,7 @@ function adjustLabelPositions() {
   if (difyChatbotWindow) {
     difyChatbotWindow.style.width = '350px';
     difyChatbotWindow.style.height = '500px';
-    difyChatbotWindow.style.maxHeight = 'calc(100vh - 120px)';
+    difyChatbotWindow.style.maxHeight = '80vh';
     difyChatbotWindow.style.bottom = '5rem';
     difyChatbotWindow.style.right = '1rem';
     difyChatbotWindow.style.transform = 'none';
@@ -49,6 +49,7 @@ function adjustLabelPositions() {
     difyChatbotWindow.style.display = 'flex';
     difyChatbotWindow.style.flexDirection = 'column';
     difyChatbotWindow.style.overflow = 'hidden';
+    difyChatbotWindow.style.borderRadius = '0.5rem';
     
     // チャットヘッダーのz-indexを高くする
     const chatHeader = difyChatbotWindow.querySelector('.dify-chatbot-window-header');
@@ -60,10 +61,13 @@ function adjustLabelPositions() {
     // 閉じるボタンの表示を確保
     const closeButton = difyChatbotWindow.querySelector('.dify-chatbot-window-close-btn');
     if (closeButton) {
-      closeButton.style.zIndex = '1020';
+      closeButton.style.zIndex = '9999';
       closeButton.style.display = 'flex';
       closeButton.style.visibility = 'visible';
       closeButton.style.opacity = '1';
+      closeButton.style.position = 'absolute';
+      closeButton.style.top = '10px';
+      closeButton.style.right = '10px';
     }
     
     // チャット入力部分が見えるようにFlexレイアウトを適用
@@ -89,8 +93,8 @@ function adjustLabelPositions() {
     // モバイル表示の調整
     if (window.innerWidth <= 640) {
       difyChatbotWindow.style.width = 'calc(100vw - 2rem)';
-      difyChatbotWindow.style.height = '500px';
-      difyChatbotWindow.style.maxHeight = 'calc(100vh - 120px)';
+      difyChatbotWindow.style.height = '70vh';
+      difyChatbotWindow.style.maxHeight = '70vh';
       difyChatbotWindow.style.right = '1rem';
       difyChatbotWindow.style.left = 'auto';
     }
@@ -108,6 +112,9 @@ document.addEventListener('DOMContentLoaded', function() {
   setTimeout(adjustLabelPositions, 3000);
   setTimeout(adjustLabelPositions, 5000);
   
+  // 継続的な調整を行う
+  setInterval(adjustLabelPositions, 1000);
+  
   // 画面サイズ変更時に調整
   window.addEventListener('resize', adjustLabelPositions);
   
@@ -119,8 +126,9 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   
   // MutationObserverを使用してDOMの変更を監視し、チャットウィンドウが表示されたら調整
-  const observer = new MutationObserver(function(mutations) {
+  const observer = new MutationObserver(function() {
     setTimeout(adjustLabelPositions, 100);
+    setTimeout(adjustLabelPositions, 500);
   });
   
   observer.observe(document.body, { childList: true, subtree: true });

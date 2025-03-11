@@ -19,13 +19,49 @@ export const SubsidyChatbot = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  // 固定位置を使用 - 画面下部からの絶対的な距離で指定
+  // チャットボットの配置を調整するためのスタイル
   const styles = {
     smallSubsidyLabel: { bottom: "15rem", right: "1rem", zIndex: 1000 },
     smallSubsidyIcon: { bottom: "11rem", right: "1rem", zIndex: 1000 },
     investmentSubsidyLabel: { bottom: "7rem", right: "1rem", zIndex: 1000 }, 
     investmentSubsidyIcon: { bottom: "2rem", right: "1rem", zIndex: 1000 }
   };
+
+  // Difyチャットボットのスタイルを調整するための効果
+  useEffect(() => {
+    const adjustDifyChat = () => {
+      const difyChatWindow = document.getElementById('dify-chatbot-bubble-window');
+      const closeButton = difyChatWindow?.querySelector('.dify-chatbot-window-close-btn');
+      
+      if (difyChatWindow) {
+        difyChatWindow.style.maxHeight = '80vh';
+        difyChatWindow.style.height = '500px';
+        difyChatWindow.style.borderRadius = '0.5rem';
+        
+        if (closeButton) {
+          (closeButton as HTMLElement).style.zIndex = '9999';
+          (closeButton as HTMLElement).style.display = 'flex';
+          (closeButton as HTMLElement).style.visibility = 'visible';
+          (closeButton as HTMLElement).style.opacity = '1';
+          (closeButton as HTMLElement).style.position = 'absolute';
+          (closeButton as HTMLElement).style.top = '10px';
+          (closeButton as HTMLElement).style.right = '10px';
+        }
+      }
+    };
+    
+    // 定期的に調整を実行
+    const interval = setInterval(adjustDifyChat, 1000);
+    
+    // DOMの変更を監視して調整を適用
+    const observer = new MutationObserver(adjustDifyChat);
+    observer.observe(document.body, { childList: true, subtree: true });
+    
+    return () => {
+      clearInterval(interval);
+      observer.disconnect();
+    };
+  }, []);
 
   const handleSendMessage = async (message: string) => {
     if (isLoading) return;
