@@ -124,3 +124,27 @@ export const setupDifyChat = (): void => {
   }
 };
 
+/**
+ * チャットボットの状態を監視する
+ * @returns インターバルとタイムアウトのクリーンアップ用オブジェクト
+ */
+export const monitorChatbotState = (): { interval: ReturnType<typeof setInterval>; timeout: ReturnType<typeof setTimeout> } => {
+  // スクリプトが読み込まれたかチェックする
+  const scriptLoadCheck = setInterval(() => {
+    if (window.hasOwnProperty('difyChatbotConfig')) {
+      console.log('Dify chat config detected');
+      clearInterval(scriptLoadCheck);
+    }
+  }, 500);
+
+  // 最大15秒後に再試行
+  const timeout = setTimeout(() => {
+    clearInterval(scriptLoadCheck);
+    if (!window.hasOwnProperty('difyChatbotConfig')) {
+      console.log('Dify chat not loaded after timeout, retrying...');
+      setupDifyChat();
+    }
+  }, 15000);
+
+  return { interval: scriptLoadCheck, timeout };
+};
