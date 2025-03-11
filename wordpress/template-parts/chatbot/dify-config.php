@@ -62,9 +62,9 @@ if (!defined('ABSPATH')) {
     bottom: 7rem; /* 固定位置 */
     right: 1rem;
   }
-  /* カスタマイズしたChatbotのボタン位置 - 一番下に配置 */
+  /* カスタマイズしたChatbotのボタン位置 - 位置を調整 */
   #subsidy-chatbot .rounded-full {
-    bottom: 2rem !important; /* 固定位置 */
+    bottom: 4rem !important; /* 修正: 2rem → 4rem に変更 */
     right: 1rem !important;
     position: fixed !important;
   }
@@ -81,7 +81,7 @@ if (!defined('ABSPATH')) {
       bottom: 11rem !important; /* 固定位置を維持 */
     }
     #subsidy-chatbot .rounded-full {
-      bottom: 2rem !important; /* 固定位置を維持 */
+      bottom: 4rem !important; /* 修正: 2rem → 4rem に変更 */
     }
   }
 </style>
