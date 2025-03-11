@@ -25,10 +25,10 @@ function adjustLabelPositions() {
     investmentSubsidyLabel.style.bottom = '7rem'; // 固定位置
   }
   
-  // 省力化投資補助金のチャットボットアイコン - 一番下に固定
+  // 省力化投資補助金のチャットボットアイコン - ラベルのすぐ下に配置
   const investmentSubsidyBot = document.querySelector('.investment-subsidy-bot');
   if (investmentSubsidyBot) {
-    investmentSubsidyBot.style.bottom = '2rem'; // 一番下に固定
+    investmentSubsidyBot.style.bottom = '3rem'; // 修正: 省力化投資補助金ラベルから4rem下がった位置
   }
 }
 

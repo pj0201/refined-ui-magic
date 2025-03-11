@@ -23,7 +23,7 @@ export const SubsidyChatbot = () => {
     smallSubsidyLabel: { bottom: "15rem", right: "1rem" },  // 一番上に固定
     smallSubsidyIcon: { bottom: "11rem", right: "1rem" },   // ラベルの下に固定
     investmentSubsidyLabel: { bottom: "7rem", right: "1rem" }, // 小規模補助金アイコンの下に固定
-    investmentSubsidyIcon: { bottom: "4rem", right: "1rem" }  // 修正: 2rem → 4rem に変更
+    investmentSubsidyIcon: { bottom: "3rem", right: "1rem" }  // 修正: 4rem → 3rem に変更
   };
 
   const handleSendMessage = async (message: string) => {
