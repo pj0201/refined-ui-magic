@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { DifyConfig } from "./DifyConfig";
 import { ChatbotContainer } from "./ChatbotContainer";
@@ -21,19 +22,24 @@ export const SubsidyChatbot = () => {
   // レスポンシブな位置設定のためのスタイル
   const [styles, setStyles] = useState({
     smallSubsidyLabel: { bottom: "calc(40vh)", right: "1rem" },
-    smallSubsidyIcon: { bottom: "calc(30vh)", right: "1rem" },
+    smallSubsidyIcon: { bottom: "calc(34vh)", right: "1rem" }, // 吹き出しの真下に配置
     investmentSubsidyLabel: { bottom: "calc(20vh)", right: "1rem" },
-    investmentSubsidyIcon: { bottom: "calc(10vh)", right: "1rem" }
+    investmentSubsidyIcon: { bottom: "calc(10vh)", right: "1rem" } // 位置を固定
   });
 
   // 画面サイズに基づいて位置を調整
   useEffect(() => {
     const updatePositions = () => {
       const viewportHeight = window.innerHeight;
-      // 最小間隔を確保しながら相対的な位置を設定
+      
+      // 小規模持続化補助金の位置（吹き出しはそのまま）
       const smallSubsidyLabelBottom = Math.min(Math.max(viewportHeight * 0.4, 12 * 16), 16 * 16);
-      const smallSubsidyIconBottom = Math.min(Math.max(viewportHeight * 0.3, 9 * 16), 13 * 16);
+      // アイコンを吹き出しの真下に配置（6remのオフセット）
+      const smallSubsidyIconBottom = smallSubsidyLabelBottom - (6 * 16);
+      
+      // 省力化投資補助金の位置（位置を固定）
       const investmentSubsidyLabelBottom = Math.min(Math.max(viewportHeight * 0.2, 6 * 16), 8 * 16);
+      // アイコンを吹き出しの真下に配置（3remのオフセット）
       const investmentSubsidyIconBottom = Math.min(Math.max(viewportHeight * 0.1, 3 * 16), 5 * 16);
 
       setStyles({
@@ -133,6 +139,7 @@ export const SubsidyChatbot = () => {
         onToggle={() => setIsOpen(!isOpen)}
         onSendMessage={handleSendMessage}
         style={styles.investmentSubsidyIcon}
+        className="investment-subsidy-bot"
       />
     </div>
   );

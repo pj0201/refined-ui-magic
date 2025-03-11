@@ -13,6 +13,7 @@ interface ChatbotContainerProps {
   onToggle: () => void;
   onSendMessage: (message: string) => void;
   style?: CSSProperties;
+  className?: string;
 }
 
 export const ChatbotContainer = ({
@@ -22,12 +23,13 @@ export const ChatbotContainer = ({
   onToggle,
   onSendMessage,
   style = {},
+  className = "",
 }: ChatbotContainerProps) => {
   if (!isOpen) {
     return (
       <Button
         onClick={onToggle}
-        className="rounded-full w-12 h-12 shadow-lg bg-blue-600 hover:bg-blue-700 fixed"
+        className={`rounded-full w-12 h-12 shadow-lg bg-blue-600 hover:bg-blue-700 fixed ${className}`}
         style={style}
       >
         <HelpCircle className="w-5 h-5" />
