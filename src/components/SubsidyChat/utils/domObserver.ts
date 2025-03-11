@@ -1,29 +1,56 @@
+
 import { closeButtonSvg } from "../styles/difyChatStyles";
 
 /**
  * チャットボットウィンドウに閉じるボタンを追加
  */
 const addCloseButtonToWindow = (chatWindow: HTMLElement): void => {
-  let closeButton = chatWindow.querySelector('.dify-chatbot-window-close-btn') as HTMLElement;
-  
-  if (!closeButton) {
-    // 閉じるボタンが存在しない場合は新規作成
-    closeButton = document.createElement('button');
-    closeButton.className = 'dify-chatbot-window-close-btn';
-    closeButton.innerHTML = closeButtonSvg;
-    chatWindow.appendChild(closeButton);
+  // 既存の閉じるボタンを削除（再作成するため）
+  const existingButton = chatWindow.querySelector('.dify-chatbot-window-close-btn');
+  if (existingButton) {
+    existingButton.remove();
   }
+  
+  // 新たなより目立つ閉じるボタンを作成
+  const closeButton = document.createElement('button');
+  closeButton.className = 'dify-chatbot-window-close-btn';
+  closeButton.innerHTML = closeButtonSvg;
+  closeButton.setAttribute('style', `
+    position: absolute !important;
+    top: 0.75rem !important;
+    right: 0.75rem !important;
+    width: 2rem !important;
+    height: 2rem !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 9999px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    z-index: 9999 !important;
+  `);
+  
+  // ボタンのヘッダー部分への追加（より確実に表示されるようにするため）
+  const header = chatWindow.querySelector('.dify-chatbot-window-header') || chatWindow;
+  header.appendChild(closeButton);
 
-  // 確実にクリックイベントを設定（既存のイベン���は削除）
-  closeButton.onclick = () => {
+  // クリックイベントを設定
+  closeButton.onclick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
     chatWindow.style.display = 'none';
-    // チャットボタンを探して状態を更新
+    
+    // チャットボタンを表示
     const chatButton = document.getElementById('dify-chatbot-bubble-button');
     if (chatButton) {
       chatButton.style.display = 'block';
       chatButton.style.visibility = 'visible';
       chatButton.style.opacity = '1';
     }
+    
+    console.log('Chat window closed');
+    return false;
   };
 };
 
@@ -37,6 +64,7 @@ export const setupDomObserver = (): MutationObserver => {
     // 小規模持続化補助金のチャットウィンドウを探す
     const chatWindow = document.getElementById('dify-chatbot-bubble-window');
     if (chatWindow) {
+      // 直ちに閉じるボタンを追加
       addCloseButtonToWindow(chatWindow);
     }
 
@@ -59,7 +87,8 @@ export const setupDomObserver = (): MutationObserver => {
  * 初期状態のチャットボット要素のチェックと修正
  */
 export const performInitialElementsCheck = (): void => {
-  setTimeout(() => {
+  // 初期化直後に確認
+  const initialCheck = () => {
     const chatWindow = document.getElementById('dify-chatbot-bubble-window');
     const chatButton = document.getElementById('dify-chatbot-bubble-button');
     
@@ -69,14 +98,27 @@ export const performInitialElementsCheck = (): void => {
       chatButton.style.display = 'block';
       chatButton.style.visibility = 'visible';
       chatButton.style.opacity = '1';
-    } else {
-      console.log('Dify chat button not found yet');
     }
 
     // チャットウィンドウの閉じるボタンを確認
     if (chatWindow) {
-      console.log('Dify chat window found, checking close button');
+      console.log('Dify chat window found, adding close button');
       addCloseButtonToWindow(chatWindow);
     }
-  }, 1000);
+  };
+  
+  // 即時実行
+  initialCheck();
+  
+  // 念のため少し遅延して再度実行
+  setTimeout(initialCheck, 1000);
+  
+  // 確実にボタンが存在するように定期的に確認
+  setInterval(() => {
+    const chatWindow = document.getElementById('dify-chatbot-bubble-window');
+    if (chatWindow && !chatWindow.querySelector('.dify-chatbot-window-close-btn')) {
+      console.log('Reapplying close button');
+      addCloseButtonToWindow(chatWindow);
+    }
+  }, 2000);
 };

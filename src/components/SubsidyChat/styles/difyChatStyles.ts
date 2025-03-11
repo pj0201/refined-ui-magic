@@ -1,3 +1,4 @@
+
 /**
  * Difyチャットボット用のCSSスタイル
  */
@@ -41,7 +42,7 @@ export const difyChatStyles = `
     width: 100% !important;
   }
   
-  /* Close button styling */
+  /* Close button styling - prominently positioned */
   .dify-chatbot-window-close-btn {
     position: absolute !important;
     top: 0.75rem !important;
@@ -72,20 +73,36 @@ export const difyChatStyles = `
   /* Add a custom close button if the default is hidden */
   .custom-dify-close-btn {
     position: absolute !important;
-    top: 10px !important;
-    right: 10px !important;
+    top: 0.75rem !important;
+    right: 0.75rem !important;
     z-index: 9999 !important;
-    width: 24px !important;
-    height: 24px !important;
-    color: #666 !important;
-    background: rgba(255, 255, 255, 0.8) !important;
-    border-radius: 50% !important;
+    width: 2rem !important;
+    height: 2rem !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 9999px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     cursor: pointer !important;
-    border: none !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+  }
+
+  /* Override any existing close button styles */
+  #dify-chatbot-bubble-window .dify-chatbot-window-close-btn,
+  .dify-chatbot-window-header .dify-chatbot-window-close-btn {
+    position: absolute !important;
+    top: 0.75rem !important;
+    right: 0.75rem !important;
+    width: 2rem !important;
+    height: 2rem !important;
+    background: #ffffff !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 9999px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    z-index: 9999 !important;
   }
 
   /* Add container to ensure chat is displayed */
@@ -98,6 +115,7 @@ export const difyChatStyles = `
 `;
 
 /**
- * カスタム閉じるボタンのHTMLコード
+ * カスタム閉じるボタンのHTMLコード - より目立つアイコン
  */
-export const closeButtonSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18"></path><path d="M6 6L18 18"></path></svg>`;
+export const closeButtonSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18"></path><path d="M6 6L18 18"></path></svg>`;
+

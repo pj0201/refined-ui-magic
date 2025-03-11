@@ -1,4 +1,3 @@
-
 import { scriptExists, createScript, createStyle, createElement } from "../utils/scriptManager";
 import { difyChatStyles } from "../styles/difyChatStyles";
 import { setupDomObserver, performInitialElementsCheck } from "../utils/domObserver";
@@ -14,6 +13,15 @@ export const applyDifyChatStyles = (): MutationObserver => {
 
   // 初期チェックを実行
   performInitialElementsCheck();
+
+  // 閉じるボタンが常に存在するように定期的にチェック
+  setInterval(() => {
+    const chatWindow = document.getElementById('dify-chatbot-bubble-window');
+    if (chatWindow && !chatWindow.querySelector('.dify-chatbot-window-close-btn')) {
+      console.log('Close button not found, recreating...');
+      performInitialElementsCheck();
+    }
+  }, 1000);
 
   return observer;
 };
