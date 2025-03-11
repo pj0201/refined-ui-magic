@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { DifyConfig } from "./DifyConfig";
 import { ChatbotContainer } from "./ChatbotContainer";
@@ -23,7 +24,7 @@ export const SubsidyChatbot = () => {
     smallSubsidyLabel: { bottom: "15rem", right: "1rem" },  // 一番上に固定
     smallSubsidyIcon: { bottom: "11rem", right: "1rem" },   // ラベルの下に固定
     investmentSubsidyLabel: { bottom: "7rem", right: "1rem" }, // 小規模補助金アイコンの下に固定
-    investmentSubsidyIcon: { bottom: "3rem", right: "1rem" }  // 修正: 4rem → 3rem に変更
+    investmentSubsidyIcon: { bottom: "2rem", right: "1rem" }  // 省力化投資補助金アイコンの位置を調整
   };
 
   const handleSendMessage = async (message: string) => {
@@ -104,7 +105,7 @@ export const SubsidyChatbot = () => {
         <span>一般形の質問はコチラ</span>
       </div>
       
-      {/* 省力化投資補助金アイコン - 位置を調整 */}
+      {/* 省力化投資補助金アイコン - 位置を最下部に調整 */}
       <ChatbotContainer
         isOpen={isOpen}
         messages={messages}

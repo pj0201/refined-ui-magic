@@ -28,24 +28,24 @@ function adjustLabelPositions() {
   // 省力化投資補助金のチャットボットアイコン - ラベルのすぐ下に配置
   const investmentSubsidyBot = document.querySelector('.investment-subsidy-bot');
   if (investmentSubsidyBot) {
-    investmentSubsidyBot.style.bottom = '3rem'; // 固定位置
+    investmentSubsidyBot.style.bottom = '2rem'; // 固定位置を下部に調整
   }
   
   // Difyのチャットウィンドウの位置とサイズを調整
   const difyChatbotWindow = document.getElementById('dify-chatbot-bubble-window');
   if (difyChatbotWindow) {
     // ウィンドウの高さを固定値で設定し、最大値を確保
-    difyChatbotWindow.style.height = '650px'; // 大幅に高さを増加
-    difyChatbotWindow.style.minHeight = '600px'; // 最小高さを大幅に増加
-    difyChatbotWindow.style.maxHeight = '75vh'; // 画面高さの75%を上限
-    difyChatbotWindow.style.bottom = '7rem'; // 下部に適切な余白を確保
+    difyChatbotWindow.style.height = '700px'; // 高さをさらに増加
+    difyChatbotWindow.style.minHeight = '650px'; // 最小高さをさらに増加
+    difyChatbotWindow.style.maxHeight = '80vh'; // 画面高さの80%を上限
+    difyChatbotWindow.style.bottom = '5rem'; // 下部に適切な余白を確保
     difyChatbotWindow.style.transform = 'translateY(0)'; // 位置を強制調整
-    difyChatbotWindow.style.marginBottom = '1rem'; // 下部に余白を追加
+    difyChatbotWindow.style.marginBottom = '1.5rem'; // 下部に余白を追加
     
     // チャット入力部分が見えるようにスタイル調整
     const chatContent = difyChatbotWindow.querySelector('.dify-chatbot-window-content');
     if (chatContent) {
-      chatContent.style.height = 'calc(100% - 110px)'; // ヘッダーとフッターの高さを引いた値
+      chatContent.style.height = 'calc(100% - 130px)'; // ヘッダーとフッターの高さを引いた値
       chatContent.style.overflow = 'auto';
     }
     
@@ -54,24 +54,24 @@ function adjustLabelPositions() {
       chatFooter.style.position = 'sticky';
       chatFooter.style.bottom = '0';
       chatFooter.style.backgroundColor = 'white';
-      chatFooter.style.paddingBottom = '10px'; // 下部のパディングを追加
+      chatFooter.style.padding = '15px'; // パディングを増加
       chatFooter.style.zIndex = '10'; // 重なり順序を確保
     }
     
     // 画面の高さが小さい場合はさらに調整
     if (window.innerHeight < 700) {
-      difyChatbotWindow.style.height = '500px';
-      difyChatbotWindow.style.minHeight = '450px';
-      difyChatbotWindow.style.maxHeight = '65vh';
-      difyChatbotWindow.style.bottom = '9rem';
+      difyChatbotWindow.style.height = '600px';
+      difyChatbotWindow.style.minHeight = '550px';
+      difyChatbotWindow.style.maxHeight = '70vh';
+      difyChatbotWindow.style.bottom = '5rem';
     }
     
     // さらに小さい画面の場合
     if (window.innerHeight < 500) {
-      difyChatbotWindow.style.height = '350px';
-      difyChatbotWindow.style.minHeight = '300px';
-      difyChatbotWindow.style.maxHeight = '60vh';
-      difyChatbotWindow.style.bottom = '10rem';
+      difyChatbotWindow.style.height = '450px';
+      difyChatbotWindow.style.minHeight = '400px';
+      difyChatbotWindow.style.maxHeight = '65vh';
+      difyChatbotWindow.style.bottom = '5rem';
     }
   }
 }
@@ -90,6 +90,9 @@ document.addEventListener('DOMContentLoaded', function() {
   // もう一度調整を追加（特に重要）
   setTimeout(adjustLabelPositions, 5000);
   
+  // さらに長い遅延でも調整を追加（確実に適用されるように）
+  setTimeout(adjustLabelPositions, 8000);
+  
   // 画面サイズ変更時に調整
   window.addEventListener('resize', adjustLabelPositions);
   
@@ -100,6 +103,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setTimeout(adjustLabelPositions, 800);
     setTimeout(adjustLabelPositions, 1500);
     setTimeout(adjustLabelPositions, 3000);
+    setTimeout(adjustLabelPositions, 5000); // さらに長い遅延を追加
   });
 });
 </script>

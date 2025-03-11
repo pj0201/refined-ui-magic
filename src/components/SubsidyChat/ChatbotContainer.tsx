@@ -41,13 +41,13 @@ export const ChatbotContainer = ({
     <div 
       className="bg-white rounded-lg shadow-xl w-[350px] max-w-[calc(100vw-2rem)] flex flex-col fixed"
       style={{ 
-        bottom: '7rem', 
+        bottom: '5rem', // 位置を上に調整
         right: '1rem', 
         zIndex: 100,
-        height: '650px', // 高さを増加
-        minHeight: '600px', // 最小高さを増加
-        maxHeight: '75vh', // 画面の75%を超えないように制限
-        marginBottom: '1rem' // 下部に余白を追加
+        height: '700px', // より大きな高さに設定
+        minHeight: '650px', // 最小高さも増加
+        maxHeight: '80vh', // 画面の80%までに制限
+        marginBottom: '1.5rem' // 下部のマージンを増加
       }}
     >
       {/* Header */}
@@ -64,13 +64,13 @@ export const ChatbotContainer = ({
         </Button>
       </div>
 
-      {/* Messages - より大きな領域を確保 */}
-      <div className="flex-1 overflow-hidden">
+      {/* Messages - さらに大きな領域を確保 */}
+      <div className="flex-1 overflow-y-auto">
         <ChatMessages messages={messages} />
       </div>
 
-      {/* Input - 固定位置に配置 */}
-      <div className="border-t bg-white pt-2 pb-3"> {/* パディングを追加 */}
+      {/* Input - 十分な領域と余白を確保 */}
+      <div className="border-t bg-white py-4 px-4">
         <ChatInput onSendMessage={onSendMessage} isLoading={isLoading} />
       </div>
     </div>

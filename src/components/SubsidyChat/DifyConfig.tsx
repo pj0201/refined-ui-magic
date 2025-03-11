@@ -25,17 +25,17 @@ export const DifyConfig = () => {
       }
       #dify-chatbot-bubble-window {
         width: 24rem !important;
-        height: 650px !important; /* 高さを増加 */
-        min-height: 600px !important; /* 最小高さを増加 */
-        max-height: 75vh !important; /* 画面の75%に制限 */
-        bottom: 7rem !important; /* 位置を上に移動 */
+        height: 700px !important; /* 高さをさらに増加 */
+        min-height: 650px !important; /* 最小高さをさらに増加 */
+        max-height: 80vh !important; /* 画面の80%に制限 */
+        bottom: 5rem !important; /* 位置をさらに上に移動 */
         right: 1rem !important;
         transform: translateY(0) !important; /* 位置を強制調整 */
-        margin-bottom: 1rem !important; /* 下部にマージンを追加 */
+        margin-bottom: 1.5rem !important; /* 下部のマージンを増加 */
       }
       /* チャット領域の表示調整 */
       #dify-chatbot-bubble-window .dify-chatbot-window-content {
-        height: calc(100% - 110px) !important; /* ヘッダーとフッターの高さを引いた高さ */
+        height: calc(100% - 130px) !important; /* ヘッダーとフッターの高さを引いた高さ */
         overflow: auto !important;
       }
       /* 入力エリアが常に表示されるように */
@@ -43,25 +43,25 @@ export const DifyConfig = () => {
         position: sticky !important;
         bottom: 0 !important;
         background-color: white !important;
-        padding-bottom: 10px !important; /* 下部のパディングを追加 */
+        padding: 15px !important; /* パディングを増加 */
         z-index: 10 !important; /* 重なり順序を確保 */
       }
       /* iOSおよびモバイルデバイス向けの調整 */
       @supports (-webkit-overflow-scrolling: touch) {
         #dify-chatbot-bubble-window {
-          height: 600px !important;
-          min-height: 550px !important;
-          max-height: 70vh !important;
-          bottom: 9rem !important;
+          height: 700px !important;
+          min-height: 650px !important;
+          max-height: 80vh !important;
+          bottom: 5rem !important;
         }
       }
       /* 小さい画面での調整 */
       @media (max-height: 700px) {
         #dify-chatbot-bubble-window {
-          height: 500px !important;
-          min-height: 450px !important;
-          max-height: 65vh !important;
-          bottom: 9rem !important;
+          height: 600px !important;
+          min-height: 550px !important;
+          max-height: 70vh !important;
+          bottom: 5rem !important;
         }
         #dify-chatbot-bubble-button {
           bottom: 11rem !important;
@@ -70,10 +70,10 @@ export const DifyConfig = () => {
       /* さらに小さい画面での調整 */
       @media (max-height: 500px) {
         #dify-chatbot-bubble-window {
-          height: 350px !important;
-          min-height: 300px !important;
-          max-height: 60vh !important;
-          bottom: 10rem !important;
+          height: 450px !important;
+          min-height: 400px !important;
+          max-height: 65vh !important;
+          bottom: 5rem !important;
         }
       }
     `;
