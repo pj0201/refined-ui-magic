@@ -76,14 +76,14 @@ export const SubsidyChatbot = () => {
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
-      {/* 小規模持続化補助金ラベル - 位置調整済み */}
-      <div className="fixed bottom-19 right-1 z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center">
+      {/* 小規模持続化補助金ラベル */}
+      <div className="fixed bottom-16rem right-1 z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center">
         <span>小規模持続化補助金</span>
         <span>の質問はコチラ</span>
       </div>
       
-      {/* 省力化投資補助金ラベル - 位置調整済み */}
-      <div className="fixed bottom-7 right-1 z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center">
+      {/* 省力化投資補助金ラベル */}
+      <div className="fixed bottom-8rem right-1 z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center">
         <span>省力化投資補助金</span>
         <span>一般形の質問はコチラ</span>
       </div>

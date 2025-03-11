@@ -19,7 +19,7 @@ export const DifyConfig = () => {
     difyChatbotStyle.textContent = `
       #dify-chatbot-bubble-button {
         background-color: #1C64F2 !important;
-        bottom: 16rem !important; /* 省力化投資補助金チャットボットとの間隔を適切に設定 */
+        bottom: 13rem !important; /* 小規模持続化補助金アイコン位置 */
         right: 1rem !important;
       }
       #dify-chatbot-bubble-window {
