@@ -119,8 +119,8 @@ export const SubsidyChatbot = () => {
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
-      {/* 小規模持続化補助金ラベル - 位置調整 */}
-      <div className="fixed bottom-[17rem] right-3 z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center">
+      {/* 小規模持続化補助金ラベル - アイコンに近づける */}
+      <div className="fixed bottom-[11.5rem] right-3 z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center">
         <span>小規模持続化補助金</span>
         <span>の質問はコチラ</span>
       </div>
