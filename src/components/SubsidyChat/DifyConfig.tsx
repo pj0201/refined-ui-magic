@@ -2,7 +2,6 @@
 import { useEffect } from "react";
 import { setupDifyChat, monitorChatbotState } from "./services/difySetup";
 
-// Window型を拡張してdifyChatbotConfigを含めるようにする
 declare global {
   interface Window {
     difyChatbotConfig?: {
@@ -14,37 +13,22 @@ declare global {
 
 export const DifyConfig = () => {
   useEffect(() => {
-    // DOM読み込み完了イベントリスナーを追加
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', setupDifyChat);
-    } else {
-      setupDifyChat();
-    }
-
+    // 即時実行
+    setupDifyChat();
+    
     // チャットボットの状態を監視
     const { interval, timeout } = monitorChatbotState();
 
     // クリーンアップ
     return () => {
-      // イベントリスナーを削除
-      document.removeEventListener('DOMContentLoaded', setupDifyChat);
-      
-      // インターバルとタイムアウトをクリア
       clearInterval(interval);
       clearTimeout(timeout);
       
       // DOM要素を削除
-      const configScript = document.getElementById('dify-chat-config');
-      if (configScript) configScript.remove();
-      
-      const mainScript = document.getElementById('yXBz3rzpDBhMgYcB');
-      if (mainScript) mainScript.remove();
-      
-      const styleElement = document.getElementById('dify-chat-styles');
-      if (styleElement) styleElement.remove();
-      
-      const container = document.getElementById('dify-chatbot-container');
-      if (container) container.remove();
+      ['dify-chat-config', 'yXBz3rzpDBhMgYcB', 'dify-chat-styles', 'dify-chatbot-container'].forEach(id => {
+        const element = document.getElementById(id);
+        if (element) element.remove();
+      });
       
       console.log('Dify chat cleaned up');
     };
@@ -52,3 +36,4 @@ export const DifyConfig = () => {
 
   return null;
 };
+

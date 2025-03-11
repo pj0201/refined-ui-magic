@@ -50,7 +50,6 @@ export const applyDifyChatStyles = (): MutationObserver => {
         console.log('Custom close button clicked');
         
         // チャットウィンドウを非表示にする
-        const chatWindow = document.getElementById('dify-chatbot-bubble-window');
         if (chatWindow) {
           chatWindow.style.display = 'none';
         }
@@ -77,10 +76,13 @@ export const applyDifyChatStyles = (): MutationObserver => {
  * Difyチャットボットのセットアップ
  */
 export const setupDifyChat = (): void => {
-  // スクリプトが既に存在するか確認
   if (scriptExists('dify-chat-config') || scriptExists('yXBz3rzpDBhMgYcB')) {
-    console.log('Dify chat scripts already exist, skipping initialization');
-    return;
+    console.log('Dify chat scripts already exist, removing old scripts...');
+    // 古いスクリプトを削除
+    const oldConfig = document.getElementById('dify-chat-config');
+    const oldScript = document.getElementById('yXBz3rzpDBhMgYcB');
+    if (oldConfig) oldConfig.remove();
+    if (oldScript) oldScript.remove();
   }
 
   console.log('Setting up Dify chat...');
@@ -96,11 +98,11 @@ export const setupDifyChat = (): void => {
     `);
     document.head.appendChild(difyChatbotConfig);
 
-    // メインスクリプトの追加 - onloadイベントの追加
+    // メインスクリプトの追加
     const difyChatbotScript = createScript('yXBz3rzpDBhMgYcB', 'https://udify.app/embed.min.js');
+    difyChatbotScript.async = true;
     difyChatbotScript.onload = () => {
       console.log('Dify script loaded successfully');
-      // スクリプト読み込み後にスタイルを適用するためにタイムアウトを設定
       setTimeout(applyDifyChatStyles, 100);
     };
     difyChatbotScript.onerror = (error) => {
@@ -122,27 +124,3 @@ export const setupDifyChat = (): void => {
   }
 };
 
-/**
- * チャットボットの状態を監視する
- * @returns インターバルとタイムアウトのクリーンアップ用オブジェクト
- */
-export const monitorChatbotState = (): { interval: ReturnType<typeof setInterval>; timeout: ReturnType<typeof setTimeout> } => {
-  // スクリプトが読み込まれたかチェックする
-  const scriptLoadCheck = setInterval(() => {
-    if (window.hasOwnProperty('difyChatbotConfig')) {
-      console.log('Dify chat config detected');
-      clearInterval(scriptLoadCheck);
-    }
-  }, 500);
-
-  // 最大15秒後に再試行
-  const timeout = setTimeout(() => {
-    clearInterval(scriptLoadCheck);
-    if (!window.hasOwnProperty('difyChatbotConfig')) {
-      console.log('Dify chat not loaded after timeout, retrying...');
-      setupDifyChat();
-    }
-  }, 15000);
-
-  return { interval: scriptLoadCheck, timeout };
-};
