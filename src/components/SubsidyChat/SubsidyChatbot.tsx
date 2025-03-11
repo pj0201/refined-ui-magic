@@ -4,6 +4,7 @@ import { DifyConfig } from "./DifyConfig";
 import { ChatbotContainer } from "./ChatbotContainer";
 import { Message } from "./types";
 import { useToast } from "@/components/ui/use-toast";
+import { CSSProperties } from "react";
 
 export const SubsidyChatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,13 +19,17 @@ export const SubsidyChatbot = () => {
   const { toast } = useToast();
 
   // Styles for positioning chatbots
-  const styles = {
+  const styles: {
+    smallSubsidyLabel: CSSProperties;
+    investmentSubsidyLabel: CSSProperties;
+    investmentSubsidyIcon: CSSProperties;
+  } = {
     // Small subsidy chatbot (Dify)
     smallSubsidyLabel: { 
       bottom: "15rem", 
       right: "1rem", 
       zIndex: 1000,
-      position: "fixed"
+      position: "fixed" // TypeScript expects a valid Position value
     },
     
     // Investment subsidy chatbot (custom)
@@ -32,13 +37,13 @@ export const SubsidyChatbot = () => {
       bottom: "7rem", 
       right: "1rem", 
       zIndex: 1000,
-      position: "fixed"
+      position: "fixed" // TypeScript expects a valid Position value
     }, 
     investmentSubsidyIcon: { 
       bottom: "2rem", 
       right: "1rem", 
       zIndex: 1000,
-      position: "fixed"
+      position: "fixed" // TypeScript expects a valid Position value
     }
   };
 
