@@ -69,8 +69,9 @@ export const setupDifyChat = (): void => {
 
 /**
  * チャットボットの状態を監視する
+ * @returns インターバルとタイムアウトのクリーンアップ用オブジェクト
  */
-export const monitorChatbotState = (): { interval: number; timeout: number } => {
+export const monitorChatbotState = (): { interval: ReturnType<typeof setInterval>; timeout: ReturnType<typeof setTimeout> } => {
   // スクリプトが読み込まれたかチェックする
   const scriptLoadCheck = setInterval(() => {
     if (window.hasOwnProperty('difyChatbotConfig')) {
