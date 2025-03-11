@@ -45,8 +45,8 @@ export const ChatbotContainer = ({
         maxWidth: 'calc(100vw - 2rem)',
         height: '500px',
         maxHeight: '80vh',
-        bottom: style.bottom || '5rem', 
-        right: style.right || '1rem', 
+        bottom: style.bottom || '2rem', 
+        right: style.right || '2rem', 
         zIndex: 1000,
         display: 'flex',
         flexDirection: 'column',
@@ -54,27 +54,27 @@ export const ChatbotContainer = ({
         ...style
       }}
     >
-      {/* Header */}
-      <div className="flex items-center justify-between p-4 border-b">
+      {/* ヘッダー */}
+      <div className="flex items-center justify-between p-3 border-b bg-white">
         <h3 className="font-bold text-lg">省力化投資補助金相談Bot</h3>
         <Button
           variant="ghost"
           size="icon"
           onClick={onToggle}
-          className="ml-auto"
+          className="ml-auto h-8 w-8"
         >
-          <X className="w-5 h-5" />
+          <X className="w-4 h-4" />
         </Button>
       </div>
 
-      {/* Messages - with proper scrollable area */}
+      {/* メッセージエリア - スクロール可能 */}
       <div className="flex-1 overflow-hidden">
-        <div className="h-full overflow-y-auto">
+        <div className="h-full overflow-y-auto px-3 py-2">
           <ChatMessages messages={messages} />
         </div>
       </div>
 
-      {/* Input - fixed at bottom */}
+      {/* 入力エリア - 下部に固定 */}
       <div className="border-t bg-white p-3 mt-auto">
         <ChatInput onSendMessage={onSendMessage} isLoading={isLoading} />
       </div>

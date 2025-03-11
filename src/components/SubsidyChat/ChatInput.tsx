@@ -21,7 +21,7 @@ export const ChatInput = ({ onSendMessage, isLoading }: ChatInputProps) => {
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    // Send message on Enter key (without Shift key)
+    // Enterキーでメッセージ送信（Shiftキーなし）
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       if (input.trim() && !isLoading) {
@@ -39,14 +39,14 @@ export const ChatInput = ({ onSendMessage, isLoading }: ChatInputProps) => {
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="メッセージを入力..."
-          className="flex-1 py-2 px-3"
+          className="flex-1 py-2 px-3 text-sm"
           disabled={isLoading}
           autoComplete="off"
         />
         <Button 
           type="submit" 
           disabled={!input.trim() || isLoading} 
-          className="h-10 w-10 p-0 flex-shrink-0"
+          className="h-9 w-9 p-0 flex-shrink-0 rounded-full"
           variant="default"
         >
           <Send className="w-4 h-4" />

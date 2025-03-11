@@ -2,6 +2,7 @@
 import { SubsidyInfo } from "./types";
 
 export const generateSubsidyResponse = async (question: string): Promise<SubsidyInfo> => {
+  // ダミーレスポンスを返す - 実際のアプリケーションでは適切なAPIエンドポイントに接続
   return {
     question,
     name: "中小企業省力化投資補助金（一般型）",
