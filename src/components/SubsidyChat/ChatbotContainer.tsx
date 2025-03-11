@@ -38,8 +38,16 @@ export const ChatbotContainer = ({
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-xl w-[350px] max-w-[calc(100vw-2rem)] h-[500px] max-h-[calc(100vh-4rem)] flex flex-col fixed"
-         style={{ bottom: '4rem', right: '1rem', zIndex: 100 }}>
+    <div 
+      className="bg-white rounded-lg shadow-xl w-[350px] max-w-[calc(100vw-2rem)] flex flex-col fixed"
+      style={{ 
+        bottom: '6rem', 
+        right: '1rem', 
+        zIndex: 100,
+        maxHeight: '80vh',
+        height: '500px'
+      }}
+    >
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b">
         <div className="flex items-center gap-4">

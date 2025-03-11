@@ -30,6 +30,22 @@ function adjustLabelPositions() {
   if (investmentSubsidyBot) {
     investmentSubsidyBot.style.bottom = '3rem'; // 修正: 省力化投資補助金ラベルから4rem下がった位置
   }
+  
+  // Difyのチャットウィンドウの位置とサイズを調整
+  const difyChatbotWindow = document.getElementById('dify-chatbot-bubble-window');
+  if (difyChatbotWindow) {
+    // ウィンドウの高さをビューポートに応じて調整
+    difyChatbotWindow.style.maxHeight = '80vh'; // 画面高さの80%に制限
+    difyChatbotWindow.style.height = 'auto'; // 高さを自動調整
+    difyChatbotWindow.style.bottom = '6rem'; // 下部に適切な余白を確保
+    difyChatbotWindow.style.transform = 'translateY(0)'; // 位置を強制調整
+    
+    // 画面の高さが小さい場合はさらに調整
+    if (window.innerHeight < 600) {
+      difyChatbotWindow.style.maxHeight = '60vh';
+      difyChatbotWindow.style.bottom = '8rem';
+    }
+  }
 }
 
 // ページ読み込み時と画面サイズ変更時に位置を調整
@@ -37,11 +53,20 @@ document.addEventListener('DOMContentLoaded', function() {
   // 初回調整
   adjustLabelPositions();
   
-  // Difyチャットボットが読み込まれた後、位置を再調整
-  setTimeout(adjustLabelPositions, 1000);
+  // Difyチャットボットが読み込まれた後、位置を再調整（遅延を長めに）
+  setTimeout(adjustLabelPositions, 1500);
+  
+  // さらに再調整を追加（完全な読み込みを保証）
+  setTimeout(adjustLabelPositions, 3000);
   
   // 画面サイズ変更時に調整
   window.addEventListener('resize', adjustLabelPositions);
+  
+  // ウィンドウがクリックされた時にも位置調整（Difyボタンクリック対応）
+  document.addEventListener('click', function() {
+    // クリック後に少し遅延を入れて調整
+    setTimeout(adjustLabelPositions, 500);
+  });
 });
 </script>
 

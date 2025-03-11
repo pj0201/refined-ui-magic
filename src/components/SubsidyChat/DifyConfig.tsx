@@ -25,13 +25,25 @@ export const DifyConfig = () => {
       }
       #dify-chatbot-bubble-window {
         width: 24rem !important;
-        height: 40rem !important;
-        max-height: 70vh !important;
-        bottom: 4rem !important;
+        height: auto !important; /* 自動調整に変更 */
+        max-height: 80vh !important; /* 画面の80%を超えないように制限 */
+        bottom: 6rem !important; /* 入力欄が必ず見えるように下部に余白を確保 */
         right: 1rem !important;
+        transform: translateY(0) !important; /* 位置を強制調整 */
+      }
+      /* iOSおよびモバイルデバイス向けの調整 */
+      @supports (-webkit-overflow-scrolling: touch) {
+        #dify-chatbot-bubble-window {
+          max-height: 70vh !important;
+          bottom: 8rem !important;
+        }
       }
       /* 小さい画面での調整 */
       @media (max-height: 600px) {
+        #dify-chatbot-bubble-window {
+          max-height: 60vh !important;
+          bottom: 8rem !important;
+        }
         #dify-chatbot-bubble-button {
           bottom: 11rem !important; /* 固定位置 */
         }

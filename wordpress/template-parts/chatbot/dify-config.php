@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
  defer>
 </script>
 <style>
-  /* Difyチャットボットのスタイリング - 位置を調整 */
+  /* Difyチャットボットのスタイリング - 位置とサイズを調整 */
   #dify-chatbot-bubble-button {
     background-color: #1C64F2 !important;
     bottom: 11rem !important; /* 小規模持続化補助金アイコン位置 - 固定位置 */
@@ -24,11 +24,21 @@ if (!defined('ABSPATH')) {
   }
   #dify-chatbot-bubble-window {
     width: 24rem !important;
-    height: 40rem !important;
-    bottom: 4rem !important;
+    height: auto !important; /* 高さを自動調整に変更 */
+    max-height: 80vh !important; /* 画面高さの80%に制限 - 50vhよりも多めに設定 */
+    bottom: 6rem !important; /* 下部の位置を調整 - 入力欄が見えるように */
     right: 1rem !important;
-    max-height: 70vh !important; /* 画面高さの70%までに制限して表示領域を確保 */
+    transform: translateY(0) !important; /* 位置の強制調整 */
   }
+  
+  /* iOSおよびモバイルデバイス用の特別対応 */
+  @supports (-webkit-overflow-scrolling: touch) {
+    #dify-chatbot-bubble-window {
+      max-height: 70vh !important; /* iOSではさらに制限 */
+      bottom: 8rem !important; /* より大きめのマージン */
+    }
+  }
+  
   /* ラベルのスタイリング - 共通スタイル */
   .chatbot-label {
     position: fixed;
@@ -71,6 +81,10 @@ if (!defined('ABSPATH')) {
 
   /* 小さい画面用の調整 - 固定位置を維持 */
   @media (max-height: 600px) {
+    #dify-chatbot-bubble-window {
+      max-height: 60vh !important; /* 小さい画面ではさらに高さを制限 */
+      bottom: 8rem !important; /* 下部の余白を増やす */
+    }
     .small-subsidy-label {
       bottom: 15rem; /* 固定位置を維持 */
     }
