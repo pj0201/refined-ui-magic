@@ -16,10 +16,10 @@ if (!defined('ABSPATH')) {
  defer>
 </script>
 <style>
-  /* Difyチャットボットのスタイリング - 位置を下から20remに設定 */
+  /* Difyチャットボットのスタイリング - 位置を調整 */
   #dify-chatbot-bubble-button {
     background-color: #1C64F2 !important;
-    bottom: 20rem !important; /* 省力化投資補助金チャットボットとの間隔を広げる */
+    bottom: 16rem !important; /* 省力化投資補助金チャットボットとの間隔を適切に設定 */
     right: 1rem !important;
   }
   #dify-chatbot-bubble-window {
@@ -32,22 +32,32 @@ if (!defined('ABSPATH')) {
   /* ラベルのスタイリング - 共通スタイル */
   .chatbot-label {
     position: fixed;
-    background-color: white;
-    padding: 0.25rem 0.75rem;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 0.375rem 0.75rem;
     border-radius: 9999px;
     font-size: 0.75rem;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
     z-index: 50;
     backdrop-filter: blur(4px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    transition: all 0.2s ease;
+  }
+  .chatbot-label:hover {
+    background-color: rgba(255, 255, 255, 1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
   /* 小規模持続化補助金ラベル - アイコンの上に配置 */
   .small-subsidy-label {
-    bottom: 23rem; /* 小規模持続化補助金ラベルの位置 - アイコンの上 */
-    right: 4rem; /* 右側に余裕を持たせる */
+    bottom: 19rem; /* 小規模持続化補助金ラベルの位置 - アイコンの真上 */
+    right: 1rem; /* 右側のアイコンに揃える */
   }
   /* 省力化投資補助金ラベル - アイコンの上に配置 */
   .investment-subsidy-label {
-    bottom: 7rem; /* 省力化投資補助金ラベルの位置 - アイコンの上 */
-    right: 4rem; /* 右側に余裕を持たせる */
+    bottom: 7rem; /* 省力化投資補助金ラベルの位置 - アイコンの真上 */
+    right: 1rem; /* 右側のアイコンに揃える */
   }
 </style>
