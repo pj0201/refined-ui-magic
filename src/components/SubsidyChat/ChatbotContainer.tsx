@@ -41,12 +41,13 @@ export const ChatbotContainer = ({
     <div 
       className="bg-white rounded-lg shadow-xl w-[350px] max-w-[calc(100vw-2rem)] flex flex-col fixed"
       style={{ 
-        bottom: '6rem', 
+        bottom: '7rem', 
         right: '1rem', 
         zIndex: 100,
-        height: '550px', // 高さを固定値に設定
-        minHeight: '500px', // 最小高さを確保
-        maxHeight: '80vh' // 画面の80%を超えないように制限
+        height: '650px', // 高さを増加
+        minHeight: '600px', // 最小高さを増加
+        maxHeight: '75vh', // 画面の75%を超えないように制限
+        marginBottom: '1rem' // 下部に余白を追加
       }}
     >
       {/* Header */}
@@ -69,7 +70,7 @@ export const ChatbotContainer = ({
       </div>
 
       {/* Input - 固定位置に配置 */}
-      <div className="border-t bg-white">
+      <div className="border-t bg-white pt-2 pb-3"> {/* パディングを追加 */}
         <ChatInput onSendMessage={onSendMessage} isLoading={isLoading} />
       </div>
     </div>
