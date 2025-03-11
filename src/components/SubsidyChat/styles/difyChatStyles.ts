@@ -1,4 +1,3 @@
-
 /**
  * Difyチャットボット用のCSSスタイル
  */
@@ -16,6 +15,8 @@ export const difyChatStyles = `
     width: 48px !important;
     height: 48px !important;
     border-radius: 50% !important;
+    cursor: pointer !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2) !important;
   }
   
   /* Chat window styling */
@@ -33,6 +34,9 @@ export const difyChatStyles = `
     display: flex !important;
     flex-direction: column !important;
     overflow: hidden !important;
+    border-radius: 0.5rem !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
+    background: white !important;
   }
 
   /* Ensure content is visible */
@@ -40,13 +44,11 @@ export const difyChatStyles = `
     flex: 1 !important;
     height: 100% !important;
     width: 100% !important;
+    border: none !important;
   }
   
-  /* Make close button always visible */
-  #dify-chatbot-bubble-window .dify-chatbot-window-close-btn {
-    display: flex !important;
-    visibility: visible !important;
-    opacity: 1 !important;
+  /* Close button styling */
+  .dify-chatbot-window-close-btn {
     position: absolute !important;
     top: 10px !important;
     right: 10px !important;
@@ -54,25 +56,7 @@ export const difyChatStyles = `
     width: 30px !important;
     height: 30px !important;
     color: white !important;
-    background: rgba(0, 0, 0, 0.5) !important;
-    border-radius: 50% !important;
-    align-items: center !important;
-    justify-content: center !important;
-    cursor: pointer !important;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.3) !important;
-    border: 2px solid white !important;
-  }
-  
-  /* Add a custom close button if the default is hidden */
-  .custom-dify-close-btn {
-    position: absolute !important;
-    top: 10px !important;
-    right: 10px !important;
-    z-index: 9999 !important;
-    width: 30px !important;
-    height: 30px !important;
-    color: white !important;
-    background: rgba(0, 0, 0, 0.5) !important;
+    background: rgba(0, 0, 0, 0.7) !important;
     border-radius: 50% !important;
     display: flex !important;
     align-items: center !important;
@@ -80,14 +64,22 @@ export const difyChatStyles = `
     cursor: pointer !important;
     border: 2px solid white !important;
     box-shadow: 0 2px 5px rgba(0,0,0,0.3) !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    transition: all 0.2s ease !important;
   }
 
-  /* Add container to ensure chat is displayed */
+  .dify-chatbot-window-close-btn:hover {
+    background: rgba(0, 0, 0, 0.9) !important;
+    transform: scale(1.1) !important;
+  }
+
+  /* Container styling */
   #dify-chatbot-container {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    z-index: 1000;
+    position: fixed !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    z-index: 1000 !important;
   }
 `;
 
