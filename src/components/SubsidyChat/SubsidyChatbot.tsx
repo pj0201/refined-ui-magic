@@ -19,10 +19,11 @@ export const SubsidyChatbot = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  // 固定位置を使用
+  // 固定位置を使用 - 上から下への垂直順序
   const styles = {
-    smallSubsidyLabel: { bottom: "15rem", right: "1rem" },  // 上部に固定
-    investmentSubsidyLabel: { bottom: "10rem", right: "1rem" }, // 中央に固定
+    smallSubsidyLabel: { bottom: "15rem", right: "1rem" },  // 一番上に固定
+    smallSubsidyIcon: { bottom: "11rem", right: "1rem" },   // ラベルの下に固定
+    investmentSubsidyLabel: { bottom: "7rem", right: "1rem" }, // 小規模補助金アイコンの下に固定
     investmentSubsidyIcon: { bottom: "2rem", right: "1rem" }  // 一番下に固定
   };
 
@@ -83,7 +84,7 @@ export const SubsidyChatbot = () => {
 
   return (
     <div className="fixed bottom-4 right-4 z-50">
-      {/* 小規模持続化補助金ラベル - 上部に固定 */}
+      {/* 小規模持続化補助金ラベル - 一番上に固定 */}
       <div 
         className="fixed z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center"
         style={styles.smallSubsidyLabel}
@@ -92,7 +93,10 @@ export const SubsidyChatbot = () => {
         <span>の質問はコチラ</span>
       </div>
       
-      {/* 省力化投資補助金ラベル - 中央に固定 */}
+      {/* 小規模持続化補助金アイコン（Dify） - ラベルの下に配置 */}
+      <DifyConfig />
+      
+      {/* 省力化投資補助金ラベル - 小規模補助金アイコンの下に配置 */}
       <div 
         className="fixed z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center"
         style={styles.investmentSubsidyLabel}
@@ -101,7 +105,7 @@ export const SubsidyChatbot = () => {
         <span>一般形の質問はコチラ</span>
       </div>
       
-      <DifyConfig />
+      {/* 省力化投資補助金アイコン - 一番下に配置 */}
       <ChatbotContainer
         isOpen={isOpen}
         messages={messages}

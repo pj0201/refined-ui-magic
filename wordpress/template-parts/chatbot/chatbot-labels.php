@@ -7,25 +7,25 @@ if (!defined('ABSPATH')) {
 <script>
 // 画面サイズに応じてラベルの位置を調整する関数
 function adjustLabelPositions() {
-  // 小規模持続化補助金ラベル - 上部に配置
+  // 小規模持続化補助金ラベル - 一番上に配置
   const smallSubsidyLabel = document.querySelector('.small-subsidy-label');
   if (smallSubsidyLabel) {
     smallSubsidyLabel.style.bottom = '15rem'; // 固定位置
   }
   
-  // 省力化投資補助金ラベル - 中央に配置
-  const investmentSubsidyLabel = document.querySelector('.investment-subsidy-label');
-  if (investmentSubsidyLabel) {
-    investmentSubsidyLabel.style.bottom = '10rem'; // 固定位置
-  }
-  
-  // Difyチャットボットのアイコン（小規模持続化補助金）を固定位置に
+  // 小規模持続化補助金のチャットボットアイコン（Dify）- ラベルのすぐ下
   const difyChatbotButton = document.getElementById('dify-chatbot-bubble-button');
   if (difyChatbotButton) {
-    difyChatbotButton.style.bottom = '5.5rem'; // 固定位置
+    difyChatbotButton.style.bottom = '11rem'; // 固定位置
   }
   
-  // 省力化投資補助金のチャットボットアイコン
+  // 省力化投資補助金ラベル - 小規模持続化補助金アイコンの下に配置
+  const investmentSubsidyLabel = document.querySelector('.investment-subsidy-label');
+  if (investmentSubsidyLabel) {
+    investmentSubsidyLabel.style.bottom = '7rem'; // 固定位置
+  }
+  
+  // 省力化投資補助金のチャットボットアイコン - 一番下に固定
   const investmentSubsidyBot = document.querySelector('.investment-subsidy-bot');
   if (investmentSubsidyBot) {
     investmentSubsidyBot.style.bottom = '2rem'; // 一番下に固定

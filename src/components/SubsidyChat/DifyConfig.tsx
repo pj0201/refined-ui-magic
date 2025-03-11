@@ -19,8 +19,8 @@ export const DifyConfig = () => {
     difyChatbotStyle.textContent = `
       #dify-chatbot-bubble-button {
         background-color: #1C64F2 !important;
-        /* 小規模持続化補助金ラベルの下に配置（重なりを防ぐため大きく離す） */
-        bottom: 5.5rem !important;
+        /* 小規模持続化補助金アイコンの配置位置 - ラベルのすぐ下に */
+        bottom: 11rem !important;
         right: 1rem !important;
       }
       #dify-chatbot-bubble-window {
@@ -33,7 +33,7 @@ export const DifyConfig = () => {
       /* 小さい画面での調整 */
       @media (max-height: 600px) {
         #dify-chatbot-bubble-button {
-          bottom: 5.5rem !important; /* 固定位置 */
+          bottom: 11rem !important; /* 固定位置 */
         }
       }
     `;
