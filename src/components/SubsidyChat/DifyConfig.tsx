@@ -37,6 +37,17 @@ export const DifyConfig = () => {
         transform: none !important;
         margin-bottom: 0 !important;
         z-index: 1001 !important;
+        position: fixed !important;
+        display: flex !important;
+        flex-direction: column !important;
+        overflow: hidden !important;
+      }
+
+      /* Ensure content is visible */
+      #dify-chatbot-bubble-window iframe {
+        flex: 1 !important;
+        height: 100% !important;
+        width: 100% !important;
       }
     `;
     document.head.appendChild(difyChatbotStyle);

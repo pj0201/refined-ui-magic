@@ -23,19 +23,22 @@ export const SubsidyChatbot = () => {
     smallSubsidyLabel: { 
       bottom: "15rem", 
       right: "1rem", 
-      zIndex: 1000 
+      zIndex: 1000,
+      position: "fixed"
     },
     
     // Investment subsidy chatbot (custom)
     investmentSubsidyLabel: { 
       bottom: "7rem", 
       right: "1rem", 
-      zIndex: 1000 
+      zIndex: 1000,
+      position: "fixed"
     }, 
     investmentSubsidyIcon: { 
       bottom: "2rem", 
       right: "1rem", 
-      zIndex: 1000 
+      zIndex: 1000,
+      position: "fixed"
     }
   };
 

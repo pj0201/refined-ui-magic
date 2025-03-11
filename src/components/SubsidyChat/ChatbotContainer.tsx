@@ -47,10 +47,11 @@ export const ChatbotContainer = ({
         maxHeight: '80vh',
         bottom: style.bottom || '2rem', 
         right: style.right || '2rem', 
-        zIndex: 1000,
+        zIndex: 1001,
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
+        position: 'fixed !important',
         ...style
       }}
     >
