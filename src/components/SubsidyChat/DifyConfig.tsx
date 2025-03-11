@@ -19,50 +19,56 @@ export const DifyConfig = () => {
     difyChatbotStyle.textContent = `
       #dify-chatbot-bubble-button {
         background-color: #1C64F2 !important;
-        /* 小規模持続化補助金アイコンの配置位置 - 固定位置 */
         bottom: 11rem !important;
         right: 1rem !important;
         z-index: 1000 !important;
       }
       #dify-chatbot-bubble-window {
-        width: 24rem !important;
-        height: 80vh !important; /* 画面の高さに対する割合で設定 */
-        min-height: 500px !important;
-        max-height: 700px !important;
-        bottom: 70px !important; /* 下部の位置を固定値に変更 */
+        width: 350px !important;
+        height: 500px !important;
+        max-height: calc(100vh - 120px) !important;
+        bottom: 5rem !important;
         right: 1rem !important;
-        transform: none !important; /* transformをnoneに設定 */
-        margin-bottom: 10px !important;
+        transform: none !important;
+        margin-bottom: 0 !important;
         z-index: 1000 !important;
         display: flex !important;
         flex-direction: column !important;
+        overflow: hidden !important;
       }
-      /* チャット領域の表示調整 - flex-growを使用 */
       #dify-chatbot-bubble-window .dify-chatbot-window-content {
-        flex-grow: 1 !important;
+        flex: 1 !important;
         overflow: auto !important;
         display: flex !important;
         flex-direction: column !important;
       }
-      /* 入力エリアを固定表示 */
+      #dify-chatbot-bubble-window .dify-chatbot-window-header {
+        position: relative !important;
+        z-index: 1010 !important;
+      }
       #dify-chatbot-bubble-window .dify-chatbot-window-footer {
         position: sticky !important;
         bottom: 0 !important;
         background-color: white !important;
-        padding: 15px !important;
+        padding: 12px !important;
         z-index: 1010 !important;
         box-shadow: 0 -2px 10px rgba(0,0,0,0.1) !important;
+        margin-top: auto !important;
       }
-      /* モバイル向け調整 */
+      #dify-chatbot-bubble-window .dify-chatbot-window-close-btn {
+        z-index: 1020 !important;
+        display: flex !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+      }
       @media (max-width: 640px) {
         #dify-chatbot-bubble-window {
-          width: 90vw !important;
-          height: 70vh !important;
-          min-height: 400px !important;
-          max-height: 600px !important;
-          bottom: 70px !important;
-          right: 5vw !important;
-          left: 5vw !important;
+          width: calc(100vw - 2rem) !important;
+          height: 500px !important;
+          max-height: calc(100vh - 120px) !important;
+          bottom: 5rem !important;
+          right: 1rem !important;
+          left: auto !important;
         }
       }
     `;

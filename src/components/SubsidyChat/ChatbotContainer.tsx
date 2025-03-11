@@ -43,12 +43,11 @@ export const ChatbotContainer = ({
       style={{ 
         width: '350px',
         maxWidth: 'calc(100vw - 2rem)',
-        bottom: '70px', 
+        bottom: '5rem', 
         right: '1rem', 
         zIndex: 1000,
-        height: '80vh',
-        minHeight: '500px',
-        maxHeight: '700px',
+        height: '500px',
+        maxHeight: 'calc(100vh - 120px)',
         display: 'flex',
         flexDirection: 'column',
         ...style
@@ -63,18 +62,19 @@ export const ChatbotContainer = ({
           variant="ghost"
           size="icon"
           onClick={onToggle}
+          className="z-50"
         >
           <X className="w-5 h-5" />
         </Button>
       </div>
 
-      {/* Messages - flexGrowを使用して余白をすべて使う */}
-      <div className="flex-grow overflow-y-auto">
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto">
         <ChatMessages messages={messages} />
       </div>
 
-      {/* Input - 固定位置で表示 */}
-      <div className="border-t bg-white p-4 sticky bottom-0 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]">
+      {/* Input */}
+      <div className="border-t bg-white p-3 sticky bottom-0 mt-auto">
         <ChatInput onSendMessage={onSendMessage} isLoading={isLoading} />
       </div>
     </div>

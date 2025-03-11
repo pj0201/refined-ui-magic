@@ -38,21 +38,38 @@ function adjustLabelPositions() {
   // Difyのチャットウィンドウの位置とサイズを調整
   const difyChatbotWindow = document.getElementById('dify-chatbot-bubble-window');
   if (difyChatbotWindow) {
-    // ウィンドウサイズをviewportの割合で指定
-    difyChatbotWindow.style.height = '80vh';
-    difyChatbotWindow.style.minHeight = '500px';
-    difyChatbotWindow.style.maxHeight = '700px';
-    difyChatbotWindow.style.bottom = '70px';
+    difyChatbotWindow.style.width = '350px';
+    difyChatbotWindow.style.height = '500px';
+    difyChatbotWindow.style.maxHeight = 'calc(100vh - 120px)';
+    difyChatbotWindow.style.bottom = '5rem';
+    difyChatbotWindow.style.right = '1rem';
     difyChatbotWindow.style.transform = 'none';
-    difyChatbotWindow.style.marginBottom = '10px';
+    difyChatbotWindow.style.marginBottom = '0';
     difyChatbotWindow.style.zIndex = '1000';
     difyChatbotWindow.style.display = 'flex';
     difyChatbotWindow.style.flexDirection = 'column';
+    difyChatbotWindow.style.overflow = 'hidden';
+    
+    // チャットヘッダーのz-indexを高くする
+    const chatHeader = difyChatbotWindow.querySelector('.dify-chatbot-window-header');
+    if (chatHeader) {
+      chatHeader.style.position = 'relative';
+      chatHeader.style.zIndex = '1010';
+    }
+    
+    // 閉じるボタンの表示を確保
+    const closeButton = difyChatbotWindow.querySelector('.dify-chatbot-window-close-btn');
+    if (closeButton) {
+      closeButton.style.zIndex = '1020';
+      closeButton.style.display = 'flex';
+      closeButton.style.visibility = 'visible';
+      closeButton.style.opacity = '1';
+    }
     
     // チャット入力部分が見えるようにFlexレイアウトを適用
     const chatContent = difyChatbotWindow.querySelector('.dify-chatbot-window-content');
     if (chatContent) {
-      chatContent.style.flexGrow = '1';
+      chatContent.style.flex = '1';
       chatContent.style.overflow = 'auto';
       chatContent.style.display = 'flex';
       chatContent.style.flexDirection = 'column';
@@ -63,19 +80,19 @@ function adjustLabelPositions() {
       chatFooter.style.position = 'sticky';
       chatFooter.style.bottom = '0';
       chatFooter.style.backgroundColor = 'white';
-      chatFooter.style.padding = '15px';
+      chatFooter.style.padding = '12px';
       chatFooter.style.zIndex = '1010';
       chatFooter.style.boxShadow = '0 -2px 10px rgba(0,0,0,0.1)';
+      chatFooter.style.marginTop = 'auto';
     }
     
     // モバイル表示の調整
     if (window.innerWidth <= 640) {
-      difyChatbotWindow.style.width = '90vw';
-      difyChatbotWindow.style.height = '70vh';
-      difyChatbotWindow.style.minHeight = '400px';
-      difyChatbotWindow.style.maxHeight = '600px';
-      difyChatbotWindow.style.right = '5vw';
-      difyChatbotWindow.style.left = '5vw';
+      difyChatbotWindow.style.width = 'calc(100vw - 2rem)';
+      difyChatbotWindow.style.height = '500px';
+      difyChatbotWindow.style.maxHeight = 'calc(100vh - 120px)';
+      difyChatbotWindow.style.right = '1rem';
+      difyChatbotWindow.style.left = 'auto';
     }
   }
 }
@@ -94,12 +111,19 @@ document.addEventListener('DOMContentLoaded', function() {
   // 画面サイズ変更時に調整
   window.addEventListener('resize', adjustLabelPositions);
   
-  // クリックイベントでも位置調整を実行
+  // クリックイベントでも位置調整を実行（特にチャットアイコンをクリックした時）
   document.addEventListener('click', function() {
     setTimeout(adjustLabelPositions, 100);
     setTimeout(adjustLabelPositions, 500);
     setTimeout(adjustLabelPositions, 1000);
   });
+  
+  // MutationObserverを使用してDOMの変更を監視し、チャットウィンドウが表示されたら調整
+  const observer = new MutationObserver(function(mutations) {
+    setTimeout(adjustLabelPositions, 100);
+  });
+  
+  observer.observe(document.body, { childList: true, subtree: true });
 });
 </script>
 
