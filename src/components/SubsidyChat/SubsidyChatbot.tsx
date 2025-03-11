@@ -12,7 +12,7 @@ export const SubsidyChatbot = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       type: "bot",
-      content: "補助金に関する質問をお気軽にどうぞ！\n\n【質問例】\n・補助金額はいくらですか？\n・申請期間はいつからですか？\n・どんな企業が対象ですか？",
+      content: "省力化投資補助金について質問をお気軽にどうぞ！\n\n【質問例】\n・補助金額はいくらですか？\n・申請期間はいつからですか？\n・どんな企業が対象ですか？",
       timestamp: new Date()
     }
   ]);
@@ -41,6 +41,7 @@ export const SubsidyChatbot = () => {
     }
   };
 
+  // 通常のチャットボット表示を管理するための関数
   const handleSendMessage = async (message: string) => {
     if (isLoading) return;
 
@@ -54,22 +55,13 @@ export const SubsidyChatbot = () => {
     setIsLoading(true);
 
     try {
-      if (!isSubsidyRelatedQuestion(userMessage.content)) {
-        // Improved response for general questions
-        const generalResponse = "申し訳ありません。具体的な補助金に関する情報についてお答えできます。例えば以下のような質問をお試しください：\n\n・補助金の申請要件は？\n・補助対象となる経費は？\n・補助率はどのくらいですか？";
-        
-        setMessages(prev => [...prev, {
-          type: "bot",
-          content: generalResponse,
-          timestamp: new Date()
-        }]);
-        setIsLoading(false);
-        return;
-      }
-
-      console.log('補助金関連の質問を処理します:', userMessage.content);
+      // Difyを使用しますが、UIは既存のものを使用します
+      console.log('省力化投資補助金の質問を処理:', userMessage.content);
+      
+      // 元々はここでAPIリクエストを送信していましたが、
+      // 実際にはDifyが裏側で処理するため、ダミーレスポンスを生成
       const subsidyInfo = await generateSubsidyResponse(userMessage.content);
-      console.log('生成された補助金情報:', subsidyInfo);
+      console.log('生成された回答:', subsidyInfo);
       
       const response = formatSubsidyResponse(subsidyInfo);
       
