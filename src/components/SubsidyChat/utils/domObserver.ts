@@ -66,6 +66,19 @@ export const setupDomObserver = (): MutationObserver => {
     if (chatWindow) {
       // 直ちに閉じるボタンを追加
       addCloseButtonToWindow(chatWindow);
+      
+      // チャットウィンドウのスタイルを強制的に適用
+      chatWindow.style.display = 'flex';
+      chatWindow.style.flexDirection = 'column';
+      chatWindow.style.width = '350px';
+      chatWindow.style.height = '500px';
+      chatWindow.style.maxHeight = '80vh';
+      chatWindow.style.position = 'fixed';
+      chatWindow.style.bottom = '5rem';
+      chatWindow.style.right = '1rem';
+      chatWindow.style.zIndex = '1001';
+      chatWindow.style.borderRadius = '0.5rem';
+      chatWindow.style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)';
     }
 
     // チャットボタンの表示を確保
@@ -74,11 +87,25 @@ export const setupDomObserver = (): MutationObserver => {
       chatButton.style.display = 'block';
       chatButton.style.visibility = 'visible';
       chatButton.style.opacity = '1';
+      chatButton.style.zIndex = '9999';
+      chatButton.style.position = 'fixed';
+      chatButton.style.bottom = '11rem';
+      chatButton.style.right = '1rem';
+      chatButton.style.width = '48px';
+      chatButton.style.height = '48px';
+      chatButton.style.borderRadius = '50%';
+      chatButton.style.backgroundColor = '#1C64F2';
+      chatButton.style.cursor = 'pointer';
     }
   });
 
-  // DOM変更の監視を開始
-  observer.observe(document.body, { childList: true, subtree: true });
+  // DOM変更の監視を開始（最大限の監視範囲）
+  observer.observe(document.body, { 
+    childList: true, 
+    subtree: true,
+    attributes: true,
+    characterData: true
+  });
   
   return observer;
 };
@@ -98,12 +125,36 @@ export const performInitialElementsCheck = (): void => {
       chatButton.style.display = 'block';
       chatButton.style.visibility = 'visible';
       chatButton.style.opacity = '1';
+      chatButton.style.zIndex = '9999';
+      chatButton.style.position = 'fixed';
+      chatButton.style.bottom = '11rem';
+      chatButton.style.right = '1rem';
+      chatButton.style.width = '48px';
+      chatButton.style.height = '48px';
+      chatButton.style.borderRadius = '50%';
+      chatButton.style.backgroundColor = '#1C64F2';
+      chatButton.style.cursor = 'pointer';
+    } else {
+      console.warn('Dify chat button not found during initial check');
     }
 
     // チャットウィンドウの閉じるボタンを確認
     if (chatWindow) {
       console.log('Dify chat window found, adding close button');
       addCloseButtonToWindow(chatWindow);
+      
+      // チャットウィンドウのスタイルを適用
+      chatWindow.style.display = 'flex';
+      chatWindow.style.flexDirection = 'column';
+      chatWindow.style.width = '350px';
+      chatWindow.style.height = '500px';
+      chatWindow.style.maxHeight = '80vh';
+      chatWindow.style.position = 'fixed';
+      chatWindow.style.bottom = '5rem';
+      chatWindow.style.right = '1rem';
+      chatWindow.style.zIndex = '1001';
+      chatWindow.style.borderRadius = '0.5rem';
+      chatWindow.style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)';
     }
   };
   
@@ -116,6 +167,15 @@ export const performInitialElementsCheck = (): void => {
   // 確実にボタンが存在するように定期的に確認
   setInterval(() => {
     const chatWindow = document.getElementById('dify-chatbot-bubble-window');
+    const chatButton = document.getElementById('dify-chatbot-bubble-button');
+    
+    if (chatButton) {
+      chatButton.style.display = 'block';
+      chatButton.style.visibility = 'visible';
+      chatButton.style.opacity = '1';
+      chatButton.style.zIndex = '9999';
+    }
+    
     if (chatWindow && !chatWindow.querySelector('.dify-chatbot-window-close-btn')) {
       console.log('Reapplying close button');
       addCloseButtonToWindow(chatWindow);

@@ -1,9 +1,9 @@
 
 /**
- * Difyチャットボット用のCSSスタイル
+ * Difyチャットボット用のCSSスタイル - より強力に適用するよう修正
  */
 export const difyChatStyles = `
-  /* Chat button styling */
+  /* Chat button styling - より強力なCSSセレクタを使用 */
   #dify-chatbot-bubble-button {
     background-color: #1C64F2 !important;
     bottom: 11rem !important;
@@ -16,12 +16,14 @@ export const difyChatStyles = `
     width: 48px !important;
     height: 48px !important;
     border-radius: 50% !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
   }
   
-  /* Chat window styling */
+  /* Chat window styling - より具体的な指定 */
   #dify-chatbot-bubble-window {
-    width: 24rem !important;
-    height: 40rem !important;
+    width: 350px !important;
+    height: 500px !important;
     max-height: 80vh !important;
     max-width: calc(100vw - 32px) !important;
     bottom: 5rem !important;
@@ -33,16 +35,19 @@ export const difyChatStyles = `
     display: flex !important;
     flex-direction: column !important;
     overflow: hidden !important;
+    border-radius: 0.5rem !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
   }
 
-  /* Ensure content is visible */
+  /* チャットウィンドウ内部のコンテンツ */
   #dify-chatbot-bubble-window iframe {
     flex: 1 !important;
     height: 100% !important;
     width: 100% !important;
+    border: none !important;
   }
   
-  /* Close button styling - prominently positioned */
+  /* 閉じるボタンのスタイル - より目立つように */
   .dify-chatbot-window-close-btn {
     position: absolute !important;
     top: 0.75rem !important;
@@ -70,7 +75,7 @@ export const difyChatStyles = `
     color: #4a5568 !important;
   }
   
-  /* Add a custom close button if the default is hidden */
+  /* カスタム閉じるボタン */
   .custom-dify-close-btn {
     position: absolute !important;
     top: 0.75rem !important;
@@ -87,30 +92,21 @@ export const difyChatStyles = `
     cursor: pointer !important;
   }
 
-  /* Override any existing close button styles */
-  #dify-chatbot-bubble-window .dify-chatbot-window-close-btn,
-  .dify-chatbot-window-header .dify-chatbot-window-close-btn {
-    position: absolute !important;
-    top: 0.75rem !important;
-    right: 0.75rem !important;
-    width: 2rem !important;
-    height: 2rem !important;
-    background: #ffffff !important;
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 9999px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    cursor: pointer !important;
-    z-index: 9999 !important;
+  /* iframeでも閉じるボタンを表示するためのCSS */
+  iframe#dify-chatbot-bubble-window-iframe {
+    position: relative !important;
   }
 
-  /* Add container to ensure chat is displayed */
+  /* Difyコンテナの確保 */
   #dify-chatbot-container {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    z-index: 1000;
+    position: fixed !important;
+    bottom: 0 !important;
+    right: 0 !important;
+    z-index: 1000 !important;
+    pointer-events: none !important;
+  }
+  #dify-chatbot-container * {
+    pointer-events: auto !important;
   }
 `;
 
@@ -118,4 +114,3 @@ export const difyChatStyles = `
  * カスタム閉じるボタンのHTMLコード - より目立つアイコン
  */
 export const closeButtonSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18"></path><path d="M6 6L18 18"></path></svg>`;
-

@@ -13,8 +13,28 @@ declare global {
 
 export const DifyConfig = () => {
   useEffect(() => {
+    console.log("DifyConfig component mounted, initializing chat...");
+    
+    // 現在のDifyの状態をクリア
+    const cleanupExistingElements = () => {
+      // 既存のDify関連要素を削除
+      ['dify-chat-config', 'yXBz3rzpDBhMgYcB', 'dify-chat-styles', 'dify-chatbot-container'].forEach(id => {
+        const element = document.getElementById(id);
+        if (element) {
+          console.log(`Removing existing element: ${id}`);
+          element.remove();
+        }
+      });
+    };
+    
+    // 初期化前にクリーンアップ
+    cleanupExistingElements();
+    
     // 即時実行
-    setupDifyChat();
+    setTimeout(() => {
+      setupDifyChat();
+      console.log("Dify chat setup called from DifyConfig");
+    }, 100);
     
     // チャットボットの状態を監視
     const { interval, timeout } = monitorChatbotState();
@@ -25,10 +45,7 @@ export const DifyConfig = () => {
       clearTimeout(timeout);
       
       // DOM要素を削除
-      ['dify-chat-config', 'yXBz3rzpDBhMgYcB', 'dify-chat-styles', 'dify-chatbot-container'].forEach(id => {
-        const element = document.getElementById(id);
-        if (element) element.remove();
-      });
+      cleanupExistingElements();
       
       console.log('Dify chat cleaned up');
     };
@@ -36,4 +53,3 @@ export const DifyConfig = () => {
 
   return null;
 };
-

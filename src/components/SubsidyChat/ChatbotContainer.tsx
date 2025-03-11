@@ -4,7 +4,7 @@ import { HelpCircle, X } from "lucide-react";
 import { ChatMessages } from "./ChatMessages";
 import { ChatInput } from "./ChatInput";
 import { Message } from "./types";
-import { CSSProperties } from "react";
+import { CSSProperties, useEffect } from "react";
 
 interface ChatbotContainerProps {
   isOpen: boolean;
@@ -25,12 +25,23 @@ export const ChatbotContainer = ({
   style = {},
   className = "",
 }: ChatbotContainerProps) => {
+  // コンポーネントがマウントされた時にボタンの可視性を確保
+  useEffect(() => {
+    console.log("ChatbotContainer mounted, isOpen:", isOpen);
+  }, [isOpen]);
+
   if (!isOpen) {
     return (
       <Button
         onClick={onToggle}
         className={`rounded-full w-12 h-12 shadow-lg bg-blue-600 hover:bg-blue-700 fixed ${className}`}
-        style={{ ...style, zIndex: 1000 }}
+        style={{ 
+          ...style, 
+          zIndex: 1000,
+          bottom: style.bottom || '2rem',
+          right: style.right || '2rem',
+          position: 'fixed'
+        }}
       >
         <HelpCircle className="w-5 h-5" />
       </Button>
@@ -51,8 +62,7 @@ export const ChatbotContainer = ({
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
-        position: 'fixed', // Changed to valid Position type
-        ...style
+        position: 'fixed'
       }}
     >
       {/* ヘッダー */}

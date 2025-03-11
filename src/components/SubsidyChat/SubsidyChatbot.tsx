@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DifyConfig } from "./DifyConfig";
 import { ChatbotContainer } from "./ChatbotContainer";
 import { Message } from "./types";
@@ -18,6 +18,35 @@ export const SubsidyChatbot = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
+  // マウント時に一度だけ実行するセットアップ
+  useEffect(() => {
+    console.log("SubsidyChatbot component mounted");
+    
+    // DOMに直接アクセスしてチャットボタンの表示を確認
+    const checkDifyButton = () => {
+      const difyButton = document.getElementById('dify-chatbot-bubble-button');
+      if (difyButton) {
+        difyButton.style.display = 'block';
+        difyButton.style.visibility = 'visible';
+        difyButton.style.opacity = '1';
+        difyButton.style.zIndex = '9999';
+        console.log("Dify button visibility enforced from SubsidyChatbot");
+      } else {
+        console.log("Dify button not found in check");
+      }
+    };
+    
+    // 初期チェックを実行
+    setTimeout(checkDifyButton, 2000);
+    
+    // 定期的にチェック
+    const interval = setInterval(checkDifyButton, 5000);
+    
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
   // Styles for positioning chatbots
   const styles: {
     smallSubsidyLabel: CSSProperties;
@@ -29,7 +58,7 @@ export const SubsidyChatbot = () => {
       bottom: "15rem", 
       right: "1rem", 
       zIndex: 1000,
-      position: "fixed" // Valid Position type
+      position: "fixed"
     },
     
     // Investment subsidy chatbot (custom)
@@ -37,13 +66,13 @@ export const SubsidyChatbot = () => {
       bottom: "7rem", 
       right: "1rem", 
       zIndex: 1000,
-      position: "fixed" // Valid Position type
+      position: "fixed"
     }, 
     investmentSubsidyIcon: { 
       bottom: "2rem", 
       right: "1rem", 
       zIndex: 1000,
-      position: "fixed" // Valid Position type
+      position: "fixed"
     }
   };
 

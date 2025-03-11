@@ -76,18 +76,19 @@ export const applyDifyChatStyles = (): MutationObserver => {
  * Difyチャットボットのセットアップ
  */
 export const setupDifyChat = (): void => {
-  if (scriptExists('dify-chat-config') || scriptExists('yXBz3rzpDBhMgYcB')) {
-    console.log('Dify chat scripts already exist, removing old scripts...');
-    // 古いスクリプトを削除
-    const oldConfig = document.getElementById('dify-chat-config');
-    const oldScript = document.getElementById('yXBz3rzpDBhMgYcB');
-    if (oldConfig) oldConfig.remove();
-    if (oldScript) oldScript.remove();
-  }
-
   console.log('Setting up Dify chat...');
 
   try {
+    // 既存のスクリプトがあれば削除（初期化し直すため）
+    if (scriptExists('dify-chat-config') || scriptExists('yXBz3rzpDBhMgYcB')) {
+      console.log('Dify chat scripts already exist, removing old scripts...');
+      // 古いスクリプトを削除
+      const oldConfig = document.getElementById('dify-chat-config');
+      const oldScript = document.getElementById('yXBz3rzpDBhMgYcB');
+      if (oldConfig) oldConfig.remove();
+      if (oldScript) oldScript.remove();
+    }
+    
     // 設定スクリプトの追加
     const difyChatbotConfig = createScript('dify-chat-config', undefined, `
       window.difyChatbotConfig = { 
@@ -104,6 +105,20 @@ export const setupDifyChat = (): void => {
     difyChatbotScript.onload = () => {
       console.log('Dify script loaded successfully');
       setTimeout(applyDifyChatStyles, 100);
+      
+      // チャットボタンが表示されるようにする（重要）
+      setTimeout(() => {
+        const chatButton = document.getElementById('dify-chatbot-bubble-button');
+        if (chatButton) {
+          chatButton.style.display = 'block';
+          chatButton.style.visibility = 'visible';
+          chatButton.style.opacity = '1';
+          chatButton.style.zIndex = '9999';
+          console.log('Dify chat button visibility enforced');
+        } else {
+          console.warn('Dify chat button not found after script load');
+        }
+      }, 1000);
     };
     difyChatbotScript.onerror = (error) => {
       console.error('Error loading Dify script:', error);
@@ -134,6 +149,16 @@ export const monitorChatbotState = (): { interval: ReturnType<typeof setInterval
     if (window.hasOwnProperty('difyChatbotConfig')) {
       console.log('Dify chat config detected');
       clearInterval(scriptLoadCheck);
+      
+      // チャットボタンのチェック
+      const chatButton = document.getElementById('dify-chatbot-bubble-button');
+      if (chatButton) {
+        chatButton.style.display = 'block';
+        chatButton.style.visibility = 'visible';
+        chatButton.style.opacity = '1';
+        chatButton.style.zIndex = '9999';
+        console.log('Dify chat button visibility enforced during monitoring');
+      }
     }
   }, 500);
 
