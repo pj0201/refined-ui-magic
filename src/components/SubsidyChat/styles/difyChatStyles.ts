@@ -51,15 +51,16 @@ export const difyChatStyles = `
     top: 10px !important;
     right: 10px !important;
     z-index: 9999 !important;
-    width: 24px !important;
-    height: 24px !important;
-    color: #666 !important;
-    background: rgba(255, 255, 255, 0.8) !important;
+    width: 30px !important;
+    height: 30px !important;
+    color: white !important;
+    background: rgba(0, 0, 0, 0.5) !important;
     border-radius: 50% !important;
     align-items: center !important;
     justify-content: center !important;
     cursor: pointer !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3) !important;
+    border: 2px solid white !important;
   }
   
   /* Add a custom close button if the default is hidden */
@@ -68,17 +69,17 @@ export const difyChatStyles = `
     top: 10px !important;
     right: 10px !important;
     z-index: 9999 !important;
-    width: 24px !important;
-    height: 24px !important;
-    color: #666 !important;
-    background: rgba(255, 255, 255, 0.8) !important;
+    width: 30px !important;
+    height: 30px !important;
+    color: white !important;
+    background: rgba(0, 0, 0, 0.5) !important;
     border-radius: 50% !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     cursor: pointer !important;
-    border: none !important;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+    border: 2px solid white !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3) !important;
   }
 
   /* Add container to ensure chat is displayed */
@@ -93,4 +94,4 @@ export const difyChatStyles = `
 /**
  * カスタム閉じるボタンのHTMLコード
  */
-export const closeButtonSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6L6 18"></path><path d="M6 6L18 18"></path></svg>`;
+export const closeButtonSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
