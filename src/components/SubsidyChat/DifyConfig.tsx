@@ -19,15 +19,15 @@ export const DifyConfig = () => {
     difyChatbotStyle.textContent = `
       #dify-chatbot-bubble-button {
         background-color: #1C64F2 !important;
-        bottom: 10rem !important; /* 省力化投資補助金チャットボットとの間隔を広げる */
+        bottom: 20rem !important; /* 省力化投資補助金チャットボットとの間隔を広げる */
         right: 1rem !important;
       }
       #dify-chatbot-bubble-window {
         width: 24rem !important;
         height: 40rem !important;
-        bottom: 4rem !important; /* 省力化投資補助金チャットボットと同じ位置に表示 */
+        bottom: 4rem !important;
         right: 1rem !important;
-        max-height: 70vh !important; /* 画面高さの70%までに制限して表示領域を確保 */
+        max-height: 70vh !important;
       }
     `;
     document.head.appendChild(difyChatbotStyle);
@@ -40,5 +40,5 @@ export const DifyConfig = () => {
     };
   }, []);
 
-  return null; // このコンポーネントはUIをレンダリングしない
+  return null;
 };

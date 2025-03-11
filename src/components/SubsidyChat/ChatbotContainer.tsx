@@ -22,24 +22,17 @@ export const ChatbotContainer = ({
 }: ChatbotContainerProps) => {
   if (!isOpen) {
     return (
-      <div className="flex flex-col items-end gap-6">
-        {/* 省力化投資補助金ラベル - 位置調整 */}
-        <div className="bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center">
-          <span>省力化投資補助金</span>
-          <span>一般形の質問はコチラ</span>
-        </div>
-        <Button
-          onClick={onToggle}
-          className="rounded-full w-12 h-12 shadow-lg bg-blue-600 hover:bg-blue-700"
-        >
-          <HelpCircle className="w-5 h-5" />
-        </Button>
-      </div>
+      <Button
+        onClick={onToggle}
+        className="rounded-full w-12 h-12 shadow-lg bg-blue-600 hover:bg-blue-700 fixed bottom-4 right-4"
+      >
+        <HelpCircle className="w-5 h-5" />
+      </Button>
     );
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-xl w-[350px] max-w-[calc(100vw-2rem)] h-[500px] max-h-[calc(100vh-2rem)] flex flex-col">
+    <div className="bg-white rounded-lg shadow-xl w-[350px] max-w-[calc(100vw-2rem)] h-[500px] max-h-[calc(100vh-2rem)] flex flex-col fixed bottom-4 right-4">
       {/* Header */}
       <div className="flex items-center justify-between p-4 border-b">
         <div className="flex items-center gap-4">
