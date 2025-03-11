@@ -40,8 +40,8 @@ if (!defined('ABSPATH')) {
     backdrop-filter: blur(4px);
   }
   .small-subsidy-label {
-    bottom: 13rem; /* 小規模持続化補助金ラベルの位置を調整 - アイコンに近づける */
-    right: 0.75rem;
+    bottom: 16rem; /* 小規模持続化補助金ラベルの位置を調整 - アイコンに近づける */
+    right: 4rem; /* 右側も調整 */
   }
   .investment-subsidy-label {
     bottom: 3.5rem;
