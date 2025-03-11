@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
   /* Difyチャットボットのスタイリング - 位置を調整 */
   #dify-chatbot-bubble-button {
     background-color: #1C64F2 !important;
-    bottom: 13rem !important; /* 小規模持続化補助金アイコン位置 */
+    bottom: min(13rem, 30vh) !important; /* 小規模持続化補助金アイコン位置 - ビューポート高さの30% */
     right: 1rem !important;
   }
   #dify-chatbot-bubble-window {
@@ -50,20 +50,38 @@ if (!defined('ABSPATH')) {
     background-color: rgba(255, 255, 255, 1);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   }
+
+  /* レスポンシブな位置調整 */
   /* 小規模持続化補助金ラベル - アイコンの上に配置 */
   .small-subsidy-label {
-    bottom: 16rem; /* 小規模持続化補助金ラベルの位置 */
+    bottom: min(16rem, 40vh); /* ビューポートの高さに応じた調整 */
     right: 1rem; /* 右側のアイコンに揃える */
   }
   /* 省力化投資補助金ラベル - アイコンの上に配置 */
   .investment-subsidy-label {
-    bottom: 8rem; /* 省力化投資補助金ラベルの位置 */
+    bottom: min(8rem, 20vh); /* ビューポートの高さに応じた調整 */
     right: 1rem; /* 右側のアイコンに揃える */
   }
   /* カスタマイズしたChatbotのボタン位置 - 一番下に配置 */
   #subsidy-chatbot .rounded-full {
-    bottom: 5rem !important;
+    bottom: min(5rem, 10vh) !important; /* ビューポートの高さに応じた調整 */
     right: 1rem !important;
     position: fixed !important;
+  }
+
+  /* 小さい画面用の調整 */
+  @media (max-height: 600px) {
+    .small-subsidy-label {
+      bottom: 10rem; /* 小さい画面での最小値 */
+    }
+    .investment-subsidy-label {
+      bottom: 6rem; /* 小さい画面での最小値 */
+    }
+    #dify-chatbot-bubble-button {
+      bottom: 7rem !important; /* 小さい画面での最小値 */
+    }
+    #subsidy-chatbot .rounded-full {
+      bottom: 3rem !important; /* 小さい画面での最小値 */
+    }
   }
 </style>

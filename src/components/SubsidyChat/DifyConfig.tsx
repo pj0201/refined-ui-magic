@@ -19,15 +19,20 @@ export const DifyConfig = () => {
     difyChatbotStyle.textContent = `
       #dify-chatbot-bubble-button {
         background-color: #1C64F2 !important;
-        bottom: 13rem !important; /* 小規模持続化補助金アイコン位置 */
+        bottom: min(13rem, 30vh) !important; /* 小規模持続化補助金アイコン位置 - ビューポート高さの30% */
         right: 1rem !important;
       }
       #dify-chatbot-bubble-window {
         width: 24rem !important;
         height: 40rem !important;
+        max-height: 70vh !important; /* 画面高さの70%までに制限 */
         bottom: 4rem !important;
         right: 1rem !important;
-        max-height: 70vh !important;
+      }
+      @media (max-height: 600px) {
+        #dify-chatbot-bubble-button {
+          bottom: 7rem !important; /* 小さい画面での最小値 */
+        }
       }
     `;
     document.head.appendChild(difyChatbotStyle);

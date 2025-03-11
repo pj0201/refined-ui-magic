@@ -1,5 +1,4 @@
-
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DifyConfig } from "./DifyConfig";
 import { ChatbotContainer } from "./ChatbotContainer";
 import { Message } from "./types";
@@ -18,6 +17,38 @@ export const SubsidyChatbot = () => {
   ]);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+
+  // レスポンシブな位置設定のためのスタイル
+  const [styles, setStyles] = useState({
+    smallSubsidyLabel: { bottom: "calc(40vh)", right: "1rem" },
+    smallSubsidyIcon: { bottom: "calc(30vh)", right: "1rem" },
+    investmentSubsidyLabel: { bottom: "calc(20vh)", right: "1rem" },
+    investmentSubsidyIcon: { bottom: "calc(10vh)", right: "1rem" }
+  });
+
+  // 画面サイズに基づいて位置を調整
+  useEffect(() => {
+    const updatePositions = () => {
+      const viewportHeight = window.innerHeight;
+      // 最小間隔を確保しながら相対的な位置を設定
+      const smallSubsidyLabelBottom = Math.min(Math.max(viewportHeight * 0.4, 12 * 16), 16 * 16);
+      const smallSubsidyIconBottom = Math.min(Math.max(viewportHeight * 0.3, 9 * 16), 13 * 16);
+      const investmentSubsidyLabelBottom = Math.min(Math.max(viewportHeight * 0.2, 6 * 16), 8 * 16);
+      const investmentSubsidyIconBottom = Math.min(Math.max(viewportHeight * 0.1, 3 * 16), 5 * 16);
+
+      setStyles({
+        smallSubsidyLabel: { bottom: `${smallSubsidyLabelBottom / 16}rem`, right: "1rem" },
+        smallSubsidyIcon: { bottom: `${smallSubsidyIconBottom / 16}rem`, right: "1rem" },
+        investmentSubsidyLabel: { bottom: `${investmentSubsidyLabelBottom / 16}rem`, right: "1rem" },
+        investmentSubsidyIcon: { bottom: `${investmentSubsidyIconBottom / 16}rem`, right: "1rem" }
+      });
+    };
+
+    // 初期化時と画面サイズ変更時に位置を調整
+    updatePositions();
+    window.addEventListener('resize', updatePositions);
+    return () => window.removeEventListener('resize', updatePositions);
+  }, []);
 
   const handleSendMessage = async (message: string) => {
     if (isLoading) return;
@@ -77,13 +108,19 @@ export const SubsidyChatbot = () => {
   return (
     <div className="fixed bottom-4 right-4 z-50">
       {/* 小規模持続化補助金ラベル */}
-      <div className="fixed bottom-16rem right-1 z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center">
+      <div 
+        className="fixed z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center"
+        style={styles.smallSubsidyLabel}
+      >
         <span>小規模持続化補助金</span>
         <span>の質問はコチラ</span>
       </div>
       
       {/* 省力化投資補助金ラベル */}
-      <div className="fixed bottom-8rem right-1 z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center">
+      <div 
+        className="fixed z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center"
+        style={styles.investmentSubsidyLabel}
+      >
         <span>省力化投資補助金</span>
         <span>一般形の質問はコチラ</span>
       </div>
@@ -95,6 +132,7 @@ export const SubsidyChatbot = () => {
         isLoading={isLoading}
         onToggle={() => setIsOpen(!isOpen)}
         onSendMessage={handleSendMessage}
+        style={styles.investmentSubsidyIcon}
       />
     </div>
   );
