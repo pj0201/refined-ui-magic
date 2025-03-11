@@ -5,12 +5,12 @@ export const DifyConfig = () => {
   useEffect(() => {
     // Add Dify chatbot script with the provided token
     const difyChatbotConfig = document.createElement('script');
-    difyChatbotConfig.textContent = `window.difyChatbotConfig = { token: 'UlZEhca44ZNfJtdS' }`;
+    difyChatbotConfig.textContent = `window.difyChatbotConfig = { token: 'yXBz3rzpDBhMgYcB' }`;
     document.head.appendChild(difyChatbotConfig);
 
     const difyChatbotScript = document.createElement('script');
     difyChatbotScript.src = 'https://udify.app/embed.min.js';
-    difyChatbotScript.id = 'UlZEhca44ZNfJtdS';
+    difyChatbotScript.id = 'yXBz3rzpDBhMgYcB';
     difyChatbotScript.defer = true;
     document.body.appendChild(difyChatbotScript);
 
