@@ -1,0 +1,74 @@
+
+/* Background Effects */
+.backdrop-blur-sm {
+    backdrop-filter: blur(4px);
+}
+
+.bg-white\/90 {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.bg-white\/10 {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Transitions */
+.transition-colors {
+    transition-property: color, background-color, border-color;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+}
+
+/* Animations */
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 1s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Hover Effects */
+.hover\:bg-white:hover {
+    background-color: #fff;
+}
+
+.hover\:text-gray-900:hover {
+    color: #111827;
+}
+
+.hover\:bg-gray-100:hover {
+    background-color: #f3f4f6;
+}
+
+.hover\:bg-red-50:hover {
+    background-color: #fef2f2;
+}
+
+.hover\:bg-blue-50:hover {
+    background-color: #eff6ff;
+}
+
+.hover\:bg-white\/10:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
