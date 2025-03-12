@@ -120,12 +120,20 @@ export const addChatbotElements = (): void => {
   window.addEventListener('message', (event) => {
     if (event.data.type === 'CHAT_TYPE_1_CLICK') {
       console.log("省力化投資補助金 chat requested");
-      window.DifyChat?.toggleBubbleWindow?.(true);
-      window.DifyChat?.onChatCleared?.();
+      if (window.DifyChat?.toggleBubbleWindow) {
+        window.DifyChat.toggleBubbleWindow(true);
+      }
+      if (window.DifyChat?.onChatCleared) {
+        window.DifyChat.onChatCleared();
+      }
     } else if (event.data.type === 'CHAT_TYPE_2_CLICK') {
       console.log("小規模持続化補助金 chat requested");
-      window.DifyChat?.toggleBubbleWindow?.(true);
-      window.DifyChat?.onChatCleared?.();
+      if (window.DifyChat?.toggleBubbleWindow) {
+        window.DifyChat.toggleBubbleWindow(true);
+      }
+      if (window.DifyChat?.onChatCleared) {
+        window.DifyChat.onChatCleared();
+      }
     }
   });
 };
