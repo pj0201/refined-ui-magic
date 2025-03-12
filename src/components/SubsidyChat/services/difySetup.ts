@@ -109,9 +109,18 @@ export const setupDifyChat = (): void => {
       console.log('Dify script loaded successfully');
       setTimeout(applyDifyChatStyles, 100);
       
-      // チャットボタンが表示されるようにする（重要）
+      // チャットボタンが表示されるように強制的に作成
       setTimeout(() => {
-        const chatButton = document.getElementById('dify-chatbot-bubble-button');
+        let chatButton = document.getElementById('dify-chatbot-bubble-button');
+        
+        // ボタンが存在しない場合は作成
+        if (!chatButton) {
+          console.log('Creating new Dify chat button');
+          chatButton = document.createElement('button');
+          chatButton.id = 'dify-chatbot-bubble-button';
+          document.body.appendChild(chatButton);
+        }
+        
         if (chatButton) {
           chatButton.style.cssText = `
             display: block !important;
@@ -126,7 +135,31 @@ export const setupDifyChat = (): void => {
             border-radius: 50% !important;
             background-color: #1C64F2 !important;
             cursor: pointer !important;
+            color: white !important;
+            font-size: 24px !important;
+            border: none !important;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
           `;
+          
+          // チャットアイコンの設定
+          chatButton.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+          `;
+          
+          // ボタンクリック時のイベントハンドラを設定
+          chatButton.onclick = (e) => {
+            e.stopPropagation();
+            console.log('Dify chat button clicked');
+            
+            // チャットウィンドウの表示を切り替え
+            const chatWindow = document.getElementById('dify-chatbot-bubble-window');
+            if (chatWindow) {
+              chatWindow.style.display = chatWindow.style.display === 'none' ? 'flex' : 'none';
+            }
+          };
+          
           console.log('Dify chat button visibility enforced');
         } else {
           console.warn('Dify chat button not found after script load');
@@ -169,7 +202,21 @@ export const monitorChatbotState = (): { interval: ReturnType<typeof setInterval
       console.log('Dify chat config detected');
       
       // チャットボタンのチェック
-      const chatButton = document.getElementById('dify-chatbot-bubble-button');
+      let chatButton = document.getElementById('dify-chatbot-bubble-button');
+      
+      // ボタンが存在しない場合は作成
+      if (!chatButton) {
+        console.log('Creating new Dify chat button during monitoring');
+        chatButton = document.createElement('button');
+        chatButton.id = 'dify-chatbot-bubble-button';
+        chatButton.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+        `;
+        document.body.appendChild(chatButton);
+      }
+      
       if (chatButton) {
         chatButton.style.cssText = `
           display: block !important;
@@ -184,7 +231,26 @@ export const monitorChatbotState = (): { interval: ReturnType<typeof setInterval
           border-radius: 50% !important;
           background-color: #1C64F2 !important;
           cursor: pointer !important;
+          color: white !important;
+          font-size: 24px !important;
+          border: none !important;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
         `;
+        
+        // クリックイベントがなければ追加
+        if (!chatButton.onclick) {
+          chatButton.onclick = (e) => {
+            e.stopPropagation();
+            console.log('Dify chat button clicked during monitoring');
+            
+            // チャットウィンドウの表示を切り替え
+            const chatWindow = document.getElementById('dify-chatbot-bubble-window');
+            if (chatWindow) {
+              chatWindow.style.display = chatWindow.style.display === 'none' ? 'flex' : 'none';
+            }
+          };
+        }
+        
         console.log('Dify chat button visibility enforced during monitoring');
       } else {
         console.warn('Dify chat button not found during monitoring');

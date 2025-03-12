@@ -18,6 +18,12 @@ export const difyChatStyles = `
     border-radius: 50% !important;
     cursor: pointer !important;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+    color: white !important;
+    font-size: 24px !important;
+    border: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
   
   /* Chat window styling - より具体的な指定 */
@@ -77,7 +83,7 @@ export const difyChatStyles = `
   }
   
   /* カスタム閉じるボタン */
-  .custom-dify-close-btn {
+  .custom-dify-close-btn, .dify-custom-close-btn {
     position: absolute !important;
     top: 0.75rem !important;
     right: 0.75rem !important;
@@ -115,6 +121,30 @@ export const difyChatStyles = `
     display: flex !important;
     opacity: 1 !important;
     visibility: visible !important;
+  }
+  
+  /* ラベルのスタイリング */
+  .chatbot-label {
+    position: fixed !important;
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    padding: 0.375rem 0.75rem !important;
+    border-radius: 9999px !important;
+    font-size: 0.75rem !important;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+    z-index: 1000 !important;
+    backdrop-filter: blur(4px) !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    border: 1px solid rgba(226, 232, 240, 0.8) !important;
+    transition: all 0.2s ease !important;
+  }
+  
+  .small-subsidy-label {
+    bottom: 15rem !important;
+    right: 1rem !important;
+    z-index: 1000 !important;
   }
 `;
 

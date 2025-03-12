@@ -22,19 +22,92 @@ export const SubsidyChatbot = () => {
   useEffect(() => {
     console.log("SubsidyChatbot component mounted");
     
-    // DOMに直接アクセスしてチャットボタンの表示を確認
-    const checkDifyButton = () => {
-      const difyButton = document.getElementById('dify-chatbot-bubble-button');
-      if (difyButton) {
-        difyButton.style.display = 'block';
-        difyButton.style.visibility = 'visible';
-        difyButton.style.opacity = '1';
-        difyButton.style.zIndex = '1000';
-        console.log("Dify button visibility enforced from SubsidyChatbot");
+    // 小規模持続化補助金ラベルを確実に作成
+    const createSmallSubsidyLabel = () => {
+      let label = document.querySelector('.small-subsidy-label');
+      if (!label) {
+        console.log("Creating small subsidy label");
+        label = document.createElement('div');
+        label.className = 'small-subsidy-label chatbot-label';
+        label.innerHTML = `
+          <span>小規模持続化補助金</span>
+          <span>の質問はコチラ</span>
+        `;
+        label.setAttribute('style', `
+          position: fixed !important;
+          bottom: 15rem !important;
+          right: 1rem !important;
+          z-index: 1000 !important;
+          background-color: rgba(255, 255, 255, 0.9) !important;
+          padding: 0.375rem 0.75rem !important;
+          border-radius: 9999px !important;
+          font-size: 0.75rem !important;
+          box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
+          backdrop-filter: blur(4px) !important;
+          display: flex !important;
+          flex-direction: column !important;
+          align-items: center !important;
+          text-align: center !important;
+          border: 1px solid rgba(226, 232, 240, 0.8) !important;
+        `);
+        document.body.appendChild(label);
       }
     };
     
+    // DOMに直接アクセスしてチャットボタンの表示を確認
+    const checkDifyButton = () => {
+      // チャットボタンがなければ自分で作成
+      let difyButton = document.getElementById('dify-chatbot-bubble-button');
+      if (!difyButton) {
+        console.log("Dify button not found, creating a new one");
+        difyButton = document.createElement('button');
+        difyButton.id = 'dify-chatbot-bubble-button';
+        difyButton.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+        `;
+        difyButton.onclick = (e) => {
+          e.stopPropagation();
+          console.log("Manual Dify button clicked");
+          const chatWindow = document.getElementById('dify-chatbot-bubble-window');
+          if (chatWindow) {
+            chatWindow.style.display = chatWindow.style.display === 'none' ? 'flex' : 'none';
+          }
+        };
+        document.body.appendChild(difyButton);
+      }
+      
+      if (difyButton) {
+        difyButton.style.cssText = `
+          display: block !important;
+          visibility: visible !important;
+          opacity: 1 !important;
+          z-index: 9995 !important;
+          position: fixed !important;
+          bottom: 11rem !important;
+          right: 1rem !important;
+          width: 48px !important;
+          height: 48px !important;
+          border-radius: 50% !important;
+          background-color: #1C64F2 !important;
+          cursor: pointer !important;
+          color: white !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          border: none !important;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+        `;
+        console.log("Dify button visibility enforced from SubsidyChatbot");
+      }
+      
+      // ラベルも作成
+      createSmallSubsidyLabel();
+    };
+    
     // 初期チェックを実行
+    setTimeout(checkDifyButton, 500);
     setTimeout(checkDifyButton, 2000);
     
     // 定期的にチェック
