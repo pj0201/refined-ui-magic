@@ -54,8 +54,26 @@ export const difyChatStyles = `
     border: none !important;
   }
   
+  /* チャットウィンドウヘッダー */
+  #dify-chatbot-bubble-window .dify-chatbot-window-header {
+    position: relative !important;
+    z-index: 1010 !important;
+  }
+  
+  /* チャットウィンドウフッター */
+  #dify-chatbot-bubble-window .dify-chatbot-window-footer {
+    position: sticky !important;
+    bottom: 0 !important;
+    background-color: white !important;
+    padding: 12px !important;
+    z-index: 1010 !important;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1) !important;
+    margin-top: auto !important;
+  }
+  
   /* 閉じるボタンのスタイル - より目立つように */
-  .dify-chatbot-window-close-btn {
+  .dify-chatbot-window-close-btn,
+  #dify-chatbot-bubble-window .dify-chatbot-window-close-btn {
     position: absolute !important;
     top: 0.75rem !important;
     right: 0.75rem !important;
@@ -70,20 +88,25 @@ export const difyChatStyles = `
     cursor: pointer !important;
     z-index: 9999 !important;
     transition: background-color 0.2s !important;
+    visibility: visible !important;
+    opacity: 1 !important;
   }
 
-  .dify-chatbot-window-close-btn:hover {
+  .dify-chatbot-window-close-btn:hover,
+  #dify-chatbot-bubble-window .dify-chatbot-window-close-btn:hover {
     background: #f7fafc !important;
   }
 
-  .dify-chatbot-window-close-btn svg {
+  .dify-chatbot-window-close-btn svg,
+  #dify-chatbot-bubble-window .dify-chatbot-window-close-btn svg {
     width: 1.25rem !important;
     height: 1.25rem !important;
     color: #4a5568 !important;
   }
   
   /* カスタム閉じるボタン */
-  .custom-dify-close-btn, .dify-custom-close-btn {
+  .custom-dify-close-btn, 
+  .dify-custom-close-btn {
     position: absolute !important;
     top: 0.75rem !important;
     right: 0.75rem !important;
@@ -97,6 +120,15 @@ export const difyChatStyles = `
     align-items: center !important;
     justify-content: center !important;
     cursor: pointer !important;
+  }
+
+  /* モバイル対応スタイル */
+  @media (max-width: 640px) {
+    #dify-chatbot-bubble-window {
+      width: calc(100vw - 2rem) !important;
+      height: 70vh !important;
+      max-height: 70vh !important;
+    }
   }
 
   /* iframeでも閉じるボタンを表示するためのCSS */
