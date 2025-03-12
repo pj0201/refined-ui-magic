@@ -92,8 +92,8 @@ export const SubsidyChatbot = () => {
     style.textContent = `
       .dify-chatbot-bubble-button {
         position: fixed !important;
-        width: 40px !important;
-        height: 40px !important;
+        width: 36px !important;
+        height: 36px !important;
         border-radius: 50% !important;
         background-color: #1C64F2 !important;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
@@ -105,15 +105,15 @@ export const SubsidyChatbot = () => {
         justify-content: center !important;
         opacity: 1 !important;
         visibility: visible !important;
-        right: 16px !important;
+        right: 20px !important;
       }
 
       #dify-chatbot-bubble-button-1 {
-        top: 240px !important;
+        top: 180px !important;
       }
 
       #dify-chatbot-bubble-button-2 {
-        top: 360px !important;
+        top: 380px !important;
       }
 
       .dify-chatbot-label {
@@ -129,7 +129,9 @@ export const SubsidyChatbot = () => {
         visibility: visible !important;
         color: #000000 !important;
         font-weight: normal !important;
-        right: 16px !important;
+        right: 20px !important;
+        width: 36px !important;
+        text-align: center !important;
         writing-mode: vertical-rl !important;
         text-orientation: upright !important;
         letter-spacing: 1px !important;
@@ -137,13 +139,13 @@ export const SubsidyChatbot = () => {
       }
 
       #dify-chatbot-label-1 {
-        top: 80px !important;
-        height: 150px !important;
+        top: 40px !important;
+        height: 130px !important;
       }
 
       #dify-chatbot-label-2 {
-        top: 300px !important;
-        height: 150px !important;
+        top: 240px !important;
+        height: 130px !important;
       }
 
       #dify-chatbot-bubble-window {
@@ -172,7 +174,7 @@ export const SubsidyChatbot = () => {
     const button1 = document.createElement('button');
     button1.id = 'dify-chatbot-bubble-button-1';
     button1.className = 'dify-chatbot-bubble-button';
-    button1.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>';
+    button1.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>';
     button1.onclick = function() {
       console.log("省力化投資補助金 chatbot button clicked");
       // クリックされたときにDifyのボタンをクリックする
@@ -199,7 +201,7 @@ export const SubsidyChatbot = () => {
     const button2 = document.createElement('button');
     button2.id = 'dify-chatbot-bubble-button-2';
     button2.className = 'dify-chatbot-bubble-button';
-    button2.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>';
+    button2.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>';
     button2.onclick = function() {
       console.log("小規模持続化補助金 chatbot button clicked");
       // 現状では同じDifyボタンをクリックするが、将来的に別のチャットサービスを使用する可能性もある
@@ -283,3 +285,4 @@ export const SubsidyChatbot = () => {
 
   return null;
 };
+

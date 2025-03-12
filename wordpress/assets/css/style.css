@@ -496,3 +496,19 @@ body {
     text-orientation: upright;
     white-space: nowrap;
 }
+
+/* チャットボットラベルとボタンのスタイル */
+.chatbot-label {
+    position: fixed;
+    z-index: 2147483647;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 8px 6px;
+    width: 36px;
+    text-align: center;
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    letter-spacing: 1px;
+    right: 20px;
+}
