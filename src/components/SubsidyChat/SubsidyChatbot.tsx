@@ -6,6 +6,8 @@ import { useEffect } from "react";
  */
 export const SubsidyChatbot = () => {
   useEffect(() => {
+    // Difyのチャットボットを初期化する処理
+
     // 既に存在する場合は追加しない
     if (document.getElementById('dify-chat-config')) {
       return;
@@ -41,6 +43,14 @@ export const SubsidyChatbot = () => {
         visibility: visible !important;
         opacity: 1 !important;
         position: fixed !important;
+        width: 48px !important;
+        height: 48px !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border-radius: 50% !important;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2) !important;
+        cursor: pointer !important;
+        border: none !important;
       }
       #dify-chatbot-bubble-window {
         width: 24rem !important;
@@ -50,6 +60,11 @@ export const SubsidyChatbot = () => {
         bottom: 2rem !important;
         right: 1rem !important;
         z-index: 99995 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        border-radius: 0.5rem !important;
+        overflow: hidden !important;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
       }
       @media (max-width: 640px) {
         #dify-chatbot-bubble-window {
@@ -71,8 +86,18 @@ export const SubsidyChatbot = () => {
     `;
     document.body.appendChild(label);
 
+    // チャットボットの表示状態を確認するインターバル
+    const checkInterval = setInterval(() => {
+      const chatButton = document.getElementById('dify-chatbot-bubble-button');
+      if (!chatButton) {
+        // ボタンが存在しない場合、スクリプトを再読み込み
+        document.body.appendChild(mainScript.cloneNode(true));
+      }
+    }, 5000);
+
     // クリーンアップ関数
     return () => {
+      clearInterval(checkInterval);
       document.getElementById('dify-chat-config')?.remove();
       document.getElementById('yXBz3rzpDBhMgYcB')?.remove();
       document.getElementById('dify-chat-styles')?.remove();
