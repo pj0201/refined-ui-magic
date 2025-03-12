@@ -4,6 +4,7 @@ import { ConsultingSection } from "@/components/sections/ConsultingSection";
 import { CompanyProfileSection } from "@/components/sections/CompanyProfileSection";
 import { SupportAreasSection } from "@/components/sections/SupportAreasSection";
 import { BusinessPlansSection } from "@/components/sections/BusinessPlansSection";
+import { TopicSection } from "@/components/sections/TopicSection";
 import { SubsidyChatbot } from "@/components/SubsidyChat/SubsidyChatbot";
 import { Helmet } from 'react-helmet';
 
@@ -16,6 +17,7 @@ const Index = () => {
       </Helmet>
       
       <HeroSection />
+      <TopicSection />
       <ConsultingSection />
       <SupportAreasSection />
       <BusinessPlansSection />
@@ -25,7 +27,6 @@ const Index = () => {
         <p>&copy; {new Date().getFullYear()} PLANNINGJOY株式会社</p>
       </footer>
 
-      {/* 軽量化したチャットボット */}
       <SubsidyChatbot />
     </div>
   );

@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import './index.css';
 
-// シンプルなマウントロジック - StrictModeを無効化
+// シンプルなマウントロジック
 const rootElement = document.getElementById('root');
   
 if (!rootElement) {

@@ -2,8 +2,7 @@
 import { useEffect } from "react";
 
 /**
- * 省力化投資補助金チャットボットコンポーネント
- * 軽量化バージョン - DOMに直接スクリプトを追加
+ * 補助金チャットボットコンポーネント - 軽量化バージョン
  */
 export const SubsidyChatbot = () => {
   useEffect(() => {
@@ -17,8 +16,7 @@ export const SubsidyChatbot = () => {
     configScript.id = 'dify-chat-config';
     configScript.textContent = `
       window.difyChatbotConfig = { 
-        token: 'yXBz3rzpDBhMgYcB',
-        containerID: 'dify-chatbot-container'
+        token: 'yXBz3rzpDBhMgYcB'
       };
     `;
     document.head.appendChild(configScript);
@@ -27,12 +25,8 @@ export const SubsidyChatbot = () => {
     const mainScript = document.createElement('script');
     mainScript.id = 'yXBz3rzpDBhMgYcB';
     mainScript.src = 'https://udify.app/embed.min.js';
+    mainScript.defer = true;
     document.body.appendChild(mainScript);
-
-    // コンテナを作成
-    const container = document.createElement('div');
-    container.id = 'dify-chatbot-container';
-    document.body.appendChild(container);
 
     // スタイルを追加
     const style = document.createElement('style');
@@ -61,7 +55,7 @@ export const SubsidyChatbot = () => {
     `;
     document.head.appendChild(style);
 
-    // 簡易ラベルを追加
+    // ラベルを追加
     const label = document.createElement('div');
     label.innerHTML = `
       <div style="position: fixed; bottom: 12rem; right: 1rem; background-color: rgba(255,255,255,0.9); padding: 0.375rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); z-index: 99994; display: flex; flex-direction: column; align-items: center; text-align: center; border: 1px solid rgba(226,232,240,0.8);">
@@ -76,7 +70,6 @@ export const SubsidyChatbot = () => {
       document.getElementById('dify-chat-config')?.remove();
       document.getElementById('yXBz3rzpDBhMgYcB')?.remove();
       document.getElementById('dify-chat-styles')?.remove();
-      document.getElementById('dify-chatbot-container')?.remove();
       label.remove();
     };
   }, []);
