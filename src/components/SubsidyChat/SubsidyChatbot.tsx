@@ -37,6 +37,10 @@ export const SubsidyChatbot = () => {
         bottom: 8rem !important;
         right: 1rem !important;
         z-index: 99995 !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: fixed !important;
       }
       #dify-chatbot-bubble-window {
         width: 24rem !important;
@@ -45,6 +49,7 @@ export const SubsidyChatbot = () => {
         max-width: calc(100vw - 32px) !important;
         bottom: 2rem !important;
         right: 1rem !important;
+        z-index: 99995 !important;
       }
       @media (max-width: 640px) {
         #dify-chatbot-bubble-window {
@@ -57,6 +62,7 @@ export const SubsidyChatbot = () => {
 
     // ラベルを追加
     const label = document.createElement('div');
+    label.id = 'dify-chatbot-label';
     label.innerHTML = `
       <div style="position: fixed; bottom: 12rem; right: 1rem; background-color: rgba(255,255,255,0.9); padding: 0.375rem 0.75rem; border-radius: 9999px; font-size: 0.75rem; box-shadow: 0 1px 3px rgba(0,0,0,0.1); z-index: 99994; display: flex; flex-direction: column; align-items: center; text-align: center; border: 1px solid rgba(226,232,240,0.8);">
         <span>小規模持続化補助金</span>
@@ -70,7 +76,7 @@ export const SubsidyChatbot = () => {
       document.getElementById('dify-chat-config')?.remove();
       document.getElementById('yXBz3rzpDBhMgYcB')?.remove();
       document.getElementById('dify-chat-styles')?.remove();
-      label.remove();
+      document.getElementById('dify-chatbot-label')?.remove();
     };
   }, []);
 
