@@ -22,11 +22,11 @@ export const getChatbotStyles = (): string => `
   }
 
   #dify-chatbot-bubble-button-1 {
-    top: 290px !important;
+    top: 260px !important;
   }
 
   #dify-chatbot-bubble-button-2 {
-    top: 580px !important;
+    top: 500px !important;
   }
 
   .dify-chatbot-label {
@@ -44,19 +44,19 @@ export const getChatbotStyles = (): string => `
     line-height: 1.8 !important;
     white-space: nowrap !important;
     right: 20px !important;
-    z-index: 2147483647 !important;
+    z-index: 2147483646 !important;
     color: #000000 !important;
     font-weight: normal !important;
   }
 
   #dify-chatbot-label-1 {
     top: 40px !important;
-    height: 200px !important;
+    height: 180px !important;
   }
 
   #dify-chatbot-label-2 {
-    top: 330px !important;
-    height: 200px !important;
+    top: 300px !important;
+    height: 180px !important;
   }
 
   #dify-chatbot-bubble-window {
