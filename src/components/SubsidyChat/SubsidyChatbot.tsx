@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef } from "react";
 
 /**
@@ -119,23 +118,21 @@ export const SubsidyChatbot = () => {
       .dify-chatbot-label {
         position: fixed !important;
         background-color: white !important;
-        padding: 8px 6px !important;
         border-radius: 8px !important;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-        z-index: 2147483647 !important; /* 最大値 */
-        font-size: 14px !important;
-        display: block !important;
-        opacity: 1 !important;
-        visibility: visible !important;
-        color: #000000 !important;
-        font-weight: normal !important;
-        right: 20px !important;
-        width: 36px !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+        padding: 8px 6px !important;
+        width: 28px !important;
+        font-size: 13px !important;
         text-align: center !important;
         writing-mode: vertical-rl !important;
         text-orientation: upright !important;
-        letter-spacing: 1px !important;
-        line-height: 1.2 !important;
+        letter-spacing: 0.5px !important;
+        line-height: 1 !important;
+        white-space: nowrap !important;
+        right: 20px !important;
+        z-index: 2147483647 !important;
+        color: #000000 !important;
+        font-weight: normal !important;
       }
 
       #dify-chatbot-label-1 {
