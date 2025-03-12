@@ -28,7 +28,7 @@ export const setupChatButton = (): void => {
       display: block !important;
       visibility: visible !important;
       opacity: 1 !important;
-      z-index: 9995 !important;
+      z-index: 99995 !important;
       position: fixed !important;
       bottom: 11rem !important;
       right: 1rem !important;
@@ -70,20 +70,24 @@ export const setupChatButton = (): void => {
         }
       } else {
         // チャットウィンドウが見つからない場合は再初期化
-        const setupDifyChat = require('../chatInit').setupDifyChat;
-        
-        setTimeout(() => {
-          setupDifyChat();
+        try {
+          const setupDifyChat = require('../chatInit').setupDifyChat;
           
-          // 少し遅延してウィンドウを表示
           setTimeout(() => {
-            const newWindow = document.getElementById('dify-chatbot-bubble-window');
-            if (newWindow) {
-              newWindow.style.display = 'flex';
-              ensureChatWindowVisibility(newWindow);
-            }
-          }, 500);
-        }, 100);
+            setupDifyChat();
+            
+            // 少し遅延してウィンドウを表示
+            setTimeout(() => {
+              const newWindow = document.getElementById('dify-chatbot-bubble-window');
+              if (newWindow) {
+                newWindow.style.display = 'flex';
+                ensureChatWindowVisibility(newWindow);
+              }
+            }, 500);
+          }, 100);
+        } catch (error) {
+          console.error('Failed to initialize chat window:', error);
+        }
       }
     }, true);
   }

@@ -15,11 +15,13 @@ export const ensureChatWindowVisibility = (chatWindow: HTMLElement): void => {
     position: fixed !important;
     bottom: 5rem !important;
     right: 1rem !important;
-    z-index: 9995 !important;
+    z-index: 99995 !important;
     border-radius: 0.5rem !important;
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
     background-color: white !important;
     overflow: hidden !important;
+    visibility: visible !important;
+    opacity: 1 !important;
   `;
   
   // 画面サイズに応じた調整
@@ -28,7 +30,7 @@ export const ensureChatWindowVisibility = (chatWindow: HTMLElement): void => {
     chatWindow.style.height = '70vh';
   }
   
-  console.log('Chat window visibility ensured');
+  console.log('Chat window visibility ensured with higher z-index');
 };
 
 /**
@@ -44,7 +46,7 @@ export const createCloseButton = (chatWindow: HTMLElement): void => {
       position: absolute !important;
       top: 15px !important;
       right: 15px !important;
-      z-index: 10000 !important;
+      z-index: 100000 !important;
       background: #ffffff !important;
       color: #4a5568 !important;
       border: 1px solid #e2e8f0 !important;
@@ -58,6 +60,8 @@ export const createCloseButton = (chatWindow: HTMLElement): void => {
       cursor: pointer !important;
       padding: 0 !important;
       line-height: 1 !important;
+      visibility: visible !important;
+      opacity: 1 !important;
     `;
     
     // クリックイベントを追加（チャットウィンドウを閉じる）

@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { HelpCircle, X } from "lucide-react";
 import { ChatMessages } from "./ChatMessages";
@@ -25,7 +24,6 @@ export const ChatbotContainer = ({
   style = {},
   className = "",
 }: ChatbotContainerProps) => {
-  // コンポーネントがマウントされた時にログを出力
   useEffect(() => {
     console.log("ChatbotContainer mounted, isOpen:", isOpen);
   }, [isOpen]);
@@ -37,10 +35,12 @@ export const ChatbotContainer = ({
         className={`rounded-full w-12 h-12 shadow-lg bg-blue-600 hover:bg-blue-700 fixed ${className}`}
         style={{ 
           ...style, 
-          zIndex: 9999,
+          zIndex: 99995,
           bottom: style.bottom || '2rem',
           right: style.right || '2rem',
-          position: 'fixed'
+          position: 'fixed',
+          visibility: 'visible',
+          opacity: 1
         }}
       >
         <HelpCircle className="w-5 h-5" />
@@ -58,14 +58,15 @@ export const ChatbotContainer = ({
         maxHeight: '80vh',
         bottom: style.bottom || '2rem', 
         right: style.right || '2rem', 
-        zIndex: 9999,
+        zIndex: 99995,
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',
-        position: 'fixed'
+        position: 'fixed',
+        visibility: 'visible',
+        opacity: 1
       }}
     >
-      {/* ヘッダー */}
       <div className="flex items-center justify-between p-3 border-b bg-white">
         <h3 className="font-bold text-lg">省力化投資補助金相談Bot</h3>
         <Button
@@ -78,14 +79,12 @@ export const ChatbotContainer = ({
         </Button>
       </div>
 
-      {/* メッセージエリア - スクロール可能 */}
       <div className="flex-1 overflow-hidden">
         <div className="h-full overflow-y-auto px-3 py-2">
           <ChatMessages messages={messages} />
         </div>
       </div>
 
-      {/* 入力エリア - 下部に固定 */}
       <div className="border-t bg-white p-3 mt-auto">
         <ChatInput onSendMessage={onSendMessage} isLoading={isLoading} />
       </div>
