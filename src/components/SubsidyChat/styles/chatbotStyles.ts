@@ -37,13 +37,16 @@ export const getChatbotStyles = (): string => `
     writing-mode: vertical-rl !important;
     text-orientation: upright !important;
     letter-spacing: 3px !important;
-    line-height: 1.8 !important;
+    line-height: 1 !important; /* 行間を狭くする */
     white-space: nowrap !important;
     right: 60px !important;
     z-index: 2147483646 !important;
     font-weight: normal !important;
     text-shadow: 0 0 1px rgba(0,0,0,0.2) !important;
     transition: color 0.3s ease !important;
+    height: 36px !important; /* ボタンと同じ高さに */
+    display: flex !important;
+    align-items: center !important;
   }
 
   .dify-chatbot-label:hover {
@@ -51,11 +54,11 @@ export const getChatbotStyles = (): string => `
   }
 
   #dify-chatbot-label-1 {
-    top: 72px !important;
+    top: 80px !important; /* ボタンと完全に同じ高さに */
   }
 
   #dify-chatbot-label-2 {
-    top: 172px !important;
+    top: 180px !important; /* ボタンと完全に同じ高さに */
   }
 
   #dify-chatbot-bubble-window {
