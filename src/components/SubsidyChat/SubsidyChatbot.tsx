@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useRef } from "react";
 
 /**
@@ -124,13 +123,13 @@ export const SubsidyChatbot = () => {
         border-radius: 8px !important;
         box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
         padding: 8px 6px !important;
-        width: 28px !important;
-        font-size: 13px !important;
+        width: 40px !important;
+        font-size: 14px !important;
         text-align: center !important;
         writing-mode: vertical-rl !important;
         text-orientation: upright !important;
-        letter-spacing: 0.5px !important;
-        line-height: 1 !important;
+        letter-spacing: 1px !important;
+        line-height: 1.2 !important;
         white-space: nowrap !important;
         right: 20px !important;
         z-index: 2147483647 !important;
@@ -146,36 +145,6 @@ export const SubsidyChatbot = () => {
       #dify-chatbot-label-2 {
         top: 240px !important;
         height: 130px !important;
-      }
-
-      .dify-chatbot-sublabel {
-        position: fixed !important;
-        background-color: white !important;
-        border-radius: 8px !important;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
-        padding: 4px 2px !important;
-        width: 20px !important;
-        font-size: 10px !important;
-        text-align: center !important;
-        writing-mode: vertical-rl !important;
-        text-orientation: upright !important;
-        letter-spacing: 0.5px !important;
-        line-height: 1 !important;
-        white-space: nowrap !important;
-        right: 55px !important;
-        z-index: 2147483647 !important;
-        color: #666666 !important;
-        font-weight: normal !important;
-      }
-
-      #dify-chatbot-sublabel-1 {
-        top: 60px !important;
-        height: 90px !important;
-      }
-
-      #dify-chatbot-sublabel-2 {
-        top: 260px !important;
-        height: 90px !important;
       }
 
       #dify-chatbot-bubble-window {
@@ -199,13 +168,6 @@ export const SubsidyChatbot = () => {
     label1.className = 'dify-chatbot-label';
     label1.textContent = '省力化投資補助金の質問はコチラ';
     document.body.appendChild(label1);
-
-    // 1つ目のサブラベルは削除（メインラベルに統合）
-    // const sublabel1 = document.createElement('div');
-    // sublabel1.id = 'dify-chatbot-sublabel-1';
-    // sublabel1.className = 'dify-chatbot-sublabel';
-    // sublabel1.textContent = '補助金の質問はコチラ';
-    // document.body.appendChild(sublabel1);
 
     // 1つ目のチャットボタン（省力化投資補助金）
     const button1 = document.createElement('button');
@@ -233,13 +195,6 @@ export const SubsidyChatbot = () => {
     label2.className = 'dify-chatbot-label';
     label2.textContent = '小規模持続化補助金の質問はコチラ';
     document.body.appendChild(label2);
-
-    // 2つ目のサブラベルは削除（メインラベルに統合）
-    // const sublabel2 = document.createElement('div');
-    // sublabel2.id = 'dify-chatbot-sublabel-2';
-    // sublabel2.className = 'dify-chatbot-sublabel';
-    // sublabel2.textContent = '補助金の質問はコチラ';
-    // document.body.appendChild(sublabel2);
 
     // 2つ目のチャットボタン（小規模持続化補助金）
     const button2 = document.createElement('button');
