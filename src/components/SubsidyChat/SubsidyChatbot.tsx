@@ -1,3 +1,4 @@
+
 import { useEffect, useState, useRef } from "react";
 
 /**
@@ -192,19 +193,19 @@ export const SubsidyChatbot = () => {
     `;
     document.head.appendChild(style);
 
-    // 1つ目のラベル（省力化投資補助金）
+    // 1つ目のラベル（省力化投資補助金の質問はコチラ）
     const label1 = document.createElement('div');
     label1.id = 'dify-chatbot-label-1';
     label1.className = 'dify-chatbot-label';
-    label1.textContent = '省力化投資補助金';
+    label1.textContent = '省力化投資補助金の質問はコチラ';
     document.body.appendChild(label1);
 
-    // 1つ目のサブラベル（補助金の質問はコチラ）
-    const sublabel1 = document.createElement('div');
-    sublabel1.id = 'dify-chatbot-sublabel-1';
-    sublabel1.className = 'dify-chatbot-sublabel';
-    sublabel1.textContent = '補助金の質問はコチラ';
-    document.body.appendChild(sublabel1);
+    // 1つ目のサブラベルは削除（メインラベルに統合）
+    // const sublabel1 = document.createElement('div');
+    // sublabel1.id = 'dify-chatbot-sublabel-1';
+    // sublabel1.className = 'dify-chatbot-sublabel';
+    // sublabel1.textContent = '補助金の質問はコチラ';
+    // document.body.appendChild(sublabel1);
 
     // 1つ目のチャットボタン（省力化投資補助金）
     const button1 = document.createElement('button');
@@ -226,19 +227,19 @@ export const SubsidyChatbot = () => {
     };
     document.body.appendChild(button1);
 
-    // 2つ目のラベル（小規模持続化補助金）
+    // 2つ目のラベル（小規模持続化補助金の質問はコチラ）
     const label2 = document.createElement('div');
     label2.id = 'dify-chatbot-label-2';
     label2.className = 'dify-chatbot-label';
-    label2.textContent = '小規模持続化補助金';
+    label2.textContent = '小規模持続化補助金の質問はコチラ';
     document.body.appendChild(label2);
 
-    // 2つ目のサブラベル（補助金の質問はコチラ）
-    const sublabel2 = document.createElement('div');
-    sublabel2.id = 'dify-chatbot-sublabel-2';
-    sublabel2.className = 'dify-chatbot-sublabel';
-    sublabel2.textContent = '補助金の質問はコチラ';
-    document.body.appendChild(sublabel2);
+    // 2つ目のサブラベルは削除（メインラベルに統合）
+    // const sublabel2 = document.createElement('div');
+    // sublabel2.id = 'dify-chatbot-sublabel-2';
+    // sublabel2.className = 'dify-chatbot-sublabel';
+    // sublabel2.textContent = '補助金の質問はコチラ';
+    // document.body.appendChild(sublabel2);
 
     // 2つ目のチャットボタン（小規模持続化補助金）
     const button2 = document.createElement('button');
@@ -273,12 +274,10 @@ export const SubsidyChatbot = () => {
     checkIntervalRef.current = window.setInterval(() => {
       const button1 = document.getElementById('dify-chatbot-bubble-button-1');
       const label1 = document.getElementById('dify-chatbot-label-1');
-      const sublabel1 = document.getElementById('dify-chatbot-sublabel-1');
       const button2 = document.getElementById('dify-chatbot-bubble-button-2');
       const label2 = document.getElementById('dify-chatbot-label-2');
-      const sublabel2 = document.getElementById('dify-chatbot-sublabel-2');
 
-      if (!button1 || !label1 || !sublabel1 || !button2 || !label2 || !sublabel2) {
+      if (!button1 || !label1 || !button2 || !label2) {
         console.log("Chatbot elements missing, restoring...");
         addChatbotElements();
       }
@@ -312,12 +311,10 @@ export const SubsidyChatbot = () => {
       console.log("Window focus detected, checking elements");
       const button1 = document.getElementById('dify-chatbot-bubble-button-1');
       const label1 = document.getElementById('dify-chatbot-label-1');
-      const sublabel1 = document.getElementById('dify-chatbot-sublabel-1');
       const button2 = document.getElementById('dify-chatbot-bubble-button-2');
       const label2 = document.getElementById('dify-chatbot-label-2');
-      const sublabel2 = document.getElementById('dify-chatbot-sublabel-2');
       
-      if (!button1 || !label1 || !sublabel1 || !button2 || !label2 || !sublabel2) {
+      if (!button1 || !label1 || !button2 || !label2) {
         console.log("Elements missing after focus, restoring");
         addChatbotElements();
       }
