@@ -1,6 +1,6 @@
 
 import { scriptExists, createScript, createStyle, createElement } from "../utils/scriptManager";
-import { difyChatStyles } from "../styles/difyChatStyles";
+import { difyChatStyles, smallSubsidyLabelHtml } from "../styles/difyChatStyles";
 import { setupDomObserver, performInitialElementsCheck } from "../utils/domObserver";
 
 /**
@@ -8,6 +8,12 @@ import { setupDomObserver, performInitialElementsCheck } from "../utils/domObser
  */
 export const applyDifyChatStyles = (): MutationObserver => {
   console.log('Applying Dify chat styles');
+  
+  // 小規模持続化補助金ラベルを追加
+  const labelElement = document.createElement('div');
+  labelElement.id = 'dify-chat-labels';
+  labelElement.innerHTML = smallSubsidyLabelHtml;
+  document.body.appendChild(labelElement);
   
   // DOM変更を監視するObserverを設定
   const observer = setupDomObserver();
@@ -31,6 +37,12 @@ export const setupDifyChat = (): void => {
   console.log('Setting up Dify chat...');
 
   try {
+    // 既存のラベルを削除（重複を防ぐため）
+    const existingLabels = document.getElementById('dify-chat-labels');
+    if (existingLabels) {
+      existingLabels.remove();
+    }
+    
     // 設定スクリプトの追加
     const difyChatbotConfig = createScript('dify-chat-config', undefined, `
       window.difyChatbotConfig = { 

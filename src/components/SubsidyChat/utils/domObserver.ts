@@ -2,28 +2,55 @@
 import { closeButtonSvg } from "../styles/difyChatStyles";
 
 /**
+ * チャットバブルボタンのクリックイベントを管理
+ */
+const setupChatButtonInteractions = (): void => {
+  // チャットボタンを取得
+  const chatButton = document.getElementById('dify-chatbot-bubble-button');
+  
+  // 既存のイベントを削除し、新しいイベントリスナーを追加
+  if (chatButton) {
+    // すべてのイベントリスナーをクリア（新しいボタンに置き換え）
+    const newButton = chatButton.cloneNode(true);
+    chatButton.parentNode?.replaceChild(newButton, chatButton);
+    
+    // 新しいクリックイベントを追加
+    newButton.addEventListener('click', () => {
+      console.log('Chat button clicked, showing window');
+      const chatWindow = document.getElementById('dify-chatbot-bubble-window');
+      if (chatWindow) {
+        chatWindow.style.display = 'flex';
+        chatWindow.style.visibility = 'visible';
+        chatWindow.style.opacity = '1';
+      }
+    });
+  }
+};
+
+/**
  * チャットボットウィンドウに閉じるボタンを追加
  */
 const addCloseButtonToWindow = (chatWindow: HTMLElement): void => {
   // まず既存の閉じるボタンを探す
   let closeButton = chatWindow.querySelector('.dify-chatbot-window-close-btn') as HTMLElement;
-  let headerElement = chatWindow.querySelector('.chatbot-header') as HTMLElement;
+  let headerElement = chatWindow.querySelector('.dify-chatbot-window-header') as HTMLElement;
   
-  // ヘッダー要素がない場合は作成する
+  // ヘッダー要素がない場合は適切な要素を探す
   if (!headerElement) {
-    // チャットボットのウィンドウヘッダーを探す (青いバー)
-    const blueHeader = chatWindow.querySelector('.dify-chatbot-window-header') as HTMLElement;
-    if (blueHeader) {
-      headerElement = blueHeader;
-    } else {
-      // ヘッダーがない場合は、一番上の要素を探す
-      const firstChild = chatWindow.firstElementChild as HTMLElement;
-      if (firstChild) {
-        headerElement = firstChild;
-      } else {
-        // どうしてもヘッダーがない場合はチャットウィンドウ自体を使用
-        headerElement = chatWindow;
+    const possibleHeaders = chatWindow.querySelectorAll('div');
+    for (let i = 0; i < possibleHeaders.length; i++) {
+      const style = window.getComputedStyle(possibleHeaders[i]);
+      if (style.backgroundColor === 'rgb(28, 100, 242)' || 
+          style.backgroundColor === '#1C64F2' ||
+          possibleHeaders[i].classList.contains('dify-chatbot-window-header')) {
+        headerElement = possibleHeaders[i] as HTMLElement;
+        break;
       }
+    }
+    
+    // それでもヘッダーがない場合は最初の子要素をヘッダーとして使用
+    if (!headerElement && chatWindow.firstElementChild) {
+      headerElement = chatWindow.firstElementChild as HTMLElement;
     }
   }
   
@@ -44,8 +71,10 @@ const addCloseButtonToWindow = (chatWindow: HTMLElement): void => {
     closeButton.style.justifyContent = 'center';
     closeButton.style.width = '24px';
     closeButton.style.height = '24px';
+    closeButton.style.visibility = 'visible';
+    closeButton.style.opacity = '1';
     
-    // 最初に青いヘッダーに追加を試みる
+    // ヘッダーに閉じるボタンを追加
     if (headerElement) {
       headerElement.appendChild(closeButton);
     } else {
@@ -70,7 +99,7 @@ const addCloseButtonToWindow = (chatWindow: HTMLElement): void => {
     chatWindow.style.visibility = 'hidden';
     chatWindow.style.opacity = '0';
     
-    // チャットボタンを探して状態を更新
+    // チャットボタンを表示
     const chatButton = document.getElementById('dify-chatbot-bubble-button');
     if (chatButton) {
       chatButton.style.display = 'block';
@@ -93,30 +122,53 @@ const addCloseButtonToWindow = (chatWindow: HTMLElement): void => {
 };
 
 /**
+ * チャットウィンドウのスタイルを最適化
+ */
+const optimizeChatWindowStyles = (chatWindow: HTMLElement): void => {
+  // ウィンドウ自体のスタイル
+  chatWindow.style.width = '24rem';
+  chatWindow.style.height = '40rem';
+  chatWindow.style.maxHeight = '80vh';
+  chatWindow.style.maxWidth = 'calc(100vw - 32px)';
+  chatWindow.style.bottom = '2rem';
+  chatWindow.style.right = '1rem';
+  chatWindow.style.transform = 'none';
+  chatWindow.style.marginBottom = '0';
+  chatWindow.style.zIndex = '99995';
+  chatWindow.style.display = 'flex';
+  chatWindow.style.flexDirection = 'column';
+  chatWindow.style.overflow = 'hidden';
+  chatWindow.style.borderRadius = '0.5rem';
+  
+  // モバイル対応
+  if (window.innerWidth <= 640) {
+    chatWindow.style.width = 'calc(100vw - 2rem)';
+    chatWindow.style.height = '70vh';
+    chatWindow.style.maxHeight = '70vh';
+  }
+  
+  // 入力エリアの閉じるボタンを非表示（混乱を避けるため）
+  const footerCloseButton = chatWindow.querySelector('.dify-chatbot-window-footer button[aria-label="Close"]');
+  if (footerCloseButton) {
+    (footerCloseButton as HTMLElement).style.display = 'none';
+  }
+};
+
+/**
  * DOM変更を監視するObserverを設定
  */
 export const setupDomObserver = (): MutationObserver => {
   console.log('Setting up DOM observer for Dify chat');
   
   const observer = new MutationObserver((mutations) => {
+    // チャットボタンのインタラクションを設定
+    setupChatButtonInteractions();
+    
     // 小規模持続化補助金のチャットウィンドウを探す
     const chatWindow = document.getElementById('dify-chatbot-bubble-window');
     if (chatWindow) {
       addCloseButtonToWindow(chatWindow);
-      
-      // 問題解決のため、inputエリアの横にある×ボタンも監視して無効化
-      const inputAreaCloseButton = chatWindow.querySelector('.dify-chatbot-window-footer button[aria-label="Close"]');
-      if (inputAreaCloseButton) {
-        inputAreaCloseButton.remove(); // このボタンは混乱を招くので削除
-      }
-    }
-
-    // チャットボタンの表示を確保
-    const chatButton = document.getElementById('dify-chatbot-bubble-button');
-    if (chatButton) {
-      chatButton.style.display = 'block';
-      chatButton.style.visibility = 'visible';
-      chatButton.style.opacity = '1';
+      optimizeChatWindowStyles(chatWindow);
     }
   });
 
@@ -139,16 +191,18 @@ export const performInitialElementsCheck = (): void => {
     const chatWindow = document.getElementById('dify-chatbot-bubble-window');
     const chatButton = document.getElementById('dify-chatbot-bubble-button');
     
-    // チャットボタンの表示を確認
+    // チャットボタンの表示とインタラクションを設定
     if (chatButton) {
       chatButton.style.display = 'block';
       chatButton.style.visibility = 'visible';
       chatButton.style.opacity = '1';
+      setupChatButtonInteractions();
     }
 
-    // チャットウィンドウの閉じるボタンを確認
+    // チャットウィンドウの閉じるボタンとスタイルを確認
     if (chatWindow) {
       addCloseButtonToWindow(chatWindow);
+      optimizeChatWindowStyles(chatWindow);
     }
   };
 
@@ -160,5 +214,10 @@ export const performInitialElementsCheck = (): void => {
   
   // さらに遅延して再確認（DOMがさらに更新される可能性があるため）
   setTimeout(checkElements, 1500);
+  
+  // ページが完全に読み込まれた後にも確認
+  window.addEventListener('load', () => {
+    setTimeout(checkElements, 100);
+    setTimeout(checkElements, 1000);
+  });
 };
-
