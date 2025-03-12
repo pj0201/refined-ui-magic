@@ -1,3 +1,4 @@
+
 /**
  * チャットボットのスタイル定義
  */
@@ -21,11 +22,11 @@ export const getChatbotStyles = (): string => `
   }
 
   #dify-chatbot-bubble-button-1 {
-    top: 280px !important;
+    top: 312px !important;
   }
 
   #dify-chatbot-bubble-button-2 {
-    top: 580px !important;
+    top: 640px !important;
   }
 
   .dify-chatbot-label {
@@ -54,7 +55,7 @@ export const getChatbotStyles = (): string => `
   }
 
   #dify-chatbot-label-2 {
-    top: 340px !important;
+    top: 368px !important;
     height: 220px !important;
   }
 

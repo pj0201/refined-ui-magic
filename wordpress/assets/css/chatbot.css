@@ -1,3 +1,4 @@
+
 /* Chatbot Styles */
 .dify-chatbot-bubble-button {
     position: fixed !important;
@@ -18,11 +19,11 @@
 }
 
 #dify-chatbot-bubble-button-1 {
-    top: 280px !important;
+    top: 312px !important;
 }
 
 #dify-chatbot-bubble-button-2 {
-    top: 580px !important;
+    top: 640px !important;
 }
 
 .dify-chatbot-label {
@@ -51,7 +52,7 @@
 }
 
 #dify-chatbot-label-2 {
-    top: 340px !important;
+    top: 368px !important;
     height: 220px !important;
 }
 
