@@ -32,29 +32,28 @@
     border-radius: 8px !important;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
     padding: 8px 12px !important;
-    width: auto !important;
-    min-width: 160px !important;
-    max-width: 200px !important;
+    width: 48px !important;
     font-size: 12px !important;
     text-align: center !important;
-    white-space: normal !important;
+    writing-mode: vertical-rl !important;
+    text-orientation: upright !important;
+    letter-spacing: 1px !important;
+    line-height: 1.6 !important;
+    white-space: nowrap !important;
     right: 70px !important;
     z-index: 2147483647 !important;
     color: #000000 !important;
     font-weight: normal !important;
-    writing-mode: horizontal-tb !important;
-    text-orientation: mixed !important;
-    line-height: 1.4 !important;
 }
 
 #dify-chatbot-label-1 {
-    top: 240px !important;
-    transform: translateY(-50%) !important;
+    top: 40px !important;
+    height: 180px !important;
 }
 
 #dify-chatbot-label-2 {
-    top: 480px !important;
-    transform: translateY(-50%) !important;
+    top: 280px !important;
+    height: 180px !important;
 }
 
 #dify-chatbot-bubble-window {
