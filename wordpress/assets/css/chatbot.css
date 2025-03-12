@@ -32,16 +32,16 @@
     font-size: 13px !important;
     text-align: center !important;
     writing-mode: vertical-rl !important;
-    text-orientation: upright !important;
-    letter-spacing: 3px !important;
-    line-height: 1 !important; /* 行間を狭くする */
+    text-orientation: mixed !important;
+    letter-spacing: 1px !important;
+    line-height: 1 !important;
     white-space: nowrap !important;
     right: 60px !important;
     z-index: 2147483646 !important;
     font-weight: normal !important;
     text-shadow: 0 0 1px rgba(0,0,0,0.2) !important;
     transition: color 0.3s ease !important;
-    height: 36px !important; /* ボタンと同じ高さに */
+    height: 36px !important;
     display: flex !important;
     align-items: center !important;
 }
@@ -51,11 +51,11 @@
 }
 
 #dify-chatbot-label-1 {
-    top: 80px !important; /* ボタンと完全に同じ高さに */
+    top: 80px !important;
 }
 
 #dify-chatbot-label-2 {
-    top: 180px !important; /* ボタンと完全に同じ高さに */
+    top: 180px !important;
 }
 
 #dify-chatbot-bubble-window {
