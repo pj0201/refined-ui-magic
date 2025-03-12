@@ -15,6 +15,18 @@ export const applyDifyChatStyles = (): MutationObserver => {
   // 初期チェックを実行
   performInitialElementsCheck();
 
+  // 追加のチェックを定期的に実行（要素が遅れて読み込まれる場合に対応）
+  setInterval(() => {
+    const chatWindow = document.getElementById('dify-chatbot-bubble-window');
+    if (chatWindow) {
+      const closeButton = chatWindow.querySelector('.dify-chatbot-window-close-btn');
+      if (!closeButton) {
+        console.log('Periodic check: No close button found, running elements check');
+        performInitialElementsCheck();
+      }
+    }
+  }, 5000);
+
   return observer;
 };
 
