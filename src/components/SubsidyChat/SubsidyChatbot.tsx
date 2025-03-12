@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { DifyConfig } from "./DifyConfig";
 import { ChatbotContainer } from "./ChatbotContainer";
@@ -20,13 +19,10 @@ export const SubsidyChatbot = () => {
 
   // マウント時に一度だけ実行するセットアップ
   useEffect(() => {
-    console.log("SubsidyChatbot component mounted");
-    
-    // 小規模持続化補助金ラベルを確実に作成
+    // 小規模持続化補助金ラベルを作成
     const createSmallSubsidyLabel = () => {
       let label = document.querySelector('.small-subsidy-label');
       if (!label) {
-        console.log("Creating small subsidy label");
         label = document.createElement('div');
         label.className = 'small-subsidy-label chatbot-label';
         label.innerHTML = `
@@ -54,64 +50,11 @@ export const SubsidyChatbot = () => {
       }
     };
     
-    // DOMに直接アクセスしてチャットボタンの表示を確認
-    const checkDifyButton = () => {
-      // チャットボタンがなければ自分で作成
-      let difyButton = document.getElementById('dify-chatbot-bubble-button');
-      if (!difyButton) {
-        console.log("Dify button not found, creating a new one");
-        difyButton = document.createElement('button');
-        difyButton.id = 'dify-chatbot-bubble-button';
-        difyButton.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-          </svg>
-        `;
-        difyButton.onclick = (e) => {
-          e.stopPropagation();
-          console.log("Manual Dify button clicked");
-          const chatWindow = document.getElementById('dify-chatbot-bubble-window');
-          if (chatWindow) {
-            chatWindow.style.display = chatWindow.style.display === 'none' ? 'flex' : 'none';
-          }
-        };
-        document.body.appendChild(difyButton);
-      }
-      
-      if (difyButton) {
-        difyButton.style.cssText = `
-          display: block !important;
-          visibility: visible !important;
-          opacity: 1 !important;
-          z-index: 9995 !important;
-          position: fixed !important;
-          bottom: 11rem !important;
-          right: 1rem !important;
-          width: 48px !important;
-          height: 48px !important;
-          border-radius: 50% !important;
-          background-color: #1C64F2 !important;
-          cursor: pointer !important;
-          color: white !important;
-          display: flex !important;
-          align-items: center !important;
-          justify-content: center !important;
-          border: none !important;
-          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
-        `;
-        console.log("Dify button visibility enforced from SubsidyChatbot");
-      }
-      
-      // ラベルも作成
-      createSmallSubsidyLabel();
-    };
+    // 初期チェックを実行（一度だけ）
+    setTimeout(createSmallSubsidyLabel, 1000);
     
-    // 初期チェックを実行
-    setTimeout(checkDifyButton, 500);
-    setTimeout(checkDifyButton, 2000);
-    
-    // 定期的にチェック
-    const interval = setInterval(checkDifyButton, 5000);
+    // 定期的なチェックを削減（10秒ごとに1回）
+    const interval = setInterval(createSmallSubsidyLabel, 10000);
     
     return () => {
       clearInterval(interval);
@@ -120,7 +63,6 @@ export const SubsidyChatbot = () => {
 
   // チャットボットトグル関数
   const handleToggle = () => {
-    console.log("Toggle chatbot, current state:", isOpen, "changing to:", !isOpen);
     setIsOpen(!isOpen);
   };
 

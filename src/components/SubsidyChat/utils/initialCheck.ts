@@ -7,57 +7,38 @@ import { setupChatButtonEventHandler } from "./chatButtonHandler";
  * 初期状態のチャットボット要素のチェックと修正
  */
 export const performInitialElementsCheck = (): void => {
-  // 初期化直後に確認
+  // 初期化直後に確認（一度だけ実行）
   const initialCheck = () => {
-    const chatWindow = document.getElementById('dify-chatbot-bubble-window');
     const chatButton = document.getElementById('dify-chatbot-bubble-button');
-    
-    // チャットボタンの表示を確認
     if (chatButton) {
-      console.log('Dify chat button found, ensuring visibility');
-      
-      // スタイルの適用
       applyChatButtonStyle(chatButton);
-      
-      // クリックイベントが設定されているか確認
-      if (!chatButton.onclick) {
-        setupChatButtonEventHandler(chatButton);
-      }
-    } else {
-      console.warn('Dify chat button not found during initial check');
+      setupChatButtonEventHandler(chatButton);
     }
 
-    // チャットウィンドウの閉じるボタンを確認
+    const chatWindow = document.getElementById('dify-chatbot-bubble-window');
     if (chatWindow) {
-      console.log('Dify chat window found, adding close button');
       addCloseButtonToWindow(chatWindow);
-      
-      // チャットウィンドウのスタイルを適用
       applyChatWindowStyle(chatWindow);
-    } else {
-      console.warn('Dify chat window not found during initial check');
     }
   };
   
   // 即時実行
   initialCheck();
   
-  // 念のため少し遅延して再度実行
-  setTimeout(initialCheck, 500);
+  // 遅延実行（一度だけ）
   setTimeout(initialCheck, 1000);
   
-  // 確実にボタンが存在するように定期的に確認
+  // より軽量な定期チェック（間隔を広げる）
   setInterval(() => {
-    const chatWindow = document.getElementById('dify-chatbot-bubble-window');
     const chatButton = document.getElementById('dify-chatbot-bubble-button');
+    const chatWindow = document.getElementById('dify-chatbot-bubble-window');
     
-    if (chatButton) {
+    if (chatButton && !chatButton.onclick) {
       applyChatButtonStyle(chatButton);
     }
     
     if (chatWindow && !chatWindow.querySelector('.dify-chatbot-window-close-btn')) {
-      console.log('Reapplying close button');
       addCloseButtonToWindow(chatWindow);
     }
-  }, 1000);
+  }, 3000); // 3秒ごとに変更（元は1秒）
 };

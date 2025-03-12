@@ -13,11 +13,10 @@ export const setupChatButtonEventHandler = (button: HTMLElement): void => {
   const refreshedButton = document.getElementById('dify-chatbot-bubble-button');
   if (!refreshedButton) return;
   
-  // クリックイベントの設定
+  // クリックイベントの設定（シンプル化）
   refreshedButton.addEventListener('click', (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('Dify chat button clicked from observer');
     
     const chatWindow = document.getElementById('dify-chatbot-bubble-window');
     if (chatWindow) {
@@ -27,10 +26,6 @@ export const setupChatButtonEventHandler = (button: HTMLElement): void => {
       if (isHidden) {
         applyChatWindowStyle(chatWindow);
       }
-    } else {
-      console.log('Chat window not found, recreating from observer click handler');
-      // カスタムイベントをディスパッチ
-      document.dispatchEvent(new CustomEvent('recreate-dify-chat'));
     }
   }, true);
 };
