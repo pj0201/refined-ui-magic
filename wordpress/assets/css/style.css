@@ -489,3 +489,10 @@ body {
 .space-y-3 > * + * {
     margin-top: 0.75rem;
 }
+
+/* 縦書きテキスト用のスタイル */
+.vertical-text {
+    writing-mode: vertical-rl;
+    text-orientation: upright;
+    white-space: nowrap;
+}
