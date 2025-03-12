@@ -9,7 +9,7 @@ import { setupDomObserver, performInitialElementsCheck } from "../utils/domObser
 export const applyDifyChatStyles = (): MutationObserver => {
   console.log('Applying Dify chat styles');
   
-  // 省力化投資補助金ラベルを追加
+  // 小規模持続化補助金ラベルを追加
   const labelElement = document.createElement('div');
   labelElement.id = 'dify-chat-labels';
   labelElement.innerHTML = smallSubsidyLabelHtml;
