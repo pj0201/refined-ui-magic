@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+
+import { useState } from "react";
 import { DifyConfig } from "./DifyConfig";
 import { ChatbotContainer } from "./ChatbotContainer";
 import { Message } from "./types";
@@ -17,55 +18,6 @@ export const SubsidyChatbot = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
-  // マウント時に一度だけ実行するセットアップ
-  useEffect(() => {
-    // 小規模持続化補助金ラベルを作成
-    const createSmallSubsidyLabel = () => {
-      let label = document.querySelector('.small-subsidy-label');
-      if (!label) {
-        label = document.createElement('div');
-        label.className = 'small-subsidy-label chatbot-label';
-        label.innerHTML = `
-          <span>小規模持続化補助金</span>
-          <span>の質問はコチラ</span>
-        `;
-        label.setAttribute('style', `
-          position: fixed !important;
-          bottom: 15rem !important;
-          right: 1rem !important;
-          z-index: 1000 !important;
-          background-color: rgba(255, 255, 255, 0.9) !important;
-          padding: 0.375rem 0.75rem !important;
-          border-radius: 9999px !important;
-          font-size: 0.75rem !important;
-          box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06) !important;
-          backdrop-filter: blur(4px) !important;
-          display: flex !important;
-          flex-direction: column !important;
-          align-items: center !important;
-          text-align: center !important;
-          border: 1px solid rgba(226, 232, 240, 0.8) !important;
-        `);
-        document.body.appendChild(label);
-      }
-    };
-    
-    // 初期チェックを実行（一度だけ）
-    setTimeout(createSmallSubsidyLabel, 1000);
-    
-    // 定期的なチェックを削減（10秒ごとに1回）
-    const interval = setInterval(createSmallSubsidyLabel, 10000);
-    
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
-
-  // チャットボットトグル関数
-  const handleToggle = () => {
-    setIsOpen(!isOpen);
-  };
-
   // Styles for positioning chatbots
   const styles: {
     smallSubsidyLabel: CSSProperties;
@@ -77,7 +29,7 @@ export const SubsidyChatbot = () => {
       bottom: "15rem", 
       right: "1rem", 
       zIndex: 1000,
-      position: "fixed"
+      position: "fixed" // Valid Position type
     },
     
     // Investment subsidy chatbot (custom)
@@ -85,13 +37,13 @@ export const SubsidyChatbot = () => {
       bottom: "7rem", 
       right: "1rem", 
       zIndex: 1000,
-      position: "fixed"
+      position: "fixed" // Valid Position type
     }, 
     investmentSubsidyIcon: { 
       bottom: "2rem", 
       right: "1rem", 
-      zIndex: 9999,
-      position: "fixed"
+      zIndex: 1000,
+      position: "fixed" // Valid Position type
     }
   };
 
@@ -144,7 +96,7 @@ export const SubsidyChatbot = () => {
     <div className="fixed bottom-4 right-4 z-50">
       {/* 小規模持続化補助金ラベル */}
       <div 
-        className="fixed z-[9990] bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center"
+        className="fixed z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center"
         style={styles.smallSubsidyLabel}
       >
         <span>小規模持続化補助金</span>
@@ -156,7 +108,7 @@ export const SubsidyChatbot = () => {
       
       {/* 省力化投資補助金ラベル */}
       <div 
-        className="fixed z-[9990] bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center"
+        className="fixed z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center"
         style={styles.investmentSubsidyLabel}
       >
         <span>省力化投資補助金</span>
@@ -168,7 +120,7 @@ export const SubsidyChatbot = () => {
         isOpen={isOpen}
         messages={messages}
         isLoading={isLoading}
-        onToggle={handleToggle}
+        onToggle={() => setIsOpen(!isOpen)}
         onSendMessage={handleSendMessage}
         style={styles.investmentSubsidyIcon}
         className="investment-subsidy-bot"
