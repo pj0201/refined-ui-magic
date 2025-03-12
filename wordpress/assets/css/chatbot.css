@@ -19,20 +19,16 @@
 }
 
 #dify-chatbot-bubble-button-1 {
-    top: 260px !important;
+    top: 80px !important;
 }
 
 #dify-chatbot-bubble-button-2 {
-    top: 500px !important;
+    top: 180px !important;
 }
 
 .dify-chatbot-label {
     position: fixed !important;
-    background-color: white !important;
-    border-radius: 8px !important;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
-    padding: 16px 8px !important;
-    width: 100px !important;
+    color: #22C55E !important;
     font-size: 13px !important;
     text-align: center !important;
     writing-mode: vertical-rl !important;
@@ -40,20 +36,23 @@
     letter-spacing: 3px !important;
     line-height: 1.8 !important;
     white-space: nowrap !important;
-    right: 20px !important;
+    right: 60px !important;
     z-index: 2147483646 !important;
-    color: #000000 !important;
     font-weight: normal !important;
+    text-shadow: 0 0 1px rgba(0,0,0,0.2) !important;
+    transition: color 0.3s ease !important;
+}
+
+.dify-chatbot-label:hover {
+    color: #4ADE80 !important;
 }
 
 #dify-chatbot-label-1 {
-    top: 40px !important;
-    height: 180px !important;
+    top: 72px !important;
 }
 
 #dify-chatbot-label-2 {
-    top: 300px !important;
-    height: 180px !important;
+    top: 172px !important;
 }
 
 #dify-chatbot-bubble-window {
