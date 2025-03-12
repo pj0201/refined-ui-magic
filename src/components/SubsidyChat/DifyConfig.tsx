@@ -1,6 +1,6 @@
 
 import { useEffect } from "react";
-import { setupDifyChat, monitorChatbotState } from "./services/difySetup";
+import { setupDifyChat, monitorChatbotState, setupChatButton, ensureChatWindowVisibility } from "./services/difySetup";
 
 declare global {
   interface Window {
