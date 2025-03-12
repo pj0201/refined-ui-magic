@@ -1,4 +1,3 @@
-
 /**
  * チャットボットのスタイル定義
  */
@@ -22,11 +21,11 @@ export const getChatbotStyles = (): string => `
   }
 
   #dify-chatbot-bubble-button-1 {
-    top: 260px !important;
+    top: 280px !important;
   }
 
   #dify-chatbot-bubble-button-2 {
-    top: 536px !important;
+    top: 580px !important;
   }
 
   .dify-chatbot-label {
@@ -34,14 +33,14 @@ export const getChatbotStyles = (): string => `
     background-color: white !important;
     border-radius: 8px !important;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
-    padding: 12px 8px !important;
-    width: 90px !important;
-    font-size: 12px !important;
+    padding: 16px 8px !important;
+    width: 100px !important;
+    font-size: 13px !important;
     text-align: center !important;
     writing-mode: vertical-rl !important;
     text-orientation: upright !important;
-    letter-spacing: 2px !important;
-    line-height: 1.6 !important;
+    letter-spacing: 3px !important;
+    line-height: 1.8 !important;
     white-space: nowrap !important;
     right: 20px !important;
     z-index: 2147483647 !important;
@@ -51,12 +50,12 @@ export const getChatbotStyles = (): string => `
 
   #dify-chatbot-label-1 {
     top: 40px !important;
-    height: 200px !important;
+    height: 220px !important;
   }
 
   #dify-chatbot-label-2 {
-    top: 316px !important;
-    height: 200px !important;
+    top: 340px !important;
+    height: 220px !important;
   }
 
   #dify-chatbot-bubble-window {
