@@ -46,6 +46,9 @@ export const DifyConfig = () => {
       const container = document.getElementById('dify-chatbot-container');
       if (container) container.remove();
       
+      const labels = document.getElementById('dify-chat-labels');
+      if (labels) labels.remove();
+      
       console.log('Dify chat cleaned up');
     };
   }, []);

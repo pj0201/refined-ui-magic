@@ -11,7 +11,7 @@ export const SubsidyChatbot = () => {
       {/* Difyチャットボット設定 */}
       <DifyConfig />
       
-      {/* 小規模持続化補助金と省力化投資補助金のラベルは
+      {/* 省力化投資補助金のラベルは
           DifyConfig内で適用されるCSSで表示されます */}
     </div>
   );
