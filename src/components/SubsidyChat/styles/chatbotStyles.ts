@@ -22,11 +22,11 @@ export const getChatbotStyles = (): string => `
   }
 
   #dify-chatbot-bubble-button-1 {
-    top: 312px !important;
+    top: 290px !important;
   }
 
   #dify-chatbot-bubble-button-2 {
-    top: 640px !important;
+    top: 580px !important;
   }
 
   .dify-chatbot-label {
@@ -51,12 +51,12 @@ export const getChatbotStyles = (): string => `
 
   #dify-chatbot-label-1 {
     top: 40px !important;
-    height: 220px !important;
+    height: 200px !important;
   }
 
   #dify-chatbot-label-2 {
-    top: 368px !important;
-    height: 220px !important;
+    top: 330px !important;
+    height: 200px !important;
   }
 
   #dify-chatbot-bubble-window {
