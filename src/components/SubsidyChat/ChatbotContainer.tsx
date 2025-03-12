@@ -25,7 +25,7 @@ export const ChatbotContainer = ({
   style = {},
   className = "",
 }: ChatbotContainerProps) => {
-  // コンポーネントがマウントされた時にボタンの可視性を確保
+  // コンポーネントがマウントされた時にログを出力
   useEffect(() => {
     console.log("ChatbotContainer mounted, isOpen:", isOpen);
   }, [isOpen]);
@@ -37,7 +37,7 @@ export const ChatbotContainer = ({
         className={`rounded-full w-12 h-12 shadow-lg bg-blue-600 hover:bg-blue-700 fixed ${className}`}
         style={{ 
           ...style, 
-          zIndex: 1000,
+          zIndex: 9999,
           bottom: style.bottom || '2rem',
           right: style.right || '2rem',
           position: 'fixed'
@@ -58,7 +58,7 @@ export const ChatbotContainer = ({
         maxHeight: '80vh',
         bottom: style.bottom || '2rem', 
         right: style.right || '2rem', 
-        zIndex: 1001,
+        zIndex: 9999,
         display: 'flex',
         flexDirection: 'column',
         overflow: 'hidden',

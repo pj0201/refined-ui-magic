@@ -15,7 +15,7 @@ const addCloseButtonToWindow = (chatWindow: HTMLElement): void => {
   const closeButton = document.createElement('button');
   closeButton.className = 'dify-chatbot-window-close-btn';
   closeButton.innerHTML = closeButtonSvg;
-  closeButton.setAttribute('style', `
+  closeButton.style.cssText = `
     position: absolute !important;
     top: 0.75rem !important;
     right: 0.75rem !important;
@@ -29,7 +29,7 @@ const addCloseButtonToWindow = (chatWindow: HTMLElement): void => {
     justify-content: center !important;
     cursor: pointer !important;
     z-index: 9999 !important;
-  `);
+  `;
   
   // ボタンのヘッダー部分への追加（より確実に表示されるようにするため）
   const header = chatWindow.querySelector('.dify-chatbot-window-header') || chatWindow;
@@ -44,9 +44,20 @@ const addCloseButtonToWindow = (chatWindow: HTMLElement): void => {
     // チャットボタンを表示
     const chatButton = document.getElementById('dify-chatbot-bubble-button');
     if (chatButton) {
-      chatButton.style.display = 'block';
-      chatButton.style.visibility = 'visible';
-      chatButton.style.opacity = '1';
+      chatButton.style.cssText = `
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        z-index: 9995 !important;
+        position: fixed !important;
+        bottom: 11rem !important;
+        right: 1rem !important;
+        width: 48px !important;
+        height: 48px !important;
+        border-radius: 50% !important;
+        background-color: #1C64F2 !important;
+        cursor: pointer !important;
+      `;
     }
     
     console.log('Chat window closed');
@@ -68,34 +79,40 @@ export const setupDomObserver = (): MutationObserver => {
       addCloseButtonToWindow(chatWindow);
       
       // チャットウィンドウのスタイルを強制的に適用
-      chatWindow.style.display = 'flex';
-      chatWindow.style.flexDirection = 'column';
-      chatWindow.style.width = '350px';
-      chatWindow.style.height = '500px';
-      chatWindow.style.maxHeight = '80vh';
-      chatWindow.style.position = 'fixed';
-      chatWindow.style.bottom = '5rem';
-      chatWindow.style.right = '1rem';
-      chatWindow.style.zIndex = '1001';
-      chatWindow.style.borderRadius = '0.5rem';
-      chatWindow.style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)';
+      chatWindow.style.cssText = `
+        display: flex !important;
+        flex-direction: column !important;
+        width: 350px !important;
+        height: 500px !important;
+        max-height: 80vh !important;
+        position: fixed !important;
+        bottom: 5rem !important;
+        right: 1rem !important;
+        z-index: 9995 !important;
+        border-radius: 0.5rem !important;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+        background-color: white !important;
+        overflow: hidden !important;
+      `;
     }
 
     // チャットボタンの表示を確保
     const chatButton = document.getElementById('dify-chatbot-bubble-button');
     if (chatButton) {
-      chatButton.style.display = 'block';
-      chatButton.style.visibility = 'visible';
-      chatButton.style.opacity = '1';
-      chatButton.style.zIndex = '9999';
-      chatButton.style.position = 'fixed';
-      chatButton.style.bottom = '11rem';
-      chatButton.style.right = '1rem';
-      chatButton.style.width = '48px';
-      chatButton.style.height = '48px';
-      chatButton.style.borderRadius = '50%';
-      chatButton.style.backgroundColor = '#1C64F2';
-      chatButton.style.cursor = 'pointer';
+      chatButton.style.cssText = `
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        z-index: 9995 !important;
+        position: fixed !important;
+        bottom: 11rem !important;
+        right: 1rem !important;
+        width: 48px !important;
+        height: 48px !important;
+        border-radius: 50% !important;
+        background-color: #1C64F2 !important;
+        cursor: pointer !important;
+      `;
     }
   });
 
@@ -122,18 +139,20 @@ export const performInitialElementsCheck = (): void => {
     // チャットボタンの表示を確認
     if (chatButton) {
       console.log('Dify chat button found, ensuring visibility');
-      chatButton.style.display = 'block';
-      chatButton.style.visibility = 'visible';
-      chatButton.style.opacity = '1';
-      chatButton.style.zIndex = '9999';
-      chatButton.style.position = 'fixed';
-      chatButton.style.bottom = '11rem';
-      chatButton.style.right = '1rem';
-      chatButton.style.width = '48px';
-      chatButton.style.height = '48px';
-      chatButton.style.borderRadius = '50%';
-      chatButton.style.backgroundColor = '#1C64F2';
-      chatButton.style.cursor = 'pointer';
+      chatButton.style.cssText = `
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        z-index: 9995 !important;
+        position: fixed !important;
+        bottom: 11rem !important;
+        right: 1rem !important;
+        width: 48px !important;
+        height: 48px !important;
+        border-radius: 50% !important;
+        background-color: #1C64F2 !important;
+        cursor: pointer !important;
+      `;
     } else {
       console.warn('Dify chat button not found during initial check');
     }
@@ -144,17 +163,23 @@ export const performInitialElementsCheck = (): void => {
       addCloseButtonToWindow(chatWindow);
       
       // チャットウィンドウのスタイルを適用
-      chatWindow.style.display = 'flex';
-      chatWindow.style.flexDirection = 'column';
-      chatWindow.style.width = '350px';
-      chatWindow.style.height = '500px';
-      chatWindow.style.maxHeight = '80vh';
-      chatWindow.style.position = 'fixed';
-      chatWindow.style.bottom = '5rem';
-      chatWindow.style.right = '1rem';
-      chatWindow.style.zIndex = '1001';
-      chatWindow.style.borderRadius = '0.5rem';
-      chatWindow.style.boxShadow = '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)';
+      chatWindow.style.cssText = `
+        display: flex !important;
+        flex-direction: column !important;
+        width: 350px !important;
+        height: 500px !important;
+        max-height: 80vh !important;
+        position: fixed !important;
+        bottom: 5rem !important;
+        right: 1rem !important;
+        z-index: 9995 !important;
+        border-radius: 0.5rem !important;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+        background-color: white !important;
+        overflow: hidden !important;
+      `;
+    } else {
+      console.warn('Dify chat window not found during initial check');
     }
   };
   
@@ -164,21 +189,31 @@ export const performInitialElementsCheck = (): void => {
   // 念のため少し遅延して再度実行
   setTimeout(initialCheck, 1000);
   
-  // 確実にボタンが存在するように定期的に確認
+  // 確実にボタンが存在するように定期的に確認（インターバル時間を短く）
   setInterval(() => {
     const chatWindow = document.getElementById('dify-chatbot-bubble-window');
     const chatButton = document.getElementById('dify-chatbot-bubble-button');
     
     if (chatButton) {
-      chatButton.style.display = 'block';
-      chatButton.style.visibility = 'visible';
-      chatButton.style.opacity = '1';
-      chatButton.style.zIndex = '9999';
+      chatButton.style.cssText = `
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+        z-index: 9995 !important;
+        position: fixed !important;
+        bottom: 11rem !important;
+        right: 1rem !important;
+        width: 48px !important;
+        height: 48px !important;
+        border-radius: 50% !important;
+        background-color: #1C64F2 !important;
+        cursor: pointer !important;
+      `;
     }
     
     if (chatWindow && !chatWindow.querySelector('.dify-chatbot-window-close-btn')) {
       console.log('Reapplying close button');
       addCloseButtonToWindow(chatWindow);
     }
-  }, 2000);
+  }, 1000);
 };

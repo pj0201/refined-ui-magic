@@ -29,10 +29,8 @@ export const SubsidyChatbot = () => {
         difyButton.style.display = 'block';
         difyButton.style.visibility = 'visible';
         difyButton.style.opacity = '1';
-        difyButton.style.zIndex = '9999';
+        difyButton.style.zIndex = '1000';
         console.log("Dify button visibility enforced from SubsidyChatbot");
-      } else {
-        console.log("Dify button not found in check");
       }
     };
     
@@ -46,6 +44,12 @@ export const SubsidyChatbot = () => {
       clearInterval(interval);
     };
   }, []);
+
+  // チャットボットトグル関数
+  const handleToggle = () => {
+    console.log("Toggle chatbot, current state:", isOpen, "changing to:", !isOpen);
+    setIsOpen(!isOpen);
+  };
 
   // Styles for positioning chatbots
   const styles: {
@@ -71,7 +75,7 @@ export const SubsidyChatbot = () => {
     investmentSubsidyIcon: { 
       bottom: "2rem", 
       right: "1rem", 
-      zIndex: 1000,
+      zIndex: 9999,
       position: "fixed"
     }
   };
@@ -125,7 +129,7 @@ export const SubsidyChatbot = () => {
     <div className="fixed bottom-4 right-4 z-50">
       {/* 小規模持続化補助金ラベル */}
       <div 
-        className="fixed z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center"
+        className="fixed z-[9990] bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center"
         style={styles.smallSubsidyLabel}
       >
         <span>小規模持続化補助金</span>
@@ -137,7 +141,7 @@ export const SubsidyChatbot = () => {
       
       {/* 省力化投資補助金ラベル */}
       <div 
-        className="fixed z-50 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center"
+        className="fixed z-[9990] bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-full shadow-md text-xs flex flex-col items-center"
         style={styles.investmentSubsidyLabel}
       >
         <span>省力化投資補助金</span>
@@ -149,7 +153,7 @@ export const SubsidyChatbot = () => {
         isOpen={isOpen}
         messages={messages}
         isLoading={isLoading}
-        onToggle={() => setIsOpen(!isOpen)}
+        onToggle={handleToggle}
         onSendMessage={handleSendMessage}
         style={styles.investmentSubsidyIcon}
         className="investment-subsidy-bot"

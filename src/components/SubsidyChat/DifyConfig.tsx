@@ -32,8 +32,32 @@ export const DifyConfig = () => {
     
     // 即時実行
     setTimeout(() => {
+      console.log("Setting up Dify chat from DifyConfig...");
       setupDifyChat();
-      console.log("Dify chat setup called from DifyConfig");
+      
+      // ボタンの表示を確認する追加のチェック
+      setTimeout(() => {
+        const difyButton = document.getElementById('dify-chatbot-bubble-button');
+        if (difyButton) {
+          console.log("Ensuring Dify button visibility after setup");
+          difyButton.style.cssText = `
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            z-index: 9995 !important;
+            position: fixed !important;
+            bottom: 11rem !important;
+            right: 1rem !important;
+            width: 48px !important;
+            height: 48px !important;
+            border-radius: 50% !important;
+            background-color: #1C64F2 !important;
+            cursor: pointer !important;
+          `;
+        } else {
+          console.warn("Dify button not found after setup");
+        }
+      }, 1000);
     }, 100);
     
     // チャットボットの状態を監視

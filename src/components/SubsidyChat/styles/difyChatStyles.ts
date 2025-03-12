@@ -8,7 +8,7 @@ export const difyChatStyles = `
     background-color: #1C64F2 !important;
     bottom: 11rem !important;
     right: 1rem !important;
-    z-index: 1000 !important;
+    z-index: 9995 !important;
     position: fixed !important;
     display: block !important;
     visibility: visible !important;
@@ -30,13 +30,14 @@ export const difyChatStyles = `
     right: 1rem !important;
     transform: none !important;
     margin-bottom: 0 !important;
-    z-index: 1001 !important;
+    z-index: 9995 !important;
     position: fixed !important;
     display: flex !important;
     flex-direction: column !important;
     overflow: hidden !important;
     border-radius: 0.5rem !important;
     box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+    background-color: white !important;
   }
 
   /* チャットウィンドウ内部のコンテンツ */
@@ -102,11 +103,18 @@ export const difyChatStyles = `
     position: fixed !important;
     bottom: 0 !important;
     right: 0 !important;
-    z-index: 1000 !important;
+    z-index: 9990 !important;
     pointer-events: none !important;
   }
   #dify-chatbot-container * {
     pointer-events: auto !important;
+  }
+  
+  /* より確実にチャットウィンドウを表示 */
+  #dify-chatbot-bubble-window.active {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
   }
 `;
 
