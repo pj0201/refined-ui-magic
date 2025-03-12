@@ -82,8 +82,10 @@ export const SubsidyChatbot = () => {
     document.getElementById('dify-custom-styles')?.remove();
     document.getElementById('dify-chatbot-bubble-button-1')?.remove();
     document.getElementById('dify-chatbot-label-1')?.remove();
+    document.getElementById('dify-chatbot-sublabel-1')?.remove();
     document.getElementById('dify-chatbot-bubble-button-2')?.remove();
     document.getElementById('dify-chatbot-label-2')?.remove();
+    document.getElementById('dify-chatbot-sublabel-2')?.remove();
     
     // スタイルを追加（重要度を上げるため!importantを多用）
     const style = document.createElement('style');
@@ -145,6 +147,36 @@ export const SubsidyChatbot = () => {
         height: 130px !important;
       }
 
+      .dify-chatbot-sublabel {
+        position: fixed !important;
+        background-color: white !important;
+        border-radius: 8px !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
+        padding: 4px 2px !important;
+        width: 20px !important;
+        font-size: 10px !important;
+        text-align: center !important;
+        writing-mode: vertical-rl !important;
+        text-orientation: upright !important;
+        letter-spacing: 0.5px !important;
+        line-height: 1 !important;
+        white-space: nowrap !important;
+        right: 55px !important;
+        z-index: 2147483647 !important;
+        color: #666666 !important;
+        font-weight: normal !important;
+      }
+
+      #dify-chatbot-sublabel-1 {
+        top: 60px !important;
+        height: 90px !important;
+      }
+
+      #dify-chatbot-sublabel-2 {
+        top: 260px !important;
+        height: 90px !important;
+      }
+
       #dify-chatbot-bubble-window {
         position: fixed !important;
         bottom: 100px !important;
@@ -166,6 +198,13 @@ export const SubsidyChatbot = () => {
     label1.className = 'dify-chatbot-label';
     label1.textContent = '省力化投資補助金';
     document.body.appendChild(label1);
+
+    // 1つ目のサブラベル（補助金の質問はコチラ）
+    const sublabel1 = document.createElement('div');
+    sublabel1.id = 'dify-chatbot-sublabel-1';
+    sublabel1.className = 'dify-chatbot-sublabel';
+    sublabel1.textContent = '補助金の質問はコチラ';
+    document.body.appendChild(sublabel1);
 
     // 1つ目のチャットボタン（省力化投資補助金）
     const button1 = document.createElement('button');
@@ -193,6 +232,13 @@ export const SubsidyChatbot = () => {
     label2.className = 'dify-chatbot-label';
     label2.textContent = '小規模持続化補助金';
     document.body.appendChild(label2);
+
+    // 2つ目のサブラベル（補助金の質問はコチラ）
+    const sublabel2 = document.createElement('div');
+    sublabel2.id = 'dify-chatbot-sublabel-2';
+    sublabel2.className = 'dify-chatbot-sublabel';
+    sublabel2.textContent = '補助金の質問はコチラ';
+    document.body.appendChild(sublabel2);
 
     // 2つ目のチャットボタン（小規模持続化補助金）
     const button2 = document.createElement('button');
@@ -227,10 +273,12 @@ export const SubsidyChatbot = () => {
     checkIntervalRef.current = window.setInterval(() => {
       const button1 = document.getElementById('dify-chatbot-bubble-button-1');
       const label1 = document.getElementById('dify-chatbot-label-1');
+      const sublabel1 = document.getElementById('dify-chatbot-sublabel-1');
       const button2 = document.getElementById('dify-chatbot-bubble-button-2');
       const label2 = document.getElementById('dify-chatbot-label-2');
+      const sublabel2 = document.getElementById('dify-chatbot-sublabel-2');
 
-      if (!button1 || !label1 || !button2 || !label2) {
+      if (!button1 || !label1 || !sublabel1 || !button2 || !label2 || !sublabel2) {
         console.log("Chatbot elements missing, restoring...");
         addChatbotElements();
       }
@@ -241,8 +289,8 @@ export const SubsidyChatbot = () => {
     console.log("Cleaning up subsidy chatbot elements");
     // 既存の要素を削除
     ['dify-chat-config', 'yXBz3rzpDBhMgYcB', 'dify-custom-styles', 
-     'dify-chatbot-bubble-button-1', 'dify-chatbot-label-1',
-     'dify-chatbot-bubble-button-2', 'dify-chatbot-label-2'].forEach(id => {
+     'dify-chatbot-bubble-button-1', 'dify-chatbot-label-1', 'dify-chatbot-sublabel-1',
+     'dify-chatbot-bubble-button-2', 'dify-chatbot-label-2', 'dify-chatbot-sublabel-2'].forEach(id => {
       const element = document.getElementById(id);
       if (element) {
         console.log(`Removing element: ${id}`);
@@ -264,10 +312,12 @@ export const SubsidyChatbot = () => {
       console.log("Window focus detected, checking elements");
       const button1 = document.getElementById('dify-chatbot-bubble-button-1');
       const label1 = document.getElementById('dify-chatbot-label-1');
+      const sublabel1 = document.getElementById('dify-chatbot-sublabel-1');
       const button2 = document.getElementById('dify-chatbot-bubble-button-2');
       const label2 = document.getElementById('dify-chatbot-label-2');
+      const sublabel2 = document.getElementById('dify-chatbot-sublabel-2');
       
-      if (!button1 || !label1 || !button2 || !label2) {
+      if (!button1 || !label1 || !sublabel1 || !button2 || !label2 || !sublabel2) {
         console.log("Elements missing after focus, restoring");
         addChatbotElements();
       }
@@ -282,4 +332,3 @@ export const SubsidyChatbot = () => {
 
   return null;
 };
-
