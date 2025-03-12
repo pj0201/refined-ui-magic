@@ -14,7 +14,7 @@ declare global {
 
 export const DifyConfig = () => {
   useEffect(() => {
-    // DOM読み込み完了イベントリスナーを追加
+    // DOM読み込み完了後にセットアップを実行
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', setupDifyChat);
     } else {
@@ -26,14 +26,10 @@ export const DifyConfig = () => {
 
     // クリーンアップ
     return () => {
-      // イベントリスナーを削除
       document.removeEventListener('DOMContentLoaded', setupDifyChat);
-      
-      // インターバルとタイムアウトをクリア
       clearInterval(interval);
       clearTimeout(timeout);
       
-      // DOM要素を削除
       const configScript = document.getElementById('dify-chat-config');
       if (configScript) configScript.remove();
       
@@ -48,8 +44,6 @@ export const DifyConfig = () => {
       
       const labels = document.getElementById('dify-chat-labels');
       if (labels) labels.remove();
-      
-      console.log('Dify chat cleaned up');
     };
   }, []);
 
