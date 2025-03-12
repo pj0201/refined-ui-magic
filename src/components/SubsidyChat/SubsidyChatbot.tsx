@@ -8,14 +8,26 @@ export const SubsidyChatbot = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const checkIntervalRef = useRef<number | null>(null);
   const attemptCountRef = useRef(0);
-  const MAX_ATTEMPTS = 5;
+  const MAX_ATTEMPTS = 10;
 
   useEffect(() => {
-    // 即時実行
-    initializeChatbot();
+    // DOMコンテンツが読み込まれた後に初期化する
+    if (document.readyState === "complete") {
+      console.log("DOM already loaded, initializing chatbot");
+      initializeChatbot();
+    } else {
+      console.log("Waiting for DOM to load");
+      window.addEventListener("DOMContentLoaded", () => {
+        console.log("DOM loaded, initializing chatbot");
+        initializeChatbot();
+      });
+      // フォールバックとして、少し遅延させても初期化する
+      setTimeout(initializeChatbot, 1000);
+    }
 
     // クリーンアップ
     return () => {
+      console.log("Cleaning up subsidy chatbot");
       cleanup();
     };
   }, []);
@@ -49,11 +61,15 @@ export const SubsidyChatbot = () => {
       addChatbotElements();
     };
     
-    mainScript.onerror = () => {
-      console.error("Failed to load Dify script");
+    mainScript.onerror = (e) => {
+      console.error("Failed to load Dify script", e);
       attemptCountRef.current++;
       if (attemptCountRef.current < MAX_ATTEMPTS) {
+        console.log(`Retrying script load (attempt ${attemptCountRef.current}/${MAX_ATTEMPTS})`);
         setTimeout(initializeChatbot, 2000);
+      } else {
+        console.log("Maximum attempts reached, adding fallback button");
+        addChatbotElements(); // スクリプトの読み込みに失敗しても要素を追加
       }
     };
     
@@ -61,7 +77,14 @@ export const SubsidyChatbot = () => {
   };
 
   const addChatbotElements = () => {
-    // スタイルを追加
+    console.log("Adding chatbot elements to the DOM");
+    
+    // 既存の要素を削除（念のため）
+    document.getElementById('dify-custom-styles')?.remove();
+    document.getElementById('dify-chatbot-bubble-button')?.remove();
+    document.getElementById('dify-chatbot-label')?.remove();
+    
+    // スタイルを追加（重要度を上げるため!importantを多用）
     const style = document.createElement('style');
     style.id = 'dify-custom-styles';
     style.textContent = `
@@ -76,10 +99,12 @@ export const SubsidyChatbot = () => {
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2) !important;
         border: none !important;
         cursor: pointer !important;
-        z-index: 99999 !important;
+        z-index: 2147483647 !important; /* 最大値 */
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
+        opacity: 1 !important;
+        visibility: visible !important;
       }
 
       #dify-chatbot-label {
@@ -90,10 +115,14 @@ export const SubsidyChatbot = () => {
         padding: 8px 16px !important;
         border-radius: 20px !important;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
-        z-index: 99999 !important;
+        z-index: 2147483647 !important; /* 最大値 */
         font-size: 14px !important;
         white-space: nowrap !important;
         display: block !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+        color: #000000 !important;
+        font-weight: normal !important;
       }
 
       #dify-chatbot-bubble-window {
@@ -105,7 +134,7 @@ export const SubsidyChatbot = () => {
         max-height: 80vh !important;
         border-radius: 12px !important;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-        z-index: 99999 !important;
+        z-index: 2147483647 !important; /* 最大値 */
         overflow: hidden !important;
       }
     `;
@@ -115,12 +144,25 @@ export const SubsidyChatbot = () => {
     const button = document.createElement('button');
     button.id = 'dify-chatbot-bubble-button';
     button.innerHTML = '<svg width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>';
+    button.onclick = function() {
+      console.log("Custom chatbot button clicked");
+      // クリックされたときにDifyのボタンをクリックする
+      const difyButton = document.querySelector('dify-chatbot-button');
+      if (difyButton) {
+        console.log("Triggering click on Dify button");
+        // @ts-ignore
+        difyButton.click();
+      } else {
+        console.log("Dify button not found, opening fallback chat window");
+        // フォールバック処理
+      }
+    };
     document.body.appendChild(button);
 
     // ラベルを追加
     const label = document.createElement('div');
     label.id = 'dify-chatbot-label';
-    label.textContent = '小規模持続化補助金の質問はコチラ';
+    label.textContent = '省力化投資補助金の質問はコチラ';
     document.body.appendChild(label);
 
     // 要素の存在を定期的にチェック
@@ -128,6 +170,7 @@ export const SubsidyChatbot = () => {
   };
 
   const startElementCheck = () => {
+    console.log("Starting element check interval");
     if (checkIntervalRef.current) {
       clearInterval(checkIntervalRef.current);
     }
@@ -140,21 +183,47 @@ export const SubsidyChatbot = () => {
         console.log("Chatbot elements missing, restoring...");
         addChatbotElements();
       }
-    }, 2000);
+    }, 1000); // より短い間隔でチェック
   };
 
   const cleanup = () => {
+    console.log("Cleaning up subsidy chatbot elements");
     // 既存の要素を削除
     ['dify-chat-config', 'yXBz3rzpDBhMgYcB', 'dify-custom-styles', 'dify-chatbot-bubble-button', 'dify-chatbot-label'].forEach(id => {
-      document.getElementById(id)?.remove();
+      const element = document.getElementById(id);
+      if (element) {
+        console.log(`Removing element: ${id}`);
+        element.remove();
+      }
     });
 
     // インターバルをクリア
     if (checkIntervalRef.current) {
+      console.log("Clearing check interval");
       clearInterval(checkIntervalRef.current);
       checkIntervalRef.current = null;
     }
   };
+
+  // フォーカスを戻したときに要素を再チェック
+  useEffect(() => {
+    const handleFocus = () => {
+      console.log("Window focus detected, checking elements");
+      const button = document.getElementById('dify-chatbot-bubble-button');
+      const label = document.getElementById('dify-chatbot-label');
+      
+      if (!button || !label) {
+        console.log("Elements missing after focus, restoring");
+        addChatbotElements();
+      }
+    };
+    
+    window.addEventListener('focus', handleFocus);
+    
+    return () => {
+      window.removeEventListener('focus', handleFocus);
+    };
+  }, []);
 
   return null;
 };
