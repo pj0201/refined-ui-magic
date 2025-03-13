@@ -1,39 +1,86 @@
 
 import { useEffect } from "react";
-import { cleanup } from "./utils/chatbotInitializer";
-// Import custom hooks
-import { useChatbotInitializer } from "./hooks/useChatbotInitializer";
-import { useElementChecker } from "./hooks/useElementChecker";
-import { useChatWindowAdjuster } from "./hooks/useChatWindowAdjuster";
 import { useDocumentReady } from "./hooks/useDocumentReady";
-// Import Dify types to ensure type checking
-import "./types/dify.d.ts";
+import { DIFY_CONFIG } from "./utils/difyConfig";
 
 /**
- * 補助金チャットボットコンポーネント（小規模持続化補助金対応）
+ * シンプルな補助金チャットボットコンポーネント
  */
 export const SubsidyChatbot = () => {
-  // 初期化機能を使用
-  const { isLoaded, useFallback, initializeChatbot } = useChatbotInitializer();
-  
-  // 要素チェック機能を使用
-  const { checkIntervalRef } = useElementChecker(isLoaded, useFallback);
-  
-  // チャットウィンドウの調整機能を使用
-  useChatWindowAdjuster(isLoaded);
+  // 初期化関数
+  const initializeChatbot = () => {
+    console.log("Initializing simple Dify chatbot...");
+    
+    // 既存のスクリプトとスタイルを削除
+    const existingScript = document.getElementById('dify-script');
+    if (existingScript) existingScript.remove();
+    
+    const existingStyle = document.getElementById('dify-style');
+    if (existingStyle) existingStyle.remove();
+    
+    // スタイルを追加
+    const style = document.createElement('style');
+    style.id = 'dify-style';
+    style.textContent = `
+      #dify-chatbot-bubble-button {
+        background-color: #1C64F2 !important;
+      }
+      #dify-chatbot-bubble-window {
+        width: 24rem !important;
+        height: 40rem !important;
+        max-height: 80vh !important;
+        position: fixed !important;
+        bottom: auto !important;
+        top: 50px !important;
+        right: 20px !important;
+        z-index: 2147483647 !important;
+      }
+      @media (max-height: 700px) {
+        #dify-chatbot-bubble-window {
+          top: 20px !important;
+          height: calc(100vh - 100px) !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    // 設定スクリプトを追加
+    const configScript = document.createElement('script');
+    configScript.textContent = `
+      window.difyChatbotConfig = {
+        token: "${DIFY_CONFIG.token}"
+      };
+    `;
+    document.head.appendChild(configScript);
+    
+    // Difyのスクリプトを追加
+    const script = document.createElement('script');
+    script.id = 'dify-script';
+    script.src = 'https://udify.app/embed.min.js';
+    script.defer = true;
+    script.async = true;
+    
+    // スクリプトにIDを設定（トークンと同じ値）
+    script.id = DIFY_CONFIG.token;
+    
+    document.head.appendChild(script);
+  };
   
   // ドキュメントの準備完了を検知
   useDocumentReady(initializeChatbot);
-
+  
   // クリーンアップ
   useEffect(() => {
     return () => {
       console.log("Cleaning up subsidy chatbot");
-      cleanup();
-      if (checkIntervalRef.current) {
-        clearInterval(checkIntervalRef.current);
-        checkIntervalRef.current = null;
-      }
+      const script = document.getElementById('dify-script');
+      if (script) script.remove();
+      
+      const style = document.getElementById('dify-style');
+      if (style) style.remove();
+      
+      const configScript = document.getElementById('dify-config');
+      if (configScript) configScript.remove();
     };
   }, []);
 
