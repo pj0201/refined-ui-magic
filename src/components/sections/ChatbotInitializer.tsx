@@ -1,6 +1,7 @@
 
 import { useState, useEffect } from "react";
 import { DIFY_CONFIG } from "@/components/SubsidyChat/utils/difyConfig";
+import { getChatbotWindowStyles } from "@/components/SubsidyChat/styles/chatbotWindowStyles";
 
 export const ChatbotInitializer = () => {
   const [isChatbotWindowVisible, setIsChatbotWindowVisible] = useState(false);
@@ -70,27 +71,7 @@ export const ChatbotInitializer = () => {
     // スタイルを追加
     const style = document.createElement('style');
     style.id = 'dify-style';
-    style.textContent = `
-      #dify-chatbot-bubble-button {
-        background-color: #8B5CF6 !important; /* より目立つ紫色 */
-      }
-      #dify-chatbot-bubble-window {
-        width: 24rem !important;
-        height: 40rem !important;
-        max-height: 80vh !important;
-        position: fixed !important;
-        bottom: auto !important;
-        top: 50px !important;
-        right: 20px !important;
-        z-index: 2147483647 !important;
-      }
-      @media (max-height: 700px) {
-        #dify-chatbot-bubble-window {
-          top: 20px !important;
-          height: calc(100vh - 100px) !important;
-        }
-      }
-    `;
+    style.textContent = getChatbotWindowStyles();
     document.head.appendChild(style);
     
     // Difyのスクリプトを追加
