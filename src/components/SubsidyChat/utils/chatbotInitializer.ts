@@ -1,3 +1,4 @@
+
 import { getChatbotStyles } from '../styles/chatbotStyles';
 import { 
   removeElement, 
@@ -83,7 +84,7 @@ export const addChatbotElements = (): void => {
   const label1 = createChatbotLabel(
     'dify-chatbot-label-1', 
     'dify-chatbot-label', 
-    '省力化投資補助金の質問はコチラ'
+    '省'
   );
   container.appendChild(label1);
   
@@ -91,8 +92,8 @@ export const addChatbotElements = (): void => {
   const button1 = createChatbotButton(
     'dify-chatbot-bubble-button-1', 
     'dify-chatbot-bubble-button',
-    `<svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2ZM10.5578 5.35559C10.7356 5.17783 11.0272 5.17783 11.205 5.35559C11.3827 5.53336 11.3827 5.82494 11.205 6.0027L8.29703 8.91063L14.6472 8.91063C14.9035 8.91063 15.1111 9.11828 15.1111 9.37453V10.6254C15.1111 10.8817 14.9035 11.0893 14.6472 11.0893L8.29711 11.0893L11.205 13.9972C11.3828 14.175 11.3828 14.4665 11.205 14.6443C11.0272 14.8221 10.7357 14.8221 10.5579 14.6443L6.79497 10.8814C6.70611 10.7925 6.66168 10.6809 6.66168 10.5694V9.43042C6.66168 9.31887 6.70611 9.20727 6.79497 9.11842L10.5578 5.35559Z" fill="white"/>
+    `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM16 13H13V16C13 16.55 12.55 17 12 17C11.45 17 11 16.55 11 16V13H8C7.45 13 7 12.55 7 12C7 11.45 7.45 11 8 11H11V8C11 7.45 11.45 7 12 7C12.55 7 13 7.45 13 8V11H16C16.55 11 17 11.45 17 12C17 12.55 16.55 13 16 13Z" fill="white"/>
     </svg>`,
     (): void => {
       window.postMessage({ type: 'CHAT_TYPE_1_CLICK', value: '省力化投資補助金' }, '*');
@@ -104,7 +105,7 @@ export const addChatbotElements = (): void => {
   const label2 = createChatbotLabel(
     'dify-chatbot-label-2', 
     'dify-chatbot-label', 
-    '小規模持続化補助金の質問はコチラ'
+    '小'
   );
   container.appendChild(label2);
   
@@ -112,8 +113,8 @@ export const addChatbotElements = (): void => {
   const button2 = createChatbotButton(
     'dify-chatbot-bubble-button-2', 
     'dify-chatbot-bubble-button',
-    `<svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2ZM10.5578 5.35559C10.7356 5.17783 11.0272 5.17783 11.205 5.35559C11.3827 5.53336 11.3827 5.82494 11.205 6.0027L8.29703 8.91063L14.6472 8.91063C14.9035 8.91063 15.1111 9.11828 15.1111 9.37453V10.6254C15.1111 10.8817 14.9035 11.0893 14.6472 11.0893L8.29711 11.0893L11.205 13.9972C11.3828 14.175 11.3828 14.4665 11.205 14.6443C11.0272 14.8221 10.7357 14.8221 10.5579 14.6443L6.79497 10.8814C6.70611 10.7925 6.66168 10.6809 6.66168 10.5694V9.43042C6.66168 9.31887 6.70611 9.20727 6.79497 9.11842L10.5578 5.35559Z" fill="white"/>
+    `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM16 13H13V16C13 16.55 12.55 17 12 17C11.45 17 11 16.55 11 16V13H8C7.45 13 7 12.55 7 12C7 11.45 7.45 11 8 11H11V8C11 7.45 11.45 7 12 7C12.55 7 13 7.45 13 8V11H16C16.55 11 17 11.45 17 12C17 12.55 16.55 13 16 13Z" fill="white"/>
     </svg>`,
     (): void => {
       window.postMessage({ type: 'CHAT_TYPE_2_CLICK', value: '小規模持続化補助金' }, '*');
