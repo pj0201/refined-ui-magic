@@ -10,13 +10,13 @@ export const loadDifyScripts = (
   onSuccess: () => void,
   onError: (error: Event | Error) => void
 ): void => {
-  console.log("Loading Dify scripts with new implementation");
+  console.log("Loading Dify scripts");
   
   // スタイルを追加
   const style = createStyleTag('dify-custom-styles', getChatbotStyles());
   document.head.appendChild(style);
   
-  // Difyの設定スクリプト - 正しい形式で設定
+  // Difyの設定スクリプト
   const configScript = createScriptTag(
     'dify-chat-config',
     getDifyConfigScript()
@@ -52,30 +52,16 @@ export const loadDifyScripts = (
   const mainScript = createScriptTag(
     'dify-chat-main-script',
     null,
-    'https://cdn.dify.ai/chat-widget/v1.2.0/chat-widget.js', // 最新のバージョンに更新
+    'https://cdn.dify.ai/chat-widget/v1.2.0/chat-widget.js',
     true,
     true
   );
   
-  // 正常にロードされた場合
   mainScript.onload = (): void => {
-    console.log("Dify script loaded successfully, checking for global objects");
-    setTimeout(() => {
-      // グローバルオブジェクトをチェック
-      if (window.DifyAI) {
-        console.log("DifyAI global object found");
-      } else if (window.difyChatbot) {
-        console.log("difyChatbot global object found");
-      } else if (window.DifyChat) {
-        console.log("DifyChat global object found");
-      } else {
-        console.warn("No Dify global objects found after script load");
-      }
-      onSuccess();
-    }, 500); // スクリプトが正しく初期化される時間を確保
+    console.log("Dify script loaded successfully");
+    setTimeout(onSuccess, 500);
   };
   
-  // エラーが発生した場合
   mainScript.onerror = (error: Event): void => {
     console.error("Error loading Dify script:", error);
     onError(error);

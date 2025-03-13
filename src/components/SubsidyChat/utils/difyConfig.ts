@@ -9,15 +9,6 @@ export const DIFY_CONFIG = {
     text_to_speech: { 
       enabled: false 
     }
-  },
-  // チャットウィンドウの設定
-  config: {
-    chatWidgetSettings: {
-      position: 'right', // チャットウィンドウの位置
-      width: 380, // チャットウィンドウの幅
-      height: 600, // チャットウィンドウの高さ
-      margin: 20 // チャットウィンドウのマージン
-    }
   }
 };
 
