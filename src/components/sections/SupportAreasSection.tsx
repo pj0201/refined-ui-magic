@@ -8,12 +8,12 @@ export const SupportAreasSection = () => {
       id="services" 
       className="py-20 px-4 relative bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: "url('/lovable-uploads/1bf9f631-0f38-43aa-af33-28ec5bb60daf.png')",
+        backgroundImage: "url('https://images.unsplash.com/photo-1518495973542-4542c06a5843?auto=format&fit=crop&q=80')",
         backgroundSize: "cover",
       }}
     >
-      {/* Overlay to make the background image subtle */}
-      <div className="absolute inset-0 bg-[#F1F0FB]/90"></div>
+      {/* 背景画像を柔らかく表示するためのオーバーレイ */}
+      <div className="absolute inset-0 bg-[#F1F0FB]/85"></div>
       
       <div className="max-w-4xl mx-auto fade-in relative z-10">
         <h2 className="text-3xl font-bold text-center mb-8 text-[#403E43]">支援領域</h2>
