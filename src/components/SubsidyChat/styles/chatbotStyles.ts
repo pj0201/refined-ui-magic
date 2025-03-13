@@ -22,33 +22,35 @@ export const getChatbotStyles = (): string => `
   }
 
   #dify-chatbot-bubble-button-1 {
-    top: 135px !important; /* ラベルの下に配置 */
+    top: 160px !important; /* ラベルの下に配置 */
   }
 
   #dify-chatbot-bubble-button-2 {
-    top: 235px !important; /* ラベルの下に配置 */
+    top: 340px !important; /* ラベルの下に配置 */
   }
 
   .dify-chatbot-label {
     position: fixed !important;
     color: #22C55E !important;
     font-size: 13px !important;
-    text-align: right !important;
-    letter-spacing: 0 !important;
-    line-height: 36px !important;
+    text-align: center !important;
+    letter-spacing: 1px !important;
+    line-height: 1.2 !important;
     white-space: nowrap !important;
-    right: 20px !important; /* ボタンと同じ右端の位置 */
+    right: 20px !important;
     z-index: 2147483646 !important;
     font-weight: normal !important;
     text-shadow: 0 0 1px rgba(0,0,0,0.2) !important;
     transition: color 0.3s ease !important;
-    height: 36px !important;
+    width: 36px !important;
+    height: auto !important;
     display: flex !important;
     align-items: center !important;
-    transform: none !important;
-    writing-mode: horizontal-tb !important;
+    justify-content: center !important;
+    writing-mode: vertical-rl !important; /* 縦書き */
+    text-orientation: upright !important;
     background-color: rgba(255, 255, 255, 0.9) !important;
-    padding: 0 12px !important;
+    padding: 12px 0 !important;
     border-radius: 18px !important;
   }
 
@@ -57,11 +59,13 @@ export const getChatbotStyles = (): string => `
   }
 
   #dify-chatbot-label-1 {
-    top: 80px !important;
+    top: 20px !important;
+    height: 130px !important;
   }
 
   #dify-chatbot-label-2 {
-    top: 180px !important;
+    top: 200px !important;
+    height: 130px !important;
   }
 
   #dify-chatbot-bubble-window {
