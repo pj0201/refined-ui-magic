@@ -31,8 +31,8 @@ export const loadDifyScripts = (
     }
     #dify-chatbot-bubble-window {
       width: 24rem !important;
-      height: 40rem !important;
-      max-height: 80vh !important;
+      height: 50rem !important; /* 40remから50remに高さを増加 */
+      max-height: 90vh !important; /* 80vhから90vhに最大高さを増加 */
       position: fixed !important;
       bottom: auto !important;
       top: 50px !important;
@@ -42,7 +42,7 @@ export const loadDifyScripts = (
     @media (max-height: 700px) {
       #dify-chatbot-bubble-window {
         top: 20px !important;
-        height: calc(100vh - 100px) !important;
+        height: calc(100vh - 50px) !important; /* 100pxから50pxに変更してより多くの領域を使用 */
       }
     }`
   );

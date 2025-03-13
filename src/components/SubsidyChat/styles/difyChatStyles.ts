@@ -1,4 +1,3 @@
-
 /**
  * Difyチャットボット用のCSSスタイル
  */
@@ -23,8 +22,8 @@ export const difyChatStyles = `
   /* チャットウィンドウのスタイリング */
   #dify-chatbot-bubble-window {
     width: 24rem !important;
-    height: 40rem !important;
-    max-height: 80vh !important;
+    height: 50rem !important; /* 40remから50remに高さを増加 */
+    max-height: 90vh !important; /* 80vhから90vhに最大高さを増加 */
     max-width: calc(100vw - 32px) !important;
     bottom: 2rem !important;
     right: 1rem !important;
