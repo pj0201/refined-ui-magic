@@ -5,8 +5,7 @@ import { toast } from "@/components/ui/use-toast";
 
 /**
  * Dify統合チャットボットコンポーネント
- * - embed.min.jsスクリプトを使用
- * - 右下に固定表示
+ * - 右側に1行で表示
  * - スタイルのカスタマイズ
  */
 export const SubsidyChatbot = () => {
@@ -60,15 +59,17 @@ export const SubsidyChatbot = () => {
       window.removeEventListener('offline', handleOffline);
     };
   }, []);
-
-  // DOM操作で要素を追加する代わりに、コンテナ要素を提供
+  
+  // 右側に1行で表示するためのコンテナ
   return (
     <div 
       id="dify-chatbot-container" 
-      ref={containerRef} 
-      className="fixed bottom-0 right-0 z-50"
+      ref={containerRef}
+      className="fixed top-0 right-0 z-50 flex flex-col items-end mt-4 mr-4"
       aria-live="polite"
       aria-label="チャットボット"
-    />
+    >
+      <div className="chatbot-elements-container"></div>
+    </div>
   );
 };
