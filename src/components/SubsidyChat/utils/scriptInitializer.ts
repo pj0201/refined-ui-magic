@@ -157,3 +157,44 @@ export const initializeDifyScripts = (
     }
   );
 };
+
+/**
+ * クリーンアップ - 追加したスクリプトとスタイル要素を削除
+ */
+export const cleanup = (): void => {
+  console.log("Cleaning up Dify scripts and styles");
+  
+  // スクリプト要素の削除
+  const scriptElement = document.getElementById('dify-chat-script');
+  if (scriptElement) {
+    scriptElement.remove();
+    console.log("Difyスクリプト要素を削除しました");
+  }
+  
+  const fallbackScript = document.getElementById('dify-fallback-script');
+  if (fallbackScript) {
+    fallbackScript.remove();
+    console.log("フォールバックスクリプト要素を削除しました");
+  }
+  
+  // スタイル要素の削除
+  const styleElement = document.getElementById('dify-custom-styles');
+  if (styleElement) {
+    styleElement.remove();
+    console.log("Difyスタイル要素を削除しました");
+  }
+  
+  // チャットボット関連のDOMをクリーンアップ
+  const container = document.getElementById('chatbot-elements-container');
+  if (container) {
+    container.remove();
+    console.log("チャットボット要素コンテナを削除しました");
+  }
+  
+  const bubbleWindow = document.getElementById('dify-chatbot-bubble-window');
+  if (bubbleWindow) {
+    bubbleWindow.remove();
+    console.log("チャットボットウィンドウを削除しました");
+  }
+};
+

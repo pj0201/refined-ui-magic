@@ -2,9 +2,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { 
   initializeDifyScripts, 
-  addChatbotElements, 
   cleanup 
-} from '../utils/chatbotInitializer';
+} from '../utils/scriptInitializer';
+import { addChatbotElements } from '../utils/chatUIElements';
 import { toast } from '@/components/ui/use-toast';
 
 /**
@@ -28,10 +28,9 @@ export const useChatbotInitializer = () => {
     setIsError(false);
     
     // Difyスクリプトを初期化
-    initializeDifyScripts(
-      // 成功時のコールバック
-      () => {
-        console.log("Dify scripts initialized successfully");
+    initializeDifyScripts((success, source) => {
+      if (success) {
+        console.log("Dify scripts initialized successfully from source:", source);
         setIsLoaded(true);
         setIsError(false);
         attemptCountRef.current = 0; // リセット
@@ -51,11 +50,8 @@ export const useChatbotInitializer = () => {
         } else {
           console.warn("DifyChat object is not available yet. Will use fallback messaging.");
         }
-      },
-      // エラー時のコールバック
-      (e) => {
-        const errorMsg = e instanceof Error ? e.message : 'Unknown error';
-        console.error(`Difyスクリプト読み込み失敗（${attemptCountRef.current + 1}/${MAX_ATTEMPTS}）: ${errorMsg}`, e);
+      } else {
+        console.error(`Difyスクリプト読み込み失敗（${attemptCountRef.current + 1}/${MAX_ATTEMPTS}）`);
         
         attemptCountRef.current++;
         if (attemptCountRef.current < MAX_ATTEMPTS) {
@@ -78,7 +74,7 @@ export const useChatbotInitializer = () => {
           });
         }
       }
-    );
+    });
   };
 
   // 初期化処理を開始
@@ -128,3 +124,4 @@ export const useChatbotInitializer = () => {
 
   return { isLoaded, isError, initializeChatbot };
 };
+
