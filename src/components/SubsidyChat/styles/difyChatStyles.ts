@@ -93,21 +93,19 @@ export const difyChatStyles = `
     border: none !important;
     border-radius: 20px !important;
     padding: 4px 12px !important;
-    display: flex !important;
+    display: none !important; /* デフォルトで非表示に変更 */
     align-items: center !important;
     justify-content: center !important;
     font-size: 12px !important;
     cursor: pointer !important;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
     z-index: 2147483648 !important;
-    opacity: 0 !important;
-    visibility: hidden !important;
-    transition: opacity 0.3s ease, visibility 0.3s ease !important;
+    transition: opacity 0.3s ease !important;
   }
   
   .chatbot-close-button.visible {
+    display: flex !important; /* visibleクラスがある場合のみ表示 */
     opacity: 1 !important;
-    visibility: visible !important;
   }
   
   .chatbot-close-button svg {
@@ -125,7 +123,7 @@ export const difyChatStyles = `
     margin-top: auto !important;
   }
   
-  /* 入力エリアの横にある×ボタン（混乱を招くので非表示�� */
+  /* 入力エリアの横にある×ボタン（混乱��招くので非表示�� */
   .dify-chatbot-window-footer button[aria-label="Close"] {
     display: none !important;
   }
