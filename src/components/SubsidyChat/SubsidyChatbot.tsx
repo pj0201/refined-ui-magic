@@ -17,7 +17,7 @@ export const SubsidyChatbot = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const checkIntervalRef = useRef<number | null>(null);
   const attemptCountRef = useRef(0);
-  const MAX_ATTEMPTS = 10;
+  const MAX_ATTEMPTS = 3; // 最大リトライ回数を減らす（素早いフォールバック）
 
   useEffect(() => {
     // DOMコンテンツが読み込まれた後に初期化する
@@ -52,7 +52,9 @@ export const SubsidyChatbot = () => {
     initializeDifyScripts(
       // 成功時のコールバック
       () => {
+        console.log("Dify scripts initialized successfully");
         setIsLoaded(true);
+        attemptCountRef.current = 0; // リセット
         addChatbotElements();
       },
       // エラー時のコールバック
@@ -60,11 +62,13 @@ export const SubsidyChatbot = () => {
         console.error("Failed to load Dify script", e);
         attemptCountRef.current++;
         if (attemptCountRef.current < MAX_ATTEMPTS) {
-          console.log(`Retrying script load (attempt ${attemptCountRef.current}/${MAX_ATTEMPTS})`);
-          setTimeout(initializeChatbot, 2000);
+          console.log(`Retrying script load (attempt ${attemptCountRef.current}/${MAX_ATTEMPTS}) in 1.5 seconds...`);
+          setTimeout(initializeChatbot, 1500); // リトライ間隔を短くする
         } else {
           console.log("Maximum attempts reached, adding fallback button");
-          addChatbotElements(); // スクリプトの読み込みに失敗しても要素を追加
+          // スクリプトの読み込みに失敗しても要素を追加（UIを表示）
+          setIsLoaded(true); // UI表示のためにロード状態を更新
+          addChatbotElements();
         }
       }
     );
@@ -73,6 +77,7 @@ export const SubsidyChatbot = () => {
   // 要素のチェックを開始
   useEffect(() => {
     if (isLoaded) {
+      console.log("Starting element check");
       startElementCheck(checkIntervalRef);
     }
     return () => clearCheckInterval(checkIntervalRef);
@@ -99,6 +104,20 @@ export const SubsidyChatbot = () => {
       window.removeEventListener('focus', handleFocus);
     };
   }, []);
+
+  // 定期的にDifyチャットの状態を確認し、必要に応じて再初期化
+  useEffect(() => {
+    if (isLoaded) {
+      const difyCheckInterval = setInterval(() => {
+        if (!window.DifyChat && document.getElementById('dify-chatbot-bubble-button-1')) {
+          console.log("DifyChat not available but UI elements exist - reinitializing");
+          initializeChatbot();
+        }
+      }, 30000); // 30秒ごとにチェック
+      
+      return () => clearInterval(difyCheckInterval);
+    }
+  }, [isLoaded]);
 
   return null;
 };
