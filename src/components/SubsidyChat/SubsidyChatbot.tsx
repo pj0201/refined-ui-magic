@@ -1,227 +1,41 @@
 
-import { useEffect, useState, useRef } from "react";
-import { 
-  initializeDifyScripts, 
-  addChatbotElements, 
-  cleanup 
-} from "./utils/chatbotInitializer";
-import { 
-  startElementCheck, 
-  clearCheckInterval 
-} from "./utils/elementChecker";
+import { useEffect } from "react";
+import { cleanup } from "./utils/chatbotInitializer";
+// Import custom hooks
+import { useChatbotInitializer } from "./hooks/useChatbotInitializer";
+import { useElementChecker } from "./hooks/useElementChecker";
+import { useChatWindowAdjuster } from "./hooks/useChatWindowAdjuster";
+import { useDocumentReady } from "./hooks/useDocumentReady";
 // Import Dify types to ensure type checking
 import "./types/dify.d.ts";
-import { createDirectChatWindow } from "./utils/directChatImplementation";
 
 /**
  * 補助金チャットボットコンポーネント（小規模持続化補助金対応）
  */
 export const SubsidyChatbot = () => {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [useFallback, setUseFallback] = useState(false);
-  const checkIntervalRef = useRef<number | null>(null);
-  const attemptCountRef = useRef(0);
-  const MAX_ATTEMPTS = 3; // 最大リトライ回数
+  // 初期化機能を使用
+  const { isLoaded, useFallback, initializeChatbot } = useChatbotInitializer();
+  
+  // 要素チェック機能を使用
+  const { checkIntervalRef } = useElementChecker(isLoaded, useFallback);
+  
+  // チャットウィンドウの調整機能を使用
+  useChatWindowAdjuster(isLoaded);
+  
+  // ドキュメントの準備完了を検知
+  useDocumentReady(initializeChatbot);
 
+  // クリーンアップ
   useEffect(() => {
-    console.log("SubsidyChatbot component mounted");
-    
-    // DOMコンテンツが読み込まれた後に初期化する
-    if (document.readyState === "complete") {
-      console.log("DOM already loaded, initializing chatbot");
-      initializeChatbot();
-    } else {
-      console.log("Waiting for DOM to load");
-      window.addEventListener("DOMContentLoaded", () => {
-        console.log("DOM loaded, initializing chatbot");
-        initializeChatbot();
-      });
-      // フォールバックとして、少し遅延させても初期化する
-      setTimeout(initializeChatbot, 1000);
-    }
-
-    // クリーンアップ
     return () => {
       console.log("Cleaning up subsidy chatbot");
       cleanup();
-      clearCheckInterval(checkIntervalRef);
+      if (checkIntervalRef.current) {
+        clearInterval(checkIntervalRef.current);
+        checkIntervalRef.current = null;
+      }
     };
   }, []);
-
-  const initializeChatbot = () => {
-    console.log("Initializing small business subsidy chatbot...");
-    
-    // 既存の要素をクリーンアップ
-    cleanup();
-    
-    // フォールバックモードが有効の場合は直接実装を使用
-    if (useFallback) {
-      console.log("Using fallback implementation");
-      createDirectChatWindow();
-      addChatbotElements();
-      setIsLoaded(true);
-      return;
-    }
-    
-    // Difyスクリプトを初期化
-    initializeDifyScripts(
-      // 成功時のコールバック
-      () => {
-        console.log("Dify scripts initialized successfully");
-        setIsLoaded(true);
-        attemptCountRef.current = 0; // リセット
-        
-        // 確認のために一定時間後にグローバルオブジェクトを再確認
-        setTimeout(() => {
-          console.log("Re-checking Dify global objects");
-          console.log('DifyAI available:', !!window.DifyAI);
-          console.log('__DIFY_CHAT_CONFIG__ available:', !!window.__DIFY_CHAT_CONFIG__);
-          
-          // Window型定義の問題を解決
-          const hasLegacyDifyChat = typeof window.DifyChat !== 'undefined';
-          const hasLegacyDifyChatbot = typeof window.difyChatbot !== 'undefined';
-          
-          console.log('Legacy DifyChat available:', hasLegacyDifyChat);
-          console.log('Legacy difyChatbot available:', hasLegacyDifyChatbot);
-          
-          // Difyのオブジェクトが存在しない場合はフォールバックモードを有効化
-          if (!window.DifyAI && !hasLegacyDifyChat && !hasLegacyDifyChatbot) {
-            console.log("No Dify objects detected, enabling fallback mode");
-            setUseFallback(true);
-            cleanup();
-            createDirectChatWindow();
-          }
-          
-          // Difyウィジェットの状態を確認
-          const chatElements = document.querySelectorAll('[id*="dify"], [class*="dify"], [id*="chat"], [class*="chat"]');
-          console.log(`Found ${chatElements.length} potential Dify elements in the DOM`);
-        }, 3000);
-        
-        // Difyチャットウィンドウのサイズと位置を調整
-        const adjustChatWindow = () => {
-          const chatWindow = document.getElementById('dify-chatbot-bubble-window');
-          if (chatWindow) {
-            console.log("Adjusting chat window position and size");
-            const viewportHeight = window.innerHeight;
-            const chatWindowHeight = chatWindow.clientHeight;
-            
-            if (chatWindowHeight > viewportHeight - 100) {
-              chatWindow.style.height = (viewportHeight - 100) + 'px';
-              chatWindow.style.top = '50px';
-            }
-          } else {
-            console.log("Chat window not found for adjustment");
-          }
-        };
-        
-        // ウィンドウリサイズ時にチャットウィンドウを調整
-        window.addEventListener('resize', adjustChatWindow);
-        // 初期調整
-        setTimeout(adjustChatWindow, 1000);
-      },
-      // エラー時のコールバック
-      (e) => {
-        console.error("Failed to load Dify script", e);
-        attemptCountRef.current++;
-        if (attemptCountRef.current < MAX_ATTEMPTS) {
-          console.log(`Retrying script load (attempt ${attemptCountRef.current}/${MAX_ATTEMPTS}) in 1.5 seconds...`);
-          setTimeout(initializeChatbot, 1500);
-        } else {
-          console.log("Maximum attempts reached, enabling fallback mode");
-          setUseFallback(true);
-          setIsLoaded(true);
-          
-          // フォールバックモードのチャットウィンドウを作成
-          createDirectChatWindow();
-          
-          // 通常のUIボタンも追加
-          addChatbotElements();
-        }
-      }
-    );
-  };
-
-  // フォールバックモードが変更された場合に再初期化
-  useEffect(() => {
-    if (useFallback) {
-      console.log("Fallback mode enabled, reinitializing");
-      cleanup();
-      createDirectChatWindow();
-      addChatbotElements();
-    }
-  }, [useFallback]);
-
-  // 要素のチェックを開始
-  useEffect(() => {
-    if (isLoaded) {
-      console.log("Starting element check");
-      startElementCheck(checkIntervalRef);
-    }
-    return () => clearCheckInterval(checkIntervalRef);
-  }, [isLoaded]);
-
-  // フォーカスを戻したときに要素を再チェック
-  useEffect(() => {
-    const handleFocus = () => {
-      console.log("Window focus detected, checking elements");
-      const button1 = document.getElementById('dify-chatbot-bubble-button-1');
-      const label1 = document.getElementById('dify-chatbot-label-1');
-      const button2 = document.getElementById('dify-chatbot-bubble-button-2');
-      const label2 = document.getElementById('dify-chatbot-label-2');
-      
-      if (!button1 || !label1 || !button2 || !label2) {
-        console.log("Elements missing after focus, restoring");
-        addChatbotElements();
-      }
-      
-      // フォールバックモードの場合はチャットウィンドウも確認
-      if (useFallback) {
-        const chatWindow = document.getElementById('direct-chat-window');
-        if (!chatWindow) {
-          console.log("Direct chat window missing, restoring");
-          createDirectChatWindow();
-        }
-      }
-    };
-    
-    window.addEventListener('focus', handleFocus);
-    
-    return () => {
-      window.removeEventListener('focus', handleFocus);
-    };
-  }, [useFallback]);
-
-  // Difyチャットボットの変更検出と自動調整
-  useEffect(() => {
-    if (isLoaded) {
-      // チャットウィンドウ状態の監視
-      const chatWindowObserver = new MutationObserver((mutations) => {
-        mutations.forEach((mutation) => {
-          if (mutation.type === 'childList') {
-            const chatWindow = document.getElementById('dify-chatbot-bubble-window');
-            if (chatWindow) {
-              // チャットウィンドウが表示されたら位置調整
-              const viewportHeight = window.innerHeight;
-              const chatWindowHeight = chatWindow.clientHeight;
-              
-              if (chatWindowHeight > viewportHeight - 100) {
-                chatWindow.style.height = (viewportHeight - 100) + 'px';
-                chatWindow.style.top = '50px';
-                console.log("Chat window position adjusted");
-              }
-            }
-          }
-        });
-      });
-      
-      // body要素を監視して、チャットウィンドウの追加を検出
-      chatWindowObserver.observe(document.body, { childList: true, subtree: true });
-      
-      return () => {
-        chatWindowObserver.disconnect();
-      };
-    }
-  }, [isLoaded]);
 
   return null;
 };
