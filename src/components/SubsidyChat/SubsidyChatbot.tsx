@@ -11,12 +11,14 @@ import {
 } from "./utils/elementChecker";
 // Import Dify types to ensure type checking
 import "./types/dify.d.ts";
+import { createDirectChatWindow } from "./utils/directChatImplementation";
 
 /**
  * 補助金チャットボットコンポーネント（小規模持続化補助金対応）
  */
 export const SubsidyChatbot = () => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [useFallback, setUseFallback] = useState(false);
   const checkIntervalRef = useRef<number | null>(null);
   const attemptCountRef = useRef(0);
   const MAX_ATTEMPTS = 3; // 最大リトライ回数
@@ -52,6 +54,15 @@ export const SubsidyChatbot = () => {
     // 既存の要素をクリーンアップ
     cleanup();
     
+    // フォールバックモードが有効の場合は直接実装を使用
+    if (useFallback) {
+      console.log("Using fallback implementation");
+      createDirectChatWindow();
+      addChatbotElements();
+      setIsLoaded(true);
+      return;
+    }
+    
     // Difyスクリプトを初期化
     initializeDifyScripts(
       // 成功時のコールバック
@@ -72,6 +83,14 @@ export const SubsidyChatbot = () => {
           
           console.log('Legacy DifyChat available:', hasLegacyDifyChat);
           console.log('Legacy difyChatbot available:', hasLegacyDifyChatbot);
+          
+          // Difyのオブジェクトが存在しない場合はフォールバックモードを有効化
+          if (!window.DifyAI && !hasLegacyDifyChat && !hasLegacyDifyChatbot) {
+            console.log("No Dify objects detected, enabling fallback mode");
+            setUseFallback(true);
+            cleanup();
+            createDirectChatWindow();
+          }
           
           // Difyウィジェットの状態を確認
           const chatElements = document.querySelectorAll('[id*="dify"], [class*="dify"], [id*="chat"], [class*="chat"]');
@@ -108,14 +127,29 @@ export const SubsidyChatbot = () => {
           console.log(`Retrying script load (attempt ${attemptCountRef.current}/${MAX_ATTEMPTS}) in 1.5 seconds...`);
           setTimeout(initializeChatbot, 1500);
         } else {
-          console.log("Maximum attempts reached, adding fallback button");
-          // スクリプトの読み込みに失敗しても要素を追加（UIを表示）
+          console.log("Maximum attempts reached, enabling fallback mode");
+          setUseFallback(true);
           setIsLoaded(true);
+          
+          // フォールバックモードのチャットウィンドウを作成
+          createDirectChatWindow();
+          
+          // 通常のUIボタンも追加
           addChatbotElements();
         }
       }
     );
   };
+
+  // フォールバックモードが変更された場合に再初期化
+  useEffect(() => {
+    if (useFallback) {
+      console.log("Fallback mode enabled, reinitializing");
+      cleanup();
+      createDirectChatWindow();
+      addChatbotElements();
+    }
+  }, [useFallback]);
 
   // 要素のチェックを開始
   useEffect(() => {
@@ -139,6 +173,15 @@ export const SubsidyChatbot = () => {
         console.log("Elements missing after focus, restoring");
         addChatbotElements();
       }
+      
+      // フォールバックモードの場合はチャットウィンドウも確認
+      if (useFallback) {
+        const chatWindow = document.getElementById('direct-chat-window');
+        if (!chatWindow) {
+          console.log("Direct chat window missing, restoring");
+          createDirectChatWindow();
+        }
+      }
     };
     
     window.addEventListener('focus', handleFocus);
@@ -146,7 +189,7 @@ export const SubsidyChatbot = () => {
     return () => {
       window.removeEventListener('focus', handleFocus);
     };
-  }, []);
+  }, [useFallback]);
 
   // Difyチャットボットの変更検出と自動調整
   useEffect(() => {

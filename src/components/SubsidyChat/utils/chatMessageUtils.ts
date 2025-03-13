@@ -1,28 +1,41 @@
 
+import { sendDirectChatMessage, showChatWindow } from './directChatImplementation';
+
 /**
  * チャットメッセージの送信とウィンドウ表示を処理する
  */
 export const sendChatMessage = (message: string): void => {
   console.log('Attempting to send message:', message);
   
-  setTimeout(() => {
-    if (window.DifyAI) {
-      console.log('Using DifyAI API');
-      if (!window.DifyAI.isOpen()) {
-        window.DifyAI.toggleUI(true);
-      }
-      
-      setTimeout(() => {
-        if (window.DifyAI) {
-          window.DifyAI.sendMessage(message);
-          console.log('Message sent via DifyAI API');
-        }
-      }, 800);
-    } else {
-      console.error('DifyAI API not available');
-      console.log('window.__DIFY_CHAT_CONFIG__ available:', !!window.__DIFY_CHAT_CONFIG__);
+  // Dify APIが利用可能かチェック
+  if (window.DifyAI) {
+    console.log('Using DifyAI API');
+    if (!window.DifyAI.isOpen()) {
+      window.DifyAI.toggleUI(true);
     }
-  }, 500);
+    
+    setTimeout(() => {
+      if (window.DifyAI) {
+        window.DifyAI.sendMessage(message);
+        console.log('Message sent via DifyAI API');
+      }
+    }, 800);
+    return;
+  }
+  
+  // 古いバージョンのDify APIをチェック
+  if (typeof window.DifyChat !== 'undefined' && window.DifyChat.toggleWindow) {
+    console.log('Using legacy DifyChat API');
+    window.DifyChat.toggleWindow();
+    
+    // メッセージを送信する方法がないため、ウィンドウを表示するだけ
+    console.log('Cannot send message via legacy DifyChat API');
+    return;
+  }
+  
+  // どのDify APIも利用できない場合は直接実装を使用
+  console.log('Using direct chat implementation');
+  sendDirectChatMessage(message);
 };
 
 /**
