@@ -22,10 +22,20 @@ interface DifyChatConfig {
   };
 }
 
+// 古いバージョンのDify APIも対応（後方互換性のため）
+interface DifyChatInterface {
+  // Legacy API methods that might be used
+  toggleBubble?: () => void;
+  toggleWindow?: () => void;
+}
+
 declare global {
   interface Window {
     DifyAI?: DifyAIInterface;
     __DIFY_CHAT_CONFIG__?: DifyChatConfig;
+    // Legacy objects that might be used in the code
+    DifyChat?: DifyChatInterface;
+    difyChatbot?: unknown;
   }
 }
 

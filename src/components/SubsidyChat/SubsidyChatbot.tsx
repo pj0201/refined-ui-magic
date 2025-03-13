@@ -63,10 +63,15 @@ export const SubsidyChatbot = () => {
         // 確認のために一定時間後にグローバルオブジェクトを再確認
         setTimeout(() => {
           console.log("Re-checking Dify global objects");
-          console.log('DifyChat available:', !!window.DifyChat);
-          console.log('difyChatbot available:', !!window.difyChatbot);
           console.log('DifyAI available:', !!window.DifyAI);
           console.log('__DIFY_CHAT_CONFIG__ available:', !!window.__DIFY_CHAT_CONFIG__);
+          
+          // Window型定義の問題を解決
+          const hasLegacyDifyChat = typeof window.DifyChat !== 'undefined';
+          const hasLegacyDifyChatbot = typeof window.difyChatbot !== 'undefined';
+          
+          console.log('Legacy DifyChat available:', hasLegacyDifyChat);
+          console.log('Legacy difyChatbot available:', hasLegacyDifyChatbot);
           
           // Difyウィジェットの状態を確認
           const chatElements = document.querySelectorAll('[id*="dify"], [class*="dify"], [id*="chat"], [class*="chat"]');

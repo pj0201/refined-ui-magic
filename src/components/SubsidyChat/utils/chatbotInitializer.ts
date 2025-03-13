@@ -24,8 +24,10 @@ export const initializeDifyScripts = (
       // 少し遅延してからUIを追加（Difyスクリプトの初期化を待つ）
       setTimeout(() => {
         // グローバルオブジェクトのステータスをチェック
-        if (window.DifyAI || window.difyChatbot || window.DifyChat) {
-          console.log("Dify API detected, adding UI elements");
+        if (window.DifyAI) {
+          console.log("Dify API detected (v1.2.0+), adding UI elements");
+        } else if (typeof window.DifyChat !== 'undefined' || typeof window.difyChatbot !== 'undefined') {
+          console.log("Legacy Dify API detected, adding UI elements");
         } else {
           console.warn("No Dify API detected after script load, but proceeding with UI elements");
         }
@@ -65,11 +67,19 @@ export const cleanup = (): void => {
   
   // グローバルオブジェクトもクリーンアップ
   try {
-    // @ts-ignore - グローバルオブジェクトから削除を試みる
-    if (window.DifyChat) window.DifyChat = undefined;
-    if (window.difyChatbot) window.difyChatbot = undefined;
-    if (window.DifyAI) window.DifyAI = undefined;
-    if (window.__DIFY_CHAT_CONFIG__) window.__DIFY_CHAT_CONFIG__ = undefined;
+    // 型安全なグローバルオブジェクトのクリーンアップ
+    if (typeof window.DifyChat !== 'undefined') {
+      delete window.DifyChat;
+    }
+    if (typeof window.difyChatbot !== 'undefined') {
+      delete window.difyChatbot;
+    }
+    if (window.DifyAI) {
+      window.DifyAI = undefined;
+    }
+    if (window.__DIFY_CHAT_CONFIG__) {
+      window.__DIFY_CHAT_CONFIG__ = undefined;
+    }
   } catch (e) {
     console.error('Failed to cleanup global objects:', e);
   }
