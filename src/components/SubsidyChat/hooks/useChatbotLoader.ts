@@ -35,37 +35,40 @@ export const useChatbotLoader = () => {
     );
     document.head.appendChild(configScript);
     
-    // Difyスクリプトを読み込み
-    const mainScript = createScriptTag(
-      'yXBz3rzpDBhMgYcB',
-      null,
-      "https://udify.app/js/web-client-chat.js",
-      true,
-      true
-    );
-    
-    // 正常にロードされた場合
-    mainScript.onload = () => {
-      console.log("Difyスクリプトが正常にロードされました");
-      setIsLoaded(true);
-      setIsError(false);
-    };
-    
-    // エラーが発生した場合
-    mainScript.onerror = (error) => {
-      console.error("Difyスクリプトのロードエラー:", error);
-      setIsError(true);
-      setIsLoaded(false);
+    // 少し待ってからDifyスクリプトを読み込み
+    setTimeout(() => {
+      // Difyスクリプトを読み込み
+      const mainScript = createScriptTag(
+        'yXBz3rzpDBhMgYcB',
+        null,
+        "https://udify.app/js/web-client-chat.js",
+        true,
+        true
+      );
       
-      toast({
-        title: "チャットボットの読み込みに問題があります",
-        description: "ネットワーク接続を確認してください。",
-        variant: "destructive",
-        duration: 5000,
-      });
-    };
-    
-    document.head.appendChild(mainScript);
+      // 正常にロードされた場合
+      mainScript.onload = () => {
+        console.log("Difyスクリプトが正常にロードされました");
+        setIsLoaded(true);
+        setIsError(false);
+      };
+      
+      // エラーが発生した場合
+      mainScript.onerror = (error) => {
+        console.error("Difyスクリプトのロードエラー:", error);
+        setIsError(true);
+        setIsLoaded(false);
+        
+        toast({
+          title: "チャットボットの読み込みに問題があります",
+          description: "ネットワーク接続を確認してください。",
+          variant: "destructive",
+          duration: 5000,
+        });
+      };
+      
+      document.head.appendChild(mainScript);
+    }, 500);
   };
 
   // 要素のクリーンアップ
