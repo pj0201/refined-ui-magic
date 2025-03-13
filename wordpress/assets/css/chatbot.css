@@ -31,10 +31,9 @@
     color: #22C55E !important;
     font-size: 13px !important;
     text-align: center !important;
-    writing-mode: vertical-rl !important;
-    text-orientation: mixed !important;
-    letter-spacing: 1px !important;
-    line-height: 1 !important;
+    writing-mode: vertical-lr !important;
+    letter-spacing: 0 !important;
+    line-height: 1.2 !important;
     white-space: nowrap !important;
     right: 60px !important;
     z-index: 2147483646 !important;
@@ -44,6 +43,7 @@
     height: 36px !important;
     display: flex !important;
     align-items: center !important;
+    transform: rotate(180deg) !important;
 }
 
 .dify-chatbot-label:hover {
