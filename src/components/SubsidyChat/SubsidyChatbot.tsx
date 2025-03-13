@@ -1,5 +1,5 @@
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useDifyChat } from "./hooks/useDifyChat";
 import { toast } from "@/components/ui/use-toast";
 
@@ -11,11 +11,17 @@ import { toast } from "@/components/ui/use-toast";
  */
 export const SubsidyChatbot = () => {
   const { isLoaded, isError } = useDifyChat();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // 読み込み状態のロギング
   useEffect(() => {
     if (isLoaded) {
       console.log('チャットボットが正常に読み込まれました');
+      toast({
+        title: "チャットボットが利用可能です",
+        description: "お気軽に質問してください",
+        duration: 3000,
+      });
     }
     
     if (isError) {
@@ -55,6 +61,14 @@ export const SubsidyChatbot = () => {
     };
   }, []);
 
-  // コンポーネントは何も描画しない（DOMはスクリプトによって自動的に追加される）
-  return null;
+  // DOM操作で要素を追加する代わりに、コンテナ要素を提供
+  return (
+    <div 
+      id="dify-chatbot-container" 
+      ref={containerRef} 
+      className="fixed bottom-0 right-0 z-50"
+      aria-live="polite"
+      aria-label="チャットボット"
+    />
+  );
 };
