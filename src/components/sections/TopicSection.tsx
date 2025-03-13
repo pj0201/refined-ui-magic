@@ -1,4 +1,3 @@
-
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -19,7 +18,7 @@ const topics: Topic[] = [
   {
     id: 1,
     isNew: true,
-    content: "2025年3月より申請開始 　新たに一般形が追加され利用しやすくなった「中小企業省力化投資補助金一般形」が始まります。\n（詳細は本ページのチャットボットへどうぞ)",
+    content: "2025年3月より申請開始\n新たに一般形が追加され利用しやすくなった「中小企業省力化投資補助金一般形」が始まります。\n（詳細は本ページのチャットボットへどうぞ)",
     date: "2025/03",
     keywords: ["補助金", "融資", "中小企業", "神戸", "兵庫"]
   },
@@ -114,7 +113,7 @@ export const TopicSection = () => {
     style.id = 'dify-style';
     style.textContent = `
       #dify-chatbot-bubble-button {
-        background-color: #8B5CF6 !important; /* より目立つ紫色 */
+        background-color: #8B5CF6 !important; /* ��り目立つ紫色 */
       }
       #dify-chatbot-bubble-window {
         width: 24rem !important;
