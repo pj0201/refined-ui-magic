@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Topic, topics as fallbackTopics } from "@/data/topicsData";
 
@@ -14,6 +15,12 @@ export const useTopicData = () => {
       try {
         // API URL should be replaced with your actual API endpoint
         const response = await fetch('/api/topics');
+        
+        // Check if the response content type is JSON
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+          throw new Error("API endpoint returned non-JSON response");
+        }
         
         if (!response.ok) {
           throw new Error(`Failed to fetch topics: ${response.status}`);
@@ -32,7 +39,15 @@ export const useTopicData = () => {
       }
     };
 
-    fetchTopics();
+    // In development, you might want to use the fallback data without making API calls
+    // that are expected to fail if the API is not yet implemented
+    const isDevelopment = import.meta.env.DEV;
+    if (!isDevelopment) {
+      fetchTopics();
+    } else {
+      console.log("Development mode: Using fallback topic data without API call");
+      setIsLoading(false);
+    }
   }, []);
 
   return { topics, isLoading, error };
