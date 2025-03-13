@@ -1,7 +1,66 @@
 
 import { createChatbotLabel, createChatbotButton, removeElement } from './domUtils';
-import { sendShoroku, sendShokibo, setupMessageListeners } from './chatMessageHandler';
 import '../types/dify.d.ts';
+
+/**
+ * 省力化投資補助金のメッセージを送信
+ */
+const sendShoroku = (): void => {
+  console.log("省力化投資補助金ボタンがクリックされました");
+  try {
+    if (window.DifyChat && window.DifyChat.toggleBubbleWindow) {
+      window.DifyChat.toggleBubbleWindow(true);
+      
+      if (window.DifyChat.onChatCleared) {
+        window.DifyChat.onChatCleared();
+      }
+      
+      // 省力化投資補助金についてのメッセージを自動送信
+      setTimeout(() => {
+        if (window.DifyChat?.sendMessage) {
+          console.log("自動メッセージを送信: 省力化投資補助金について教えてください");
+          window.DifyChat.sendMessage('省力化投資補助金について教えてください');
+        }
+      }, 500);
+    } else {
+      console.warn("DifyChat API が利用できません");
+      // イベントを通じて通知
+      window.postMessage({ type: 'CHAT_TYPE_1_CLICK', value: '省力化投資補助金' }, '*');
+    }
+  } catch (error) {
+    console.error("省力化投資補助金チャット開始中にエラーが発生しました:", error);
+  }
+};
+
+/**
+ * 小規模持続化補助金のメッセージを送信
+ */
+const sendShokibo = (): void => {
+  console.log("小規模持続化補助金ボタンがクリックされました");
+  try {
+    if (window.DifyChat && window.DifyChat.toggleBubbleWindow) {
+      window.DifyChat.toggleBubbleWindow(true);
+      
+      if (window.DifyChat.onChatCleared) {
+        window.DifyChat.onChatCleared();
+      }
+      
+      // 小規模持続化補助金についてのメッセージを自動送信
+      setTimeout(() => {
+        if (window.DifyChat?.sendMessage) {
+          console.log("自動メッセージを送信: 小規模持続化補助金について教えてください");
+          window.DifyChat.sendMessage('小規模持続化補助金について教えてください');
+        }
+      }, 500);
+    } else {
+      console.warn("DifyChat API が利用できません");
+      // イベントを通じて通知
+      window.postMessage({ type: 'CHAT_TYPE_2_CLICK', value: '小規模持続化補助金' }, '*');
+    }
+  } catch (error) {
+    console.error("小規模持続化補助金チャット開始中にエラーが発生しました:", error);
+  }
+};
 
 /**
  * チャットボット要素の追加
@@ -61,7 +120,4 @@ export const addChatbotElements = (): void => {
   
   // コンテナをDOMに追加
   document.body.appendChild(container);
-  
-  // メッセージリスナーをセットアップ
-  setupMessageListeners();
 };
