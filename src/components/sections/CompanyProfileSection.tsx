@@ -1,7 +1,9 @@
+
 import { Mail } from "lucide-react";
 
 export const CompanyProfileSection = () => {
-  const backgroundImageUrl = "https://images.unsplash.com/photo-1449157291145-7efd050a4d0e?auto=format&fit=crop&w=2000&q=80";
+  // Changed to a brighter cityscape image
+  const backgroundImageUrl = "https://images.unsplash.com/photo-1449824913935-59a10b8d2000?auto=format&fit=crop&w=2000&q=80";
   
   return (
     <section id="about-us" className="py-20 px-4 relative">
@@ -9,11 +11,13 @@ export const CompanyProfileSection = () => {
         className="absolute inset-0 bg-cover bg-center z-0"
         style={{ 
           backgroundImage: `url("${backgroundImageUrl}")`,
-          filter: 'brightness(0.4)'
+          // Increased brightness to make it lighter
+          filter: 'brightness(0.8)'
         }}
       />
       
-      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/60 z-[1]"></div>
+      {/* Changed from dark gradient to a lighter gray gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-gray-400/40 via-gray-300/30 to-gray-400/40 z-[1]"></div>
       
       <div className="max-w-4xl mx-auto fade-in relative z-10">
         <h2 className="text-3xl font-bold text-center mb-12 text-white">会社概要</h2>
