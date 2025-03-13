@@ -1,94 +1,13 @@
 
 import { createChatbotLabel, createChatbotButton, removeElement } from './domUtils';
+import { sendShoroku, sendShokibo, setupMessageListeners } from './chatMessageHandler';
 import '../types/dify.d.ts';
-
-/**
- * 省力化投資補助金のメッセージを送信
- */
-const sendShoroku = (): void => {
-  console.log("省力化投資補助金ボタンがクリックされました");
-  try {
-    if (window.DifyChat && window.DifyChat.toggleBubbleWindow) {
-      console.log("DifyChatが利用可能です。チャットウィンドウを開きます。");
-      window.DifyChat.toggleBubbleWindow(true);
-      
-      if (window.DifyChat.onChatCleared) {
-        console.log("チャット履歴をクリアします");
-        window.DifyChat.onChatCleared();
-      }
-      
-      // 省力化投資補助金についてのメッセージを自動送信
-      setTimeout(() => {
-        if (window.DifyChat?.sendMessage) {
-          console.log("自動メッセージを送信: 省力化投資補助金について教えてください");
-          window.DifyChat.sendMessage('省力化投資補助金について教えてください');
-        } else {
-          console.warn("DifyChat.sendMessageが利用できません");
-          // 再試行
-          setTimeout(() => {
-            if (window.DifyChat?.sendMessage) {
-              console.log("自動メッセージを再送信: 省力化投資補助金について教えてください");
-              window.DifyChat.sendMessage('省力化投資補助金について教えてください');
-            }
-          }, 1000);
-        }
-      }, 1500);
-    } else {
-      console.warn("DifyChat API が利用できません");
-      // イベントを通じて通知
-      window.postMessage({ type: 'CHAT_TYPE_1_CLICK', value: '省力化投資補助金' }, '*');
-    }
-  } catch (error) {
-    console.error("省力化投資補助金チャット開始中にエラーが発生しました:", error);
-  }
-};
-
-/**
- * 小規模持続化補助金のメッセージを送信
- */
-const sendShokibo = (): void => {
-  console.log("小規模持続化補助金ボタンがクリックされました");
-  try {
-    if (window.DifyChat && window.DifyChat.toggleBubbleWindow) {
-      console.log("DifyChatが利用可能です。チャットウィンドウを開きます。");
-      window.DifyChat.toggleBubbleWindow(true);
-      
-      if (window.DifyChat.onChatCleared) {
-        console.log("チャット履歴をクリアします");
-        window.DifyChat.onChatCleared();
-      }
-      
-      // 小規模持続化補助金についてのメッセージを自動送信
-      setTimeout(() => {
-        if (window.DifyChat?.sendMessage) {
-          console.log("自動メッセージを送信: 小規模持続化補助金について教えてください");
-          window.DifyChat.sendMessage('小規模持続化補助金について教えてください');
-        } else {
-          console.warn("DifyChat.sendMessageが利用できません");
-          // 再試行
-          setTimeout(() => {
-            if (window.DifyChat?.sendMessage) {
-              console.log("自動メッセージを再送信: 小規模持続化補助金について教えてください");
-              window.DifyChat.sendMessage('小規模持続化補助金について教えてください');
-            }
-          }, 1000);
-        }
-      }, 1500);
-    } else {
-      console.warn("DifyChat API が利用できません");
-      // イベントを通じて通知
-      window.postMessage({ type: 'CHAT_TYPE_2_CLICK', value: '小規模持続化補助金' }, '*');
-    }
-  } catch (error) {
-    console.error("小規模持続化補助金チャット開始中にエラーが発生しました:", error);
-  }
-};
 
 /**
  * チャットボット要素の追加
  */
 export const addChatbotElements = (): void => {
-  console.log("チャットボット要素をDOMに追加しています");
+  console.log("Adding chatbot elements to the DOM");
   
   // 既存の要素をクリーンアップ
   removeElement('chatbot-elements-container');
@@ -101,13 +20,6 @@ export const addChatbotElements = (): void => {
   const container = document.createElement('div');
   container.id = 'chatbot-elements-container';
   container.className = 'chatbot-elements-container';
-  container.style.position = 'fixed';
-  container.style.right = '20px';
-  container.style.top = '20px';
-  container.style.display = 'flex';
-  container.style.flexDirection = 'column';
-  container.style.gap = '11px';
-  container.style.zIndex = '2147483646';
   
   // 1つ目のラベル（省力化投資補助金）
   const label1 = createChatbotLabel(
@@ -149,62 +61,7 @@ export const addChatbotElements = (): void => {
   
   // コンテナをDOMに追加
   document.body.appendChild(container);
-  console.log("チャットボット要素がDOMに追加されました");
   
-  // スタイルが確実に適用されるよう明示的に設定
-  applyExplicitStyles();
-};
-
-/**
- * スタイルを明示的に適用する補助関数
- */
-const applyExplicitStyles = () => {
-  const buttons = document.querySelectorAll('.dify-chatbot-bubble-button');
-  buttons.forEach(button => {
-    if (button instanceof HTMLElement) {
-      button.style.width = '32px';
-      button.style.height = '32px';
-      button.style.borderRadius = '50%';
-      button.style.backgroundColor = '#1C64F2';
-      button.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.2)';
-      button.style.border = 'none';
-      button.style.cursor = 'pointer';
-      button.style.zIndex = '2147483647';
-      button.style.display = 'flex';
-      button.style.alignItems = 'center';
-      button.style.justifyContent = 'center';
-      button.style.opacity = '1';
-      button.style.visibility = 'visible';
-      button.style.position = 'relative';
-      button.style.marginLeft = 'auto';
-    }
-  });
-  
-  const labels = document.querySelectorAll('.dify-chatbot-label');
-  labels.forEach(label => {
-    if (label instanceof HTMLElement) {
-      label.style.color = '#22C55E';
-      label.style.fontSize = '11px';
-      label.style.textAlign = 'center';
-      label.style.letterSpacing = '1px';
-      label.style.lineHeight = '1.2';
-      label.style.whiteSpace = 'nowrap';
-      label.style.zIndex = '2147483646';
-      label.style.fontWeight = 'normal';
-      label.style.textShadow = '0 0 1px rgba(0,0,0,0.2)';
-      label.style.transition = 'color 0.3s ease';
-      label.style.width = '32px';
-      label.style.display = 'flex';
-      label.style.alignItems = 'center';
-      label.style.justifyContent = 'center';
-      label.style.writingMode = 'vertical-rl';
-      label.style.textOrientation = 'upright';
-      label.style.backgroundColor = 'rgba(255, 255, 255, 0.9)';
-      label.style.padding = '8px 0';
-      label.style.borderRadius = '16px';
-      label.style.position = 'relative';
-      label.style.marginLeft = 'auto';
-      label.style.marginBottom = '2px';
-    }
-  });
+  // メッセージリスナーをセットアップ
+  setupMessageListeners();
 };
