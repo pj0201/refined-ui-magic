@@ -23,7 +23,7 @@ export const initializeDifyScripts = (
   const configScript = createScriptTag(
     'dify-chat-config',
     `window.__DIFY_CHAT_CONFIG__ = {
-      apiEndpoint: "https://cloud.dify.ai", // udify.app から cloud.dify.ai に変更
+      apiEndpoint: "https://udify.app",
       publicApiKey: "app-KDYnIQfxqkXo7a89jFOplm4c",
       features: {
         text_to_speech: { enabled: false }
@@ -32,89 +32,18 @@ export const initializeDifyScripts = (
   );
   document.head.appendChild(configScript);
   
-  // 複数のスクリプトURLを試みる
-  const scriptUrls = [
-    "https://cloud.dify.ai/js/web-client-chat.js",  // 主要なDifyホスティング
-    "https://udify.app/js/web-client-chat.js",      // オリジナルのURL
-    "https://cdn.jsdelivr.net/npm/@dify/web-client-chat@latest/dist/web-client-chat.js" // CDNバックアップ
-  ];
-  
-  // 各URLが有効かチェック
-  checkScriptUrls(scriptUrls, 0, onSuccess, onError);
-};
-
-/**
- * 複数のスクリプトURLを順次チェックする再帰関数
- */
-const checkScriptUrls = (
-  urls: string[],
-  index: number,
-  onSuccess: () => void,
-  onError: (error: Event | Error) => void
-) => {
-  if (index >= urls.length) {
-    console.error("すべてのスクリプトURLのロードに失敗しました");
-    onError(new Error("すべてのDifyスクリプトURLにアクセスできません"));
-    return;
-  }
-  
-  const currentUrl = urls[index];
-  console.log(`スクリプトURL (${index + 1}/${urls.length}) をチェック中: ${currentUrl}`);
-  
-  // URLのアクセス可能性をチェック
-  fetch(currentUrl, { method: 'HEAD', mode: 'no-cors' })
-    .then(response => {
-      console.log(`Script URL ${currentUrl} response status: ${response.status}`);
-      
-      if (response.ok || response.status === 0) { // no-corsモードでは0が返ることがある
-        console.log(`スクリプトURL ${currentUrl} にアクセスできました、スクリプトをロードします`);
-        loadMainScript(currentUrl, onSuccess, (error) => {
-          console.warn(`${currentUrl} からのスクリプトロードに失敗: ${error}、次のURLを試みます`);
-          checkScriptUrls(urls, index + 1, onSuccess, onError);
-        });
-      } else {
-        console.warn(`スクリプトURL ${currentUrl} は応答コード ${response.status} を返しました、次のURLを試みます`);
-        checkScriptUrls(urls, index + 1, onSuccess, onError);
-      }
-    })
-    .catch(err => {
-      console.warn(`スクリプトURL ${currentUrl} のチェックに失敗: ${err}、次のURLを試みます`);
-      // fetch自体が失敗した場合でも、スクリプトのロードを試みる（CORSの問題かもしれない）
-      loadMainScript(currentUrl, onSuccess, (error) => {
-        checkScriptUrls(urls, index + 1, onSuccess, onError);
-      });
-    });
-};
-
-/**
- * メインスクリプトをロードする
- */
-const loadMainScript = (
-  scriptUrl: string,
-  onSuccess: () => void,
-  onError: (error: Event | Error) => void
-) => {
-  console.log(`スクリプトをロード中: ${scriptUrl}`);
-  
+  // Difyスクリプトを読み込み
   const mainScript = createScriptTag(
     'yXBz3rzpDBhMgYcB',
     null,
-    scriptUrl,
+    "https://udify.app/js/web-client-chat.js",
     true,
     true
   );
   
-  // タイムアウト設定
-  const timeoutId = setTimeout(() => {
-    console.error(`スクリプトロードがタイムアウトしました: ${scriptUrl}`);
-    mainScript.remove(); // 未完了のスクリプトタグを削除
-    onError(new Error(`スクリプトロードがタイムアウトしました: ${scriptUrl}`));
-  }, 10000); // 10秒タイムアウト
-  
   // 正常にロードされた場合
   mainScript.onload = (): void => {
-    clearTimeout(timeoutId);
-    console.log(`Difyスクリプト ${scriptUrl} が正常にロードされました`);
+    console.log("Difyスクリプトが正常にロードされました");
     
     // window.DifyChat が実際に存在するか確認
     if (window.DifyChat) {
@@ -128,10 +57,21 @@ const loadMainScript = (
   
   // エラーが発生した場合
   mainScript.onerror = (error: Event): void => {
-    clearTimeout(timeoutId);
-    console.error(`Difyスクリプト ${scriptUrl} のロードエラー:`, error);
+    console.error("Difyスクリプトのロードエラー:", error);
     onError(error);
   };
+  
+  // タイムアウト設定 - より短いタイムアウト
+  const timeoutId = setTimeout(() => {
+    console.error("スクリプトロードがタイムアウトしました");
+    mainScript.remove(); // 未完了のスクリプトタグを削除
+    onError(new Error("スクリプトロードがタイムアウトしました"));
+  }, 5000); // 5秒タイムアウト
+
+  // onload時にタイムアウトをクリア
+  mainScript.addEventListener('load', () => {
+    clearTimeout(timeoutId);
+  });
   
   document.head.appendChild(mainScript);
 };
@@ -151,7 +91,7 @@ export const cleanup = (): void => {
     'dify-chatbot-bubble-button-2', 
     'dify-chatbot-label-2',
     'chatbot-elements-container',
-    'dify-fallback-container' // フォールバックメッセージコンテナも削除
+    'dify-fallback-container'
   ];
   
   elementsToRemove.forEach(id => {

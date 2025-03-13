@@ -14,8 +14,8 @@ export const useChatbotInitializer = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isError, setIsError] = useState(false);
   const attemptCountRef = useRef(0);
-  const MAX_ATTEMPTS = 5; // 最大リトライ回数を増加
-  const RETRY_DELAY = 3000; // リトライ間隔（ミリ秒）- 3秒に延長
+  const MAX_ATTEMPTS = 3; // 最大リトライ回数を減少
+  const RETRY_DELAY = 2000; // リトライ間隔（ミリ秒）- 2秒に短縮
 
   // チャットボット初期化処理
   const initializeChatbot = () => {
@@ -40,16 +40,6 @@ export const useChatbotInitializer = () => {
         // window.DifyChatの存在を確認
         if (window.DifyChat) {
           console.log("DifyChat object is available:", window.DifyChat);
-          // オプションで成功通知
-          if (attemptCountRef.current > 1) {
-            toast({
-              title: "チャットボットの準備ができました",
-              description: "補助金についての質問ができます",
-              duration: 3000,
-            });
-          }
-        } else {
-          console.warn("DifyChat object is not available yet. Will use fallback messaging.");
         }
       },
       // エラー時のコールバック
@@ -62,17 +52,14 @@ export const useChatbotInitializer = () => {
           console.log(`スクリプト読み込みをリトライします（${attemptCountRef.current}/${MAX_ATTEMPTS}）${RETRY_DELAY/1000}秒後...`);
           setTimeout(initializeChatbot, RETRY_DELAY);
         } else {
-          console.log("最大試行回数に達しました。フォールバックモードに切り替えます。");
+          console.log("最大試行回数に達しました。エラー状態に設定します。");
           // エラー状態をセット
           setIsError(true);
-          // スクリプトの読み込みに失敗しても要素を追加（UIを表示）
-          setIsLoaded(true); // UI表示のためにロード状態を更新
-          addChatbotElements();
           
           // エラー通知を表示
           toast({
             title: "チャットボットの読み込みに問題があります",
-            description: "ネットワーク接続を確認してください。限定機能で利用できます。",
+            description: "ネットワーク接続を確認してください。ページを再読み込みしてみてください。",
             variant: "destructive",
             duration: 5000,
           });
@@ -94,36 +81,27 @@ export const useChatbotInitializer = () => {
     
     window.addEventListener('online', handleOnline);
     
+    // DOMContentLoadedイベントで初期化
+    const domLoadedHandler = () => {
+      console.log("DOM loaded, initializing chatbot");
+      initializeChatbot();
+    };
+    
     // ページがすでに読み込まれている場合は即時初期化
     if (document.readyState === "complete") {
       console.log("DOM already loaded, initializing chatbot");
       initializeChatbot();
     } else {
-      console.log("Waiting for DOM to load");
-      
-      // DOMContentLoadedイベントで初期化
-      const domLoadedHandler = () => {
-        console.log("DOM loaded, initializing chatbot");
-        initializeChatbot();
-      };
-      
       window.addEventListener("DOMContentLoaded", domLoadedHandler);
-      
-      // フォールバックとして、遅延初期化も設定
-      const timeoutId = setTimeout(() => {
-        console.log("Initializing chatbot after timeout");
-        initializeChatbot();
-      }, 1500);
-
-      // クリーンアップ
-      return () => {
-        window.removeEventListener("DOMContentLoaded", domLoadedHandler);
-        window.removeEventListener('online', handleOnline);
-        clearTimeout(timeoutId);
-        console.log("Cleaning up from initializer hook");
-        cleanup();
-      };
     }
+
+    // クリーンアップ
+    return () => {
+      window.removeEventListener("DOMContentLoaded", domLoadedHandler);
+      window.removeEventListener('online', handleOnline);
+      console.log("Cleaning up from initializer hook");
+      cleanup();
+    };
   }, [isError]);
 
   return { isLoaded, isError, initializeChatbot };
