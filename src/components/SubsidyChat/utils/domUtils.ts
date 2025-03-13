@@ -1,3 +1,4 @@
+
 /**
  * DOM操作ユーティリティ
  */
@@ -68,6 +69,12 @@ export const createChatbotButton = (
   button.className = className;
   button.innerHTML = svgContent;
   button.onclick = clickHandler;
+  
+  // 初期状態では非表示
+  if (id === 'chatbot-close-button') {
+    button.style.display = 'none';
+  }
+  
   return button;
 };
 
@@ -78,8 +85,10 @@ export const toggleCloseButton = (visible: boolean): void => {
     console.log(`Setting close button visibility to: ${visible ? 'visible' : 'hidden'}`);
     if (visible) {
       closeButton.classList.add('visible');
+      closeButton.style.display = 'flex';
     } else {
       closeButton.classList.remove('visible');
+      closeButton.style.display = 'none';
     }
   } else {
     console.log('Close button element not found');

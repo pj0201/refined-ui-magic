@@ -8,7 +8,7 @@ export const SupportAreasSection = () => {
       id="services" 
       className="py-20 px-4 relative bg-cover bg-center bg-no-repeat"
       style={{
-        backgroundImage: "url('/lovable-uploads/71495eec-e710-4eb5-be8f-effbfdca6c45.png')",
+        backgroundImage: "url('/lovable-uploads/1bf9f631-0f38-43aa-af33-28ec5bb60daf.png')",
         backgroundSize: "cover",
       }}
     >
