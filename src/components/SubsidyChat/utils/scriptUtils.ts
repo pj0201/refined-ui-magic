@@ -16,7 +16,7 @@ export const loadDifyScripts = (
   const style = createStyleTag('dify-custom-styles', getChatbotStyles());
   document.head.appendChild(style);
   
-  // Difyの設定スクリプト
+  // Difyの設定スクリプト - 正しい形式で設定
   const configScript = createScriptTag(
     'dify-chat-config',
     `window.__DIFY_CHAT_CONFIG__ = {
@@ -28,15 +28,6 @@ export const loadDifyScripts = (
     };`
   );
   document.head.appendChild(configScript);
-  
-  // Difyの埋め込みスクリプト設定
-  const embedConfigScript = createScriptTag(
-    'dify-embed-config',
-    `window.difyChatbotConfig = {
-      token: '${DIFY_CONFIG.token}'
-    };`
-  );
-  document.head.appendChild(embedConfigScript);
   
   // チャットウィンドウのスタイル
   const customStyles = createStyleTag(
@@ -63,11 +54,11 @@ export const loadDifyScripts = (
   );
   document.head.appendChild(customStyles);
   
-  // Difyのメインスクリプト
+  // Difyのメインスクリプト - 正しいURLを使用
   const mainScript = createScriptTag(
-    DIFY_CONFIG.token,
+    'dify-chat-main-script',
     null,
-    `${DIFY_CONFIG.apiEndpoint}/embed.min.js`,
+    'https://cdn.dify.ai/chat-widget/v1.1.0/chat-widget.js',
     true,
     true
   );
