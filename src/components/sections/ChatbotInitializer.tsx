@@ -3,6 +3,8 @@ import { useState, useEffect, useRef } from "react";
 import { DIFY_CONFIG } from "@/components/SubsidyChat/utils/difyConfig";
 import { getChatbotWindowStyles } from "@/components/SubsidyChat/styles/chatbotWindowStyles";
 import { toast } from "sonner";
+import { addChatbotElements } from "@/components/SubsidyChat/utils/uiElementsBuilder";
+import { createDirectChatWindow } from "@/components/SubsidyChat/utils/directChatImplementation";
 
 export const ChatbotInitializer = () => {
   const [isChatbotWindowVisible, setIsChatbotWindowVisible] = useState(false);
@@ -101,9 +103,6 @@ export const ChatbotInitializer = () => {
     toast.info("代替チャットボットを使用しています");
     
     // サブシディチャットのUIエレメントを追加
-    const { addChatbotElements } = require('@/components/SubsidyChat/utils/uiElementsBuilder');
-    const { createDirectChatWindow } = require('@/components/SubsidyChat/utils/directChatImplementation');
-    
     try {
       addChatbotElements();
       createDirectChatWindow();

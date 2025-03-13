@@ -15,14 +15,9 @@ export const TopicSection = () => {
           {isLoading ? (
             <div className="py-4 text-center text-gray-500">トピックを読み込み中...</div>
           ) : error ? (
-            <div className="py-4 text-center text-gray-500">
-              {topics.map((topic) => (
-                <TopicItem 
-                  key={topic.id} 
-                  {...topic} 
-                  openChatbot={openChatbot} 
-                />
-              ))}
+            <div className="py-4 text-center text-red-500">
+              <p>トピックの読み込みに失敗しました</p>
+              <p className="text-sm">{error}</p>
             </div>
           ) : (
             topics.map((topic) => (
