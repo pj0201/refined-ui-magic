@@ -32,11 +32,40 @@ export const initializeDifyScripts = (
   );
   document.head.appendChild(configScript);
   
-  // Difyのメインスクリプト - URLを修正
+  // URLが有効かチェック - ロケーションによって適切なURLを選択
+  const scriptUrl = "https://udify.app/js/web-client-chat.js";
+  console.log(`Attempting to load Dify script from: ${scriptUrl}`);
+  
+  // 読み込み前のチェック
+  fetch(scriptUrl, { method: 'HEAD' })
+    .then(response => {
+      if (response.ok) {
+        console.log("Script URL is reachable, proceeding with script load");
+        loadMainScript(scriptUrl, onSuccess, onError);
+      } else {
+        console.error(`Script URL returned status: ${response.status}`);
+        onError(new Error(`Script URL returned status: ${response.status}`));
+      }
+    })
+    .catch(err => {
+      console.error("Failed to check script URL:", err);
+      // URLチェック失敗でもスクリプトのロードを試みる
+      loadMainScript(scriptUrl, onSuccess, onError);
+    });
+};
+
+/**
+ * メインスクリプトをロードする
+ */
+const loadMainScript = (
+  scriptUrl: string,
+  onSuccess: () => void,
+  onError: (error: Event | Error) => void
+) => {
   const mainScript = createScriptTag(
     'yXBz3rzpDBhMgYcB',
     null,
-    'https://udify.app/js/web-client-chat.js',
+    scriptUrl,
     true,
     true
   );
