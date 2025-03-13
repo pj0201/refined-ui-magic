@@ -22,11 +22,27 @@ interface DifyChatConfig {
   };
 }
 
+/**
+ * difyChatbot トークンベース実装の型定義
+ */
+interface DifyChatbotInterface {
+  toggle: () => void;
+  isOpen: boolean;
+  sendMessage: (message: string) => void;
+}
+
 // 古いバージョンのDify APIも対応（後方互換性のため）
 interface DifyChatInterface {
   // Legacy API methods that might be used
   toggleBubble?: () => void;
   toggleWindow?: () => void;
+}
+
+/**
+ * Dify Chatbot Config トークンベース実装
+ */
+interface DifyChatbotConfig {
+  token: string;
 }
 
 declare global {
@@ -35,7 +51,8 @@ declare global {
     __DIFY_CHAT_CONFIG__?: DifyChatConfig;
     // Legacy objects that might be used in the code
     DifyChat?: DifyChatInterface;
-    difyChatbot?: unknown;
+    difyChatbot?: DifyChatbotInterface;
+    difyChatbotConfig?: DifyChatbotConfig;
   }
 }
 

@@ -7,7 +7,23 @@ import { sendDirectChatMessage, showChatWindow } from './directChatImplementatio
 export const sendChatMessage = (message: string): void => {
   console.log('Attempting to send message:', message);
   
-  // Dify APIが利用可能かチェック
+  // difyChatbotオブジェクトをチェック（トークンベース実装）
+  if (window.difyChatbot) {
+    console.log('Using difyChatbot API');
+    if (!window.difyChatbot.isOpen) {
+      window.difyChatbot.toggle();
+    }
+    
+    setTimeout(() => {
+      if (window.difyChatbot && window.difyChatbot.sendMessage) {
+        window.difyChatbot.sendMessage(message);
+        console.log('Message sent via difyChatbot API');
+      }
+    }, 800);
+    return;
+  }
+  
+  // 他のDify APIバージョンをチェック
   if (window.DifyAI) {
     console.log('Using DifyAI API');
     if (!window.DifyAI.isOpen()) {
