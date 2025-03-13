@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { createScriptTag, createStyleTag, removeElement } from '../utils/domUtils';
 import { getChatbotStyles } from '../styles/chatbotStyles';
 import { toast } from '@/components/ui/use-toast';
@@ -13,7 +13,7 @@ export const useChatbotLoader = () => {
   
   // チャットボット初期化
   const initializeChatbot = () => {
-    console.log("Initializing chatbot script");
+    console.log("チャットボットスクリプトを初期化しています");
     
     // 既存の要素をクリーンアップ
     cleanup();
@@ -46,7 +46,7 @@ export const useChatbotLoader = () => {
     
     // 正常にロードされた場合
     mainScript.onload = () => {
-      console.log("Difyスクリプトがロードされました");
+      console.log("Difyスクリプトが正常にロードされました");
       setIsLoaded(true);
       setIsError(false);
     };
@@ -70,7 +70,7 @@ export const useChatbotLoader = () => {
 
   // 要素のクリーンアップ
   const cleanup = () => {
-    console.log("Cleaning up chatbot elements");
+    console.log("チャットボット要素をクリーンアップしています");
     
     const elementsToRemove = [
       'dify-chat-config', 

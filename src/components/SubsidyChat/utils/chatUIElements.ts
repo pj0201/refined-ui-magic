@@ -9,9 +9,11 @@ const sendShoroku = (): void => {
   console.log("省力化投資補助金ボタンがクリックされました");
   try {
     if (window.DifyChat && window.DifyChat.toggleBubbleWindow) {
+      console.log("DifyChatが利用可能です。チャットウィンドウを開きます。");
       window.DifyChat.toggleBubbleWindow(true);
       
       if (window.DifyChat.onChatCleared) {
+        console.log("チャット履歴をクリアします");
         window.DifyChat.onChatCleared();
       }
       
@@ -20,8 +22,10 @@ const sendShoroku = (): void => {
         if (window.DifyChat?.sendMessage) {
           console.log("自動メッセージを送信: 省力化投資補助金について教えてください");
           window.DifyChat.sendMessage('省力化投資補助金について教えてください');
+        } else {
+          console.warn("DifyChat.sendMessageが利用できません");
         }
-      }, 500);
+      }, 1000);
     } else {
       console.warn("DifyChat API が利用できません");
       // イベントを通じて通知
@@ -39,9 +43,11 @@ const sendShokibo = (): void => {
   console.log("小規模持続化補助金ボタンがクリックされました");
   try {
     if (window.DifyChat && window.DifyChat.toggleBubbleWindow) {
+      console.log("DifyChatが利用可能です。チャットウィンドウを開きます。");
       window.DifyChat.toggleBubbleWindow(true);
       
       if (window.DifyChat.onChatCleared) {
+        console.log("チャット履歴をクリアします");
         window.DifyChat.onChatCleared();
       }
       
@@ -50,8 +56,10 @@ const sendShokibo = (): void => {
         if (window.DifyChat?.sendMessage) {
           console.log("自動メッセージを送信: 小規模持続化補助金について教えてください");
           window.DifyChat.sendMessage('小規模持続化補助金について教えてください');
+        } else {
+          console.warn("DifyChat.sendMessageが利用できません");
         }
-      }, 500);
+      }, 1000);
     } else {
       console.warn("DifyChat API が利用できません");
       // イベントを通じて通知
@@ -66,7 +74,7 @@ const sendShokibo = (): void => {
  * チャットボット要素の追加
  */
 export const addChatbotElements = (): void => {
-  console.log("Adding chatbot elements to the DOM");
+  console.log("チャットボット要素をDOMに追加しています");
   
   // 既存の要素をクリーンアップ
   removeElement('chatbot-elements-container');
@@ -120,4 +128,5 @@ export const addChatbotElements = (): void => {
   
   // コンテナをDOMに追加
   document.body.appendChild(container);
+  console.log("チャットボット要素がDOMに追加されました");
 };

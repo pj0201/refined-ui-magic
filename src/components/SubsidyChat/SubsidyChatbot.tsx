@@ -31,7 +31,10 @@ export const SubsidyChatbot = () => {
       
       elementsToRemove.forEach(id => {
         const element = document.getElementById(id);
-        if (element) element.remove();
+        if (element) {
+          console.log(`要素を削除: ${id}`);
+          element.remove();
+        }
       });
     };
   }, []);
@@ -40,7 +43,9 @@ export const SubsidyChatbot = () => {
   useEffect(() => {
     if (isLoaded) {
       console.log("スクリプトがロードされました。チャットボットUI要素を追加します。");
-      addChatbotElements();
+      setTimeout(() => {
+        addChatbotElements();
+      }, 500);
     }
   }, [isLoaded]);
 
