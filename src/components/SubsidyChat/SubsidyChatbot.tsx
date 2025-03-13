@@ -9,7 +9,7 @@ import { DIFY_CONFIG } from "./utils/difyConfig";
 export const SubsidyChatbot = () => {
   // 初期化関数
   const initializeChatbot = () => {
-    console.log("Initializing simple Dify chatbot...");
+    console.log("Initializing Dify chatbot from SubsidyChatbot component...");
     
     // 既存のスクリプトとスタイルを削除
     const existingScript = document.getElementById('dify-script');
@@ -23,7 +23,7 @@ export const SubsidyChatbot = () => {
     style.id = 'dify-style';
     style.textContent = `
       #dify-chatbot-bubble-button {
-        background-color: #1C64F2 !important;
+        background-color: #8B5CF6 !important; /* より目立つ紫色 */
         opacity: 0 !important; /* ボタンを非表示にする */
         pointer-events: none !important; /* クリックできないようにする */
       }
@@ -48,6 +48,7 @@ export const SubsidyChatbot = () => {
     
     // 設定スクリプトを追加
     const configScript = document.createElement('script');
+    configScript.id = 'dify-config';
     configScript.textContent = `
       window.difyChatbotConfig = {
         token: "${DIFY_CONFIG.token}"
@@ -62,13 +63,11 @@ export const SubsidyChatbot = () => {
     script.defer = true;
     script.async = true;
     
-    // スクリプトにIDを設定（トークンと同じ値）
-    script.id = DIFY_CONFIG.token;
-    
     document.head.appendChild(script);
 
     // スクリプトのロードが完了したらチャットウィンドウを非表示にする
     script.onload = () => {
+      console.log("Dify script loaded, hiding chat window");
       setTimeout(() => {
         const chatWindow = document.getElementById('dify-chatbot-bubble-window');
         if (chatWindow) {

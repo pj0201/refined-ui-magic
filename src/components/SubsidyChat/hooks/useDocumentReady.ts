@@ -6,16 +6,16 @@ import { useEffect } from "react";
  */
 export const useDocumentReady = (onReady: () => void) => {
   useEffect(() => {
-    console.log("SubsidyChatbot component mounted");
+    console.log("useDocumentReady hook triggered");
     
     // DOMコンテンツが読み込まれた後に初期化する
     if (document.readyState === "complete" || document.readyState === "interactive") {
-      console.log("DOM already loaded, initializing chatbot");
+      console.log("DOM already loaded, initializing immediately");
       onReady();
     } else {
-      console.log("Waiting for DOM to load");
+      console.log("DOM not fully loaded, waiting for DOMContentLoaded event");
       const domLoadedHandler = () => {
-        console.log("DOM loaded event fired, initializing chatbot");
+        console.log("DOMContentLoaded event fired, initializing");
         onReady();
       };
       
