@@ -24,6 +24,8 @@ export const SubsidyChatbot = () => {
     style.textContent = `
       #dify-chatbot-bubble-button {
         background-color: #1C64F2 !important;
+        opacity: 0 !important; /* ボタンを非表示にする */
+        pointer-events: none !important; /* クリックできないようにする */
       }
       #dify-chatbot-bubble-window {
         width: 24rem !important;
@@ -64,6 +66,16 @@ export const SubsidyChatbot = () => {
     script.id = DIFY_CONFIG.token;
     
     document.head.appendChild(script);
+
+    // スクリプトのロードが完了したらチャットウィンドウを非表示にする
+    script.onload = () => {
+      setTimeout(() => {
+        const chatWindow = document.getElementById('dify-chatbot-bubble-window');
+        if (chatWindow) {
+          chatWindow.style.display = 'none';
+        }
+      }, 100);
+    };
   };
   
   // ドキュメントの準備完了を検知
