@@ -19,14 +19,14 @@ const topics: Topic[] = [
   {
     id: 1,
     isNew: true,
-    content: "2025年3月より申請開始 　新たに一般形が追加され利用しやすくなった「中小企業省力化投資補助金一般形」が始まります。（詳細は本ページのチャットボットへどうぞ)",
+    content: "2025年3月より申請開始 　新たに一般形が追加され利用しやすくなった「中小企業省力化投資補助金一般形」が始まります。\n（詳細は本ページのチャットボットへどうぞ)",
     date: "2025/03",
     keywords: ["補助金", "融資", "中小企業", "神戸", "兵庫"]
   },
   {
     id: 2,
     isNew: true,
-    content: "NEW 2025/3 小規模持続化補助金公募要領（暫定版）が公表されました。（詳細は本ページのチャットボットへどうぞ)",
+    content: "NEW 2025/3 小規模持続化補助金公募要領（暫定版）が公表されました。\n（詳細は本ページのチャットボットへどうぞ)",
     date: "2025/03",
     keywords: ["補助金", "小規模持続化補助金", "神戸", "兵庫"]
   },
@@ -182,7 +182,7 @@ export const TopicSection = () => {
                 )}
               </div>
               <div className="flex items-center justify-between">
-                <p className="text-gray-800">{topic.content}</p>
+                <p className="text-gray-800 whitespace-pre-line">{topic.content}</p>
                 <div className="flex space-x-2">
                   {topic.link && (
                     <Link to={topic.link}>
