@@ -1,3 +1,4 @@
+
 import { getChatbotStyles } from '../styles/chatbotStyles';
 import { 
   removeElement, 
@@ -7,7 +8,7 @@ import {
   createChatbotButton,
   chatbotElementIds
 } from './domUtils';
-import '../types/dify';
+import '../types/dify.d.ts';
 
 /**
  * Difyスクリプトの初期化

@@ -10,7 +10,7 @@ import {
   clearCheckInterval 
 } from "./utils/elementChecker";
 // Import Dify types to ensure type checking
-import './types/dify';
+import "./types/dify.d.ts";
 
 /**
  * 補助金チャットボットコンポーネント
