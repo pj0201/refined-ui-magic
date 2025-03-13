@@ -6,9 +6,9 @@ import { useEffect, useRef } from "react";
  * 初期化処理が複数回実行されないよう制御する
  */
 export const useDocumentReady = (onReady: () => void) => {
-  // 初期化済みフラグを保持
+  // グローバルな初期化済みフラグを参照
   const isInitializedRef = useRef(false);
-
+  
   useEffect(() => {
     console.log("SubsidyChatbot component mounted");
     
@@ -18,6 +18,8 @@ export const useDocumentReady = (onReady: () => void) => {
         console.log("Initializing chatbot (first time only)");
         isInitializedRef.current = true;
         onReady();
+      } else {
+        console.log("Chatbot already initialized, skipping");
       }
     };
     
