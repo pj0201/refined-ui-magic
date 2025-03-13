@@ -1,4 +1,3 @@
-
 /**
  * DOM操作ユーティリティ
  */
@@ -72,6 +71,18 @@ export const createChatbotButton = (
   return button;
 };
 
+// 閉じるボタンの表示・非表示を切り替える
+export const toggleCloseButton = (visible: boolean): void => {
+  const closeButton = document.getElementById('chatbot-close-button');
+  if (closeButton) {
+    if (visible) {
+      closeButton.classList.add('visible');
+    } else {
+      closeButton.classList.remove('visible');
+    }
+  }
+};
+
 // チャットボット関連要素のIDリスト
 export const chatbotElementIds = [
   'dify-chat-config', 
@@ -80,5 +91,6 @@ export const chatbotElementIds = [
   'dify-chatbot-bubble-button-1', 
   'dify-chatbot-label-1',
   'dify-chatbot-bubble-button-2', 
-  'dify-chatbot-label-2'
+  'dify-chatbot-label-2',
+  'chatbot-close-button'
 ];

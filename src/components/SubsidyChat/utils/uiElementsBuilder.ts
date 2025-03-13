@@ -3,9 +3,11 @@ import {
   removeElement, 
   createChatbotLabel, 
   createChatbotButton,
-  chatbotElementIds
+  chatbotElementIds,
+  toggleCloseButton
 } from './domUtils';
 import { startShorikikaChat, startShoukiboJizokaChat, setupMessageListeners } from './chatMessageUtils';
+import { closeButtonHtml } from '../styles/difyChatStyles';
 
 /**
  * チャットボット要素の追加
@@ -19,6 +21,7 @@ export const addChatbotElements = (): void => {
   removeElement('dify-chatbot-label-1');
   removeElement('dify-chatbot-bubble-button-2');
   removeElement('dify-chatbot-label-2');
+  removeElement('chatbot-close-button');
   
   // コンテナを作成
   const container = document.createElement('div');
@@ -66,6 +69,57 @@ export const addChatbotElements = (): void => {
   // コンテナをDOMに追加
   document.body.appendChild(container);
   
+  // 閉じるボタンをDOMに追加
+  document.body.insertAdjacentHTML('beforeend', closeButtonHtml);
+  
+  // 閉じるボタンにクリックイベントを追加
+  const closeButton = document.getElementById('chatbot-close-button');
+  if (closeButton) {
+    closeButton.addEventListener('click', () => {
+      // チャットウィンドウを閉じる
+      const chatWindow = document.getElementById('dify-chatbot-bubble-window');
+      if (chatWindow) {
+        chatWindow.style.display = 'none';
+        toggleCloseButton(false);
+      }
+    });
+  }
+  
+  // チャットウィンドウの表示状態を監視する
+  setupChatWindowObserver();
+  
   // メッセージハンドラー
   setupMessageListeners();
+};
+
+/**
+ * チャットウィンドウの表示状態を監視する
+ */
+const setupChatWindowObserver = (): void => {
+  // MutationObserverを使用してDOM変更を監視
+  const observer = new MutationObserver((mutations) => {
+    mutations.forEach((mutation) => {
+      if (mutation.type === 'childList') {
+        // チャットウィンドウが表示された場合
+        const chatWindow = document.getElementById('dify-chatbot-bubble-window');
+        if (chatWindow) {
+          // 表示・非表示の状態を確認
+          const isVisible = window.getComputedStyle(chatWindow).display !== 'none';
+          toggleCloseButton(isVisible);
+        }
+      }
+    });
+  });
+  
+  // bodyの変更を監視
+  observer.observe(document.body, { childList: true, subtree: true });
+  
+  // 定期的にチェック（MutationObserverで検出できない変更のため）
+  setInterval(() => {
+    const chatWindow = document.getElementById('dify-chatbot-bubble-window');
+    if (chatWindow) {
+      const isVisible = window.getComputedStyle(chatWindow).display !== 'none';
+      toggleCloseButton(isVisible);
+    }
+  }, 1000);
 };
