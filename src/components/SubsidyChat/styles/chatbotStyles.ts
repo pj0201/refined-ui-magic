@@ -33,12 +33,11 @@ export const getChatbotStyles = (): string => `
     position: fixed !important;
     color: #22C55E !important;
     font-size: 13px !important;
-    text-align: center !important;
-    writing-mode: vertical-lr !important;
+    text-align: right !important;
     letter-spacing: 0 !important;
-    line-height: 1.2 !important;
+    line-height: 36px !important;
     white-space: nowrap !important;
-    right: 60px !important;
+    right: 65px !important;
     z-index: 2147483646 !important;
     font-weight: normal !important;
     text-shadow: 0 0 1px rgba(0,0,0,0.2) !important;
@@ -46,7 +45,8 @@ export const getChatbotStyles = (): string => `
     height: 36px !important;
     display: flex !important;
     align-items: center !important;
-    transform: rotate(180deg) !important;
+    transform: none !important;
+    writing-mode: horizontal-tb !important;
   }
 
   .dify-chatbot-label:hover {
