@@ -1,160 +1,159 @@
 
-import { createScriptTag, createStyleTag, removeElement } from './domUtils';
+import { createFallbackScript } from '../fallback/fallbackScript';
+import { createScriptTag, createStyleTag } from './domUtils';
+import { toast } from "@/components/ui/use-toast";
 import { getChatbotStyles } from '../styles/chatbotStyles';
-import '../types/dify.d.ts';
+
+// Difyスクリプトのソースリスト
+const scriptSources = [
+  'https://cdn.jsdelivr.net/npm/@dify/web-client-chat@latest/dist/web-client-chat.js',
+  'https://udify.app/js/web-client-chat.js',
+  'https://cloud.dify.ai/js/web-client-chat.js'
+];
+
+let currentSourceIndex = 0;
+let maxRetries = 3;
+let currentRetry = 0;
 
 /**
- * Difyスクリプトの初期化
- */
-export const initializeDifyScripts = (
-  onSuccess: () => void, 
-  onError: (error: Event | Error) => void
-): void => {
-  console.log("Initializing Dify scripts");
-  
-  // 既存の要素をクリーンアップ
-  cleanup();
-  
-  // スタイルを追加
-  const style = createStyleTag('dify-custom-styles', getChatbotStyles());
-  document.head.appendChild(style);
-  
-  // Difyの設定スクリプト
-  const configScript = createScriptTag(
-    'dify-chat-config',
-    `window.__DIFY_CHAT_CONFIG__ = {
-      apiEndpoint: "https://cloud.dify.ai", // udify.app から cloud.dify.ai に変更
-      publicApiKey: "app-KDYnIQfxqkXo7a89jFOplm4c",
-      features: {
-        text_to_speech: { enabled: false }
-      }
-    };`
-  );
-  document.head.appendChild(configScript);
-  
-  // 複数のスクリプトURLを試みる
-  const scriptUrls = [
-    "https://cloud.dify.ai/js/web-client-chat.js",  // 主要なDifyホスティング
-    "https://udify.app/js/web-client-chat.js",      // オリジナルのURL
-    "https://cdn.jsdelivr.net/npm/@dify/web-client-chat@latest/dist/web-client-chat.js" // CDNバックアップ
-  ];
-  
-  // 各URLが有効かチェック
-  checkScriptUrls(scriptUrls, 0, onSuccess, onError);
-};
-
-/**
- * 複数のスクリプトURLを順次チェックする再帰関数
+ * スクリプトURLをチェックする再帰関数
  */
 const checkScriptUrls = (
-  urls: string[],
-  index: number,
-  onSuccess: () => void,
-  onError: (error: Event | Error) => void
-) => {
-  if (index >= urls.length) {
-    console.error("すべてのスクリプトURLのロードに失敗しました");
-    onError(new Error("すべてのDifyスクリプトURLにアクセスできません"));
+  onSuccess: (scriptUrl: string) => void,
+  onError: (error: Error) => void,
+  sourceIndex: number = 0,
+  retry: number = 0
+): void => {
+  if (sourceIndex >= scriptSources.length) {
+    if (retry < maxRetries) {
+      // 全URLを試した後、再試行
+      console.log(`すべてのスクリプトURLの試行に失敗しました。再試行します (${retry + 1}/${maxRetries})`);
+      setTimeout(() => {
+        checkScriptUrls(onSuccess, onError, 0, retry + 1);
+      }, 1000);
+    } else {
+      // 最大再試行回数に達した場合、フォールバックを使用
+      console.log("すべてのスクリプトURLのロードに失敗しました。フォールバックスクリプトを使用します。");
+      const fallbackScript = createScriptTag(
+        'dify-fallback-script',
+        createFallbackScript()
+      );
+      document.head.appendChild(fallbackScript);
+      onSuccess('fallback');
+    }
     return;
   }
-  
-  const currentUrl = urls[index];
-  console.log(`スクリプトURL (${index + 1}/${urls.length}) をチェック中: ${currentUrl}`);
-  
-  // URLのアクセス可能性をチェック
-  fetch(currentUrl, { method: 'HEAD', mode: 'no-cors' })
-    .then(response => {
-      console.log(`Script URL ${currentUrl} response status: ${response.status}`);
-      
-      if (response.ok || response.status === 0) { // no-corsモードでは0が返ることがある
-        console.log(`スクリプトURL ${currentUrl} にアクセスできました、スクリプトをロードします`);
-        loadMainScript(currentUrl, onSuccess, (error) => {
-          console.warn(`${currentUrl} からのスクリプトロードに失敗: ${error}、次のURLを試みます`);
-          checkScriptUrls(urls, index + 1, onSuccess, onError);
-        });
-      } else {
-        console.warn(`スクリプトURL ${currentUrl} は応答コード ${response.status} を返しました、次のURLを試みます`);
-        checkScriptUrls(urls, index + 1, onSuccess, onError);
-      }
-    })
-    .catch(err => {
-      console.warn(`スクリプトURL ${currentUrl} のチェックに失敗: ${err}、次のURLを試みます`);
-      // fetch自体が失敗した場合でも、スクリプトのロードを試みる（CORSの問題かもしれない）
-      loadMainScript(currentUrl, onSuccess, (error) => {
-        checkScriptUrls(urls, index + 1, onSuccess, onError);
+
+  const url = scriptSources[sourceIndex];
+  console.log(`スクリプトURL (${sourceIndex + 1}/${scriptSources.length}) をチェック中: ${url}`);
+
+  // HEAD リクエストでURLをチェック
+  const xhr = new XMLHttpRequest();
+  xhr.open('HEAD', url, true);
+  xhr.timeout = 5000; // 5秒タイムアウト
+
+  xhr.onload = function() {
+    if (xhr.status >= 200 && xhr.status < 300) {
+      console.log(`スクリプトURL ${url} は有効です。スクリプトを読み込みます。`);
+      loadScript(url, onSuccess, () => {
+        // このURLでのスクリプト読み込みに失敗した場合、次のURLを試す
+        console.warn(`${url} からのスクリプトロードに失敗: [object Event]、次のURLを試みます`);
+        checkScriptUrls(onSuccess, onError, sourceIndex + 1, retry);
       });
-    });
+    } else {
+      console.warn(`スクリプトURL ${url} は利用できません (ステータス: ${xhr.status})、次のURLを試みます`);
+      checkScriptUrls(onSuccess, onError, sourceIndex + 1, retry);
+    }
+  };
+
+  xhr.onerror = function() {
+    console.warn(`スクリプトURL ${url} へのアクセスに失敗しました、次のURLを試みます`);
+    checkScriptUrls(onSuccess, onError, sourceIndex + 1, retry);
+  };
+
+  xhr.ontimeout = function() {
+    console.warn(`スクリプトURL ${url} へのアクセスがタイムアウトしました、次のURLを試みます`);
+    checkScriptUrls(onSuccess, onError, sourceIndex + 1, retry);
+  };
+
+  try {
+    xhr.send();
+  } catch (e) {
+    console.warn(`スクリプトURL ${url} へのリクエスト送信に失敗しました、次のURLを試みます`);
+    checkScriptUrls(onSuccess, onError, sourceIndex + 1, retry);
+  }
 };
 
 /**
- * メインスクリプトをロードする
+ * 利用可能なURLからスクリプトを読み込む
  */
-const loadMainScript = (
-  scriptUrl: string,
-  onSuccess: () => void,
-  onError: (error: Event | Error) => void
-) => {
-  console.log(`スクリプトをロード中: ${scriptUrl}`);
-  
-  const mainScript = createScriptTag(
-    'yXBz3rzpDBhMgYcB',
-    null,
-    scriptUrl,
-    true,
-    true
-  );
-  
-  // タイムアウト設定
-  const timeoutId = setTimeout(() => {
-    console.error(`スクリプトロードがタイムアウトしました: ${scriptUrl}`);
-    mainScript.remove(); // 未完了のスクリプトタグを削除
-    onError(new Error(`スクリプトロードがタイムアウトしました: ${scriptUrl}`));
-  }, 10000); // 10秒タイムアウト
-  
-  // 正常にロードされた場合
-  mainScript.onload = (): void => {
-    clearTimeout(timeoutId);
-    console.log(`Difyスクリプト ${scriptUrl} が正常にロードされました`);
-    
-    // window.DifyChat が実際に存在するか確認
-    if (window.DifyChat) {
-      console.log("DifyChat オブジェクトが利用可能です:", Object.keys(window.DifyChat));
-      onSuccess();
-    } else {
-      console.error("スクリプトはロードされましたが、DifyChat オブジェクトが見つかりません");
-      onError(new Error("DifyChat オブジェクトが見つかりません"));
-    }
+const loadScript = (
+  url: string,
+  onSuccess: (scriptUrl: string) => void,
+  onError: () => void
+): void => {
+  const mainScript = createScriptTag('dify-chat-script', undefined, url, true, true);
+
+  mainScript.onload = function() {
+    console.log(`スクリプト ${url} が正常に読み込まれました`);
+    onSuccess(url);
   };
-  
-  // エラーが発生した場合
-  mainScript.onerror = (error: Event): void => {
-    clearTimeout(timeoutId);
-    console.error(`Difyスクリプト ${scriptUrl} のロードエラー:`, error);
-    onError(error);
+
+  mainScript.onerror = function(e) {
+    console.error(`Difyスクリプト ${url} のロードエラー:`, e);
+    // スクリプトタグを削除
+    mainScript.remove();
+    onError();
   };
-  
+
   document.head.appendChild(mainScript);
 };
 
 /**
- * チャットボット要素のクリーンアップ
+ * Difyスクリプトを初期化
  */
-export const cleanup = (): void => {
-  console.log("Cleaning up chatbot elements");
-  
-  const elementsToRemove = [
-    'dify-chat-config', 
-    'yXBz3rzpDBhMgYcB', 
-    'dify-custom-styles', 
-    'dify-chatbot-bubble-button-1', 
-    'dify-chatbot-label-1',
-    'dify-chatbot-bubble-button-2', 
-    'dify-chatbot-label-2',
-    'chatbot-elements-container',
-    'dify-fallback-container' // フォールバックメッセージコンテナも削除
-  ];
-  
-  elementsToRemove.forEach(id => {
-    removeElement(id);
-  });
+export const initializeDifyScripts = (
+  onScriptLoaded: (success: boolean, source?: string) => void
+): void => {
+  console.log("Initializing Dify scripts");
+
+  // スクリプトがすでに読み込まれている場合は早期リターン
+  if (window.DifyChat) {
+    console.log("DifyChatオブジェクトはすでに存在します");
+    onScriptLoaded(true, 'existing');
+    return;
+  }
+
+  // スタイルを追加
+  const styleElement = createStyleTag('dify-custom-styles', getChatbotStyles());
+  document.head.appendChild(styleElement);
+
+  // スクリプト読み込み開始
+  currentSourceIndex = 0;
+  currentRetry = 0;
+
+  // スクリプトURLをチェックして読み込み
+  checkScriptUrls(
+    (scriptUrl) => {
+      console.log(`Difyスクリプトが正常に読み込まれました (ソース: ${scriptUrl})`);
+      
+      // スクリプト読み込み後に少し遅延させてから成功コールバックを呼び出す
+      setTimeout(() => {
+        onScriptLoaded(true, scriptUrl);
+      }, 500);
+    },
+    (error) => {
+      console.error("すべてのDifyスクリプトURLにアクセスできません", error);
+      
+      // エラーを表示
+      toast({
+        title: "チャットボットの読み込みに失敗しました",
+        description: "後ほど再試行するか、別のブラウザをお試しください",
+        variant: "destructive",
+        duration: 5000,
+      });
+      
+      onScriptLoaded(false);
+    }
+  );
 };
