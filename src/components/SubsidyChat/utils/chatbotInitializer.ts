@@ -39,11 +39,45 @@ export const initializeDifyScripts = (
   );
   document.head.appendChild(configScript);
   
-  // Difyのメインスクリプト - URLを修正
+  // Difyの埋め込みスクリプト設定
+  const embedConfigScript = createScriptTag(
+    'dify-embed-config',
+    `window.difyChatbotConfig = {
+      token: 'yXBz3rzpDBhMgYcB'
+    };`
+  );
+  document.head.appendChild(embedConfigScript);
+  
+  // チャットウィンドウのスタイル
+  const customStyles = createStyleTag(
+    'dify-window-styles',
+    `#dify-chatbot-bubble-button {
+      background-color: #1C64F2 !important;
+    }
+    #dify-chatbot-bubble-window {
+      width: 24rem !important;
+      height: 40rem !important;
+      max-height: 80vh !important;
+      position: fixed !important;
+      bottom: auto !important;
+      top: 50px !important;
+      right: 20px !important;
+      z-index: 2147483647 !important;
+    }
+    @media (max-height: 700px) {
+      #dify-chatbot-bubble-window {
+        top: 20px !important;
+        height: calc(100vh - 100px) !important;
+      }
+    }`
+  );
+  document.head.appendChild(customStyles);
+  
+  // Difyのメインスクリプト
   const mainScript = createScriptTag(
     'yXBz3rzpDBhMgYcB',
     null,
-    'https://udify.app/js/web-client-chat.js',
+    'https://udify.app/embed.min.js',
     true,
     true
   );
@@ -97,19 +131,22 @@ export const addChatbotElements = (): void => {
       <path d="M9.09 9C9.3251 8.33167 9.78915 7.76811 10.4 7.40913C11.0108 7.05016 11.7289 6.91894 12.4272 7.03871C13.1255 7.15849 13.7588 7.52152 14.2151 8.06353C14.6713 8.60553 14.9211 9.29152 14.92 10C14.92 12 11.92 13 11.92 13M12 17H12.01M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>`,
     (): void => {
-      // Difyのウィンドウをトグルするよう変更
       if (window.DifyChat) {
         window.DifyChat.toggleBubbleWindow?.(true);
         window.DifyChat.onChatCleared?.();
-        // 省力化投資補助金についてのメッセージを自動送信
         setTimeout(() => {
           if (window.DifyChat?.sendMessage) {
             window.DifyChat.sendMessage('省力化投資補助金について教えてください');
           }
         }, 500);
+      } else if (window.difyChatbot) {
+        // 新しいDify埋め込みAPIを使用
+        window.difyChatbot.toggle();
+        setTimeout(() => {
+          window.difyChatbot.sendMessage('省力化投資補助金について教えてください');
+        }, 500);
       } else {
-        console.error('DifyChat is not available');
-        // フォールバックとしてメッセージングを維持
+        console.error('Dify Chatbot API is not available');
         window.postMessage({ type: 'CHAT_TYPE_1_CLICK', value: '省力化投資補助金' }, '*');
       }
     }
@@ -132,19 +169,22 @@ export const addChatbotElements = (): void => {
       <path d="M21 15C21 15.5304 20.7893 16.0391 20.4142 16.4142C20.0391 16.7893 19.5304 17 19 17H7L3 21V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H19C19.5304 3 20.0391 3.21071 20.4142 3.58579C20.7893 3.96086 21 4.46957 21 5V15Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>`,
     (): void => {
-      // Difyのウィンドウをトグルするよう変更
       if (window.DifyChat) {
         window.DifyChat.toggleBubbleWindow?.(true);
         window.DifyChat.onChatCleared?.();
-        // 小規模持続化補助金についてのメッセージを自動送信
         setTimeout(() => {
           if (window.DifyChat?.sendMessage) {
             window.DifyChat.sendMessage('小規模持続化補助金について教えてください');
           }
         }, 500);
+      } else if (window.difyChatbot) {
+        // 新しいDify埋め込みAPIを使用
+        window.difyChatbot.toggle();
+        setTimeout(() => {
+          window.difyChatbot.sendMessage('小規模持続化補助金について教えてください');
+        }, 500);
       } else {
-        console.error('DifyChat is not available');
-        // フォールバックとしてメッセージングを維持
+        console.error('Dify Chatbot API is not available');
         window.postMessage({ type: 'CHAT_TYPE_2_CLICK', value: '小規模持続化補助金' }, '*');
       }
     }
@@ -163,11 +203,15 @@ export const addChatbotElements = (): void => {
         if (window.DifyChat?.onChatCleared) {
           window.DifyChat.onChatCleared();
         }
-        // 省力化投資補助金についてのメッセージを自動送信
         setTimeout(() => {
           if (window.DifyChat?.sendMessage) {
             window.DifyChat.sendMessage('省力化投資補助金について教えてください');
           }
+        }, 500);
+      } else if (window.difyChatbot) {
+        window.difyChatbot.toggle();
+        setTimeout(() => {
+          window.difyChatbot.sendMessage('省力化投資補助金について教えてください');
         }, 500);
       }
     } else if (event.data.type === 'CHAT_TYPE_2_CLICK') {
@@ -177,11 +221,15 @@ export const addChatbotElements = (): void => {
         if (window.DifyChat?.onChatCleared) {
           window.DifyChat.onChatCleared();
         }
-        // 小規模持続化補助金についてのメッセージを自動送信
         setTimeout(() => {
           if (window.DifyChat?.sendMessage) {
             window.DifyChat.sendMessage('小規模持続化補助金について教えてください');
           }
+        }, 500);
+      } else if (window.difyChatbot) {
+        window.difyChatbot.toggle();
+        setTimeout(() => {
+          window.difyChatbot.sendMessage('小規模持続化補助金について教えてください');
         }, 500);
       }
     }
@@ -196,7 +244,10 @@ export const cleanup = (): void => {
   
   const elementsToRemove = [
     ...chatbotElementIds,
-    'chatbot-elements-container'
+    'chatbot-elements-container',
+    'dify-chat-config',
+    'dify-embed-config',
+    'dify-window-styles'
   ];
   
   elementsToRemove.forEach(id => {

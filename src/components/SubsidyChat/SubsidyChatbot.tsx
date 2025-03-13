@@ -13,13 +13,13 @@ import {
 import "./types/dify.d.ts";
 
 /**
- * 補助金チャットボットコンポーネント
+ * 補助金チャットボットコンポーネント（小規模持続化補助金対応）
  */
 export const SubsidyChatbot = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const checkIntervalRef = useRef<number | null>(null);
   const attemptCountRef = useRef(0);
-  const MAX_ATTEMPTS = 3; // 最大リトライ回数を減らす（素早いフォールバック）
+  const MAX_ATTEMPTS = 3; // 最大リトライ回数
 
   useEffect(() => {
     // DOMコンテンツが読み込まれた後に初期化する
@@ -45,7 +45,7 @@ export const SubsidyChatbot = () => {
   }, []);
 
   const initializeChatbot = () => {
-    console.log("Initializing subsidy chatbot...");
+    console.log("Initializing small business subsidy chatbot...");
     
     // 既存の要素をクリーンアップ
     cleanup();
@@ -58,6 +58,25 @@ export const SubsidyChatbot = () => {
         setIsLoaded(true);
         attemptCountRef.current = 0; // リセット
         addChatbotElements();
+        
+        // Difyチャットウィンドウのサイズと位置を調整
+        const adjustChatWindow = () => {
+          const chatWindow = document.getElementById('dify-chatbot-bubble-window');
+          if (chatWindow) {
+            const viewportHeight = window.innerHeight;
+            const chatWindowHeight = chatWindow.clientHeight;
+            
+            if (chatWindowHeight > viewportHeight - 100) {
+              chatWindow.style.height = (viewportHeight - 100) + 'px';
+              chatWindow.style.top = '50px';
+            }
+          }
+        };
+        
+        // ウィンドウリサイズ時にチャットウィンドウを調整
+        window.addEventListener('resize', adjustChatWindow);
+        // 初期調整
+        setTimeout(adjustChatWindow, 1000);
       },
       // エラー時のコールバック
       (e) => {
@@ -65,11 +84,11 @@ export const SubsidyChatbot = () => {
         attemptCountRef.current++;
         if (attemptCountRef.current < MAX_ATTEMPTS) {
           console.log(`Retrying script load (attempt ${attemptCountRef.current}/${MAX_ATTEMPTS}) in 1.5 seconds...`);
-          setTimeout(initializeChatbot, 1500); // リトライ間隔を短くする
+          setTimeout(initializeChatbot, 1500);
         } else {
           console.log("Maximum attempts reached, adding fallback button");
           // スクリプトの読み込みに失敗しても要素を追加（UIを表示）
-          setIsLoaded(true); // UI表示のためにロード状態を更新
+          setIsLoaded(true);
           addChatbotElements();
         }
       }
@@ -107,17 +126,34 @@ export const SubsidyChatbot = () => {
     };
   }, []);
 
-  // 定期的にDifyチャットの状態を確認し、必要に応じて再初期化
+  // Difyチャットボットの変更検出と自動調整
   useEffect(() => {
     if (isLoaded) {
-      const difyCheckInterval = setInterval(() => {
-        if (!window.DifyChat && document.getElementById('dify-chatbot-bubble-button-1')) {
-          console.log("DifyChat not available but UI elements exist - reinitializing");
-          initializeChatbot();
-        }
-      }, 30000); // 30秒ごとにチェック
+      // チャットウィンドウ状態の監視
+      const chatWindowObserver = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          if (mutation.type === 'childList') {
+            const chatWindow = document.getElementById('dify-chatbot-bubble-window');
+            if (chatWindow) {
+              // チャットウィンドウが表示されたら位置調整
+              const viewportHeight = window.innerHeight;
+              const chatWindowHeight = chatWindow.clientHeight;
+              
+              if (chatWindowHeight > viewportHeight - 100) {
+                chatWindow.style.height = (viewportHeight - 100) + 'px';
+                chatWindow.style.top = '50px';
+              }
+            }
+          }
+        });
+      });
       
-      return () => clearInterval(difyCheckInterval);
+      // body要素を監視して、チャットウィンドウの追加を検出
+      chatWindowObserver.observe(document.body, { childList: true, subtree: true });
+      
+      return () => {
+        chatWindowObserver.disconnect();
+      };
     }
   }, [isLoaded]);
 

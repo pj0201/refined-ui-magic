@@ -28,6 +28,19 @@ export const startElementCheck = (checkIntervalRef: React.MutableRefObject<numbe
         addChatbotElements();
       }
     }
+    
+    // Difyのチャットウィンドウの位置を調整
+    const chatWindow = document.getElementById('dify-chatbot-bubble-window');
+    if (chatWindow) {
+      const viewportHeight = window.innerHeight;
+      const chatWindowHeight = chatWindow.clientHeight;
+      
+      // ウィンドウがビューポートからはみ出る場合は位置を調整
+      if (chatWindowHeight > viewportHeight - 100) {
+        chatWindow.style.height = (viewportHeight - 100) + 'px';
+        chatWindow.style.top = '50px';
+      }
+    }
   }, 1000);
 };
 
