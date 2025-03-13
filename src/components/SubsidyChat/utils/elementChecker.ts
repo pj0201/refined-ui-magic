@@ -6,26 +6,39 @@ import { addChatbotElements } from './uiElementsBuilder';
  */
 export const startElementCheck = (checkIntervalRef: React.MutableRefObject<number | null>): void => {
   console.log("Starting element check interval");
+  
+  // 既存のインターバルがあれば一度クリア
   if (checkIntervalRef.current) {
     clearInterval(checkIntervalRef.current);
+    checkIntervalRef.current = null;
   }
+
+  let consecutiveMissingCount = 0;
+  const MAX_CONSECUTIVE_MISSING = 3;
 
   checkIntervalRef.current = window.setInterval(() => {
     const container = document.getElementById('chatbot-elements-container');
+    const button1 = document.getElementById('dify-chatbot-bubble-button-1');
+    const label1 = document.getElementById('dify-chatbot-label-1');
+    const button2 = document.getElementById('dify-chatbot-bubble-button-2');
+    const label2 = document.getElementById('dify-chatbot-label-2');
     
-    if (!container) {
-      console.log("Chatbot container missing, restoring...");
-      addChatbotElements();
-    } else {
-      // コンテナがあっても中の要素が揃っているか確認
-      const button1 = document.getElementById('dify-chatbot-bubble-button-1');
-      const label1 = document.getElementById('dify-chatbot-label-1');
-      const button2 = document.getElementById('dify-chatbot-bubble-button-2');
-      const label2 = document.getElementById('dify-chatbot-label-2');
+    // すべての要素が揃っているか確認
+    if (!container || !button1 || !label1 || !button2 || !label2) {
+      consecutiveMissingCount++;
+      console.log(`UI elements missing (${consecutiveMissingCount}/${MAX_CONSECUTIVE_MISSING} consecutive checks)`);
       
-      if (!button1 || !label1 || !button2 || !label2) {
-        console.log("Chatbot elements missing from container, restoring...");
+      // 連続して要素が見つからない場合のみ再作成（一時的な非表示状態を許容）
+      if (consecutiveMissingCount >= MAX_CONSECUTIVE_MISSING) {
+        console.log("Consecutively missing UI elements, restoring...");
+        consecutiveMissingCount = 0;
         addChatbotElements();
+      }
+    } else {
+      // 要素が見つかった場合はカウンターをリセット
+      if (consecutiveMissingCount > 0) {
+        console.log("UI elements found, resetting missing counter");
+        consecutiveMissingCount = 0;
       }
     }
     
@@ -41,7 +54,7 @@ export const startElementCheck = (checkIntervalRef: React.MutableRefObject<numbe
         chatWindow.style.top = '50px';
       }
     }
-  }, 1000);
+  }, 2000); // 2秒間隔でチェック（負荷を減らすため1秒から2秒に変更）
 };
 
 /**
