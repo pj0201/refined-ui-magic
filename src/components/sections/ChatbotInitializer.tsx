@@ -1,73 +1,21 @@
 
-import { useState, useEffect, useRef } from "react";
-import { DIFY_CONFIG } from "@/components/SubsidyChat/utils/difyConfig";
-import { getChatbotWindowStyles } from "@/components/SubsidyChat/styles/chatbotWindowStyles";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
+import { DIFY_CONFIG } from "@/components/SubsidyChat/utils/difyConfig";
 
 export const ChatbotInitializer = () => {
-  const [isChatbotWindowVisible, setIsChatbotWindowVisible] = useState(false);
-  const initAttemptedRef = useRef(false);
+  // Track if scripts are loaded
+  const [isScriptLoaded, setIsScriptLoaded] = useState(false);
   
-  const openChatbot = () => {
-    console.log("Opening chatbot...");
-    toast.info("チャットボットを開いています...");
-    
-    // DifyのチャットボットWindowを開く
-    const chatWindow = document.getElementById('dify-chatbot-bubble-window');
-    if (chatWindow) {
-      console.log("Chat window found, displaying it");
-      chatWindow.style.display = 'block';
-      setIsChatbotWindowVisible(true);
+  // Initialize scripts when component mounts
+  useEffect(() => {
+    // Check if script is already loaded
+    if (document.getElementById('dify-script')) {
+      setIsScriptLoaded(true);
       return;
     }
     
-    console.log("Chat window not found, initializing chatbot");
-    
-    // Difyスクリプトを再ロードする
-    initDifyChatbot();
-    
-    // チャットウィンドウが表示されるまで少し待つ
-    setTimeout(() => {
-      const newChatWindow = document.getElementById('dify-chatbot-bubble-window');
-      if (newChatWindow) {
-        console.log("New chat window found after initialization");
-        newChatWindow.style.display = 'block';
-        setIsChatbotWindowVisible(true);
-      } else {
-        console.log("Still no chat window after initialization");
-        
-        // ボタンを探してクリックする
-        const chatButton = document.getElementById('dify-chatbot-bubble-button');
-        if (chatButton) {
-          console.log("Chat button found, clicking it");
-          chatButton.click();
-          setIsChatbotWindowVisible(true);
-        } else {
-          console.log("Chat button not found");
-          toast.error("チャットボットの初期化に失敗しました");
-        }
-      }
-    }, 1500); // Wait longer for script to initialize
-  };
-  
-  // Difyチャットボットを初期化する
-  const initDifyChatbot = () => {
-    console.log("Initializing Dify chatbot...");
-    
-    // 既存のスクリプトを削除
-    const existingScript = document.getElementById('dify-script');
-    if (existingScript) {
-      console.log("Removing existing script");
-      existingScript.remove();
-    }
-    
-    const existingStyle = document.getElementById('dify-style');
-    if (existingStyle) {
-      console.log("Removing existing style");
-      existingStyle.remove();
-    }
-    
-    // 設定スクリプトを追加
+    // Add the Dify config script
     const configScript = document.createElement('script');
     configScript.id = 'dify-config';
     configScript.textContent = `
@@ -77,36 +25,83 @@ export const ChatbotInitializer = () => {
     `;
     document.head.appendChild(configScript);
     
-    // スタイルを追加
+    // Add style for the chatbot window
     const style = document.createElement('style');
     style.id = 'dify-style';
-    style.textContent = getChatbotWindowStyles();
+    style.textContent = `
+      #dify-chatbot-bubble-button {
+        background-color: #1C64F2 !important; 
+      }
+      #dify-chatbot-bubble-window {
+        width: 24rem !important;
+        height: 40rem !important;
+        max-height: 80vh !important;
+        position: fixed !important;
+        bottom: auto !important;
+        top: 50px !important;
+        right: 20px !important;
+        z-index: 2147483647 !important;
+      }
+      @media (max-height: 700px) {
+        #dify-chatbot-bubble-window {
+          top: 20px !important;
+          height: calc(100vh - 100px) !important;
+        }
+      }
+    `;
     document.head.appendChild(style);
     
-    // Difyのスクリプトを追加
+    // Load Dify script
     const script = document.createElement('script');
     script.id = 'dify-script';
     script.src = 'https://udify.app/embed.min.js';
     script.defer = true;
     script.async = true;
-    script.id = DIFY_CONFIG.token; // スクリプトIDをトークンに設定（推奨される実装）
+    
+    // Handle script load
+    script.onload = () => {
+      console.log("Dify script loaded successfully");
+      setIsScriptLoaded(true);
+    };
+    
+    script.onerror = () => {
+      console.error("Failed to load Dify script");
+      toast.error("チャットボットの読み込みに失敗しました");
+    };
     
     document.head.appendChild(script);
     
-    console.log("Dify chatbot initialization complete");
-  };
-
-  // コンポーネントがマウントされたときにDifyスクリプトが存在しなければ初期化する
-  useEffect(() => {
-    if (!initAttemptedRef.current) {
-      initAttemptedRef.current = true;
-      const existingScript = document.getElementById('dify-script');
-      if (!existingScript) {
-        console.log("No Dify script found on mount, initializing");
-        initDifyChatbot();
-      }
-    }
+    // Cleanup
+    return () => {
+      // Only remove scripts if component is unmounted
+    };
   }, []);
+
+  // Simple function to open the chatbot
+  const openChatbot = () => {
+    console.log("Opening chatbot...");
+    toast.info("チャットボットを開いています...");
+    
+    // Try to find the chatbot window
+    const chatWindow = document.getElementById('dify-chatbot-bubble-window');
+    if (chatWindow) {
+      console.log("Chat window found, displaying it");
+      chatWindow.style.display = 'block';
+      return;
+    }
+    
+    // Try to click the button if window not found
+    const chatButton = document.getElementById('dify-chatbot-bubble-button');
+    if (chatButton && chatButton instanceof HTMLElement) {
+      console.log("Chat button found, clicking it");
+      chatButton.click();
+      return;
+    }
+    
+    // Show error if neither element is found
+    console.log("Chat elements not found");
+    toast.error("チャットボットを開けませんでした。しばらくしてからもう一度お試しください。");
+  };
 
   return { openChatbot };
 };
