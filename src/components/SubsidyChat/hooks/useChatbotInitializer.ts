@@ -5,15 +5,17 @@ import {
   addChatbotElements, 
   cleanup 
 } from '../utils/chatbotInitializer';
+import { toast } from '@/components/ui/use-toast';
 
 /**
  * カスタムフック: チャットボット初期化ロジック
  */
 export const useChatbotInitializer = () => {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isError, setIsError] = useState(false);
   const attemptCountRef = useRef(0);
-  const MAX_ATTEMPTS = 3; // 最大リトライ回数
-  const RETRY_DELAY = 2000; // リトライ間隔（ミリ秒）- 2秒に延長
+  const MAX_ATTEMPTS = 5; // 最大リトライ回数を増加
+  const RETRY_DELAY = 3000; // リトライ間隔（ミリ秒）- 3秒に延長
 
   // チャットボット初期化処理
   const initializeChatbot = () => {
@@ -22,18 +24,30 @@ export const useChatbotInitializer = () => {
     // 既存の要素をクリーンアップ
     cleanup();
     
+    // エラー状態をリセット
+    setIsError(false);
+    
     // Difyスクリプトを初期化
     initializeDifyScripts(
       // 成功時のコールバック
       () => {
         console.log("Dify scripts initialized successfully");
         setIsLoaded(true);
+        setIsError(false);
         attemptCountRef.current = 0; // リセット
         addChatbotElements();
         
         // window.DifyChatの存在を確認
         if (window.DifyChat) {
           console.log("DifyChat object is available:", window.DifyChat);
+          // オプションで成功通知
+          if (attemptCountRef.current > 1) {
+            toast({
+              title: "チャットボットの準備ができました",
+              description: "補助金についての質問ができます",
+              duration: 3000,
+            });
+          }
         } else {
           console.warn("DifyChat object is not available yet. Will use fallback messaging.");
         }
@@ -48,10 +62,20 @@ export const useChatbotInitializer = () => {
           console.log(`スクリプト読み込みをリトライします（${attemptCountRef.current}/${MAX_ATTEMPTS}）${RETRY_DELAY/1000}秒後...`);
           setTimeout(initializeChatbot, RETRY_DELAY);
         } else {
-          console.log("最大試行回数に達しました。フォールバックボタンを追加します。");
+          console.log("最大試行回数に達しました。フォールバックモードに切り替えます。");
+          // エラー状態をセット
+          setIsError(true);
           // スクリプトの読み込みに失敗しても要素を追加（UIを表示）
           setIsLoaded(true); // UI表示のためにロード状態を更新
           addChatbotElements();
+          
+          // エラー通知を表示
+          toast({
+            title: "チャットボットの読み込みに問題があります",
+            description: "ネットワーク接続を確認してください。限定機能で利用できます。",
+            variant: "destructive",
+            duration: 5000,
+          });
         }
       }
     );
@@ -59,6 +83,17 @@ export const useChatbotInitializer = () => {
 
   // 初期化処理を開始
   useEffect(() => {
+    // ネットワーク状態の監視
+    const handleOnline = () => {
+      console.log("ネットワーク接続が回復しました。チャットボットを再初期化します。");
+      // オンラインに戻ったら再初期化
+      if (isError) {
+        initializeChatbot();
+      }
+    };
+    
+    window.addEventListener('online', handleOnline);
+    
     // ページがすでに読み込まれている場合は即時初期化
     if (document.readyState === "complete") {
       console.log("DOM already loaded, initializing chatbot");
@@ -83,12 +118,13 @@ export const useChatbotInitializer = () => {
       // クリーンアップ
       return () => {
         window.removeEventListener("DOMContentLoaded", domLoadedHandler);
+        window.removeEventListener('online', handleOnline);
         clearTimeout(timeoutId);
         console.log("Cleaning up from initializer hook");
         cleanup();
       };
     }
-  }, []);
+  }, [isError]);
 
-  return { isLoaded, initializeChatbot };
+  return { isLoaded, isError, initializeChatbot };
 };

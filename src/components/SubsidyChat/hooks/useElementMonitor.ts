@@ -6,12 +6,15 @@ import {
 } from '../utils/elementChecker';
 import { addChatbotElements } from '../utils/chatbotInitializer';
 import '../types/dify.d.ts';
+import { toast } from '@/components/ui/use-toast';
 
 /**
  * カスタムフック: チャットボット要素のモニタリング
  */
 export const useElementMonitor = (isLoaded: boolean) => {
   const checkIntervalRef = useRef<number | null>(null);
+  const restoreAttemptsRef = useRef(0);
+  const MAX_RESTORE_ATTEMPTS = 3;
 
   // 要素のチェックを開始
   useEffect(() => {
@@ -40,10 +43,25 @@ export const useElementMonitor = (isLoaded: boolean) => {
       
       if (missingElements.length > 0) {
         console.log(`Missing elements after focus: ${missingElements.join(', ')}`);
-        console.log("Restoring all chatbot elements");
-        addChatbotElements();
+        restoreAttemptsRef.current++;
+        
+        if (restoreAttemptsRef.current <= MAX_RESTORE_ATTEMPTS) {
+          console.log(`Restoring all chatbot elements (attempt ${restoreAttemptsRef.current}/${MAX_RESTORE_ATTEMPTS})`);
+          addChatbotElements();
+        } else {
+          console.warn(`Maximum restore attempts reached (${MAX_RESTORE_ATTEMPTS}). Will try again on next focus.`);
+          restoreAttemptsRef.current = 0;
+          
+          // 要素を復元できない場合はユーザーに通知
+          toast({
+            title: "チャットボット要素の復元に問題があります",
+            description: "ページを再読み込みしてみてください",
+            duration: 5000,
+          });
+        }
       } else {
         console.log("All chatbot elements are present after focus");
+        restoreAttemptsRef.current = 0;
       }
       
       // DifyChatオブジェクトの状態確認
@@ -90,9 +108,15 @@ export const useElementMonitor = (isLoaded: boolean) => {
             
             if (missingMethods.length > 0) {
               console.log(`Some DifyChat methods are missing: ${missingMethods.join(', ')} - may cause issues`);
+              
+              // 重要なメソッドが欠けている場合は再初期化
+              if (missingMethods.includes('toggleBubbleWindow') || missingMethods.includes('sendMessage')) {
+                console.warn("Critical DifyChat methods are missing, reinitializing");
+                initializeChatbot();
+              }
             }
           }
-        }, 20000); // 20秒ごとにチェック（30秒から短縮）
+        }, 15000); // 15秒ごとにチェック
         
         return () => clearInterval(difyCheckInterval);
       }

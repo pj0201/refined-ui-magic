@@ -23,7 +23,7 @@ export const initializeDifyScripts = (
   const configScript = createScriptTag(
     'dify-chat-config',
     `window.__DIFY_CHAT_CONFIG__ = {
-      apiEndpoint: "https://udify.app",
+      apiEndpoint: "https://cloud.dify.ai", // udify.app から cloud.dify.ai に変更
       publicApiKey: "app-KDYnIQfxqkXo7a89jFOplm4c",
       features: {
         text_to_speech: { enabled: false }
@@ -32,25 +32,57 @@ export const initializeDifyScripts = (
   );
   document.head.appendChild(configScript);
   
-  // URLが有効かチェック - ロケーションによって適切なURLを選択
-  const scriptUrl = "https://udify.app/js/web-client-chat.js";
-  console.log(`Attempting to load Dify script from: ${scriptUrl}`);
+  // 複数のスクリプトURLを試みる
+  const scriptUrls = [
+    "https://cloud.dify.ai/js/web-client-chat.js",  // 主要なDifyホスティング
+    "https://udify.app/js/web-client-chat.js",      // オリジナルのURL
+    "https://cdn.jsdelivr.net/npm/@dify/web-client-chat@latest/dist/web-client-chat.js" // CDNバックアップ
+  ];
   
-  // 読み込み前のチェック
-  fetch(scriptUrl, { method: 'HEAD' })
+  // 各URLが有効かチェック
+  checkScriptUrls(scriptUrls, 0, onSuccess, onError);
+};
+
+/**
+ * 複数のスクリプトURLを順次チェックする再帰関数
+ */
+const checkScriptUrls = (
+  urls: string[],
+  index: number,
+  onSuccess: () => void,
+  onError: (error: Event | Error) => void
+) => {
+  if (index >= urls.length) {
+    console.error("すべてのスクリプトURLのロードに失敗しました");
+    onError(new Error("すべてのDifyスクリプトURLにアクセスできません"));
+    return;
+  }
+  
+  const currentUrl = urls[index];
+  console.log(`スクリプトURL (${index + 1}/${urls.length}) をチェック中: ${currentUrl}`);
+  
+  // URLのアクセス可能性をチェック
+  fetch(currentUrl, { method: 'HEAD', mode: 'no-cors' })
     .then(response => {
-      if (response.ok) {
-        console.log("Script URL is reachable, proceeding with script load");
-        loadMainScript(scriptUrl, onSuccess, onError);
+      console.log(`Script URL ${currentUrl} response status: ${response.status}`);
+      
+      if (response.ok || response.status === 0) { // no-corsモードでは0が返ることがある
+        console.log(`スクリプトURL ${currentUrl} にアクセスできました、スクリプトをロードします`);
+        loadMainScript(currentUrl, onSuccess, (error) => {
+          console.warn(`${currentUrl} からのスクリプトロードに失敗: ${error}、次のURLを試みます`);
+          checkScriptUrls(urls, index + 1, onSuccess, onError);
+        });
       } else {
-        console.error(`Script URL returned status: ${response.status}`);
-        onError(new Error(`Script URL returned status: ${response.status}`));
+        console.warn(`スクリプトURL ${currentUrl} は応答コード ${response.status} を返しました、次のURLを試みます`);
+        checkScriptUrls(urls, index + 1, onSuccess, onError);
       }
     })
     .catch(err => {
-      console.error("Failed to check script URL:", err);
-      // URLチェック失敗でもスクリプトのロードを試みる
-      loadMainScript(scriptUrl, onSuccess, onError);
+      console.warn(`スクリプトURL ${currentUrl} のチェックに失敗: ${err}、次のURLを試みます`);
+      // fetch自体が失敗した場合でも、スクリプトのロードを試みる（CORSの問題かもしれない）
+      loadMainScript(currentUrl, onSuccess, (error) => {
+        checkScriptUrls(urls, index + 1, onSuccess, onError);
+      });
     });
 };
 
@@ -62,6 +94,8 @@ const loadMainScript = (
   onSuccess: () => void,
   onError: (error: Event | Error) => void
 ) => {
+  console.log(`スクリプトをロード中: ${scriptUrl}`);
+  
   const mainScript = createScriptTag(
     'yXBz3rzpDBhMgYcB',
     null,
@@ -70,15 +104,32 @@ const loadMainScript = (
     true
   );
   
+  // タイムアウト設定
+  const timeoutId = setTimeout(() => {
+    console.error(`スクリプトロードがタイムアウトしました: ${scriptUrl}`);
+    mainScript.remove(); // 未完了のスクリプトタグを削除
+    onError(new Error(`スクリプトロードがタイムアウトしました: ${scriptUrl}`));
+  }, 10000); // 10秒タイムアウト
+  
   // 正常にロードされた場合
   mainScript.onload = (): void => {
-    console.log("Dify script loaded successfully");
-    onSuccess();
+    clearTimeout(timeoutId);
+    console.log(`Difyスクリプト ${scriptUrl} が正常にロードされました`);
+    
+    // window.DifyChat が実際に存在するか確認
+    if (window.DifyChat) {
+      console.log("DifyChat オブジェクトが利用可能です:", Object.keys(window.DifyChat));
+      onSuccess();
+    } else {
+      console.error("スクリプトはロードされましたが、DifyChat オブジェクトが見つかりません");
+      onError(new Error("DifyChat オブジェクトが見つかりません"));
+    }
   };
   
   // エラーが発生した場合
   mainScript.onerror = (error: Event): void => {
-    console.error("Error loading Dify script:", error);
+    clearTimeout(timeoutId);
+    console.error(`Difyスクリプト ${scriptUrl} のロードエラー:`, error);
     onError(error);
   };
   
@@ -99,7 +150,8 @@ export const cleanup = (): void => {
     'dify-chatbot-label-1',
     'dify-chatbot-bubble-button-2', 
     'dify-chatbot-label-2',
-    'chatbot-elements-container'
+    'chatbot-elements-container',
+    'dify-fallback-container' // フォールバックメッセージコンテナも削除
   ];
   
   elementsToRemove.forEach(id => {
