@@ -5,6 +5,7 @@
 interface DifyChatInterface {
   toggleBubbleWindow?: (show: boolean) => void;
   onChatCleared?: () => void;
+  sendMessage?: (message: string) => void;
 }
 
 declare global {

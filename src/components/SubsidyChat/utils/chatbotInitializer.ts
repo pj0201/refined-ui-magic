@@ -1,4 +1,3 @@
-
 import { getChatbotStyles } from '../styles/chatbotStyles';
 import { 
   removeElement, 
@@ -8,6 +7,7 @@ import {
   createChatbotButton,
   chatbotElementIds
 } from './domUtils';
+import '../types/dify';
 
 /**
  * Difyスクリプトの初期化
@@ -98,8 +98,8 @@ export const addChatbotElements = (): void => {
     (): void => {
       // Difyのウィンドウをトグルするよう変更
       if (window.DifyChat) {
-        window.DifyChat.toggleBubbleWindow(true);
-        window.DifyChat.onChatCleared();
+        window.DifyChat.toggleBubbleWindow?.(true);
+        window.DifyChat.onChatCleared?.();
         // 省力化投資補助金についてのメッセージを自動送信
         setTimeout(() => {
           if (window.DifyChat?.sendMessage) {
@@ -133,8 +133,8 @@ export const addChatbotElements = (): void => {
     (): void => {
       // Difyのウィンドウをトグルするよう変更
       if (window.DifyChat) {
-        window.DifyChat.toggleBubbleWindow(true);
-        window.DifyChat.onChatCleared();
+        window.DifyChat.toggleBubbleWindow?.(true);
+        window.DifyChat.onChatCleared?.();
         // 小規模持続化補助金についてのメッセージを自動送信
         setTimeout(() => {
           if (window.DifyChat?.sendMessage) {
@@ -202,4 +202,3 @@ export const cleanup = (): void => {
     removeElement(id);
   });
 };
-

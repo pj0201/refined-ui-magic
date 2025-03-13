@@ -9,6 +9,8 @@ import {
   startElementCheck, 
   clearCheckInterval 
 } from "./utils/elementChecker";
+// Import Dify types to ensure type checking
+import './types/dify';
 
 /**
  * 補助金チャットボットコンポーネント
