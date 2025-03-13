@@ -1,3 +1,4 @@
+
 import { 
   removeElement, 
   createChatbotLabel, 
@@ -6,7 +7,6 @@ import {
   toggleCloseButton
 } from './domUtils';
 import { startShorikikaChat, startShoukiboJizokaChat, setupMessageListeners } from './chatMessageUtils';
-import { closeButtonHtml } from '../styles/difyChatStyles';
 
 /**
  * チャットボット要素の追加
@@ -68,30 +68,11 @@ export const addChatbotElements = (): void => {
   // コンテナをDOMに追加
   document.body.appendChild(container);
   
-  // 閉じるボタンをDOMに追加（最初は非表示）
-  document.body.insertAdjacentHTML('beforeend', closeButtonHtml);
-  
-  // 閉じるボタンにクリックイベントを追加
-  const closeButton = document.getElementById('chatbot-close-button');
-  if (closeButton) {
-    closeButton.addEventListener('click', () => {
-      // チャットウィンドウを閉じる
-      const chatWindow = document.getElementById('dify-chatbot-bubble-window');
-      if (chatWindow) {
-        chatWindow.style.display = 'none';
-        toggleCloseButton(false);
-      }
-    });
-  }
-  
-  // 初期状態では閉じるボタンは非表示に
-  toggleCloseButton(false);
-  
-  // チャットウィンドウの表示状態を監視する
-  setupChatWindowObserver();
-  
   // メッセージハンドラー
   setupMessageListeners();
+  
+  // ウィンドウオブザーバを設定
+  setupChatWindowObserver();
 };
 
 /**
@@ -105,12 +86,11 @@ const setupChatWindowObserver = (): void => {
         // 新しい要素が追加された場合、チャットウィンドウをチェック
         const chatWindow = document.getElementById('dify-chatbot-bubble-window');
         if (chatWindow) {
+          // 閉じるボタンをウィンドウに追加
+          addCloseButtonToWindow(chatWindow);
+          
           // ウィンドウの表示状態を監視するオブザーバーをセットアップ
           setupWindowVisibilityObserver(chatWindow);
-          
-          // 現在の表示状態を確認して閉じるボタンの表示を調整
-          const isVisible = window.getComputedStyle(chatWindow).display !== 'none';
-          toggleCloseButton(isVisible);
         }
       }
     }
@@ -122,15 +102,38 @@ const setupChatWindowObserver = (): void => {
   // 既存のチャットウィンドウをチェック
   const existingWindow = document.getElementById('dify-chatbot-bubble-window');
   if (existingWindow) {
+    addCloseButtonToWindow(existingWindow);
     setupWindowVisibilityObserver(existingWindow);
-    
-    // 既存ウィンドウの表示状態を確認
-    const isVisible = window.getComputedStyle(existingWindow).display !== 'none';
-    toggleCloseButton(isVisible);
-  } else {
-    // ウィンドウが存在しない場合は閉じるボタンを非表示に
-    toggleCloseButton(false);
   }
+};
+
+/**
+ * チャットウィンドウに閉じるボタンを追加
+ */
+const addCloseButtonToWindow = (windowElement: HTMLElement): void => {
+  // 既にボタンが追加されていないか確認
+  if (windowElement.querySelector('.chat-window-close-button')) {
+    return;
+  }
+  
+  // 閉じるボタン要素を作成
+  const closeButton = document.createElement('button');
+  closeButton.className = 'chat-window-close-button';
+  closeButton.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 6L6 18"></path>
+      <path d="M6 6L18 18"></path>
+    </svg>
+  `;
+  
+  // クリックイベントを追加
+  closeButton.addEventListener('click', () => {
+    // チャットウィンドウを非表示にする
+    windowElement.style.display = 'none';
+  });
+  
+  // ウィンドウにボタンを追加
+  windowElement.appendChild(closeButton);
 };
 
 /**
@@ -146,7 +149,15 @@ const setupWindowVisibilityObserver = (windowElement: HTMLElement): void => {
   const windowObserver = new MutationObserver(() => {
     const isVisible = window.getComputedStyle(windowElement).display !== 'none';
     console.log(`Chat window visibility changed: ${isVisible ? 'visible' : 'hidden'}`);
-    toggleCloseButton(isVisible);
+    
+    // 表示状態に応じて閉じるボタンの表示を調整
+    const closeButton = windowElement.querySelector('.chat-window-close-button');
+    if (closeButton) {
+      (closeButton as HTMLElement).style.display = isVisible ? 'flex' : 'none';
+    } else if (isVisible) {
+      // ボタンがない場合で、ウィンドウが表示された場合は追加
+      addCloseButtonToWindow(windowElement);
+    }
   });
   
   // style属性の変更を監視

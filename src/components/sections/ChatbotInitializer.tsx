@@ -6,10 +6,24 @@ export const ChatbotInitializer = () => {
    * チャットボットを開くシンプルな関数
    */
   const openChatbot = () => {
-    // チャットボタンを探して、存在すれば直接クリック
-    const chatButton = document.getElementById('dify-chatbot-bubble-button');
-    if (chatButton && chatButton instanceof HTMLElement) {
-      chatButton.click();
+    // まず省力化投資補助金のチャットボタンを探す
+    const shorikikaButton = document.getElementById('dify-chatbot-bubble-button-1');
+    if (shorikikaButton && shorikikaButton instanceof HTMLElement) {
+      shorikikaButton.click();
+      return;
+    }
+    
+    // 次に小規模持続化補助金のチャットボタンを探す
+    const shoukiboButton = document.getElementById('dify-chatbot-bubble-button-2');
+    if (shoukiboButton && shoukiboButton instanceof HTMLElement) {
+      shoukiboButton.click();
+      return;
+    }
+    
+    // デフォルトのDifyチャットボタンを探す（フォールバック）
+    const defaultChatButton = document.getElementById('dify-chatbot-bubble-button');
+    if (defaultChatButton && defaultChatButton instanceof HTMLElement) {
+      defaultChatButton.click();
       return;
     }
     

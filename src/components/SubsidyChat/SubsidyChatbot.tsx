@@ -3,10 +3,30 @@ import { useEffect } from "react";
 
 /**
  * シンプルな補助金チャットボットコンポーネント
- * Difyは既にHTMLで初期化されるため、このコンポーネントは初期化処理を行いません
+ * デフォルトのDifyボタンを非表示にするためのスタイルを追加
  */
 export const SubsidyChatbot = () => {
-  // 何も初期化しない - HTMLに直接埋め込みコードを配置済み
+  useEffect(() => {
+    // デフォルトのDifyボタンを非表示にするスタイルを追加
+    const style = document.createElement('style');
+    style.id = 'hide-default-dify-button';
+    style.textContent = `
+      #dify-chatbot-bubble-button {
+        display: none !important;
+        visibility: hidden !important;
+        opacity: 0 !important;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      // コンポーネントのアンマウント時にスタイルを削除
+      const styleElem = document.getElementById('hide-default-dify-button');
+      if (styleElem) {
+        styleElem.remove();
+      }
+    };
+  }, []);
   
   return null;
 };
@@ -15,10 +35,17 @@ export const SubsidyChatbot = () => {
  * チャットボットを開く関数
  */
 export const openChatbot = () => {
-  // まずチャットボタンを探して、存在すれば直接クリック
-  const chatButton = document.getElementById('dify-chatbot-bubble-button');
-  if (chatButton && chatButton instanceof HTMLElement) {
-    chatButton.click();
+  // まず省力化投資補助金のチャットボタンを探す
+  const shorikikaButton = document.getElementById('dify-chatbot-bubble-button-1');
+  if (shorikikaButton && shorikikaButton instanceof HTMLElement) {
+    shorikikaButton.click();
+    return;
+  }
+  
+  // 次に小規模持続化補助金のチャットボタンを探す
+  const shoukiboButton = document.getElementById('dify-chatbot-bubble-button-2');
+  if (shoukiboButton && shoukiboButton instanceof HTMLElement) {
+    shoukiboButton.click();
     return;
   }
   
