@@ -11,16 +11,24 @@ export const startElementCheck = (checkIntervalRef: React.MutableRefObject<numbe
   }
 
   checkIntervalRef.current = window.setInterval(() => {
-    const button1 = document.getElementById('dify-chatbot-bubble-button-1');
-    const label1 = document.getElementById('dify-chatbot-label-1');
-    const button2 = document.getElementById('dify-chatbot-bubble-button-2');
-    const label2 = document.getElementById('dify-chatbot-label-2');
-
-    if (!button1 || !label1 || !button2 || !label2) {
-      console.log("Chatbot elements missing, restoring...");
+    const container = document.getElementById('chatbot-elements-container');
+    
+    if (!container) {
+      console.log("Chatbot container missing, restoring...");
       addChatbotElements();
+    } else {
+      // コンテナがあっても中の要素が揃っているか確認
+      const button1 = document.getElementById('dify-chatbot-bubble-button-1');
+      const label1 = document.getElementById('dify-chatbot-label-1');
+      const button2 = document.getElementById('dify-chatbot-bubble-button-2');
+      const label2 = document.getElementById('dify-chatbot-label-2');
+      
+      if (!button1 || !label1 || !button2 || !label2) {
+        console.log("Chatbot elements missing from container, restoring...");
+        addChatbotElements();
+      }
     }
-  }, 1000); // より短い間隔でチェック
+  }, 1000);
 };
 
 /**

@@ -68,11 +68,17 @@ export const initializeDifyScripts = (
 export const addChatbotElements = (): void => {
   console.log("Adding chatbot elements to the DOM");
   
-  // ラベルとボタンを削除
+  // 既存の要素をクリーンアップ
+  removeElement('chatbot-elements-container');
   removeElement('dify-chatbot-bubble-button-1');
   removeElement('dify-chatbot-label-1');
   removeElement('dify-chatbot-bubble-button-2');
   removeElement('dify-chatbot-label-2');
+  
+  // コンテナを作成
+  const container = document.createElement('div');
+  container.id = 'chatbot-elements-container';
+  container.className = 'chatbot-elements-container';
   
   // 1つ目のラベル（省力化投資補助金）
   const label1 = createChatbotLabel(
@@ -80,7 +86,7 @@ export const addChatbotElements = (): void => {
     'dify-chatbot-label', 
     '省力化投資補助金の質問はコチラ'
   );
-  document.body.appendChild(label1);
+  container.appendChild(label1);
   
   // 1つ目のチャットボタン（省力化投資補助金）
   const button1 = createChatbotButton(
@@ -93,7 +99,7 @@ export const addChatbotElements = (): void => {
       window.postMessage({ type: 'CHAT_TYPE_1_CLICK', value: '省力化投資補助金' }, '*');
     }
   );
-  document.body.appendChild(button1);
+  container.appendChild(button1);
   
   // 2つ目のラベル（小規模持続化補助金）
   const label2 = createChatbotLabel(
@@ -101,7 +107,7 @@ export const addChatbotElements = (): void => {
     'dify-chatbot-label', 
     '小規模持続化補助金の質問はコチラ'
   );
-  document.body.appendChild(label2);
+  container.appendChild(label2);
   
   // 2つ目のチャットボタン（小規模持続化補助金）
   const button2 = createChatbotButton(
@@ -114,7 +120,10 @@ export const addChatbotElements = (): void => {
       window.postMessage({ type: 'CHAT_TYPE_2_CLICK', value: '小規模持続化補助金' }, '*');
     }
   );
-  document.body.appendChild(button2);
+  container.appendChild(button2);
+  
+  // コンテナをDOMに追加
+  document.body.appendChild(container);
   
   // メッセージハンドラー
   window.addEventListener('message', (event) => {
@@ -144,7 +153,12 @@ export const addChatbotElements = (): void => {
 export const cleanup = (): void => {
   console.log("Cleaning up chatbot elements");
   
-  chatbotElementIds.forEach(id => {
+  const elementsToRemove = [
+    ...chatbotElementIds,
+    'chatbot-elements-container'
+  ];
+  
+  elementsToRemove.forEach(id => {
     removeElement(id);
   });
 };
