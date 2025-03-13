@@ -22,6 +22,8 @@ export const SubsidyChatbot = () => {
   const MAX_ATTEMPTS = 3; // 最大リトライ回数
 
   useEffect(() => {
+    console.log("SubsidyChatbot component mounted");
+    
     // DOMコンテンツが読み込まれた後に初期化する
     if (document.readyState === "complete") {
       console.log("DOM already loaded, initializing chatbot");
@@ -57,12 +59,25 @@ export const SubsidyChatbot = () => {
         console.log("Dify scripts initialized successfully");
         setIsLoaded(true);
         attemptCountRef.current = 0; // リセット
-        addChatbotElements();
+        
+        // 確認のために一定時間後にグローバルオブジェクトを再確認
+        setTimeout(() => {
+          console.log("Re-checking Dify global objects");
+          console.log('DifyChat available:', !!window.DifyChat);
+          console.log('difyChatbot available:', !!window.difyChatbot);
+          console.log('DifyAI available:', !!window.DifyAI);
+          console.log('__DIFY_CHAT_CONFIG__ available:', !!window.__DIFY_CHAT_CONFIG__);
+          
+          // Difyウィジェットの状態を確認
+          const chatElements = document.querySelectorAll('[id*="dify"], [class*="dify"], [id*="chat"], [class*="chat"]');
+          console.log(`Found ${chatElements.length} potential Dify elements in the DOM`);
+        }, 3000);
         
         // Difyチャットウィンドウのサイズと位置を調整
         const adjustChatWindow = () => {
           const chatWindow = document.getElementById('dify-chatbot-bubble-window');
           if (chatWindow) {
+            console.log("Adjusting chat window position and size");
             const viewportHeight = window.innerHeight;
             const chatWindowHeight = chatWindow.clientHeight;
             
@@ -70,6 +85,8 @@ export const SubsidyChatbot = () => {
               chatWindow.style.height = (viewportHeight - 100) + 'px';
               chatWindow.style.top = '50px';
             }
+          } else {
+            console.log("Chat window not found for adjustment");
           }
         };
         
@@ -142,6 +159,7 @@ export const SubsidyChatbot = () => {
               if (chatWindowHeight > viewportHeight - 100) {
                 chatWindow.style.height = (viewportHeight - 100) + 'px';
                 chatWindow.style.top = '50px';
+                console.log("Chat window position adjusted");
               }
             }
           }

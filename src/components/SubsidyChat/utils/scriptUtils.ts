@@ -1,6 +1,6 @@
 
 import { createScriptTag, createStyleTag } from './domUtils';
-import { DIFY_CONFIG } from './difyConfig';
+import { DIFY_CONFIG, getDifyConfigScript } from './difyConfig';
 import { getChatbotStyles } from '../styles/chatbotStyles';
 
 /**
@@ -10,7 +10,7 @@ export const loadDifyScripts = (
   onSuccess: () => void,
   onError: (error: Event | Error) => void
 ): void => {
-  console.log("Loading Dify scripts");
+  console.log("Loading Dify scripts with new implementation");
   
   // スタイルを追加
   const style = createStyleTag('dify-custom-styles', getChatbotStyles());
@@ -19,13 +19,7 @@ export const loadDifyScripts = (
   // Difyの設定スクリプト - 正しい形式で設定
   const configScript = createScriptTag(
     'dify-chat-config',
-    `window.__DIFY_CHAT_CONFIG__ = {
-      apiEndpoint: "${DIFY_CONFIG.apiEndpoint}",
-      publicApiKey: "${DIFY_CONFIG.publicApiKey}",
-      features: {
-        text_to_speech: { enabled: ${DIFY_CONFIG.features.text_to_speech.enabled} }
-      }
-    };`
+    getDifyConfigScript()
   );
   document.head.appendChild(configScript);
   
@@ -54,19 +48,31 @@ export const loadDifyScripts = (
   );
   document.head.appendChild(customStyles);
   
-  // Difyのメインスクリプト - 正しいURLを使用
+  // Difyのメインスクリプト - 最新のURLを使用
   const mainScript = createScriptTag(
     'dify-chat-main-script',
     null,
-    'https://cdn.dify.ai/chat-widget/v1.1.0/chat-widget.js',
+    'https://cdn.dify.ai/chat-widget/v1.2.0/chat-widget.js', // 最新のバージョンに更新
     true,
     true
   );
   
   // 正常にロードされた場合
   mainScript.onload = (): void => {
-    console.log("Dify script loaded successfully");
-    onSuccess();
+    console.log("Dify script loaded successfully, checking for global objects");
+    setTimeout(() => {
+      // グローバルオブジェクトをチェック
+      if (window.DifyAI) {
+        console.log("DifyAI global object found");
+      } else if (window.difyChatbot) {
+        console.log("difyChatbot global object found");
+      } else if (window.DifyChat) {
+        console.log("DifyChat global object found");
+      } else {
+        console.warn("No Dify global objects found after script load");
+      }
+      onSuccess();
+    }, 500); // スクリプトが正しく初期化される時間を確保
   };
   
   // エラーが発生した場合
