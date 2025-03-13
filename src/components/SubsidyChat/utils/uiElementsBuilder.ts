@@ -69,7 +69,7 @@ export const addChatbotElements = (): void => {
   // コンテナをDOMに追加
   document.body.appendChild(container);
   
-  // 閉じるボタンをDOMに追加
+  // 閉じるボタンをDOMに追加（最初は非表示）
   document.body.insertAdjacentHTML('beforeend', closeButtonHtml);
   
   // 閉じるボタンにクリックイベントを追加
@@ -84,6 +84,9 @@ export const addChatbotElements = (): void => {
       }
     });
   }
+  
+  // 初期状態では閉じるボタンは非表示に
+  toggleCloseButton(false);
   
   // チャットウィンドウの表示状態を監視する
   setupChatWindowObserver();
@@ -100,26 +103,40 @@ const setupChatWindowObserver = (): void => {
   const observer = new MutationObserver((mutations) => {
     mutations.forEach((mutation) => {
       if (mutation.type === 'childList') {
-        // チャットウィンドウが表示された場合
+        // チャットウィンドウの追加を検出した場合
         const chatWindow = document.getElementById('dify-chatbot-bubble-window');
         if (chatWindow) {
-          // 表示・非表示の状態を確認
+          // ウィンドウが表示されたらすぐに閉じるボタンを表示
           const isVisible = window.getComputedStyle(chatWindow).display !== 'none';
           toggleCloseButton(isVisible);
+          
+          // ウィンドウ自体のdisplayプロパティの変更も監視
+          const windowObserver = new MutationObserver((windowMutations) => {
+            const isCurrentlyVisible = window.getComputedStyle(chatWindow).display !== 'none';
+            toggleCloseButton(isCurrentlyVisible);
+          });
+          
+          // style属性の変更を監視
+          windowObserver.observe(chatWindow, { 
+            attributes: true, 
+            attributeFilter: ['style'] 
+          });
         }
       }
     });
   });
   
-  // bodyの変更を監視
+  // bodyの変更を監視（新要素の追加検出用）
   observer.observe(document.body, { childList: true, subtree: true });
   
-  // 定期的にチェック（MutationObserverで検出できない変更のため）
-  setInterval(() => {
-    const chatWindow = document.getElementById('dify-chatbot-bubble-window');
-    if (chatWindow) {
-      const isVisible = window.getComputedStyle(chatWindow).display !== 'none';
-      toggleCloseButton(isVisible);
-    }
-  }, 1000);
+  // 既存の要素もチェック
+  const chatWindow = document.getElementById('dify-chatbot-bubble-window');
+  if (chatWindow) {
+    const isVisible = window.getComputedStyle(chatWindow).display !== 'none';
+    toggleCloseButton(isVisible);
+  } else {
+    // ウィンドウがなければ閉じるボタンは非表示
+    toggleCloseButton(false);
+  }
 };
+

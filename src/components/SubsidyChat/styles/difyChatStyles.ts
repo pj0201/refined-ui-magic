@@ -125,7 +125,7 @@ export const difyChatStyles = `
     margin-top: auto !important;
   }
   
-  /* 入力エリアの横にある×ボタン（混乱を招くので非表示） */
+  /* 入力エリアの横にある×ボタン（混乱を招くので非表示�� */
   .dify-chatbot-window-footer button[aria-label="Close"] {
     display: none !important;
   }

@@ -1,3 +1,4 @@
+
 /**
  * DOM操作ユーティリティ
  */
@@ -75,11 +76,18 @@ export const createChatbotButton = (
 export const toggleCloseButton = (visible: boolean): void => {
   const closeButton = document.getElementById('chatbot-close-button');
   if (closeButton) {
+    console.log(`Setting close button visibility to: ${visible ? 'visible' : 'hidden'}`);
     if (visible) {
       closeButton.classList.add('visible');
+      closeButton.style.opacity = '1';
+      closeButton.style.visibility = 'visible';
     } else {
       closeButton.classList.remove('visible');
+      closeButton.style.opacity = '0';
+      closeButton.style.visibility = 'hidden';
     }
+  } else {
+    console.log('Close button element not found');
   }
 };
 
@@ -94,3 +102,4 @@ export const chatbotElementIds = [
   'dify-chatbot-label-2',
   'chatbot-close-button'
 ];
+
