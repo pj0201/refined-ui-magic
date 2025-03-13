@@ -4,7 +4,7 @@
  */
 export const getChatbotWindowStyles = (): string => `
   #dify-chatbot-bubble-button {
-    background-color: #8B5CF6 !important; /* より目立つ紫色 */
+    background-color: #1C64F2 !important; /* ブランドカラー */
   }
   #dify-chatbot-bubble-window {
     width: 24rem !important;

@@ -62,6 +62,7 @@ export const SubsidyChatbot = () => {
     script.src = 'https://udify.app/embed.min.js';
     script.defer = true;
     script.async = true;
+    script.id = DIFY_CONFIG.token; // スクリプトIDをトークンに設定
     
     document.head.appendChild(script);
 

@@ -3,8 +3,6 @@ import { useState, useEffect, useRef } from "react";
 import { DIFY_CONFIG } from "@/components/SubsidyChat/utils/difyConfig";
 import { getChatbotWindowStyles } from "@/components/SubsidyChat/styles/chatbotWindowStyles";
 import { toast } from "sonner";
-import { addChatbotElements } from "@/components/SubsidyChat/utils/uiElementsBuilder";
-import { createDirectChatWindow } from "@/components/SubsidyChat/utils/directChatImplementation";
 
 export const ChatbotInitializer = () => {
   const [isChatbotWindowVisible, setIsChatbotWindowVisible] = useState(false);
@@ -45,8 +43,8 @@ export const ChatbotInitializer = () => {
           chatButton.click();
           setIsChatbotWindowVisible(true);
         } else {
-          console.log("Chat button not found, attempting fallback");
-          initializeFallbackChatbot();
+          console.log("Chat button not found");
+          toast.error("チャットボットの初期化に失敗しました");
         }
       }
     }, 1500); // Wait longer for script to initialize
@@ -91,25 +89,11 @@ export const ChatbotInitializer = () => {
     script.src = 'https://udify.app/embed.min.js';
     script.defer = true;
     script.async = true;
+    script.id = DIFY_CONFIG.token; // スクリプトIDをトークンに設定（推奨される実装）
     
     document.head.appendChild(script);
     
     console.log("Dify chatbot initialization complete");
-  };
-
-  // フォールバックチャットボットUIを初期化
-  const initializeFallbackChatbot = () => {
-    console.log("Initializing fallback chatbot UI");
-    toast.info("代替チャットボットを使用しています");
-    
-    // サブシディチャットのUIエレメントを追加
-    try {
-      addChatbotElements();
-      createDirectChatWindow();
-    } catch (e) {
-      console.error("Error initializing fallback chatbot:", e);
-      toast.error("チャットボットの初期化に失敗しました");
-    }
   };
 
   // コンポーネントがマウントされたときにDifyスクリプトが存在しなければ初期化する
