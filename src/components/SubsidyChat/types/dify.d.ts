@@ -8,9 +8,18 @@ interface DifyChatInterface {
   sendMessage?: (message: string) => void;
 }
 
+/**
+ * Dify Chatbot API タイプ定義 (新しい埋め込みAPI)
+ */
+interface DifyChatbotInterface {
+  toggle: () => void;
+  sendMessage: (message: string) => void;
+}
+
 declare global {
   interface Window {
     DifyChat?: DifyChatInterface;
+    difyChatbot?: DifyChatbotInterface;
     __DIFY_CHAT_CONFIG__?: {
       apiEndpoint: string;
       publicApiKey: string;

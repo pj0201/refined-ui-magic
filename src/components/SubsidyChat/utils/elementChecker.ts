@@ -1,5 +1,5 @@
 
-import { addChatbotElements } from './chatbotInitializer';
+import { addChatbotElements } from './uiElementsBuilder';
 
 /**
  * チャットボット要素の存在チェック
