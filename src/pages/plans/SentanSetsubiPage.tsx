@@ -2,7 +2,7 @@
 import { PlanLayout } from "@/components/plans/PlanLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle, Cpu } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ContactForm } from "@/components/ContactForm";
 
 const SentanSetsubiPage = () => {
   return (
@@ -122,12 +122,12 @@ const SentanSetsubiPage = () => {
           先端設備等導入計画の策定について専門的なサポートが必要な場合は、お気軽にご相談ください。
           弊社の経営コンサルタントが最適な設備選定から計画策定、申請までトータルでサポートいたします。
         </p>
-        <Button 
-          className="bg-indigo-600 hover:bg-indigo-700"
-          onClick={() => window.location.href = 'mailto:hori@planjoy.net?subject=先端設備等導入計画について相談したい'}
-        >
-          メールでのお問い合わせ
-        </Button>
+        <ContactForm 
+          subject="先端設備等導入計画について相談したい"
+          buttonColor="text-indigo-600"
+          borderColor="border-indigo-600"
+          hoverColor="hover:bg-indigo-50"
+        />
       </div>
     </PlanLayout>
   );
