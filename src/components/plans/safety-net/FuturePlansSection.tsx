@@ -11,6 +11,21 @@ export const FuturePlansSection = () => {
         以下はその概要です。
       </p>
 
+      <div className="bg-blue-50 p-6 rounded-lg mb-8">
+        <h3 className="font-bold text-lg mb-3">
+          <BarChart className="inline-block mr-2 h-5 w-5" />
+          支援策の変更点
+        </h3>
+        <p className="mb-4">
+          コロナからの社会経済活動の正常化が進む中、経営上の課題は、売上減少から、人手不足・賃上げ・原材料費高騰等への対応へシフトしています。
+          これに伴い、資金繰り支援策も成長促進を含めた多岐にわたる経営課題に対応できるよう見直されています。
+        </p>
+        <p>
+          主な変更点として、「コロナ対策」から「経営改善・再生」「成長」を軸とした支援へと移行しています。
+          詳細については、最新の情報を経済産業省や日本政策金融公庫のウェブサイトでご確認、または弊社までご連絡ください。
+        </p>
+      </div>
+
       <div className="space-y-6 mb-8">
         <img 
           src="/lovable-uploads/4790433b-16d1-4945-b930-d6b3a88523a1.png" 
@@ -37,21 +52,6 @@ export const FuturePlansSection = () => {
         </div>
       </div>
 
-      <div className="bg-blue-50 p-6 rounded-lg mb-8">
-        <h3 className="font-bold text-lg mb-3">
-          <BarChart className="inline-block mr-2 h-5 w-5" />
-          支援策の変更点
-        </h3>
-        <p className="mb-4">
-          コロナからの社会経済活動の正常化が進む中、経営上の課題は、売上減少から、人手不足・賃上げ・原材料費高騰等への対応へシフトしています。
-          これに伴い、資金繰り支援策も成長促進を含めた多岐にわたる経営課題に対応できるよう見直されています。
-        </p>
-        <p>
-          主な変更点として、「コロナ対策」から「経営改善・再生」「成長」を軸とした支援へと移行しています。
-          詳細については、最新の情報を経済産業省や日本政策金融公庫のウェブサイトでご確認、または弊社までご連絡ください。
-        </p>
-      </div>
-      
       <div className="bg-blue-50 p-6 rounded-lg mb-8">
         <h3 className="font-bold text-lg mb-3">お役立ちリンク</h3>
         <ul className="space-y-2">
