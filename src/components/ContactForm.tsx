@@ -31,8 +31,8 @@ export const ContactForm = ({
   };
 
   return (
-    <div className="text-center">
-      <p className="mb-4">お問い合わせには、Googleフォームを使用しております。</p>
+    <div className="text-center py-2">
+      <p className="mb-3">お問い合わせには、Googleフォームを使用しております。</p>
       <Button 
         variant="outline"
         className={`bg-white ${buttonColor} ${borderColor} ${hoverColor}`}
