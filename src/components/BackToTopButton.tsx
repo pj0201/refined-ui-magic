@@ -30,7 +30,7 @@ export const BackToTopButton = () => {
   };
 
   return (
-    <div className={`fixed bottom-5 right-5 z-50 transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+    <div className={`fixed bottom-20 right-5 z-50 transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
       <Button 
         onClick={scrollToTop} 
         className="rounded-full p-3 bg-blue-600 hover:bg-blue-700 text-white shadow-lg"

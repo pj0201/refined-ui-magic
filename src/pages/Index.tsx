@@ -47,11 +47,11 @@ const Index = () => {
         </div>
       </section>
 
-      <footer className="py-4 px-4 bg-gray-900 text-white">
+      <footer className="py-6 px-4 bg-gray-900 text-white">
         <div className="max-w-4xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <p className="mb-2 md:mb-0">&copy; {new Date().getFullYear()} PLANNINGJOY株式会社</p>
-            <div className="flex gap-6">
+          <div className="flex flex-col md:flex-row justify-between items-center pb-4">
+            <p className="mb-4 md:mb-0">&copy; {new Date().getFullYear()} PLANNINGJOY株式会社</p>
+            <div className="flex gap-8">
               <button 
                 onClick={() => setPrivacyPolicyOpen(true)}
                 className="text-gray-300 hover:text-white transition-colors"
