@@ -120,21 +120,21 @@ const SentanSetsubiPage = () => {
             </li>
           </ul>
         </div>
+      </div>
 
-        {/* お問い合わせフォーム - prose クラス外 */}
-        <div className="bg-gray-100 p-6 rounded-lg">
-          <h3 className="font-bold text-lg mb-3">ご相談・お問い合わせ</h3>
-          <p className="mb-4">
-            先端設備等導入計画の策定について専門的なサポートが必要な場合は、お気軽にご相談ください。
-            弊社の経営コンサルタントが最適な設備選定から計画策定、申請までトータルでサポートいたします。
-          </p>
-          <ContactForm 
-            subject="先端設備等導入計画について相談したい"
-            buttonColor="text-indigo-600"
-            borderColor="border-indigo-600"
-            hoverColor="hover:bg-indigo-50"
-          />
-        </div>
+      {/* お問い合わせフォーム - 完全にproseクラス外に配置 */}
+      <div className="mt-8 bg-gray-100 p-6 rounded-lg">
+        <h3 className="font-bold text-lg mb-3">ご相談・お問い合わせ</h3>
+        <p className="mb-4">
+          先端設備等導入計画の策定について専門的なサポートが必要な場合は、お気軽にご相談ください。
+          弊社の経営コンサルタントが最適な設備選定から計画策定、申請までトータルでサポートいたします。
+        </p>
+        <ContactForm 
+          subject="先端設備等導入計画について相談したい"
+          buttonColor="text-indigo-600"
+          borderColor="border-indigo-600"
+          hoverColor="hover:bg-indigo-50"
+        />
       </div>
     </PlanLayout>
   );

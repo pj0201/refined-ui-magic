@@ -21,7 +21,7 @@ export const PlanLayout = ({ title, subtitle, children, imageUrl }: PlanLayoutPr
           </Button>
         </Link>
 
-        <div className="bg-white rounded-xl shadow-md overflow-hidden">
+        <div className="bg-white rounded-xl shadow-md">
           {imageUrl && (
             <div className="w-full h-64 overflow-hidden">
               <img 
