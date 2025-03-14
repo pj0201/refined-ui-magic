@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -10,6 +11,14 @@ export default {
 	],
 	prefix: "",
 	theme: {
+		screens: {
+			'xs': '320px',   // 小型スマートフォン
+			'sm': '375px',   // 標準スマートフォン
+			'md': '576px',   // 大型スマートフォン
+			'lg': '768px',   // タブレット縦向き
+			'xl': '992px',   // 小型デスクトップ/タブレット横向き
+			'2xl': '1200px', // 大型デスクトップ
+		},
 		container: {
 			center: true,
 			padding: '2rem',

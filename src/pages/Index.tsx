@@ -15,6 +15,7 @@ const Index = () => {
       <Helmet>
         <title>PLANNINGJOY株式会社 | 神戸・兵庫の経営コンサルティング</title>
         <meta name="description" content="神戸・兵庫を拠点に、AI活用した経営コンサルティング、補助金申請サポート、創業支援から事業承継まで、あらゆる経営課題に対応します。" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
       </Helmet>
       
       <HeroSection />
@@ -25,10 +26,10 @@ const Index = () => {
       <CompanyProfileSection />
       
       {/* Contact Form Section - More compact version */}
-      <section id="contact" className="py-8 px-4 bg-gray-100">
+      <section id="contact" className="py-6 xs:py-8 px-3 xs:px-4 bg-gray-100">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-4">お問い合わせ</h2>
-          <div className="bg-white rounded-xl shadow-md p-4">
+          <h2 className="text-2xl xs:text-3xl font-bold text-center mb-3 xs:mb-4">お問い合わせ</h2>
+          <div className="bg-white rounded-xl shadow-md p-3 xs:p-4">
             <ContactForm 
               subject="ホームページからのお問い合わせ"
               buttonColor="text-blue-600"
@@ -39,7 +40,7 @@ const Index = () => {
         </div>
       </section>
 
-      <footer className="py-4 px-4 bg-gray-900 text-white text-center">
+      <footer className="py-3 xs:py-4 px-3 xs:px-4 bg-gray-900 text-white text-center">
         <p>&copy; {new Date().getFullYear()} PLANNINGJOY株式会社</p>
       </footer>
 

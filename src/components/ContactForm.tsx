@@ -31,15 +31,15 @@ export const ContactForm = ({
   };
 
   return (
-    <div className="text-center py-2">
-      <p className="mb-3">お問い合わせには、Googleフォームを使用しております。</p>
+    <div className="text-center py-1 xs:py-2">
+      <p className="mb-2 xs:mb-3 text-sm xs:text-base">お問い合わせには、Googleフォームを使用しております。</p>
       <Button 
         variant="outline"
-        className={`bg-white ${buttonColor} ${borderColor} ${hoverColor}`}
+        className={`text-sm xs:text-base bg-white ${buttonColor} ${borderColor} ${hoverColor}`}
         disabled={isLoading}
         onClick={openFormInNewTab}
       >
-        <ExternalLink className="mr-2 h-4 w-4" />
+        <ExternalLink className="mr-2 h-3 w-3 xs:h-4 xs:w-4" />
         {isLoading ? "読み込み中..." : "お問い合わせフォームを開く"}
       </Button>
     </div>
