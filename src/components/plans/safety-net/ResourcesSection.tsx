@@ -91,6 +91,16 @@ export const ResourcesSection = () => {
               経済産業省：中小企業向け支援策
             </a>
           </li>
+          <li>
+            <a 
+              href="https://www.fsa.go.jp/news/r6/ginkou/20241128/yousei.html" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline"
+            >
+              金融庁：「国民の安心・安全と持続的な成長に向けた総合経済対策」を踏まえた事業者支援の徹底等について
+            </a>
+          </li>
         </ul>
       </div>
 
