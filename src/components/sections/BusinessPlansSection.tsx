@@ -1,7 +1,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { 
-  FileText, ChartBar, Shield, Building, Cog, Server, Briefcase, DollarSign, ArrowRight, UserCheck
+  FileText, ChartBar, Shield, Building, Cog, Server, Briefcase, DollarSign, ArrowRight, UserCheck, Banknote
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -71,6 +71,14 @@ const planData = [
     icon: <UserCheck className="w-10 h-10 text-cyan-600" />,
     image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85",
     color: "bg-cyan-50 hover:bg-cyan-100"
+  },
+  {
+    id: "safety-net",
+    title: "危機対応後経営安定資金",
+    subtitle: "（セーフティネット貸付）",
+    icon: <Banknote className="w-10 h-10 text-blue-600" />,
+    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40",
+    color: "bg-blue-50 hover:bg-blue-100"
   }
 ];
 
