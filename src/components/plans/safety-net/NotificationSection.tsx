@@ -8,8 +8,10 @@ export const NotificationSection = () => {
         <AlertTriangle className="text-yellow-500 mr-2 h-5 w-5" />
         重要なお知らせ
       </h3>
-      <p>
+      <p className="mb-2">
         慢性的な赤字、融資の返済や経常的な資金繰りなどにお悩みの経営者様にも該当する場合がございます。
+      </p>
+      <p>
         一読の上、ぜひご相談ください。
       </p>
     </div>
