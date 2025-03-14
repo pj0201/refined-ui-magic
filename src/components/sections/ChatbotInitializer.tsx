@@ -8,8 +8,13 @@ export const ChatbotInitializer = () => {
    * SubsidyChatbotの関数を呼び出す
    */
   const openChatbot = () => {
-    // SubsidyChatbot の実装を使用
-    subsidyChatbotOpen();
+    try {
+      // SubsidyChatbot の実装を使用
+      subsidyChatbotOpen();
+    } catch (error) {
+      console.error("チャットボットを開く際にエラーが発生しました:", error);
+      toast.error("チャットボットを開けませんでした。ページを再読み込みしてください。");
+    }
   };
 
   return { openChatbot };

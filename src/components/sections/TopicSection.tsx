@@ -1,10 +1,12 @@
 
 import { TopicItem } from "./TopicItem";
-import { openChatbot } from "@/components/SubsidyChat/SubsidyChatbot";
 import { useTopicData } from "@/hooks/useTopicData";
+import { ChatbotInitializer } from "./ChatbotInitializer";
 
 export const TopicSection = () => {
   const { topics, isLoading, error } = useTopicData();
+  // ChatbotInitializerから関数を取得（これにより常に最新の実装を使用）
+  const { openChatbot } = ChatbotInitializer();
 
   return (
     <section className="py-4 px-4 bg-gray-100 border-t border-gray-200">

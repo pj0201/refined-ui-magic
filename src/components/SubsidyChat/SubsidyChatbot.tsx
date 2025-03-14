@@ -9,10 +9,11 @@ import { toast } from "sonner";
 export const SubsidyChatbot = () => {
   useEffect(() => {
     // デフォルトのDifyボタンを非表示にするスタイルを追加
+    // 重要: カスタムボタン（-1, -2など）は非表示にしないよう、セレクタを具体的に
     const style = document.createElement('style');
     style.id = 'hide-default-dify-button';
     style.textContent = `
-      #dify-chatbot-bubble-button {
+      #dify-chatbot-bubble-button:not([id$="-1"]):not([id$="-2"]) {
         display: none !important;
         visibility: hidden !important;
         opacity: 0 !important;
@@ -39,6 +40,13 @@ export const SubsidyChatbot = () => {
 export const openChatbot = () => {
   console.log("チャットボットを開く関数が呼び出されました");
   
+  // チャットウィンドウをチェック - 既に表示されていれば操作しない
+  const chatWindow = document.getElementById('dify-chatbot-bubble-window');
+  if (chatWindow && window.getComputedStyle(chatWindow).display !== 'none') {
+    console.log("チャットウィンドウは既に表示されています");
+    return;
+  }
+  
   // まず省力化投資補助金のチャットボタンを探す
   const shorikikaButton = document.getElementById('dify-chatbot-bubble-button-1');
   if (shorikikaButton && shorikikaButton instanceof HTMLElement) {
@@ -55,10 +63,16 @@ export const openChatbot = () => {
     return;
   }
   
-  // チャットウィンドウをチェック - 既に表示されていれば操作しない
-  const chatWindow = document.getElementById('dify-chatbot-bubble-window');
-  if (chatWindow && window.getComputedStyle(chatWindow).display !== 'none') {
-    console.log("チャットウィンドウは既に表示されています");
+  // Dify APIを直接使用して開く（バックアップメソッド）
+  if (window.difyChatbot && typeof window.difyChatbot.toggle === 'function') {
+    console.log("Dify APIを使用してチャットを開きます");
+    window.difyChatbot.toggle();
+    return;
+  }
+  
+  if (window.DifyAI && typeof window.DifyAI.toggleUI === 'function') {
+    console.log("DifyAI APIを使用してチャットを開きます");
+    window.DifyAI.toggleUI(true);
     return;
   }
   
@@ -87,7 +101,27 @@ export const openChatbot = () => {
       return;
     }
     
-    // どちらも失敗した場合、エラーメッセージを表示
+    // バックアップ: 直接チャットウィンドウを表示
+    const directChatWindow = document.getElementById('direct-chat-window');
+    if (directChatWindow) {
+      console.log("直接チャットウィンドウを表示します");
+      directChatWindow.style.display = 'flex';
+      return;
+    }
+    
+    // それでも失敗した場合はfallbackモードを有効化
+    try {
+      const { createDirectChatWindow, showChatWindow } = require('./utils/directChatImplementation');
+      console.log("フォールバックモードでチャットウィンドウを作成します");
+      createDirectChatWindow();
+      showChatWindow();
+      return;
+    } catch (e) {
+      console.error("フォールバックモード初期化エラー:", e);
+    }
+    
+    // すべて失敗した場合、エラーメッセージを表示
     toast.error("チャットボットを開けませんでした。ページを再読み込みしてもう一度お試しください。");
   }, 300);
 };
+
