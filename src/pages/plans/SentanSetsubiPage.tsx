@@ -10,7 +10,7 @@ const SentanSetsubiPage = () => {
       title="先端設備等導入計画" 
       imageUrl="https://images.unsplash.com/photo-1518770660439-4636190af475"
     >
-      <div className="space-y-8">
+      <div className="space-y-8 mb-16">
         {/* メインコンテンツ - prose クラスを適用 */}
         <div className="prose max-w-none">
           <h2 className="text-2xl font-bold mb-4 mt-8">概要</h2>
@@ -122,19 +122,21 @@ const SentanSetsubiPage = () => {
         </div>
       </div>
 
-      {/* お問い合わせフォーム - 完全にproseクラス外に配置 */}
-      <div className="mt-8 bg-gray-100 p-6 rounded-lg">
-        <h3 className="font-bold text-lg mb-3">ご相談・お問い合わせ</h3>
-        <p className="mb-4">
-          先端設備等導入計画の策定について専門的なサポートが必要な場合は、お気軽にご相談ください。
-          弊社の経営コンサルタントが最適な設備選定から計画策定、申請までトータルでサポートいたします。
-        </p>
-        <ContactForm 
-          subject="先端設備等導入計画について相談したい"
-          buttonColor="text-indigo-600"
-          borderColor="border-indigo-600"
-          hoverColor="hover:bg-indigo-50"
-        />
+      {/* お問い合わせフォーム - 独立したセクションとして配置 */}
+      <div className="border-t border-gray-200 pt-10 mt-10">
+        <h2 className="text-2xl font-bold mb-6 text-center">ご相談・お問い合わせ</h2>
+        <div className="bg-gray-100 p-6 rounded-lg shadow-sm">
+          <p className="mb-6 text-center">
+            先端設備等導入計画の策定について専門的なサポートが必要な場合は、お気軽にご相談ください。<br/>
+            弊社の経営コンサルタントが最適な設備選定から計画策定、申請までトータルでサポートいたします。
+          </p>
+          <ContactForm 
+            subject="先端設備等導入計画について相談したい"
+            buttonColor="text-indigo-600"
+            borderColor="border-indigo-600"
+            hoverColor="hover:bg-indigo-50"
+          />
+        </div>
       </div>
     </PlanLayout>
   );

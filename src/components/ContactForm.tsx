@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Mail, AlertCircle, ExternalLink, RefreshCw } from "lucide-react";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ContactFormProps {
   subject?: string;
@@ -92,7 +93,17 @@ export const ContactForm = ({
   }, [showForm]);
 
   const getIframeHeight = () => {
-    return window.innerWidth < 768 ? "1600px" : "1498px";
+    // More responsive height calculation
+    const width = window.innerWidth;
+    if (width < 640) { // mobile
+      return "800px";
+    } else if (width < 768) { // small tablets
+      return "1000px";
+    } else if (width < 1024) { // larger tablets
+      return "1200px";
+    } else { // desktop
+      return "900px";
+    }
   };
 
   if (showForm) {
@@ -132,20 +143,22 @@ export const ContactForm = ({
             </div>
           </div>
         ) : (
-          <iframe 
-            ref={iframeRef}
-            src={googleFormUrl}
-            width="100%" 
-            height={getIframeHeight()}
-            frameBorder="0" 
-            marginHeight={0} 
-            marginWidth={0}
-            className="mt-2 rounded-md shadow-sm"
-            onError={handleIframeError}
-            onLoad={handleIframeLoad}
-          >
-            読み込んでいます...
-          </iframe>
+          <ScrollArea className="rounded-md max-h-[600px]">
+            <iframe 
+              ref={iframeRef}
+              src={googleFormUrl}
+              width="100%" 
+              height={getIframeHeight()}
+              frameBorder="0" 
+              marginHeight={0} 
+              marginWidth={0}
+              className="mt-2 rounded-md shadow-sm"
+              onError={handleIframeError}
+              onLoad={handleIframeLoad}
+            >
+              読み込んでいます...
+            </iframe>
+          </ScrollArea>
         )}
       </div>
     );

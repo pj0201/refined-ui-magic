@@ -12,7 +12,7 @@ interface PlanLayoutProps {
 
 export const PlanLayout = ({ title, subtitle, children, imageUrl }: PlanLayoutProps) => {
   return (
-    <div className="min-h-screen bg-gray-50 pt-16 pb-20">
+    <div className="min-h-screen bg-gray-50 py-16">
       <div className="max-w-4xl mx-auto px-4 fade-in">
         <Link to="/#business-plans">
           <Button variant="ghost" className="mb-6">
@@ -21,7 +21,7 @@ export const PlanLayout = ({ title, subtitle, children, imageUrl }: PlanLayoutPr
           </Button>
         </Link>
 
-        <div className="bg-white rounded-xl shadow-md">
+        <div className="bg-white rounded-xl shadow-md mb-20">
           {imageUrl && (
             <div className="w-full h-64 overflow-hidden">
               <img 
