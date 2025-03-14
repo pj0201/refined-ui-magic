@@ -3,8 +3,8 @@ import { PlanLayout } from "@/components/plans/PlanLayout";
 import { NotificationSection } from "@/components/plans/safety-net/NotificationSection";
 import { OverviewSection } from "@/components/plans/safety-net/OverviewSection";
 import { LoanDetailsSection } from "@/components/plans/safety-net/LoanDetailsSection";
-import { FuturePlansSection } from "@/components/plans/safety-net/FuturePlansSection";
 import { ResourcesSection } from "@/components/plans/safety-net/ResourcesSection";
+import { FuturePlansSection } from "@/components/plans/safety-net/FuturePlansSection";
 
 const SafetyNetPage = () => {
   return (
@@ -15,8 +15,8 @@ const SafetyNetPage = () => {
       <NotificationSection />
       <OverviewSection />
       <LoanDetailsSection />
-      <FuturePlansSection />
       <ResourcesSection />
+      <FuturePlansSection />
     </PlanLayout>
   );
 };
