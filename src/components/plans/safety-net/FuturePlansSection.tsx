@@ -1,5 +1,6 @@
 
 import { BarChart } from "lucide-react";
+import { ContactForm } from "@/components/ContactForm";
 
 export const FuturePlansSection = () => {
   return (
@@ -47,8 +48,59 @@ export const FuturePlansSection = () => {
         </p>
         <p>
           主な変更点として、「コロナ対策」から「経営改善・再生」「成長」を軸とした支援へと移行しています。
-          詳細については、最新の情報を経済産業省や日本政策金融公庫のウェブサイトでご確認ください。
+          詳細については、最新の情報を経済産業省や日本政策金融公庫のウェブサイトでご確認、または弊社までご連絡ください。
         </p>
+      </div>
+      
+      <div className="bg-blue-50 p-6 rounded-lg mb-8">
+        <h3 className="font-bold text-lg mb-3">お役立ちリンク</h3>
+        <ul className="space-y-2">
+          <li>
+            <a 
+              href="https://www.jfc.go.jp/n/finance/search/covid_19_after.html" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline"
+            >
+              日本政策金融公庫：危機対応後経営安定資金（セーフティネット貸付）
+            </a>
+          </li>
+          <li>
+            <a 
+              href="https://www.meti.go.jp/covid-19/index.html" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline"
+            >
+              経済産業省：中小企業向け支援策
+            </a>
+          </li>
+          <li>
+            <a 
+              href="https://www.fsa.go.jp/news/r6/ginkou/20241128/yousei.html" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-blue-600 hover:underline"
+            >
+              金融庁：「国民の安心・安全と持続的な成長に向けた総合経済対策」を踏まえた事業者支援の徹底等について
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div className="bg-gray-100 p-6 rounded-lg">
+        <h3 className="font-bold text-lg mb-3">ご相談・お問い合わせ</h3>
+        <p className="mb-4">
+          危機対応後経営安定資金（セーフティネット貸付）の申請や既存の債務見直しについて
+          ご相談がありましたら、お気軽にお問い合わせください。
+          弊社の経営コンサルタントが貴社の状況に合わせたアドバイスを提供いたします。
+        </p>
+        <ContactForm 
+          subject="危機対応後経営安定資金について相談したい"
+          buttonColor="text-blue-600"
+          borderColor="border-blue-600"
+          hoverColor="hover:bg-blue-50"
+        />
       </div>
     </>
   );
