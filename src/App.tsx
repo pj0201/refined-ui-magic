@@ -15,6 +15,7 @@ import KeieiRyokuPage from "./pages/plans/KeieiRyokuPage";
 import SentanSetsubiPage from "./pages/plans/SentanSetsubiPage";
 import KeieiKakushinPage from "./pages/plans/KeieiKakushinPage";
 import DDSPage from "./pages/plans/DDSPage";
+import KeieishaHoshoPage from "./pages/plans/KeieishaHoshoPage";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -43,6 +44,7 @@ function App() {
             <Route path="/plans/sentan-setsubi" element={<SentanSetsubiPage />} />
             <Route path="/plans/keiei-kakushin" element={<KeieiKakushinPage />} />
             <Route path="/plans/dds" element={<DDSPage />} />
+            <Route path="/plans/keieisha-hosho" element={<KeieishaHoshoPage />} />
             
             <Route path="*" element={<NotFound />} />
           </Routes>

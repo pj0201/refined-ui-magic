@@ -1,7 +1,7 @@
 
 import { Card, CardContent } from "@/components/ui/card";
 import { 
-  FileText, ChartBar, Shield, Building, Cog, Server, Briefcase, DollarSign, ArrowRight 
+  FileText, ChartBar, Shield, Building, Cog, Server, Briefcase, DollarSign, ArrowRight, UserCheck
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -64,6 +64,13 @@ const planData = [
     icon: <DollarSign className="w-10 h-10 text-emerald-600" />,
     image: "https://images.unsplash.com/photo-1565372195458-9de0b320ef04",
     color: "bg-emerald-50 hover:bg-emerald-100"
+  },
+  {
+    id: "keieisha-hosho",
+    title: "経営者保証に関するガイドライン",
+    icon: <UserCheck className="w-10 h-10 text-cyan-600" />,
+    image: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85",
+    color: "bg-cyan-50 hover:bg-cyan-100"
   }
 ];
 
