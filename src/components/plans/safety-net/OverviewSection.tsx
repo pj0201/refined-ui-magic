@@ -35,7 +35,7 @@ export const OverviewSection = () => {
         <Card>
           <CardContent className="p-6">
             <h3 className="font-bold text-lg mb-2">2. 債務負担が重くなっている方</h3>
-            <p>一定の要件を満たす必要があります。要件の詳細は、日本政策金融公庫の支店にお問い合わせください。</p>
+            <p>一定の要件を満たす必要があります。要件の詳細は、日本政策金融公庫の支店、または弊社までお問い合わせください。</p>
           </CardContent>
         </Card>
       </div>
