@@ -97,9 +97,9 @@ export const TermsOfServiceModal = ({ open, onOpenChange }: TermsOfServiceModalP
 
           <div className="mt-6">
             <div>PLANNINGJOY株式会社</div>
-            <div>住所: 〒650-0011 兵庫県神戸市中央区下山手通4-6-3</div>
-            <div>メール: info@planningjoy.com</div>
-            <div>電話: 078-335-3570</div>
+            <div>住所: 〒651-0084 兵庫県神戸市中央区磯辺通1-1-18 カサベラ国際プラザビル707号室</div>
+            <div>メール: hori@planjoy.net</div>
+            <div>電話: 078-600-0611</div>
           </div>
         </div>
       </DialogContent>
