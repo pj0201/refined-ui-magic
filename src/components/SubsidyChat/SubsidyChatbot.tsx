@@ -1,6 +1,7 @@
 
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { createDirectChatWindow, showChatWindow } from "./utils/directChatImplementation";
 
 /**
  * シンプルな補助金チャットボットコンポーネント
@@ -9,11 +10,10 @@ import { toast } from "sonner";
 export const SubsidyChatbot = () => {
   useEffect(() => {
     // デフォルトのDifyボタンを非表示にするスタイルを追加
-    // 重要: カスタムボタン（-1, -2など）は非表示にしないよう、セレクタを具体的に
     const style = document.createElement('style');
     style.id = 'hide-default-dify-button';
     style.textContent = `
-      #dify-chatbot-bubble-button:not([id$="-1"]):not([id$="-2"]) {
+      #dify-chatbot-bubble-button {
         display: none !important;
         visibility: hidden !important;
         opacity: 0 !important;
@@ -63,19 +63,6 @@ export const openChatbot = () => {
     return;
   }
   
-  // Dify APIを直接使用して開く（バックアップメソッド）
-  if (window.difyChatbot && typeof window.difyChatbot.toggle === 'function') {
-    console.log("Dify APIを使用してチャットを開きます");
-    window.difyChatbot.toggle();
-    return;
-  }
-  
-  if (window.DifyAI && typeof window.DifyAI.toggleUI === 'function') {
-    console.log("DifyAI APIを使用してチャットを開きます");
-    window.DifyAI.toggleUI(true);
-    return;
-  }
-  
   // UIエレメントが見つからない場合は、ユーザーに伝える
   console.log("チャットボタンが見つかりませんでした。チャットUIを復元します");
   
@@ -109,9 +96,8 @@ export const openChatbot = () => {
       return;
     }
     
-    // それでも失敗した場合はfallbackモードを有効化
+    // フォールバックモードの直接実装
     try {
-      const { createDirectChatWindow, showChatWindow } = require('./utils/directChatImplementation');
       console.log("フォールバックモードでチャットウィンドウを作成します");
       createDirectChatWindow();
       showChatWindow();
@@ -124,4 +110,3 @@ export const openChatbot = () => {
     toast.error("チャットボットを開けませんでした。ページを再読み込みしてもう一度お試しください。");
   }, 300);
 };
-
