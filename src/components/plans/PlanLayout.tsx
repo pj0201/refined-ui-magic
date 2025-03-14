@@ -36,9 +36,7 @@ export const PlanLayout = ({ title, subtitle, children, imageUrl }: PlanLayoutPr
             <h1 className="text-3xl font-bold mb-2">{title}</h1>
             {subtitle && <p className="text-xl text-gray-600 mb-6">{subtitle}</p>}
             
-            <div>
-              {children}
-            </div>
+            {children}
           </div>
         </div>
       </div>
