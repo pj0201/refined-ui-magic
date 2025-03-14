@@ -7,6 +7,7 @@ import { BusinessPlansSection } from "@/components/sections/BusinessPlansSection
 import { TopicSection } from "@/components/sections/TopicSection";
 import { SubsidyChatbot } from "@/components/SubsidyChat/SubsidyChatbot";
 import { Helmet } from 'react-helmet';
+import { ContactForm } from "@/components/ContactForm";
 
 const Index = () => {
   return (
@@ -22,6 +23,21 @@ const Index = () => {
       <SupportAreasSection />
       <BusinessPlansSection />
       <CompanyProfileSection />
+      
+      {/* Contact Form Section */}
+      <section id="contact" className="py-16 px-4 bg-gray-100">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-3xl font-bold text-center mb-8">お問い合わせ</h2>
+          <div className="bg-white rounded-xl shadow-md p-6">
+            <ContactForm 
+              subject="ホームページからのお問い合わせ"
+              buttonColor="text-blue-600"
+              borderColor="border-blue-600"
+              hoverColor="hover:bg-blue-50"
+            />
+          </div>
+        </div>
+      </section>
 
       <footer className="py-6 px-4 bg-gray-900 text-white text-center">
         <p>&copy; {new Date().getFullYear()} PLANNINGJOY株式会社</p>
