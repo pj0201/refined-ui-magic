@@ -46,6 +46,9 @@ export const TopicItem = ({
   // AI関連アイテムかどうかを判定
   const isAiRelated = id >= 3;
 
+  // 補助金関連項目（トップの2つ）かどうかを判定
+  const isSubsidyRelated = id <= 2;
+
   return (
     <div
       className={cn(
@@ -63,7 +66,7 @@ export const TopicItem = ({
           {getAiIcon()}
         </span>
         
-        {isNew && (
+        {isNew && id !== 3 && ( // ID 3 (銀行の記事)の場合はNEWラベルを表示しない
           <span className="text-red-600 text-sm font-semibold">
             NEW
           </span>
@@ -77,6 +80,7 @@ export const TopicItem = ({
       <div className="flex items-center justify-between">
         <p className={cn(
           "text-gray-800 whitespace-pre-line",
+          isSubsidyRelated && "font-bold", // 補助金関連項目のテキストを太字に
           isAiRelated && "font-medium"
         )}>{content}</p>
         <div className="flex space-x-2">

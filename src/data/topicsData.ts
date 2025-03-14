@@ -25,7 +25,6 @@ export const topics: Topic[] = [
   },
   {
     id: 3,
-    isNew: true,
     content: "2024年度上期 関西の主要銀行では約7割が経営者保証なしの融資\n経営者保証に関するガイドラインの活用で保証なし融資が拡大中",
     date: "2024/09",
     link: "/plans/keieisha-hosho",

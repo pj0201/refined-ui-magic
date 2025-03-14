@@ -19,7 +19,7 @@ export const PrivacyPolicyModal = ({ open, onOpenChange }: PrivacyPolicyModalPro
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">プライバシーポリシー</DialogTitle>
           <DialogDescription>
-            最終更新日: {new Date().toLocaleDateString('ja-JP', { year: 'numeric', month: 'long', day: 'numeric' })}
+            最終更新日: 2024年7月1日
           </DialogDescription>
         </DialogHeader>
 
@@ -94,9 +94,9 @@ export const PrivacyPolicyModal = ({ open, onOpenChange }: PrivacyPolicyModalPro
           </p>
           <div className="mt-2">
             <div>PLANNINGJOY株式会社</div>
-            <div>住所: 〒651-0084 兵庫県神戸市中央区磯辺通1-1-18 カサベラ国際プラザビル707号室</div>
-            <div>メール: hori@planjoy.net</div>
-            <div>電話: 078-600-0611</div>
+            <div>住所: 〒650-0011 兵庫県神戸市中央区下山手通4-6-3</div>
+            <div>メール: info@planningjoy.com</div>
+            <div>電話: 078-335-3570</div>
           </div>
         </div>
       </DialogContent>
