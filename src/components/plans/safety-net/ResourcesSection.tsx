@@ -1,4 +1,3 @@
-
 import { ContactForm } from "@/components/ContactForm";
 
 export const ResourcesSection = () => {
@@ -66,6 +65,10 @@ export const ResourcesSection = () => {
             >金融庁ウェブサイト</a>でご確認ください。
           </p>
         </div>
+      </div>
+
+      <div className="bg-gray-100 p-6 rounded-lg mb-8">
+        <h3 className="font-bold text-lg mb-3">2025年1月以降の中小企業向け資金繰り支援</h3>
       </div>
 
       <div className="bg-blue-50 p-6 rounded-lg mb-8">
