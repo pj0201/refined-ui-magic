@@ -1,5 +1,6 @@
 
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 /**
  * シンプルな補助金チャットボットコンポーネント
@@ -33,11 +34,15 @@ export const SubsidyChatbot = () => {
 
 /**
  * チャットボットを開く関数
+ * より堅牢にチャットボットを開くために改善
  */
 export const openChatbot = () => {
+  console.log("チャットボットを開く関数が呼び出されました");
+  
   // まず省力化投資補助金のチャットボタンを探す
   const shorikikaButton = document.getElementById('dify-chatbot-bubble-button-1');
   if (shorikikaButton && shorikikaButton instanceof HTMLElement) {
+    console.log("省力化投資補助金ボタンを発見、クリックします");
     shorikikaButton.click();
     return;
   }
@@ -45,10 +50,44 @@ export const openChatbot = () => {
   // 次に小規模持続化補助金のチャットボタンを探す
   const shoukiboButton = document.getElementById('dify-chatbot-bubble-button-2');
   if (shoukiboButton && shoukiboButton instanceof HTMLElement) {
+    console.log("小規模持続化補助金ボタンを発見、クリックします");
     shoukiboButton.click();
     return;
   }
   
-  // すでにウィンドウが表示されている場合は何もしない
-  console.log("チャットボタンが見つかりませんでした");
+  // チャットウィンドウをチェック - 既に表示されていれば操作しない
+  const chatWindow = document.getElementById('dify-chatbot-bubble-window');
+  if (chatWindow && window.getComputedStyle(chatWindow).display !== 'none') {
+    console.log("チャットウィンドウは既に表示されています");
+    return;
+  }
+  
+  // UIエレメントが見つからない場合は、ユーザーに伝える
+  console.log("チャットボタンが見つかりませんでした。チャットUIを復元します");
+  
+  // 既存のチャットUIを復元する試み
+  const event = new CustomEvent('chatbot-recovery-requested');
+  document.dispatchEvent(event);
+  
+  // 復元イベント後、わずかに遅らせてから再度試行
+  setTimeout(() => {
+    // 再試行: 省力化投資補助金のチャットボタン
+    const retriedShorikikaButton = document.getElementById('dify-chatbot-bubble-button-1');
+    if (retriedShorikikaButton && retriedShorikikaButton instanceof HTMLElement) {
+      console.log("復元後、省力化投資補助金ボタンを発見、クリックします");
+      retriedShorikikaButton.click();
+      return;
+    }
+    
+    // 再試行: 小規模持続化補助金のチャットボタン
+    const retriedShoukiboButton = document.getElementById('dify-chatbot-bubble-button-2');
+    if (retriedShoukiboButton && retriedShoukiboButton instanceof HTMLElement) {
+      console.log("復元後、小規模持続化補助金ボタンを発見、クリックします");
+      retriedShoukiboButton.click();
+      return;
+    }
+    
+    // どちらも失敗した場合、エラーメッセージを表示
+    toast.error("チャットボットを開けませんでした。ページを再読み込みしてもう一度お試しください。");
+  }, 300);
 };

@@ -83,18 +83,43 @@ export const useElementChecker = (isLoaded: boolean, useFallback: boolean) => {
       
       // 定期的なチェックを開始
       startElementCheck(checkIntervalRef);
+      
+      // カスタムイベントハンドラー - チャットボットの復元リクエスト
+      const handleRecoveryRequest = () => {
+        console.log("Chat recovery event received");
+        if (!checkElementsExist()) {
+          console.log("Elements missing, performing recovery");
+          safelyRestoreElements();
+        } else {
+          console.log("Chat elements already exist, no recovery needed");
+        }
+      };
+      
+      // イベントリスナーを登録
+      document.addEventListener('chatbot-recovery-requested', handleRecoveryRequest);
+      
+      return () => {
+        clearCheckInterval(checkIntervalRef);
+        
+        // クリーンアップ時にイベントリスナーも削除
+        document.removeEventListener('chatbot-recovery-requested', handleRecoveryRequest);
+        
+        // ロックタイマーも解除
+        if (recoveryTimeoutRef.current) {
+          window.clearTimeout(recoveryTimeoutRef.current);
+          recoveryTimeoutRef.current = null;
+        }
+      };
     }
     
     return () => {
-      clearCheckInterval(checkIntervalRef);
-      
-      // クリーンアップ時にロックタイマーも解除
+      // isLoaded が false の場合のクリーンアップ
       if (recoveryTimeoutRef.current) {
         window.clearTimeout(recoveryTimeoutRef.current);
         recoveryTimeoutRef.current = null;
       }
     };
-  }, [isLoaded]);
+  }, [isLoaded, useFallback]);
 
   // 画面の表示状態や焦点変更時の要素チェック
   useEffect(() => {

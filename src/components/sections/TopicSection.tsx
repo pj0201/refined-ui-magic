@@ -1,10 +1,9 @@
 
 import { TopicItem } from "./TopicItem";
-import { ChatbotInitializer } from "./ChatbotInitializer";
+import { openChatbot } from "@/components/SubsidyChat/SubsidyChatbot";
 import { useTopicData } from "@/hooks/useTopicData";
 
 export const TopicSection = () => {
-  const { openChatbot } = ChatbotInitializer();
   const { topics, isLoading, error } = useTopicData();
 
   return (
