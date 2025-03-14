@@ -8,8 +8,15 @@ import { TopicSection } from "@/components/sections/TopicSection";
 import { SubsidyChatbot } from "@/components/SubsidyChat/SubsidyChatbot";
 import { Helmet } from 'react-helmet';
 import { ContactForm } from "@/components/ContactForm";
+import { useState } from "react";
+import { PrivacyPolicyModal } from "@/components/modals/PrivacyPolicyModal";
+import { TermsOfServiceModal } from "@/components/modals/TermsOfServiceModal";
+import { BackToTopButton } from "@/components/BackToTopButton";
 
 const Index = () => {
+  const [privacyPolicyOpen, setPrivacyPolicyOpen] = useState(false);
+  const [termsOfServiceOpen, setTermsOfServiceOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
@@ -26,10 +33,10 @@ const Index = () => {
       <CompanyProfileSection />
       
       {/* Contact Form Section - More compact version */}
-      <section id="contact" className="py-6 xs:py-8 px-3 xs:px-4 bg-gray-100">
+      <section id="contact" className="py-4 xs:py-6 px-3 xs:px-4 bg-gray-100">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl xs:text-3xl font-bold text-center mb-3 xs:mb-4">お問い合わせ</h2>
-          <div className="bg-white rounded-xl shadow-md p-3 xs:p-4">
+          <h2 className="text-2xl xs:text-3xl font-bold text-center mb-2 xs:mb-3">お問い合わせ</h2>
+          <div className="bg-white rounded-xl shadow-md p-2 xs:p-3">
             <ContactForm 
               subject="ホームページからのお問い合わせ"
               buttonColor="text-blue-600"
@@ -40,9 +47,40 @@ const Index = () => {
         </div>
       </section>
 
-      <footer className="py-3 xs:py-4 px-3 xs:px-4 bg-gray-900 text-white text-center">
-        <p>&copy; {new Date().getFullYear()} PLANNINGJOY株式会社</p>
+      <footer className="py-4 px-4 bg-gray-900 text-white">
+        <div className="max-w-4xl mx-auto">
+          <div className="flex flex-col md:flex-row justify-between items-center">
+            <p className="mb-2 md:mb-0">&copy; {new Date().getFullYear()} PLANNINGJOY株式会社</p>
+            <div className="flex gap-6">
+              <button 
+                onClick={() => setPrivacyPolicyOpen(true)}
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                プライバシーポリシー
+              </button>
+              <button 
+                onClick={() => setTermsOfServiceOpen(true)}
+                className="text-gray-300 hover:text-white transition-colors"
+              >
+                利用規約
+              </button>
+            </div>
+          </div>
+        </div>
       </footer>
+
+      {/* Modals */}
+      <PrivacyPolicyModal 
+        open={privacyPolicyOpen} 
+        onOpenChange={setPrivacyPolicyOpen} 
+      />
+      <TermsOfServiceModal 
+        open={termsOfServiceOpen} 
+        onOpenChange={setTermsOfServiceOpen} 
+      />
+
+      {/* Back to top button */}
+      <BackToTopButton />
 
       <SubsidyChatbot />
     </div>
