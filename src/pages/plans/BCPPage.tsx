@@ -1,7 +1,7 @@
 
 import { PlanLayout } from "@/components/plans/PlanLayout";
 import { Card, CardContent } from "@/components/ui/card";
-import { FileText, CheckCircle } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { ContactForm } from "@/components/ContactForm";
 
 const BCPPage = () => {
@@ -71,9 +71,8 @@ const BCPPage = () => {
               href="https://www.chusho.meti.go.jp/bcp/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-red-600 hover:underline flex items-center"
+              className="text-red-600 hover:underline"
             >
-              <FileText className="mr-2 h-4 w-4" />
               中小企業庁：中小企業BCP策定運用指針
             </a>
           </li>
@@ -82,9 +81,8 @@ const BCPPage = () => {
               href="https://www.bousai.go.jp/kyoiku/kigyou/keizoku/index.html" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-red-600 hover:underline flex items-center"
+              className="text-red-600 hover:underline"
             >
-              <FileText className="mr-2 h-4 w-4" />
               内閣府防災情報：事業継続ガイドライン
             </a>
           </li>

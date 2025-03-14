@@ -1,7 +1,7 @@
 
 import { PlanLayout } from "@/components/plans/PlanLayout";
 import { Card, CardContent } from "@/components/ui/card";
-import { FileText, CheckCircle } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { ContactForm } from "@/components/ContactForm";
 
 const KeieiKaizenPage = () => {
@@ -70,9 +70,8 @@ const KeieiKaizenPage = () => {
               href="https://www.chusho.meti.go.jp/keiei/saisei/2013/131226saisei.html" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-green-600 hover:underline flex items-center"
+              className="text-green-600 hover:underline"
             >
-              <FileText className="mr-2 h-4 w-4" />
               中小企業庁：経営改善計画策定支援事業について
             </a>
           </li>
@@ -81,9 +80,8 @@ const KeieiKaizenPage = () => {
               href="https://www.smrj.go.jp/sme/enhancement/index.html" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-green-600 hover:underline flex items-center"
+              className="text-green-600 hover:underline"
             >
-              <FileText className="mr-2 h-4 w-4" />
               中小機構：経営改善支援情報
             </a>
           </li>

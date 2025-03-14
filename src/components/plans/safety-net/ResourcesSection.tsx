@@ -1,5 +1,4 @@
 
-import { FileText } from "lucide-react";
 import { ContactForm } from "@/components/ContactForm";
 
 export const ResourcesSection = () => {
@@ -13,9 +12,8 @@ export const ResourcesSection = () => {
               href="https://www.jfc.go.jp/n/finance/search/covid_19_after.html" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-blue-600 hover:underline flex items-center"
+              className="text-blue-600 hover:underline"
             >
-              <FileText className="mr-2 h-4 w-4" />
               日本政策金融公庫：危機対応後経営安定資金（セーフティネット貸付）
             </a>
           </li>
@@ -24,9 +22,8 @@ export const ResourcesSection = () => {
               href="https://www.meti.go.jp/covid-19/index.html" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-blue-600 hover:underline flex items-center"
+              className="text-blue-600 hover:underline"
             >
-              <FileText className="mr-2 h-4 w-4" />
               経済産業省：中小企業向け支援策
             </a>
           </li>

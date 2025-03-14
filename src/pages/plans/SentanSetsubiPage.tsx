@@ -1,7 +1,7 @@
 
 import { PlanLayout } from "@/components/plans/PlanLayout";
 import { Card, CardContent } from "@/components/ui/card";
-import { FileText, CheckCircle, Cpu } from "lucide-react";
+import { CheckCircle, Cpu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const SentanSetsubiPage = () => {
@@ -98,9 +98,8 @@ const SentanSetsubiPage = () => {
               href="https://www.chusho.meti.go.jp/keiei/seisansei/index.html" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-indigo-600 hover:underline flex items-center"
+              className="text-indigo-600 hover:underline"
             >
-              <FileText className="mr-2 h-4 w-4" />
               中小企業庁：先端設備等導入計画について
             </a>
           </li>
@@ -109,9 +108,8 @@ const SentanSetsubiPage = () => {
               href="https://www.chusho.meti.go.jp/keiei/seisansei/2022/220401seisansei.html" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-indigo-600 hover:underline flex items-center"
+              className="text-indigo-600 hover:underline"
             >
-              <FileText className="mr-2 h-4 w-4" />
               先端設備等導入計画の様式・記載例
             </a>
           </li>

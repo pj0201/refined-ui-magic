@@ -1,7 +1,7 @@
 
 import { PlanLayout } from "@/components/plans/PlanLayout";
 import { Card, CardContent } from "@/components/ui/card";
-import { FileText, CheckCircle, TrendingUp } from "lucide-react";
+import { CheckCircle, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const KeieiRyokuPage = () => {
@@ -98,9 +98,8 @@ const KeieiRyokuPage = () => {
               href="https://www.chusho.meti.go.jp/keiei/kyoka/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-purple-600 hover:underline flex items-center"
+              className="text-purple-600 hover:underline"
             >
-              <FileText className="mr-2 h-4 w-4" />
               中小企業庁：経営力向上計画について
             </a>
           </li>
@@ -109,9 +108,8 @@ const KeieiRyokuPage = () => {
               href="https://www.chusho.meti.go.jp/keiei/kyoka/ninteisinseisyo.html" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-purple-600 hover:underline flex items-center"
+              className="text-purple-600 hover:underline"
             >
-              <FileText className="mr-2 h-4 w-4" />
               経営力向上計画申請書・認定申請書
             </a>
           </li>

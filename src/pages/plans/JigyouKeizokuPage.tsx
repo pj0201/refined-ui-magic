@@ -1,7 +1,7 @@
 
 import { PlanLayout } from "@/components/plans/PlanLayout";
 import { Card, CardContent } from "@/components/ui/card";
-import { FileText, CheckCircle, Award } from "lucide-react";
+import { CheckCircle, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const JigyouKeizokuPage = () => {
@@ -69,9 +69,8 @@ const JigyouKeizokuPage = () => {
               href="https://www.chusho.meti.go.jp/keiei/antei/bousai/keizokuryoku.htm" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-orange-600 hover:underline flex items-center"
+              className="text-orange-600 hover:underline"
             >
-              <FileText className="mr-2 h-4 w-4" />
               中小企業庁：事業継続力強化計画認定制度について
             </a>
           </li>
@@ -80,9 +79,8 @@ const JigyouKeizokuPage = () => {
               href="https://www.chusho.meti.go.jp/keiei/antei/bousai/download/jigyoukeizokuryoku_shinseisyo.pdf" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-orange-600 hover:underline flex items-center"
+              className="text-orange-600 hover:underline"
             >
-              <FileText className="mr-2 h-4 w-4" />
               事業継続力強化計画申請書フォーマット
             </a>
           </li>

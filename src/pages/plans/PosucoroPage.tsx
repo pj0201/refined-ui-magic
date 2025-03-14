@@ -1,7 +1,7 @@
 
 import { PlanLayout } from "@/components/plans/PlanLayout";
 import { Card, CardContent } from "@/components/ui/card";
-import { FileText, CheckCircle } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 import { ContactForm } from "@/components/ContactForm";
 
 const PosucoroPage = () => {
@@ -68,9 +68,8 @@ const PosucoroPage = () => {
               href="https://www.chusho.meti.go.jp/keiei/kakushin/kaizen/index.html" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-blue-600 hover:underline flex items-center"
+              className="text-blue-600 hover:underline"
             >
-              <FileText className="mr-2 h-4 w-4" />
               中小企業庁：早期経営改善計画策定支援事業について
             </a>
           </li>
@@ -79,9 +78,8 @@ const PosucoroPage = () => {
               href="https://www.mirasapo-plus.go.jp/" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="text-blue-600 hover:underline flex items-center"
+              className="text-blue-600 hover:underline"
             >
-              <FileText className="mr-2 h-4 w-4" />
               ミラサポplus（経営支援情報サイト）
             </a>
           </li>
