@@ -10,7 +10,7 @@
     <title>PLANNINGJOY株式会社 | 創業から承継まで経営の羅針盤</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&display=swap" rel="stylesheet">
     
-    <!-- Dify チャットボット設定 -->
+    <!-- Dify チャットボット設定（修正版） -->
     <script>
       window.difyChatbotConfig = {
         token: 'UlZEhca44ZNfJtdS'
@@ -40,6 +40,49 @@
           top: 20px !important;
           height: calc(100vh - 50px) !important; /* 100pxから50pxに変更してより多くの領域を使用 */
         }
+      }
+      
+      /* Dify UIボタンカスタマイズ */
+      .chatbot-elements-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 10px;
+        z-index: 9999;
+      }
+      
+      .dify-chatbot-bubble-button {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        background-color: #1C64F2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        border: none;
+        transition: transform 0.2s, background-color 0.2s;
+      }
+      
+      .dify-chatbot-bubble-button:hover {
+        transform: scale(1.05);
+        background-color: #1651c4;
+      }
+      
+      .dify-chatbot-label {
+        padding: 6px 12px;
+        background-color: white;
+        border-radius: 16px;
+        font-size: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 4px;
+        color: #333;
+        max-width: 200px;
+        text-align: center;
       }
     </style>
     

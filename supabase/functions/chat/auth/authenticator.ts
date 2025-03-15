@@ -11,9 +11,9 @@ export async function authenticateRequest(req: Request) {
   // 認証トークンの取得とユーザー検証
   const authHeader = req.headers.get('Authorization');
   if (!authHeader) {
-    // 匿名アクセスを許可するが、ログに記録
-    console.log('認証なしでアクセスがありました');
-    return null;
+    // 匿名アクセスを明示的に許可する
+    console.log('匿名アクセスを許可します');
+    return { anonymous: true };
   } else {
     // JWT トークンの検証
     const token = authHeader.replace('Bearer ', '');
@@ -21,7 +21,9 @@ export async function authenticateRequest(req: Request) {
     
     if (authError) {
       console.error('認証エラー:', authError);
-      throw new Error(`認証に失敗しました: ${authError.message}`);
+      // エラーがあっても匿名アクセスとして処理
+      console.log('認証エラーですが、匿名アクセスを許可します');
+      return { anonymous: true };
     }
     
     console.log('認証済みユーザー:', userData?.user?.email);
