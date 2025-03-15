@@ -1,32 +1,39 @@
 
 import { useEffect } from "react";
 import { toast } from "sonner";
-import { createDirectChatWindow, showChatWindow } from "./utils/directChatImplementation";
+
+// Dify用の型定義
+declare global {
+  interface Window {
+    difyChatbot?: {
+      toggle: () => void;
+      sendMessage: (message: string) => void;
+      isOpen: boolean;
+    };
+    DifyAI?: {
+      toggleUI: (show: boolean) => void;
+      isOpen: () => boolean;
+      sendMessage: (message: string) => void;
+    };
+  }
+}
 
 /**
- * シンプルな補助金チャットボットコンポーネント
- * デフォルトのDifyボタンを非表示にするためのスタイルを追加
+ * Dify専用のチャットボットコンポーネント
  */
 export const SubsidyChatbot = () => {
   useEffect(() => {
-    // デフォルトのDifyボタンを非表示にするスタイルを追加
-    const style = document.createElement('style');
-    style.id = 'hide-default-dify-button';
-    style.textContent = `
-      #dify-chatbot-bubble-button {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
+    // Difyスクリプトのロード状態を監視
+    const checkDifyLoaded = setInterval(() => {
+      if (window.difyChatbot || window.DifyAI) {
+        console.log("Difyスクリプトが正常にロードされました");
+        clearInterval(checkDifyLoaded);
       }
-    `;
-    document.head.appendChild(style);
+    }, 1000);
     
+    // クリーンアップ
     return () => {
-      // コンポーネントのアンマウント時にスタイルを削除
-      const styleElem = document.getElementById('hide-default-dify-button');
-      if (styleElem) {
-        styleElem.remove();
-      }
+      clearInterval(checkDifyLoaded);
     };
   }, []);
   
@@ -35,78 +42,37 @@ export const SubsidyChatbot = () => {
 
 /**
  * チャットボットを開く関数
- * より堅牢にチャットボットを開くために改善
  */
 export const openChatbot = () => {
-  console.log("チャットボットを開く関数が呼び出されました");
-  
-  // チャットウィンドウをチェック - 既に表示されていれば操作しない
-  const chatWindow = document.getElementById('dify-chatbot-bubble-window');
-  if (chatWindow && window.getComputedStyle(chatWindow).display !== 'none') {
-    console.log("チャットウィンドウは既に表示されています");
-    return;
+  try {
+    console.log("Difyチャットボットを開きます");
+    
+    // チャットウィンドウをチェック
+    const chatWindow = document.getElementById('dify-chatbot-bubble-window');
+    if (chatWindow && window.getComputedStyle(chatWindow).display !== 'none') {
+      console.log("チャットウィンドウは既に表示されています");
+      return;
+    }
+    
+    // Difyチャットボットを開く
+    if (window.difyChatbot && typeof window.difyChatbot.toggle === 'function') {
+      console.log("difyChatbot APIを使用");
+      window.difyChatbot.toggle();
+    } else if (window.DifyAI && typeof window.DifyAI.toggleUI === 'function') {
+      console.log("DifyAI APIを使用");
+      window.DifyAI.toggleUI(true);
+    } else {
+      // 非常時にはデフォルトのボタンをクリック
+      console.log("デフォルトの方法を使用");
+      const difyButton = document.getElementById('dify-chatbot-bubble-button');
+      if (difyButton && difyButton instanceof HTMLElement) {
+        difyButton.click();
+      } else {
+        throw new Error("Difyのチャットボタンが見つかりませんでした");
+      }
+    }
+  } catch (error) {
+    console.error("チャットボットを開く際にエラーが発生しました:", error);
+    toast.error("チャットボットを開けませんでした。ページを再読み込みしてください。");
   }
-  
-  // まず省力化投資補助金のチャットボタンを探す
-  const shorikikaButton = document.getElementById('dify-chatbot-bubble-button-1');
-  if (shorikikaButton && shorikikaButton instanceof HTMLElement) {
-    console.log("省力化投資補助金ボタンを発見、クリックします");
-    shorikikaButton.click();
-    return;
-  }
-  
-  // 次に小規模持続化補助金のチャットボタンを探す
-  const shoukiboButton = document.getElementById('dify-chatbot-bubble-button-2');
-  if (shoukiboButton && shoukiboButton instanceof HTMLElement) {
-    console.log("小規模持続化補助金ボタンを発見、クリックします");
-    shoukiboButton.click();
-    return;
-  }
-  
-  // UIエレメントが見つからない場合は、ユーザーに伝える
-  console.log("チャットボタンが見つかりませんでした。チャットUIを復元します");
-  
-  // 既存のチャットUIを復元する試み
-  const event = new CustomEvent('chatbot-recovery-requested');
-  document.dispatchEvent(event);
-  
-  // 復元イベント後、わずかに遅らせてから再度試行
-  setTimeout(() => {
-    // 再試行: 省力化投資補助金のチャットボタン
-    const retriedShorikikaButton = document.getElementById('dify-chatbot-bubble-button-1');
-    if (retriedShorikikaButton && retriedShorikikaButton instanceof HTMLElement) {
-      console.log("復元後、省力化投資補助金ボタンを発見、クリックします");
-      retriedShorikikaButton.click();
-      return;
-    }
-    
-    // 再試行: 小規模持続化補助金のチャットボタン
-    const retriedShoukiboButton = document.getElementById('dify-chatbot-bubble-button-2');
-    if (retriedShoukiboButton && retriedShoukiboButton instanceof HTMLElement) {
-      console.log("復元後、小規模持続化補助金ボタンを発見、クリックします");
-      retriedShoukiboButton.click();
-      return;
-    }
-    
-    // バックアップ: 直接チャットウィンドウを表示
-    const directChatWindow = document.getElementById('direct-chat-window');
-    if (directChatWindow) {
-      console.log("直接チャットウィンドウを表示します");
-      directChatWindow.style.display = 'flex';
-      return;
-    }
-    
-    // フォールバックモードの直接実装
-    try {
-      console.log("フォールバックモードでチャットウィンドウを作成します");
-      createDirectChatWindow();
-      showChatWindow();
-      return;
-    } catch (e) {
-      console.error("フォールバックモード初期化エラー:", e);
-    }
-    
-    // すべて失敗した場合、エラーメッセージを表示
-    toast.error("チャットボットを開けませんでした。ページを再読み込みしてもう一度お試しください。");
-  }, 300);
 };
