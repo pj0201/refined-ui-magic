@@ -38,7 +38,8 @@ export const TopicSection = () => {
               <TopicItem 
                 key={topic.id} 
                 {...topic} 
-                openChatbot={handleTopicChat} 
+                // Fix the type mismatch by using a wrapper function that takes no arguments
+                openChatbot={() => handleTopicChat(topic.content)} 
               />
             ))
           )}
