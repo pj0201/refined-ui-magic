@@ -10,13 +10,17 @@ export const TopicSection = () => {
 
   // トピックからチャットを開始する関数
   const handleTopicChat = (content: string) => {
+    console.log(`トピックからチャットを開始: ${content}`);
     // トピックの内容に基づいて適切なチャットを開始
     if (content.includes("省力化投資補助金")) {
+      console.log("省力化投資補助金チャットを開始します");
       startShorikikaChat();
     } else if (content.includes("小規模持続化補助金")) {
+      console.log("小規模持続化補助金チャットを開始します");
       startShoukiboJizokaChat();
     } else {
       // 特定の補助金が特定できない場合は一般的にチャットを開く
+      console.log("一般的なチャットを開始します");
       openChatbot();
     }
   };

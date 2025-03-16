@@ -1,39 +1,62 @@
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
-
-// Dify用の型定義
-declare global {
-  interface Window {
-    difyChatbot?: {
-      toggle: () => void;
-      sendMessage: (message: string) => void;
-      isOpen: boolean;
-    };
-    DifyAI?: {
-      toggleUI: (show: boolean) => void;
-      isOpen: () => boolean;
-      sendMessage: (message: string) => void;
-    };
-  }
-}
 
 /**
  * Dify専用のチャットボットコンポーネント
  */
 export const SubsidyChatbot = () => {
+  const [difyLoaded, setDifyLoaded] = useState(false);
+  const [shoukiboLoaded, setShoukiboLoaded] = useState(false);
+  const [shorikikaLoaded, setShorikikaLoaded] = useState(false);
+
   useEffect(() => {
-    // Difyスクリプトのロード状態を監視
+    // 一般的なDifyスクリプトのロード状態を監視
     const checkDifyLoaded = setInterval(() => {
       if (window.difyChatbot || window.DifyAI) {
-        console.log("Difyスクリプトが正常にロードされました");
+        console.log("一般的なDifyスクリプトが正常にロードされました");
+        setDifyLoaded(true);
         clearInterval(checkDifyLoaded);
       }
     }, 1000);
+
+    // 小規模持続化補助金のDifyスクリプトのロード状態を監視
+    const checkShoukiboLoaded = setInterval(() => {
+      if (window.shoukiboJizokaChatbot) {
+        console.log("小規模持続化補助金のDifyスクリプトが正常にロードされました");
+        setShoukiboLoaded(true);
+        clearInterval(checkShoukiboLoaded);
+      }
+    }, 1000);
+
+    // 省力化投資補助金のDifyスクリプトのロード状態を監視
+    const checkShorikikaLoaded = setInterval(() => {
+      if (window.shorikika_chatbot) {
+        console.log("省力化投資補助金のDifyスクリプトが正常にロードされました");
+        setShorikikaLoaded(true);
+        clearInterval(checkShorikikaLoaded);
+      }
+    }, 1000);
+    
+    // 60秒後にもロードされていない場合は警告
+    const warningTimeout = setTimeout(() => {
+      if (!difyLoaded) {
+        console.warn("一般的なDifyスクリプトのロードに60秒以上かかっています");
+      }
+      if (!shoukiboLoaded) {
+        console.warn("小規模持続化補助金のDifyスクリプトのロードに60秒以上かかっています");
+      }
+      if (!shorikikaLoaded) {
+        console.warn("省力化投資補助金のDifyスクリプトのロードに60秒以上かかっています");
+      }
+    }, 60000);
     
     // クリーンアップ
     return () => {
       clearInterval(checkDifyLoaded);
+      clearInterval(checkShoukiboLoaded);
+      clearInterval(checkShorikikaLoaded);
+      clearTimeout(warningTimeout);
     };
   }, []);
   

@@ -10,7 +10,7 @@
     <title>PLANNINGJOY株式会社 | 創業から承継まで経営の羅針盤</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&display=swap" rel="stylesheet">
     
-    <!-- Dify チャットボット設定 -->
+    <!-- Dify 一般チャットボット設定 -->
     <script>
       window.difyChatbotConfig = {
         token: 'UlZEhca44ZNfJtdS'
@@ -21,24 +21,66 @@
       id="UlZEhca44ZNfJtdS"
       defer>
     </script>
+    
+    <!-- 小規模持続化補助金専用チャットボット設定 -->
+    <script>
+      window.shoukiboJizokaChatbotConfig = {
+        token: 'shoukibo_jizoka_token' // 小規模持続化補助金用のトークンを設定
+      }
+    </script>
+    <script
+      src="https://udify.app/embed.min.js"
+      id="shoukibo-jizoka-chatbot"
+      data-chat-name="小規模持続化補助金AI相談"
+      data-element-id="shoukibo-jizoka-chatbot"
+      data-window-id="shoukibo-jizoka-chatbot-window"
+      data-button-id="shoukibo-jizoka-chatbot-button"
+      defer>
+    </script>
+    
+    <!-- 省力化投資補助金専用チャットボット設定 -->
+    <script>
+      window.shorikika_chatbot_config = {
+        token: 'shorikika_token' // 省力化投資補助金用のトークンを設定
+      }
+    </script>
+    <script
+      src="https://udify.app/embed.min.js"
+      id="shorikika-chatbot"
+      data-chat-name="省力化投資補助金AI相談"
+      data-element-id="shorikika-chatbot"
+      data-window-id="shorikika-chatbot-window"
+      data-button-id="shorikika-chatbot-button"
+      defer>
+    </script>
+    
     <style>
-      #dify-chatbot-bubble-button {
+      /* 共通のチャットボットスタイル */
+      #dify-chatbot-bubble-button,
+      #shoukibo-jizoka-chatbot-button,
+      #shorikika-chatbot-button {
         background-color: #1C64F2 !important;
       }
-      #dify-chatbot-bubble-window {
+      
+      #dify-chatbot-bubble-window,
+      #shoukibo-jizoka-chatbot-window,
+      #shorikika-chatbot-window {
         width: 24rem !important;
-        height: 50rem !important; /* 40remから50remに高さを増加 */
-        max-height: 90vh !important; /* 80vhから90vhに最大高さを増加 */
+        height: 50rem !important;
+        max-height: 90vh !important;
         position: fixed !important;
         bottom: auto !important;
         top: 50px !important;
         right: 20px !important;
         z-index: 2147483647 !important;
       }
+      
       @media (max-height: 700px) {
-        #dify-chatbot-bubble-window {
+        #dify-chatbot-bubble-window,
+        #shoukibo-jizoka-chatbot-window,
+        #shorikika-chatbot-window {
           top: 20px !important;
-          height: calc(100vh - 50px) !important; /* 100pxから50pxに変更してより多くの領域を使用 */
+          height: calc(100vh - 50px) !important;
         }
       }
       
