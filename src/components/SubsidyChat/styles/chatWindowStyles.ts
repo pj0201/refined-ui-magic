@@ -3,11 +3,13 @@
  * チャットウィンドウのスタイル定義
  */
 export const getChatWindowStyles = (): string => `
-  /* チャットウィンドウのスタイリング */
-  #dify-chatbot-bubble-window {
+  /* 共通のチャットウィンドウスタイル */
+  #dify-chatbot-bubble-window,
+  #shoukibo-jizoka-chatbot-window,
+  #shorikika-chatbot-window {
     width: 24rem !important;
-    height: 50rem !important; /* 40remから50remに高さを増加 */
-    max-height: 90vh !important; /* 80vhから90vhに最大高さを増加 */
+    height: 50rem !important;
+    max-height: 90vh !important;
     max-width: calc(100vw - 32px) !important;
     bottom: 2rem !important;
     right: 1rem !important;
@@ -22,7 +24,7 @@ export const getChatWindowStyles = (): string => `
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
   }
 
-  /* ヘッダーのスタイリング - 上部の青いバー */
+  /* ヘッダーのスタイリング - 上部の青いバー（共通） */
   .dify-chatbot-window-header {
     background-color: #1C64F2 !important;
     padding: 0.75rem !important;
@@ -31,7 +33,7 @@ export const getChatWindowStyles = (): string => `
     z-index: 99996 !important;
   }
   
-  /* 閉じるボタンのスタイリング */
+  /* 閉じるボタンのスタイリング（共通） */
   .dify-chatbot-window-close-btn {
     position: absolute !important;
     top: 10px !important;
@@ -60,7 +62,7 @@ export const getChatWindowStyles = (): string => `
     color: white !important;
   }
   
-  /* 入力エリアのスタイリング */
+  /* 入力エリアのスタイリング（共通） */
   .dify-chatbot-window-footer {
     position: sticky !important;
     bottom: 0 !important;
@@ -71,8 +73,13 @@ export const getChatWindowStyles = (): string => `
     margin-top: auto !important;
   }
   
-  /* 入力エリアの横にある×ボタン（混乱を招くので非表示） */
-  .dify-chatbot-window-footer button[aria-label="Close"] {
-    display: none !important;
+  /* レスポンシブ対応（共通） */
+  @media (max-height: 700px) {
+    #dify-chatbot-bubble-window,
+    #shoukibo-jizoka-chatbot-window,
+    #shorikika-chatbot-window {
+      top: 20px !important;
+      height: calc(100vh - 50px) !important;
+    }
   }
 `;

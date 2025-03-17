@@ -19,22 +19,26 @@ export const TopicSection = () => {
   const handleTopicChat = (content: string) => {
     console.log(`トピックからチャットを開始: ${content}`);
     
+    // 正規表現でトピックの内容を精査
+    const isShorikikaRelated = /省力化|投資補助金/.test(content);
+    const isShoukiboRelated = /小規模|持続化/.test(content);
+
     // トピックの内容に基づいて適切なチャットを開始
-    if (content.includes("省力化投資補助金")) {
-      console.log("省力化投資補助金チャットを開始します");
+    if (isShorikikaRelated) {
+      console.log("省力化投資補助金に関連するトピックを検出しました");
       if (!isShorikikaLoaded) {
         console.warn("省力化投資補助金のチャットボットがまだロードされていません");
       }
       startShorikikaChat();
-    } else if (content.includes("小規模持続化補助金")) {
-      console.log("小規模持続化補助金チャットを開始します");
+    } else if (isShoukiboRelated) {
+      console.log("小規模持続化補助金に関連するトピックを検出しました");
       if (!isShoukiboLoaded) {
         console.warn("小規模持続化補助金のチャットボットがまだロードされていません");
       }
       startShoukiboJizokaChat();
     } else {
       // 特定の補助金が特定できない場合は一般的にチャットを開く
-      console.log("一般的なチャットを開始します");
+      console.log("一般的なトピックを検出しました");
       if (!isDifyLoaded) {
         console.warn("一般的なチャットボットがまだロードされていません");
       }
@@ -59,7 +63,6 @@ export const TopicSection = () => {
               <TopicItem 
                 key={topic.id} 
                 {...topic} 
-                // ここの型の不一致を修正
                 openChatbot={() => handleTopicChat(topic.content)} 
               />
             ))
