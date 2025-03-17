@@ -4,6 +4,7 @@ import { toast } from "sonner";
 
 /**
  * Dify専用のチャットボットコンポーネント
+ * ロード状態の監視と通知を行う
  */
 export const SubsidyChatbot = () => {
   const [difyLoaded, setDifyLoaded] = useState(false);
@@ -13,7 +14,8 @@ export const SubsidyChatbot = () => {
   useEffect(() => {
     // 一般的なDifyスクリプトのロード状態を監視
     const checkDifyLoaded = setInterval(() => {
-      if (window.difyChatbot || window.DifyAI) {
+      const difyLoaded = Boolean(window.difyChatbot || window.DifyAI);
+      if (difyLoaded) {
         console.log("一般的なDifyスクリプトが正常にロードされました");
         setDifyLoaded(true);
         clearInterval(checkDifyLoaded);
@@ -22,7 +24,8 @@ export const SubsidyChatbot = () => {
 
     // 小規模持続化補助金のDifyスクリプトのロード状態を監視
     const checkShoukiboLoaded = setInterval(() => {
-      if (window.shoukiboJizokaChatbot) {
+      const shoukiboLoaded = Boolean(window.shoukiboJizokaChatbot);
+      if (shoukiboLoaded) {
         console.log("小規模持続化補助金のDifyスクリプトが正常にロードされました");
         setShoukiboLoaded(true);
         clearInterval(checkShoukiboLoaded);
@@ -31,7 +34,8 @@ export const SubsidyChatbot = () => {
 
     // 省力化投資補助金のDifyスクリプトのロード状態を監視
     const checkShorikikaLoaded = setInterval(() => {
-      if (window.shorikika_chatbot) {
+      const shorikikaLoaded = Boolean(window.shorikika_chatbot);
+      if (shorikikaLoaded) {
         console.log("省力化投資補助金のDifyスクリプトが正常にロードされました");
         setShorikikaLoaded(true);
         clearInterval(checkShorikikaLoaded);
@@ -64,7 +68,8 @@ export const SubsidyChatbot = () => {
 };
 
 /**
- * チャットボットを開く関数
+ * 一般的なDifyチャットボットを開く関数
+ * ※互換性のため残していますが、新しいChatbotInitializerを使用することを推奨
  */
 export const openChatbot = () => {
   try {
