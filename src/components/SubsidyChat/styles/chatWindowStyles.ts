@@ -82,4 +82,29 @@ export const getChatWindowStyles = (): string => `
       height: calc(100vh - 50px) !important;
     }
   }
+  
+  /* チャットボタンのスタイル */
+  #dify-chatbot-bubble-button,
+  #shoukibo-jizoka-chatbot-button,
+  #shorikika-chatbot-button {
+    background-color: #1C64F2 !important;
+    z-index: 99999 !important;
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    border: none !important;
+    transition: transform 0.2s, background-color 0.2s !important;
+  }
+  
+  #dify-chatbot-bubble-button:hover,
+  #shoukibo-jizoka-chatbot-button:hover,
+  #shorikika-chatbot-button:hover {
+    transform: scale(1.05) !important;
+    background-color: #1651c4 !important;
+  }
 `;

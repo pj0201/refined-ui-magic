@@ -10,52 +10,11 @@
     <title>PLANNINGJOY株式会社 | 創業から承継まで経営の羅針盤</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&display=swap" rel="stylesheet">
     
-    <!-- Dify 一般チャットボット設定 -->
-    <script>
-      window.difyChatbotConfig = {
-        token: 'UlZEhca44ZNfJtdS'
-      }
-    </script>
-    <script
-      src="https://udify.app/embed.min.js"
-      id="UlZEhca44ZNfJtdS"
-      defer>
-    </script>
-    
-    <!-- 小規模持続化補助金専用チャットボット設定 -->
-    <script>
-      window.shoukiboJizokaChatbotConfig = {
-        token: 'shoukibo_jizoka_token' // 小規模持続化補助金用のトークンを設定
-      }
-    </script>
-    <script
-      src="https://udify.app/embed.min.js"
-      id="shoukibo-jizoka-chatbot"
-      data-chat-name="小規模持続化補助金AI相談"
-      data-element-id="shoukibo-jizoka-chatbot"
-      data-window-id="shoukibo-jizoka-chatbot-window"
-      data-button-id="shoukibo-jizoka-chatbot-button"
-      defer>
-    </script>
-    
-    <!-- 省力化投資補助金専用チャットボット設定 -->
-    <script>
-      window.shorikika_chatbot_config = {
-        token: 'shorikika_token' // 省力化投資補助金用のトークンを設定
-      }
-    </script>
-    <script
-      src="https://udify.app/embed.min.js"
-      id="shorikika-chatbot"
-      data-chat-name="省力化投資補助金AI相談"
-      data-element-id="shorikika-chatbot"
-      data-window-id="shorikika-chatbot-window"
-      data-button-id="shorikika-chatbot-button"
-      defer>
-    </script>
-    
-    <style>
-      /* 共通のチャットボットスタイル */
+    <!-- チャットボット共通スタイル -->
+    <style id="dify-chat-styles">
+      /* チャットボットスタイルは JavaScript で動的に挿入されます */
+      
+      /* 基本スタイルのみ定義 */
       #dify-chatbot-bubble-button,
       #shoukibo-jizoka-chatbot-button,
       #shorikika-chatbot-button {
@@ -75,95 +34,56 @@
         right: 20px !important;
         z-index: 2147483647 !important;
       }
-      
-      /* 各チャットボットに固有の識別クラスを追加 */
-      #dify-chatbot-bubble-button::after {
-        content: "一般";
-        position: absolute;
-        top: -15px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 10px;
-        color: transparent;
-      }
-      
-      #shoukibo-jizoka-chatbot-button::after {
-        content: "小規模";
-        position: absolute;
-        top: -15px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 10px;
-        color: transparent;
-      }
-      
-      #shorikika-chatbot-button::after {
-        content: "省力化";
-        position: absolute;
-        top: -15px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 10px;
-        color: transparent;
-      }
-      
-      @media (max-height: 700px) {
-        #dify-chatbot-bubble-window,
-        #shoukibo-jizoka-chatbot-window,
-        #shorikika-chatbot-window {
-          top: 20px !important;
-          height: calc(100vh - 50px) !important;
-        }
-      }
-      
-      /* Dify UIボタンカスタマイズ */
-      .chatbot-elements-container {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 10px;
-        z-index: 9999;
-      }
-      
-      .dify-chatbot-bubble-button {
-        width: 48px;
-        height: 48px;
-        border-radius: 50%;
-        background-color: #1C64F2;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        border: none;
-        transition: transform 0.2s, background-color 0.2s;
-      }
-      
-      .dify-chatbot-bubble-button:hover {
-        transform: scale(1.05);
-        background-color: #1651c4;
-      }
-      
-      .dify-chatbot-label {
-        padding: 6px 12px;
-        background-color: white;
-        border-radius: 16px;
-        font-size: 12px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        margin-bottom: 4px;
-        color: #333;
-        max-width: 200px;
-        text-align: center;
-      }
     </style>
-    
-    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
   </head>
   <body>
     <div id="root"></div>
+    
+    <!-- Dify 一般チャットボット設定 -->
+    <script>
+      window.difyChatbotConfig = {
+        token: 'UlZEhca44ZNfJtdS'
+      }
+    </script>
+    <script
+      src="https://udify.app/embed.min.js"
+      id="UlZEhca44ZNfJtdS"
+      defer>
+    </script>
+    
+    <!-- 小規模持続化補助金専用チャットボット設定 -->
+    <script>
+      window.shoukiboJizokaChatbotConfig = {
+        token: 'UlZEhca44ZNfJtdS' // 実際のトークンを使用
+      }
+    </script>
+    <script
+      src="https://udify.app/embed.min.js"
+      id="shoukibo-jizoka-chatbot"
+      data-chat-name="小規模持続化補助金AI相談"
+      data-element-id="shoukibo-jizoka-chatbot"
+      data-window-id="shoukibo-jizoka-chatbot-window"
+      data-button-id="shoukibo-jizoka-chatbot-button"
+      defer>
+    </script>
+    
+    <!-- 省力化投資補助金専用チャットボット設定 -->
+    <script>
+      window.shorikikaChatbotConfig = {
+        token: 'UlZEhca44ZNfJtdS' // 実際のトークンを使用
+      }
+    </script>
+    <script
+      src="https://udify.app/embed.min.js"
+      id="shorikika-chatbot"
+      data-chat-name="省力化投資補助金AI相談"
+      data-element-id="shorikika-chatbot"
+      data-window-id="shorikika-chatbot-window"
+      data-button-id="shorikika-chatbot-button"
+      defer>
+    </script>
+    
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="./src/main.tsx"></script>
   </body>
 </html>

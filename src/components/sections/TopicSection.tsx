@@ -2,9 +2,13 @@
 import { TopicItem } from "./TopicItem";
 import { useTopicData } from "@/hooks/useTopicData";
 import { ChatbotInitializer } from "./ChatbotInitializer";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 export const TopicSection = () => {
   const { topics, isLoading, error } = useTopicData();
+  const [chatbotsReady, setChatbotsReady] = useState(false);
+  
   // ChatbotInitializerから関数を取得
   const { 
     openChatbot, 
@@ -15,34 +19,45 @@ export const TopicSection = () => {
     isShorikikaLoaded
   } = ChatbotInitializer();
 
+  // チャットボットの読み込み状態を監視
+  useEffect(() => {
+    if (isDifyLoaded || isShoukiboLoaded || isShorikikaLoaded) {
+      setChatbotsReady(true);
+    }
+  }, [isDifyLoaded, isShoukiboLoaded, isShorikikaLoaded]);
+
   // トピックからチャットを開始する関数
   const handleTopicChat = (content: string) => {
     console.log(`トピックからチャットを開始: ${content}`);
+    
+    if (!chatbotsReady) {
+      toast.error("チャットボットの準備ができていません。ページを再読み込みしてください。");
+      return;
+    }
     
     // 正規表現でトピックの内容を精査
     const isShorikikaRelated = /省力化|投資補助金/.test(content);
     const isShoukiboRelated = /小規模|持続化/.test(content);
 
-    // トピックの内容に基づいて適切なチャットを開始
-    if (isShorikikaRelated) {
-      console.log("省力化投資補助金に関連するトピックを検出しました");
-      if (!isShorikikaLoaded) {
-        console.warn("省力化投資補助金のチャットボットがまだロードされていません");
+    try {
+      // トピックの内容に基づいて適切なチャットを開始
+      if (isShorikikaRelated && isShorikikaLoaded) {
+        console.log("省力化投資補助金に関連するトピックを検出しました");
+        startShorikikaChat();
+      } else if (isShoukiboRelated && isShoukiboLoaded) {
+        console.log("小規模持続化補助金に関連するトピックを検出しました");
+        startShoukiboJizokaChat();
+      } else if (isDifyLoaded) {
+        // 特定の補助金が特定できない場合は一般的にチャットを開く
+        console.log("一般的なトピックを検出しました");
+        openChatbot();
+      } else {
+        // すべてのチャットボットが利用できない場合
+        toast.error("申し訳ありませんが、チャットボットを起動できません。ページを再読み込みしてみてください。");
       }
-      startShorikikaChat();
-    } else if (isShoukiboRelated) {
-      console.log("小規模持続化補助金に関連するトピックを検出しました");
-      if (!isShoukiboLoaded) {
-        console.warn("小規模持続化補助金のチャットボットがまだロードされていません");
-      }
-      startShoukiboJizokaChat();
-    } else {
-      // 特定の補助金が特定できない場合は一般的にチャットを開く
-      console.log("一般的なトピックを検出しました");
-      if (!isDifyLoaded) {
-        console.warn("一般的なチャットボットがまだロードされていません");
-      }
-      openChatbot();
+    } catch (error) {
+      console.error("チャットボット起動中にエラーが発生しました:", error);
+      toast.error("チャットボットの起動に失敗しました。ページを再読み込みしてください。");
     }
   };
 
