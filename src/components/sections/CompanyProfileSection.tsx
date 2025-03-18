@@ -1,4 +1,3 @@
-
 import { Mail } from "lucide-react";
 
 export const CompanyProfileSection = () => {
@@ -33,30 +32,40 @@ export const CompanyProfileSection = () => {
           
           <div className="bg-white/90 rounded-lg shadow-lg border-2 border-gray-200 p-6 relative">
             <div className="text-[#403E43] space-y-6">
-              <p className="flex items-center gap-4">
+              <p className="flex flex-col xs:flex-row items-start xs:items-center gap-2 xs:gap-4">
                 <strong className="min-w-24">法人名：</strong>
-                <span>PLANNINGJOY株式会社</span>
+                <span>
+                  <span className="inline-block">PLANNING</span>
+                  <span className="text-red-500 font-bold inline-block">JOY</span>
+                  <span className="inline-block">株式会社</span>
+                </span>
               </p>
-              <p className="flex items-center gap-4">
+              <p className="flex flex-col xs:flex-row items-start xs:items-center gap-2 xs:gap-4">
                 <strong className="min-w-24">代表者：</strong>
                 <span>堀上 亮（経済産業省認定 経営革新等支援機関）</span>
               </p>
-              <p className="flex items-center gap-4">
+              <p className="flex flex-col xs:flex-row items-start xs:items-center gap-2 xs:gap-4">
                 <strong className="min-w-24">所在地：</strong>
-                <span>〒651-0084 兵庫県神戸市中央区磯辺通1-1-18 カサベラ国際プラザビル707号室</span>
+                <span className="inline-block">〒651-0084 兵庫県神戸市中央区磯辺通1-1-18</span>
+                <br className="xs:inline sm:hidden" />
+                <span className="inline-block ml-0 xs:ml-24 sm:ml-0">カサベラ国際プラザビル707号室</span>
               </p>
-              <div className="flex items-start gap-4">
+              <div className="flex flex-col xs:flex-row items-start xs:items-center gap-2 xs:gap-4">
                 <strong className="min-w-24">連絡先：</strong>
                 <div className="space-y-2">
-                  <p>TEL/FAX　078-600-0611</p>
+                  <p>
+                    <span className="inline-block">TEL/FAX</span>
+                    <br className="xs:inline sm:hidden" />
+                    <span className="inline-block">078-600-0611</span>
+                  </p>
                   <p className="flex items-center gap-2">
                     <Mail size={18} className="inline-block" />
                     <span>MAIL hori@planjoy.net</span>
                   </p>
                 </div>
               </div>
-              <div className="flex items-start gap-4">
-                <strong className="min-w-24">業務内容：</strong>
+              <div className="flex flex-col xs:flex-row items-start gap-2 xs:gap-4">
+                <strong className="min-w-24 pt-1">業務内容：</strong>
                 <div className="w-full">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
                     <div className="col-span-1">

@@ -1,11 +1,14 @@
-
 import React from 'react';
 
 export const ConsultingSection = () => {
   return (
     <section id="consulting" className="py-20 px-4 bg-slate-50">
       <div className="max-w-6xl mx-auto fade-in">
-        <h2 className="text-3xl font-bold mb-12 text-center">AIに強い経営コンサルティング</h2>
+        <h2 className="text-3xl font-bold mb-12 text-center">
+          <span className="inline-block">AIに強い</span>
+          <br className="xs:inline sm:hidden" />
+          <span className="inline-block">経営コンサルティング</span>
+        </h2>
         <div className="flex flex-col md:flex-row gap-8 items-center justify-center">
           <div className="md:w-1/2 text-center md:text-left space-y-6">
             <div className="consulting-text text-lg leading-relaxed space-y-4">

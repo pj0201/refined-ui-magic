@@ -86,7 +86,11 @@ export const BusinessPlansSection = () => {
   return (
     <section id="business-plans" className="py-20 px-4 bg-gray-50">
       <div className="max-w-6xl mx-auto fade-in">
-        <h2 className="text-3xl font-bold mb-4 text-center">計画策定で公的な制度活用へ</h2>
+        <h2 className="text-3xl font-bold mb-4 text-center">
+          <span className="inline-block">計画策定で</span>
+          <br className="xs:inline sm:hidden" />
+          <span className="inline-block">公的な制度活用へ</span>
+        </h2>
         <p className="text-lg text-center mb-12 max-w-3xl mx-auto">
           以下の計画については、「融資」「税制」「保険」「補助金の加点」など、経営における様々なメリットがございます。
         </p>
