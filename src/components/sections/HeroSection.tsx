@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 
@@ -22,12 +21,14 @@ export const HeroSection = () => {
           経営の羅針盤
         </h1>
         <div className="space-y-4 md:space-y-6 flex flex-col items-center">
-          <p className="xs:text-base sm:text-lg lg:text-xl font-medium tracking-wide fade-in backdrop-blur-sm bg-white/10 py-2 px-3 md:px-4 rounded-lg">
+          <p className="xs:text-base sm:text-lg lg:text-xl font-medium tracking-wide fade-in backdrop-blur-sm bg-white/10 py-2 px-3 md:px-4 rounded-lg whitespace-nowrap">
             「生産性と資産に寄与する経営コンサルティング」
           </p>
-          <p className="xs:text-2xl sm:text-3xl lg:text-4xl font-medium tracking-wide fade-in delay-100 backdrop-blur-sm bg-white/10 py-2 px-4 md:py-3 md:px-6 rounded-lg">
-            PLANNING<span className="text-red-500 font-extrabold xs:text-3xl sm:text-4xl lg:text-5xl" style={{ fontFamily: "'Noto Serif JP', serif", fontWeight: 900, display: 'inline-block', transform: 'scaleX(2)' }}>J</span>OY株式会社
-          </p>
+          <div className="xs:text-2xl sm:text-3xl lg:text-4xl font-medium tracking-wide fade-in delay-100 backdrop-blur-sm bg-white/10 py-2 px-4 md:py-3 md:px-6 rounded-lg">
+            <span className="block sm:inline-block">PLANNING</span>
+            <span className="text-red-500 font-extrabold block sm:inline-block xs:text-3xl sm:text-4xl lg:text-5xl" style={{ fontFamily: "'Noto Serif JP', serif", fontWeight: 900 }}>JOY</span>
+            <span className="block sm:inline-block">株式会社</span>
+          </div>
         </div>
       </div>
     </section>

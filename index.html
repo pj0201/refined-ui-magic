@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
   <head>
@@ -18,14 +17,31 @@
       #dify-chatbot-bubble-window,
       #shoukibo-jizoka-chatbot-window,
       #shorikika-chatbot-window {
-        width: 24rem !important;
-        height: 50rem !important;
-        max-height: 90vh !important;
+        width: 90vw !important;
+        max-width: 24rem !important;
+        height: 80vh !important;
+        max-height: 50rem !important;
         position: fixed !important;
         bottom: auto !important;
         top: 50px !important;
         right: 20px !important;
         z-index: 2147483647 !important;
+        border-radius: 12px !important;
+        overflow: hidden !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
+      }
+      
+      /* モバイル向け調整 */
+      @media (max-width: 640px) {
+        #dify-chatbot-bubble-window,
+        #shoukibo-jizoka-chatbot-window,
+        #shorikika-chatbot-window {
+          width: 90vw !important;
+          height: 70vh !important;
+          top: 15vh !important;
+          right: 5vw !important;
+          left: 5vw !important;
+        }
       }
       
       /* カスタム閉じるボタン */
@@ -44,11 +60,12 @@
         justify-content: center !important;
         cursor: pointer !important;
         z-index: 2147483650 !important;
+        border-radius: 50% !important;
+        transition: background-color 0.2s ease !important;
       }
       
       .custom-close-button:hover {
         background-color: rgba(255, 255, 255, 0.2) !important;
-        border-radius: 50% !important;
       }
     </style>
   </head>
@@ -97,6 +114,112 @@
       data-window-id="shorikika-chatbot-window"
       data-button-id="shorikika-chatbot-button"
       defer>
+    </script>
+    
+    <!-- チャットボットの開閉機能 -->
+    <script>
+      // DOMの読み込み完了後に実行
+      document.addEventListener('DOMContentLoaded', function() {
+        // 省力化投資補助金チャットボットを開く関数
+        window.openSubsidyChatbot = function() {
+          console.log('省力化投資補助金チャットボットを開きます');
+          
+          // チャットボットウィンドウが既に表示されているか確認
+          const chatWindow = document.getElementById('shorikika-chatbot-window');
+          if (chatWindow && window.getComputedStyle(chatWindow).display !== 'none') {
+            console.log('チャットウィンドウは既に表示されています');
+            return;
+          }
+          
+          // ボタンを探して直接クリック
+          const chatButton = document.getElementById('shorikika-chatbot-button');
+          if (chatButton) {
+            console.log('省力化投資補助金ボタンをクリックします');
+            chatButton.click();
+            
+            // 少し遅延してからカスタム閉じるボタンを追加
+            setTimeout(function() {
+              addCloseButton('shorikika-chatbot-window');
+            }, 500);
+          } else {
+            console.error('省力化投資補助金のチャットボタンが見つかりませんでした');
+          }
+        };
+        
+        // 小規模持続化補助金チャットボットを開く関数
+        window.openSmallBusinessChatbot = function() {
+          console.log('小規模持続化補助金チャットボットを開きます');
+          
+          // チャットボットウィンドウが既に表示されているか確認
+          const chatWindow = document.getElementById('shoukibo-jizoka-chatbot-window');
+          if (chatWindow && window.getComputedStyle(chatWindow).display !== 'none') {
+            console.log('チャットウィンドウは既に表示されています');
+            return;
+          }
+          
+          // ボタンを探して直接クリック
+          const chatButton = document.getElementById('shoukibo-jizoka-chatbot-button');
+          if (chatButton) {
+            console.log('小規模持続化補助金ボタンをクリックします');
+            chatButton.click();
+            
+            // 少し遅延してからカスタム閉じるボタンを追加
+            setTimeout(function() {
+              addCloseButton('shoukibo-jizoka-chatbot-window');
+            }, 500);
+          } else {
+            console.error('小規模持続化補助金のチャットボタンが見つかりませんでした');
+          }
+        };
+        
+        // 閉じるボタンを追加する関数
+        function addCloseButton(windowId) {
+          const chatWindow = document.getElementById(windowId);
+          if (!chatWindow) return;
+          
+          // 既存の閉じるボタンがあれば削除
+          const existingButton = chatWindow.querySelector('.custom-close-button');
+          if (existingButton) {
+            existingButton.remove();
+          }
+          
+          // 新しい閉じるボタンを作成
+          const closeButton = document.createElement('button');
+          closeButton.className = 'custom-close-button';
+          closeButton.innerHTML = '×';
+          closeButton.setAttribute('aria-label', 'チャットを閉じる');
+          
+          // クリックイベントを追加
+          closeButton.addEventListener('click', function() {
+            chatWindow.style.display = 'none';
+          });
+          
+          // チャットウィンドウに追加
+          chatWindow.appendChild(closeButton);
+        }
+        
+        // Difyスクリプトのロードを監視し、ロードされたらカスタム閉じるボタンを追加
+        const observer = new MutationObserver(function(mutations) {
+          mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList') {
+              // 省力化投資補助金チャットウィンドウが追加されたとき
+              const shorikika = document.getElementById('shorikika-chatbot-window');
+              if (shorikika && !shorikika.querySelector('.custom-close-button')) {
+                addCloseButton('shorikika-chatbot-window');
+              }
+              
+              // 小規模持続化補助金チャットウィンドウが追加されたとき
+              const shoukibo = document.getElementById('shoukibo-jizoka-chatbot-window');
+              if (shoukibo && !shoukibo.querySelector('.custom-close-button')) {
+                addCloseButton('shoukibo-jizoka-chatbot-window');
+              }
+            }
+          });
+        });
+        
+        // body要素の変更を監視
+        observer.observe(document.body, { childList: true, subtree: true });
+      });
     </script>
     
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
