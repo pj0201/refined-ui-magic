@@ -15,13 +15,6 @@
       /* チャットボットスタイルは JavaScript で動的に挿入されます */
       
       /* 基本スタイルのみ定義 */
-      #dify-chatbot-bubble-button,
-      #shoukibo-jizoka-chatbot-button,
-      #shorikika-chatbot-button {
-        background-color: #1C64F2 !important;
-        z-index: 2147483647 !important;
-      }
-      
       #dify-chatbot-bubble-window,
       #shoukibo-jizoka-chatbot-window,
       #shorikika-chatbot-window {
@@ -33,6 +26,29 @@
         top: 50px !important;
         right: 20px !important;
         z-index: 2147483647 !important;
+      }
+      
+      /* カスタム閉じるボタン */
+      .custom-close-button {
+        position: absolute !important;
+        top: 10px !important;
+        right: 10px !important;
+        background-color: transparent !important;
+        border: none !important;
+        color: white !important;
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 20px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+        z-index: 2147483650 !important;
+      }
+      
+      .custom-close-button:hover {
+        background-color: rgba(255, 255, 255, 0.2) !important;
+        border-radius: 50% !important;
       }
     </style>
   </head>
@@ -54,7 +70,7 @@
     <!-- 小規模持続化補助金専用チャットボット設定 -->
     <script>
       window.shoukiboJizokaChatbotConfig = {
-        token: 'UlZEhca44ZNfJtdS' // 実際のトークンを使用
+        token: 'jpVCvswMb5KaQFLk' // 小規模持続化補助金用の固有トークン
       }
     </script>
     <script
@@ -70,7 +86,7 @@
     <!-- 省力化投資補助金専用チャットボット設定 -->
     <script>
       window.shorikikaChatbotConfig = {
-        token: 'UlZEhca44ZNfJtdS' // 実際のトークンを使用
+        token: 'kAwDqVSCnjM6ZfEY' // 省力化投資補助金用の固有トークン
       }
     </script>
     <script

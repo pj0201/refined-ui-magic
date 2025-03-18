@@ -33,33 +33,32 @@ export const getChatWindowStyles = (): string => `
     z-index: 99996 !important;
   }
   
-  /* 閉じるボタンのスタイリング（共通） */
+  /* Difyデフォルトの閉じるボタンを非表示 */
   .dify-chatbot-window-close-btn {
+    display: none !important;
+  }
+  
+  /* カスタム閉じるボタン */
+  .custom-close-button {
     position: absolute !important;
     top: 10px !important;
     right: 10px !important;
-    width: 24px !important;
-    height: 24px !important;
-    background: transparent !important;
+    background-color: transparent !important;
     border: none !important;
-    border-radius: 50% !important;
+    color: white !important;
+    width: 30px !important;
+    height: 30px !important;
+    font-size: 20px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     cursor: pointer !important;
-    z-index: 99999 !important;
-    visibility: visible !important;
-    opacity: 1 !important;
+    z-index: 2147483650 !important;
   }
-
-  .dify-chatbot-window-close-btn:hover {
-    background: rgba(255, 255, 255, 0.2) !important;
-  }
-
-  .dify-chatbot-window-close-btn svg {
-    width: 18px !important;
-    height: 18px !important;
-    color: white !important;
+  
+  .custom-close-button:hover {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    border-radius: 50% !important;
   }
   
   /* 入力エリアのスタイリング（共通） */
@@ -83,28 +82,10 @@ export const getChatWindowStyles = (): string => `
     }
   }
   
-  /* チャットボタンのスタイル */
+  /* 青いチャットボタンを非表示 */
   #dify-chatbot-bubble-button,
   #shoukibo-jizoka-chatbot-button,
   #shorikika-chatbot-button {
-    background-color: #1C64F2 !important;
-    z-index: 99999 !important;
-    width: 48px !important;
-    height: 48px !important;
-    border-radius: 50% !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    cursor: pointer !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
-    border: none !important;
-    transition: transform 0.2s, background-color 0.2s !important;
-  }
-  
-  #dify-chatbot-bubble-button:hover,
-  #shoukibo-jizoka-chatbot-button:hover,
-  #shorikika-chatbot-button:hover {
-    transform: scale(1.05) !important;
-    background-color: #1651c4 !important;
+    display: none !important;
   }
 `;
