@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -17,6 +16,9 @@ import KeieiKakushinPage from "./pages/plans/KeieiKakushinPage";
 import DDSPage from "./pages/plans/DDSPage";
 import KeieishaHoshoPage from "./pages/plans/KeieishaHoshoPage";
 import SafetyNetPage from "./pages/plans/SafetyNetPage";
+import { ChatbotInitializer } from "./components/sections/ChatbotInitializer";
+import { Suspense, useEffect } from "react";
+import { Sonner } from "sonner";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,10 +30,21 @@ const queryClient = new QueryClient({
 });
 
 function App() {
+  // ChatbotInitializerをレンダリングして初期化
+  useEffect(() => {
+    // チャットボット初期化のログ
+    console.log("App.tsx: チャットボット初期化を開始します");
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <HashRouter>
+          {/* チャットボット初期化コンポーネント */}
+          <Suspense fallback={null}>
+            <ChatbotInitializer />
+          </Suspense>
+          
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/ai-glossary" element={<AIGlossary />} />
@@ -52,6 +65,7 @@ function App() {
           </Routes>
         </HashRouter>
         <Toaster />
+        <Sonner position="top-right" />
       </TooltipProvider>
     </QueryClientProvider>
   );
