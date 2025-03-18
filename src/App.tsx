@@ -1,11 +1,17 @@
-import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import { Suspense, useEffect } from "react";
+import { HashRouter } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { HashRouter, Routes, Route } from "react-router-dom";
+import { TooltipProvider } from "@radix-ui/react-tooltip";
+import { Toaster } from "sonner";
+
+// ページコンポーネント
 import Index from "./pages/Index";
-import NotFound from "./pages/NotFound";
 import AIGlossary from "./pages/AIGlossary";
 import AITools from "./pages/AITools";
+import NotFound from "./pages/NotFound";
+
+// プランページ
 import PosucoroPage from "./pages/plans/PosucoroPage";
 import KeieiKaizenPage from "./pages/plans/KeieiKaizenPage";
 import BCPPage from "./pages/plans/BCPPage";
@@ -16,24 +22,22 @@ import KeieiKakushinPage from "./pages/plans/KeieiKakushinPage";
 import DDSPage from "./pages/plans/DDSPage";
 import KeieishaHoshoPage from "./pages/plans/KeieishaHoshoPage";
 import SafetyNetPage from "./pages/plans/SafetyNetPage";
+
+// チャットボット初期化コンポーネント
 import { ChatbotInitializer } from "./components/sections/ChatbotInitializer";
-import { Suspense, useEffect } from "react";
-import { Sonner } from "sonner";
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: false,
-      refetchOnWindowFocus: false,
+      staleTime: 1000 * 60 * 5, // 5分
     },
   },
 });
 
 function App() {
-  // ChatbotInitializerをレンダリングして初期化
+  // チャットボットの初期化
   useEffect(() => {
-    // チャットボット初期化のログ
-    console.log("App.tsx: チャットボット初期化を開始します");
+    console.log("App: チャットボットの初期化を開始します");
   }, []);
 
   return (
@@ -41,31 +45,30 @@ function App() {
       <TooltipProvider>
         <HashRouter>
           {/* チャットボット初期化コンポーネント */}
-          <Suspense fallback={null}>
+          <Suspense fallback={<div className="loading">Loading...</div>}>
             <ChatbotInitializer />
+            
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/ai-glossary" element={<AIGlossary />} />
+              <Route path="/ai-tools" element={<AITools />} />
+              
+              <Route path="/plans/posucoro" element={<PosucoroPage />} />
+              <Route path="/plans/keiei-kaizen" element={<KeieiKaizenPage />} />
+              <Route path="/plans/bcp" element={<BCPPage />} />
+              <Route path="/plans/jigyou-keizoku" element={<JigyouKeizokuPage />} />
+              <Route path="/plans/keiei-ryoku" element={<KeieiRyokuPage />} />
+              <Route path="/plans/sentan-setsubi" element={<SentanSetsubiPage />} />
+              <Route path="/plans/keiei-kakushin" element={<KeieiKakushinPage />} />
+              <Route path="/plans/dds" element={<DDSPage />} />
+              <Route path="/plans/keieisha-hosho" element={<KeieishaHoshoPage />} />
+              <Route path="/plans/safety-net" element={<SafetyNetPage />} />
+              
+              <Route path="*" element={<NotFound />} />
+            </Routes>
           </Suspense>
-          
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/ai-glossary" element={<AIGlossary />} />
-            <Route path="/ai-tools" element={<AITools />} />
-            
-            <Route path="/plans/posucoro" element={<PosucoroPage />} />
-            <Route path="/plans/keiei-kaizen" element={<KeieiKaizenPage />} />
-            <Route path="/plans/bcp" element={<BCPPage />} />
-            <Route path="/plans/jigyou-keizoku" element={<JigyouKeizokuPage />} />
-            <Route path="/plans/keiei-ryoku" element={<KeieiRyokuPage />} />
-            <Route path="/plans/sentan-setsubi" element={<SentanSetsubiPage />} />
-            <Route path="/plans/keiei-kakushin" element={<KeieiKakushinPage />} />
-            <Route path="/plans/dds" element={<DDSPage />} />
-            <Route path="/plans/keieisha-hosho" element={<KeieishaHoshoPage />} />
-            <Route path="/plans/safety-net" element={<SafetyNetPage />} />
-            
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <Toaster position="top-right" />
         </HashRouter>
-        <Toaster />
-        <Sonner position="top-right" />
       </TooltipProvider>
     </QueryClientProvider>
   );

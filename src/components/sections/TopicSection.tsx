@@ -1,15 +1,14 @@
-
 import { TopicItem } from "./TopicItem";
 import { useTopicData } from "@/hooks/useTopicData";
-import { ChatbotInitializer } from "./ChatbotInitializer";
-import { useEffect, useState } from "react";
+import { useChatbotInitializer } from "./ChatbotInitializer";
+import { useEffect, useState, useCallback } from "react";
 import { toast } from "sonner";
 
 export const TopicSection = () => {
   const { topics, isLoading, error } = useTopicData();
   const [chatbotsReady, setChatbotsReady] = useState(false);
   
-  // ChatbotInitializerから関数を取得
+  // useChatbotInitializerフックから関数を取得
   const { 
     openChatbot, 
     startShorikikaChat, 
@@ -17,7 +16,7 @@ export const TopicSection = () => {
     isDifyLoaded,
     isShoukiboLoaded,
     isShorikikaLoaded
-  } = ChatbotInitializer();
+  } = useChatbotInitializer();
 
   // チャットボットの読み込み状態を監視
   useEffect(() => {
@@ -26,62 +25,50 @@ export const TopicSection = () => {
     }
   }, [isDifyLoaded, isShoukiboLoaded, isShorikikaLoaded]);
 
-  // トピックからチャットを開始する関数
-  const handleTopicChat = (content: string) => {
-    console.log(`トピックからチャットを開始: ${content}`);
+  // トピックに応じたチャットボットを開く関数
+  const handleTopicChat = useCallback((content: string) => {
+    console.log(`トピックチャット開始: ${content}`);
     
-    if (!chatbotsReady) {
-      toast.error("チャットボットの準備ができていません。ページを再読み込みしてください。");
-      return;
-    }
-    
-    // 正規表現でトピックの内容を精査
-    const isShorikikaRelated = /省力化|投資補助金/.test(content);
-    const isShoukiboRelated = /小規模|持続化/.test(content);
-
     try {
-      // トピックの内容に基づいて適切なチャットを開始
-      if (isShorikikaRelated && isShorikikaLoaded) {
-        console.log("省力化投資補助金に関連するトピックを検出しました");
-        startShorikikaChat();
-      } else if (isShoukiboRelated && isShoukiboLoaded) {
-        console.log("小規模持続化補助金に関連するトピックを検出しました");
+      // 小規模持続化補助金のチャットボットを開く
+      if (content.includes('小規模持続化補助金')) {
+        console.log('小規模持続化補助金のチャットボットを開きます');
         startShoukiboJizokaChat();
-      } else if (isDifyLoaded) {
-        // 特定の補助金が特定できない場合は一般的にチャットを開く
-        console.log("一般的なトピックを検出しました");
-        openChatbot();
-      } else {
-        // すべてのチャットボットが利用できない場合
-        toast.error("申し訳ありませんが、チャットボットを起動できません。ページを再読み込みしてみてください。");
+        return;
       }
+      
+      // 省力化投資補助金のチャットボットを開く
+      if (content.includes('省力化投資補助金')) {
+        console.log('省力化投資補助金のチャットボットを開きます');
+        startShorikikaChat();
+        return;
+      }
+      
+      // 一般チャットボットを開く（デフォルト）
+      console.log('一般チャットボットを開きます');
+      openChatbot();
     } catch (error) {
-      console.error("チャットボット起動中にエラーが発生しました:", error);
-      toast.error("チャットボットの起動に失敗しました。ページを再読み込みしてください。");
+      console.error('チャットボットを開く際にエラーが発生しました:', error);
+      toast.error('チャットボットを開けませんでした。ページを再読み込みしてください。');
     }
-  };
+  }, [openChatbot, startShoukiboJizokaChat, startShorikikaChat]);
+
+  if (isLoading) return <div className="loading">トピックを読み込み中...</div>;
+  if (error) return <div className="error">エラーが発生しました: {error instanceof Error ? error.message : String(error)}</div>;
+  if (!topics || topics.length === 0) return <div className="no-topics">トピックがありません</div>;
 
   return (
-    <section className="py-4 px-4 bg-gray-100 border-t border-gray-200">
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-xl font-bold mb-3 text-gray-800 text-center">トピック</h2>
-        <div className="bg-white rounded-lg shadow-sm p-5 space-y-3">
-          {isLoading ? (
-            <div className="py-4 text-center text-gray-500">トピックを読み込み中...</div>
-          ) : error ? (
-            <div className="py-4 text-center text-red-500">
-              <p>トピックの読み込みに失敗しました</p>
-              <p className="text-sm">{error}</p>
-            </div>
-          ) : (
-            topics.map((topic) => (
-              <TopicItem 
-                key={topic.id} 
-                {...topic} 
-                openChatbot={() => handleTopicChat(topic.content)} 
-              />
-            ))
-          )}
+    <section className="topics-section">
+      <div className="container mx-auto px-4 py-12">
+        <h2 className="text-3xl font-bold mb-8 text-center">よくあるご質問</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {topics.map((topic) => (
+            <TopicItem 
+              key={topic.id} 
+              {...topic} 
+              openChatbot={() => handleTopicChat(topic.content)} 
+            />
+          ))}
         </div>
       </div>
     </section>
