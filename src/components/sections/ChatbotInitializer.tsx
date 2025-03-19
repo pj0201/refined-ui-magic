@@ -65,6 +65,12 @@ export const useChatbotInitializer = () => {
       .dify-chatbot-bubble-window .dify-chatbot-bubble-window-close-button {
         display: none !important;
       }
+      
+      /* 最下段の丸い青いボタンを非表示にする */
+      #dify-chatbot-bubble-button,
+      .dify-chatbot-bubble-button {
+        display: none !important;
+      }
     `;
     document.head.appendChild(style);
   }, []);
@@ -117,10 +123,34 @@ export const useChatbotInitializer = () => {
           
           // 閉じるボタンを追加
           const header = document.querySelector('#dify-chatbot-bubble-window .dify-chatbot-bubble-window-header');
-          if (header && !header.querySelector('.custom-close-button')) {
+          if (header) {
+            // 既存の閉じるボタンがあれば削除
+            const existingButton = header.querySelector('.custom-close-button');
+            if (existingButton) {
+              existingButton.remove();
+            }
+            
+            // 新しい閉じるボタンを作成
             const closeButton = document.createElement('button');
             closeButton.innerHTML = '×';
             closeButton.className = 'custom-close-button';
+            closeButton.style.cssText = `
+              position: absolute !important;
+              top: 10px !important;
+              right: 10px !important;
+              width: 30px !important;
+              height: 30px !important;
+              border-radius: 50% !important;
+              background-color: rgba(255, 255, 255, 0.2) !important;
+              border: none !important;
+              color: white !important;
+              font-size: 18px !important;
+              display: flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              cursor: pointer !important;
+              z-index: 10000 !important;
+            `;
             closeButton.onclick = function(e) {
               e.preventDefault();
               e.stopPropagation();
@@ -128,6 +158,43 @@ export const useChatbotInitializer = () => {
               if (chatWindow) chatWindow.style.display = 'none';
             };
             header.appendChild(closeButton);
+            
+            console.log("閉じるボタンを追加しました");
+          } else {
+            // ヘッダーが見つからなかった場合は、チャットウィンドウ自体に閉じるボタンを追加
+            const chatWindow = document.getElementById("dify-chatbot-bubble-window");
+            if (chatWindow) {
+              const closeButton = document.createElement('button');
+              closeButton.innerHTML = '×';
+              closeButton.className = 'custom-close-button';
+              closeButton.style.cssText = `
+                position: absolute !important;
+                top: 10px !important;
+                right: 10px !important;
+                width: 30px !important;
+                height: 30px !important;
+                border-radius: 50% !important;
+                background-color: rgba(255, 255, 255, 0.2) !important;
+                border: none !important;
+                color: white !important;
+                font-size: 18px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                cursor: pointer !important;
+                z-index: 10000 !important;
+              `;
+              closeButton.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                chatWindow.style.display = 'none';
+              };
+              chatWindow.appendChild(closeButton);
+              
+              console.log("チャットウィンドウに閉じるボタンを追加しました");
+            } else {
+              console.error("チャットウィンドウが見つかりませんでした");
+            }
           }
         }, 300);
       } else {
@@ -188,10 +255,34 @@ export const useChatbotInitializer = () => {
           
           // 閉じるボタンを追加
           const header = document.querySelector('#shoukibo-jizoka-chatbot-window .dify-chatbot-bubble-window-header');
-          if (header && !header.querySelector('.custom-close-button')) {
+          if (header) {
+            // 既存の閉じるボタンがあれば削除
+            const existingButton = header.querySelector('.custom-close-button');
+            if (existingButton) {
+              existingButton.remove();
+            }
+            
+            // 新しい閉じるボタンを作成
             const closeButton = document.createElement('button');
             closeButton.innerHTML = '×';
             closeButton.className = 'custom-close-button';
+            closeButton.style.cssText = `
+              position: absolute !important;
+              top: 10px !important;
+              right: 10px !important;
+              width: 30px !important;
+              height: 30px !important;
+              border-radius: 50% !important;
+              background-color: rgba(255, 255, 255, 0.2) !important;
+              border: none !important;
+              color: white !important;
+              font-size: 18px !important;
+              display: flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              cursor: pointer !important;
+              z-index: 10000 !important;
+            `;
             closeButton.onclick = function(e) {
               e.preventDefault();
               e.stopPropagation();
@@ -199,6 +290,10 @@ export const useChatbotInitializer = () => {
               if (chatWindow) chatWindow.style.display = 'none';
             };
             header.appendChild(closeButton);
+            
+            console.log("閉じるボタンを追加しました");
+          } else {
+            console.error("チャットウィンドウのヘッダーが見つかりませんでした");
           }
         }, 300);
       } else {
@@ -261,16 +356,44 @@ export const useChatbotInitializer = () => {
             
             // 閉じるボタンを追加
             const header = chatWindow.querySelector('.dify-chatbot-bubble-window-header');
-            if (header && !header.querySelector('.custom-close-button')) {
+            if (header) {
+              // 既存の閉じるボタンがあれば削除
+              const existingButton = header.querySelector('.custom-close-button');
+              if (existingButton) {
+                existingButton.remove();
+              }
+              
+              // 新しい閉じるボタンを作成
               const closeButton = document.createElement('button');
               closeButton.innerHTML = '×';
               closeButton.className = 'custom-close-button';
+              closeButton.style.cssText = `
+                position: absolute !important;
+                top: 10px !important;
+                right: 10px !important;
+                width: 30px !important;
+                height: 30px !important;
+                border-radius: 50% !important;
+                background-color: rgba(255, 255, 255, 0.2) !important;
+                border: none !important;
+                color: white !important;
+                font-size: 18px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                cursor: pointer !important;
+                z-index: 10000 !important;
+              `;
               closeButton.onclick = function(e) {
                 e.preventDefault();
                 e.stopPropagation();
                 chatWindow.style.display = 'none';
               };
               header.appendChild(closeButton);
+              
+              console.log("閉じるボタンを追加しました");
+            } else {
+              console.error("チャットウィンドウのヘッダーが見つかりませんでした");
             }
             
             // タイトルを変更（もし可能であれば）
@@ -312,10 +435,34 @@ export const useChatbotInitializer = () => {
             
             // 閉じるボタンを追加
             const header = document.querySelector('#shorikika-chatbot-window .dify-chatbot-bubble-window-header');
-            if (header && !header.querySelector('.custom-close-button')) {
+            if (header) {
+              // 既存の閉じるボタンがあれば削除
+              const existingButton = header.querySelector('.custom-close-button');
+              if (existingButton) {
+                existingButton.remove();
+              }
+              
+              // 新しい閉じるボタンを作成
               const closeButton = document.createElement('button');
               closeButton.innerHTML = '×';
               closeButton.className = 'custom-close-button';
+              closeButton.style.cssText = `
+                position: absolute !important;
+                top: 10px !important;
+                right: 10px !important;
+                width: 30px !important;
+                height: 30px !important;
+                border-radius: 50% !important;
+                background-color: rgba(255, 255, 255, 0.2) !important;
+                border: none !important;
+                color: white !important;
+                font-size: 18px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                cursor: pointer !important;
+                z-index: 10000 !important;
+              `;
               closeButton.onclick = function(e) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -323,6 +470,10 @@ export const useChatbotInitializer = () => {
                 if (chatWindow) chatWindow.style.display = 'none';
               };
               header.appendChild(closeButton);
+              
+              console.log("閉じるボタンを追加しました");
+            } else {
+              console.error("チャットウィンドウのヘッダーが見つかりませんでした");
             }
           }, 300);
         } else {
