@@ -1,3 +1,4 @@
+
 /**
  * チャットウィンドウのスタイル定義
  * 一般チャット、小規模持続化補助金チャット、省力化投資補助金チャットの共通スタイル
@@ -133,6 +134,24 @@ export const getChatWindowStyles = (): string => `
   [class*="Error"] *,
   [class*="error"] * {
     display: none !important;
+  }
+
+  /* チャットボットウィンドウを非表示にする際のスタイル - 白画面問題の解決 */
+  .dify-hidden, 
+  .hidden-chatbot,
+  [id$="-chatbot-window"][style*="display: none"],
+  [id$="-chatbot-window"][style*="visibility: hidden"] {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+    z-index: -1 !important;
+    overflow: hidden !important;
   }
 
   /* モバイル対応 */

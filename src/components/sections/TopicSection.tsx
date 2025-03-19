@@ -1,12 +1,14 @@
+
 import { TopicItem } from "./TopicItem";
 import { useTopicData } from "@/hooks/useTopicData";
 import { useChatbotInitializer } from "./ChatbotInitializer";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { toast } from "sonner";
 
 export const TopicSection = () => {
   const { topics, isLoading, error } = useTopicData();
   const [chatbotsReady, setChatbotsReady] = useState(false);
+  const chatInitialized = useRef(false);
   
   // useChatbotInitializerフックから関数を取得
   const { 
@@ -25,30 +27,90 @@ export const TopicSection = () => {
     }
   }, [isDifyLoaded, isShoukiboLoaded, isShorikikaLoaded]);
 
+  // 遅延初期化 - コンポーネント初回マウント時の初期化を保証
+  useEffect(() => {
+    // すでに初期化済みの場合は何もしない
+    if (chatInitialized.current) return;
+    
+    // チャットボットの初期化関数
+    const initChatbots = () => {
+      console.log("TopicSection: チャットボットの遅延初期化を実行します");
+      
+      // グローバル関数が設定されていることを確認
+      if (!window.openChatbot) {
+        window.openChatbot = openChatbot;
+      }
+      
+      if (!window.startShoukiboJizokaChat) {
+        window.startShoukiboJizokaChat = startShoukiboJizokaChat;
+      }
+      
+      if (!window.startShorikikaChat) {
+        window.startShorikikaChat = startShorikikaChat;
+      }
+      
+      chatInitialized.current = true;
+    };
+    
+    // 初期化を1秒遅延して実行 (DOM要素の追加待機)
+    const timer = setTimeout(initChatbots, 1000);
+    
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [openChatbot, startShoukiboJizokaChat, startShorikikaChat]);
+
   // トピックに応じたチャットボットを開く関数
   const handleTopicChat = useCallback((content: string) => {
-    console.log(`トピックチャット開始: ${content}`);
+    console.log(`TopicSection: トピックチャット開始: ${content}`);
     
     try {
       // 小規模持続化補助金のチャットボットを開く
       if (content.includes('小規模持続化補助金')) {
-        console.log('小規模持続化補助金のチャットボットを開きます');
-        startShoukiboJizokaChat();
+        console.log('TopicSection: 小規模持続化補助金のチャットボットを開きます');
+        
+        // グローバル関数が設定されていることを確認
+        if (typeof window.startShoukiboJizokaChat === 'function') {
+          window.startShoukiboJizokaChat();
+        } else if (typeof startShoukiboJizokaChat === 'function') {
+          startShoukiboJizokaChat();
+        } else {
+          console.error('TopicSection: 小規模持続化補助金チャット関数が見つかりません');
+          toast.error('チャットボットを開けませんでした。ページを再読み込みしてください。');
+        }
         return;
       }
       
       // 省力化投資補助金のチャットボットを開く
       if (content.includes('省力化投資補助金')) {
-        console.log('省力化投資補助金のチャットボットを開きます');
-        startShorikikaChat();
+        console.log('TopicSection: 省力化投資補助金のチャットボットを開きます');
+        
+        // グローバル関数が設定されていることを確認
+        if (typeof window.startShorikikaChat === 'function') {
+          window.startShorikikaChat();
+        } else if (typeof startShorikikaChat === 'function') {
+          startShorikikaChat();
+        } else {
+          console.error('TopicSection: 省力化投資補助金チャット関数が見つかりません');
+          toast.error('チャットボットを開けませんでした。ページを再読み込みしてください。');
+        }
         return;
       }
       
       // 一般チャットボットを開く（デフォルト）
-      console.log('一般チャットボットを開きます');
-      openChatbot();
+      console.log('TopicSection: 一般チャットボットを開きます');
+      
+      // グローバル関数が設定されていることを確認
+      if (typeof window.openChatbot === 'function') {
+        window.openChatbot();
+      } else if (typeof openChatbot === 'function') {
+        openChatbot();
+      } else {
+        console.error('TopicSection: 一般チャット関数が見つかりません');
+        toast.error('チャットボットを開けませんでした。ページを再読み込みしてください。');
+      }
     } catch (error) {
-      console.error('チャットボットを開く際にエラーが発生しました:', error);
+      console.error('TopicSection: チャットボットを開く際にエラーが発生しました:', error);
       toast.error('チャットボットを開けませんでした。ページを再読み込みしてください。');
     }
   }, [openChatbot, startShoukiboJizokaChat, startShorikikaChat]);
