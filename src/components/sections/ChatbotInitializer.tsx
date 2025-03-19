@@ -60,6 +60,17 @@ export const useChatbotInitializer = () => {
         opacity: 1 !important;
         visibility: visible !important;
       }
+      
+      /* 青いボタンを非表示にする */
+      #dify-chatbot-bubble-button,
+      .dify-chatbot-bubble-button,
+      [id^="dify-chatbot-bubble-button"],
+      [class^="dify-chatbot-bubble-button"] {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+      }
     `;
     document.head.appendChild(style);
   }, []);
@@ -160,8 +171,12 @@ export const useChatbotInitializer = () => {
         closeButton.onclick = function(e) {
           e.preventDefault();
           e.stopPropagation();
-          chatbotWindow.style.display = "none";
-          console.log("一般チャットウィンドウを閉じました");
+          if (chatbotWindow) {
+            chatbotWindow.style.display = "none";
+            chatbotWindow.style.opacity = "0";
+            chatbotWindow.style.visibility = "hidden";
+            console.log("一般チャットウィンドウを閉じました");
+          }
         };
         
         // コンテンツエリアの作成
@@ -299,8 +314,12 @@ export const useChatbotInitializer = () => {
         closeButton.onclick = function(e) {
           e.preventDefault();
           e.stopPropagation();
-          chatbotWindow.style.display = "none";
-          console.log("小規模持続化補助金チャットウィンドウを閉じました");
+          if (chatbotWindow) {
+            chatbotWindow.style.display = "none";
+            chatbotWindow.style.opacity = "0";
+            chatbotWindow.style.visibility = "hidden";
+            console.log("小規模持続化補助金チャットウィンドウを閉じました");
+          }
         };
         
         // コンテンツエリアの作成
@@ -438,8 +457,12 @@ export const useChatbotInitializer = () => {
         closeButton.onclick = function(e) {
           e.preventDefault();
           e.stopPropagation();
-          chatbotWindow.style.display = "none";
-          console.log("省力化投資補助金チャットウィンドウを閉じました");
+          if (chatbotWindow) {
+            chatbotWindow.style.display = "none";
+            chatbotWindow.style.opacity = "0";
+            chatbotWindow.style.visibility = "hidden";
+            console.log("省力化投資補助金チャットウィンドウを閉じました");
+          }
         };
         
         // コンテンツエリアの作成
