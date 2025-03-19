@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import { toast } from "sonner";
+import { hideDifyBranding } from './styles/chatButtonStyles';
 
 // グローバルウィンドウオブジェクトの型拡張
 declare global {
@@ -62,11 +63,45 @@ const addCustomCloseButtonsGlobal = () => {
         closeButton.onclick = function(e) {
           e.preventDefault();
           e.stopPropagation();
+          
+          // ウィンドウを強制的に閉じる
           const chatWindow = document.getElementById(id);
           if (chatWindow) {
-            chatWindow.style.display = 'none';
-            chatWindow.style.opacity = '0';
-            chatWindow.style.visibility = 'hidden';
+            // 複数のスタイルプロパティを設定して確実に非表示にする
+            chatWindow.style.cssText = `
+              display: none !important;
+              opacity: 0 !important;
+              visibility: hidden !important;
+              pointer-events: none !important;
+              width: 0 !important;
+              height: 0 !important;
+              position: absolute !important;
+              left: -9999px !important;
+              top: -9999px !important;
+              z-index: -1 !important;
+            `;
+            
+            // 親要素も非表示にする試み
+            const parent = chatWindow.parentElement;
+            if (parent) {
+              parent.style.display = 'none';
+              parent.style.opacity = '0';
+              parent.style.visibility = 'hidden';
+            }
+            
+            // DifyのAPIを使用して閉じる試み
+            try {
+              if (window.difyChatbot && typeof window.difyChatbot.toggle === 'function') {
+                window.difyChatbot.toggle();
+              }
+              
+              if (window.DifyAI && typeof window.DifyAI.toggleUI === 'function') {
+                window.DifyAI.toggleUI(false);
+              }
+            } catch (err) {
+              console.error("Dify APIを使用した閉じる処理でエラー:", err);
+            }
+            
             console.log(`${id}を閉じました`);
           }
         };
@@ -245,6 +280,9 @@ export const SubsidyChatbot = () => {
         window.subsidyChatbotInitialized = true;
         clearInterval(checkDifyLoaded);
         
+        // Difyのブランディングを非表示にする
+        hideDifyBranding();
+        
         // カスタム閉じるボタンを追加
         setTimeout(addCustomCloseButtons, 1000);
       }
@@ -285,10 +323,7 @@ export const SubsidyChatbot = () => {
   // エラーメッセージを表示
   useEffect(() => {
     if (difyInitError) {
-      toast.error("チャットボットの初期化に失敗しました", {
-        description: difyInitError,
-        duration: 5000,
-      });
+      console.error(`チャットボットの読み込みに失敗しました: ${difyInitError}`);
     }
   }, [difyInitError]);
   

@@ -1,5 +1,6 @@
 import { useEffect, useCallback, useState } from "react";
 import { toast } from "sonner";
+import { hideDifyBranding } from "../SubsidyChat/styles/chatButtonStyles";
 
 /**
  * チャットボット初期化のためのカスタムフック
@@ -172,9 +173,41 @@ export const useChatbotInitializer = () => {
           e.preventDefault();
           e.stopPropagation();
           if (chatbotWindow) {
-            chatbotWindow.style.display = "none";
-            chatbotWindow.style.opacity = "0";
-            chatbotWindow.style.visibility = "hidden";
+            // 複数のスタイルプロパティを設定して確実に非表示にする
+            chatbotWindow.style.cssText = `
+              display: none !important;
+              opacity: 0 !important;
+              visibility: hidden !important;
+              pointer-events: none !important;
+              width: 0 !important;
+              height: 0 !important;
+              position: absolute !important;
+              left: -9999px !important;
+              top: -9999px !important;
+              z-index: -1 !important;
+            `;
+            
+            // 親要素も非表示にする試み
+            const parent = chatbotWindow.parentElement;
+            if (parent) {
+              parent.style.display = 'none';
+              parent.style.opacity = '0';
+              parent.style.visibility = 'hidden';
+            }
+            
+            // DifyのAPIを使用して閉じる試み
+            try {
+              if (window.difyChatbot && typeof window.difyChatbot.toggle === 'function') {
+                window.difyChatbot.toggle();
+              }
+              
+              if (window.DifyAI && typeof window.DifyAI.toggleUI === 'function') {
+                window.DifyAI.toggleUI(false);
+              }
+            } catch (err) {
+              console.error("Dify APIを使用した閉じる処理でエラー:", err);
+            }
+            
             console.log("一般チャットウィンドウを閉じました");
           }
         };
@@ -214,7 +247,6 @@ export const useChatbotInitializer = () => {
       console.log("一般チャットウィンドウを表示しました");
     } catch (error) {
       console.error("一般チャットボットの開始中にエラーが発生しました:", error);
-      toast.error("チャットボットを開けませんでした。ページを再読み込みしてください。");
     }
   }, []);
   
@@ -315,9 +347,41 @@ export const useChatbotInitializer = () => {
           e.preventDefault();
           e.stopPropagation();
           if (chatbotWindow) {
-            chatbotWindow.style.display = "none";
-            chatbotWindow.style.opacity = "0";
-            chatbotWindow.style.visibility = "hidden";
+            // 複数のスタイルプロパティを設定して確実に非表示にする
+            chatbotWindow.style.cssText = `
+              display: none !important;
+              opacity: 0 !important;
+              visibility: hidden !important;
+              pointer-events: none !important;
+              width: 0 !important;
+              height: 0 !important;
+              position: absolute !important;
+              left: -9999px !important;
+              top: -9999px !important;
+              z-index: -1 !important;
+            `;
+            
+            // 親要素も非表示にする試み
+            const parent = chatbotWindow.parentElement;
+            if (parent) {
+              parent.style.display = 'none';
+              parent.style.opacity = '0';
+              parent.style.visibility = 'hidden';
+            }
+            
+            // DifyのAPIを使用して閉じる試み
+            try {
+              if (window.shoukiboJizokaChatbot && typeof window.shoukiboJizokaChatbot.toggle === 'function') {
+                window.shoukiboJizokaChatbot.toggle();
+              }
+              
+              if (window.DifyAI && typeof window.DifyAI.toggleUI === 'function') {
+                window.DifyAI.toggleUI(false);
+              }
+            } catch (err) {
+              console.error("Dify APIを使用した閉じる処理でエラー:", err);
+            }
+            
             console.log("小規模持続化補助金チャットウィンドウを閉じました");
           }
         };
@@ -357,7 +421,6 @@ export const useChatbotInitializer = () => {
       console.log("小規模持続化補助金チャットウィンドウを表示しました");
     } catch (error) {
       console.error("小規模持続化補助金チャットボットの開始中にエラーが発生しました:", error);
-      toast.error("チャットボットを開けませんでした。ページを再読み込みしてください。");
     }
   }, []);
   
@@ -458,9 +521,41 @@ export const useChatbotInitializer = () => {
           e.preventDefault();
           e.stopPropagation();
           if (chatbotWindow) {
-            chatbotWindow.style.display = "none";
-            chatbotWindow.style.opacity = "0";
-            chatbotWindow.style.visibility = "hidden";
+            // 複数のスタイルプロパティを設定して確実に非表示にする
+            chatbotWindow.style.cssText = `
+              display: none !important;
+              opacity: 0 !important;
+              visibility: hidden !important;
+              pointer-events: none !important;
+              width: 0 !important;
+              height: 0 !important;
+              position: absolute !important;
+              left: -9999px !important;
+              top: -9999px !important;
+              z-index: -1 !important;
+            `;
+            
+            // 親要素も非表示にする試み
+            const parent = chatbotWindow.parentElement;
+            if (parent) {
+              parent.style.display = 'none';
+              parent.style.opacity = '0';
+              parent.style.visibility = 'hidden';
+            }
+            
+            // DifyのAPIを使用して閉じる試み
+            try {
+              if (window.shorikika_chatbot && typeof window.shorikika_chatbot.toggle === 'function') {
+                window.shorikika_chatbot.toggle();
+              }
+              
+              if (window.DifyAI && typeof window.DifyAI.toggleUI === 'function') {
+                window.DifyAI.toggleUI(false);
+              }
+            } catch (err) {
+              console.error("Dify APIを使用した閉じる処理でエラー:", err);
+            }
+            
             console.log("省力化投資補助金チャットウィンドウを閉じました");
           }
         };
@@ -500,7 +595,6 @@ export const useChatbotInitializer = () => {
       console.log("省力化投資補助金チャットウィンドウを表示しました");
     } catch (error) {
       console.error("省力化投資補助金チャットボットの開始中にエラーが発生しました:", error);
-      toast.error("チャットボットを開けませんでした。ページを再読み込みしてください。");
     }
   }, []);
 
@@ -515,6 +609,9 @@ export const useChatbotInitializer = () => {
     
     // スタイルを設定
     setupChatbotStyles();
+    
+    // Difyのブランディングを非表示にする
+    hideDifyBranding();
     
     // 読み込み完了を通知
     setIsDifyLoaded(true);
