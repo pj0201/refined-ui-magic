@@ -60,6 +60,11 @@ export const useChatbotInitializer = () => {
         opacity: 1 !important;
         visibility: visible !important;
       }
+      
+      /* 下部の閉じるボタンを非表示にする */
+      .dify-chatbot-bubble-window .dify-chatbot-bubble-window-close-button {
+        display: none !important;
+      }
     `;
     document.head.appendChild(style);
   }, []);

@@ -36,7 +36,7 @@ export const CompanyProfileSection = () => {
                 <strong className="min-w-24">法人名：</strong>
                 <span>
                   <span className="inline-block">PLANNING</span>
-                  <span className="text-red-500 font-bold inline-block">JOY</span>
+                  <span className="font-bold inline-block"><span className="text-red-500">J</span>OY</span>
                   <span className="inline-block">株式会社</span>
                 </span>
               </p>
