@@ -14,34 +14,51 @@ export const useChatbotInitializer = () => {
   const setupChatbotStyles = useCallback(() => {
     console.log("チャットボットのスタイルを設定します");
     
+    // 既存のスタイルを削除（重複防止）
+    const existingStyle = document.getElementById('chatbot-custom-styles');
+    if (existingStyle) {
+      existingStyle.remove();
+    }
+    
     const style = document.createElement("style");
+    style.id = 'chatbot-custom-styles';
     style.innerHTML = `
       /* チャットボットのヘッダーに閉じるボタンを追加 */
       .dify-chatbot-bubble-window-header {
-        position: relative;
+        position: relative !important;
       }
       
       /* カスタム閉じるボタンのスタイル */
       .custom-close-button {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        background-color: rgba(255, 255, 255, 0.2);
-        border: none;
-        color: white;
-        font-size: 18px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: background-color 0.3s;
+        position: absolute !important;
+        top: 10px !important;
+        right: 10px !important;
+        width: 30px !important;
+        height: 30px !important;
+        border-radius: 50% !important;
+        background-color: rgba(255, 255, 255, 0.2) !important;
+        border: none !important;
+        color: white !important;
+        font-size: 18px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+        transition: background-color 0.3s !important;
+        z-index: 10000 !important;
       }
       
       .custom-close-button:hover {
-        background-color: rgba(255, 255, 255, 0.4);
+        background-color: rgba(255, 255, 255, 0.4) !important;
+      }
+
+      /* チャットボットウィンドウの表示を確実にする */
+      #dify-chatbot-bubble-window.dify-chatbot-bubble-window,
+      #shoukibo-jizoka-chatbot-window.dify-chatbot-bubble-window,
+      #shorikika-chatbot-window.dify-chatbot-bubble-window {
+        display: flex !important;
+        opacity: 1 !important;
+        visibility: visible !important;
       }
     `;
     document.head.appendChild(style);
@@ -84,8 +101,16 @@ export const useChatbotInitializer = () => {
         });
         chatButton.dispatchEvent(clickEvent);
         
-        // 閉じるボタンを追加
+        // ウィンドウを強制的に表示
         setTimeout(function() {
+          const chatWindow = document.getElementById("dify-chatbot-bubble-window");
+          if (chatWindow) {
+            chatWindow.style.display = 'flex';
+            chatWindow.style.opacity = '1';
+            chatWindow.style.visibility = 'visible';
+          }
+          
+          // 閉じるボタンを追加
           const header = document.querySelector('#dify-chatbot-bubble-window .dify-chatbot-bubble-window-header');
           if (header && !header.querySelector('.custom-close-button')) {
             const closeButton = document.createElement('button');
@@ -99,7 +124,7 @@ export const useChatbotInitializer = () => {
             };
             header.appendChild(closeButton);
           }
-        }, 500);
+        }, 300);
       } else {
         console.error("一般チャットボタンが見つかりませんでした");
         toast.error("チャットボットの読み込みに失敗しました。ページを再読み込みしてください。");
@@ -147,8 +172,16 @@ export const useChatbotInitializer = () => {
         });
         chatButton.dispatchEvent(clickEvent);
         
-        // 閉じるボタンを追加
+        // ウィンドウを強制的に表示
         setTimeout(function() {
+          const chatWindow = document.getElementById("shoukibo-jizoka-chatbot-window");
+          if (chatWindow) {
+            chatWindow.style.display = 'flex';
+            chatWindow.style.opacity = '1';
+            chatWindow.style.visibility = 'visible';
+          }
+          
+          // 閉じるボタンを追加
           const header = document.querySelector('#shoukibo-jizoka-chatbot-window .dify-chatbot-bubble-window-header');
           if (header && !header.querySelector('.custom-close-button')) {
             const closeButton = document.createElement('button');
@@ -162,7 +195,7 @@ export const useChatbotInitializer = () => {
             };
             header.appendChild(closeButton);
           }
-        }, 500);
+        }, 300);
       } else {
         console.error("小規模持続化補助金のチャットボタンが見つかりませんでした");
         toast.error("チャットボットの読み込みに失敗しました。ページを再読み込みしてください。");
@@ -210,8 +243,16 @@ export const useChatbotInitializer = () => {
         });
         chatButton.dispatchEvent(clickEvent);
         
-        // 閉じるボタンを追加
+        // ウィンドウを強制的に表示
         setTimeout(function() {
+          const chatWindow = document.getElementById("shorikika-chatbot-window");
+          if (chatWindow) {
+            chatWindow.style.display = 'flex';
+            chatWindow.style.opacity = '1';
+            chatWindow.style.visibility = 'visible';
+          }
+          
+          // 閉じるボタンを追加
           const header = document.querySelector('#shorikika-chatbot-window .dify-chatbot-bubble-window-header');
           if (header && !header.querySelector('.custom-close-button')) {
             const closeButton = document.createElement('button');
@@ -225,7 +266,7 @@ export const useChatbotInitializer = () => {
             };
             header.appendChild(closeButton);
           }
-        }, 500);
+        }, 300);
       } else {
         console.error("省力化投資補助金のチャットボタンが見つかりませんでした");
         toast.error("チャットボットの読み込みに失敗しました。ページを再読み込みしてください。");
@@ -240,8 +281,12 @@ export const useChatbotInitializer = () => {
   useEffect(() => {
     console.log("チャットボットの読み込み状態を監視します");
     
-    // スタイルの設定
-    setupChatbotStyles();
+    // スタイルの設定 - DOMContentLoadedイベント後に実行
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setupChatbotStyles);
+    } else {
+      setupChatbotStyles();
+    }
     
     // 一般チャットボットの読み込み状態を確認
     const checkDifyLoaded = setInterval(() => {
@@ -273,11 +318,16 @@ export const useChatbotInitializer = () => {
       }
     }, 1000);
     
+    // ウィンドウロード完了時にもスタイルを再適用
+    window.addEventListener('load', setupChatbotStyles);
+    
     // クリーンアップ関数
     return () => {
       clearInterval(checkDifyLoaded);
       clearInterval(checkShoukiboLoaded);
       clearInterval(checkShorikikaLoaded);
+      window.removeEventListener('load', setupChatbotStyles);
+      document.removeEventListener('DOMContentLoaded', setupChatbotStyles);
     };
   }, [setupChatbotStyles]);
   

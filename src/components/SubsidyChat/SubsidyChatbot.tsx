@@ -1,424 +1,303 @@
-
 import { useEffect, useState, useCallback } from "react";
 import { toast } from "sonner";
 
-// Difyの型定義
-interface DifyChatbot {
-  toggle: () => void;
-  open: () => void;
-  close: () => void;
-}
-
+// グローバルウィンドウオブジェクトの型拡張
 declare global {
   interface Window {
-    difyChatbot?: DifyChatbot;
-    DifyAI?: any;
-    shoukiboJizokaChatbot?: DifyChatbot;
-    shorikika_chatbot?: DifyChatbot;
-    // Difyスクリプトの初期化状態を追跡
-    difyScriptsInitialized?: boolean;
+    difyChatbot?: {
+      toggle: () => void;
+      sendMessage?: (message: string) => void;
+    };
+    DifyAI?: {
+      toggleUI: (show: boolean) => void;
+      sendMessage?: (message: string) => void;
+    };
+    openChatbot?: () => void;
+    startShoukiboJizokaChat?: () => void;
+    openSmallBusinessChatbot?: () => void;
+    startShorikikaChat?: () => void;
+    openSubsidyChatbot?: () => void;
+    subsidyChatbotInitialized?: boolean;
+    difyInitializationAttempted?: boolean;
   }
 }
 
-/**
- * Dify専用のチャットボットコンポーネント
- * ロード状態の監視と通知を行う
- */
 export const SubsidyChatbot = () => {
-  const [difyLoaded, setDifyLoaded] = useState(false);
-  const [shoukiboLoaded, setShoukiboLoaded] = useState(false);
-  const [shorikikaLoaded, setShorikikaLoaded] = useState(false);
-  const [initialLoadAttempted, setInitialLoadAttempted] = useState(false);
-  const [stylesInjected, setStylesInjected] = useState(false);
-  const [initializationError, setInitializationError] = useState<string | null>(null);
-
-  // チャットボットスタイルの注入 - 優先度を上げる
-  useEffect(() => {
-    try {
-      // スタイル要素がすでに存在するかチェック
-      if (!stylesInjected) {
-        console.log("SubsidyChatbot: チャットボットスタイルを注入します");
-
-        // 既存のスタイル要素を削除
-        const existingStyle = document.getElementById('subsidy-chatbot-styles');
-        if (existingStyle) {
-          existingStyle.remove();
-        }
-
-        // スタイル要素を作成
-        const styleEl = document.createElement('style');
-        styleEl.id = 'subsidy-chatbot-styles';
-        // スタイルを最後に追加して優先度を上げる
-        styleEl.textContent = getChatbotStyles();
-        document.head.appendChild(styleEl);
-
-        setStylesInjected(true);
-        console.log("SubsidyChatbot: チャットボットスタイルの注入が完了しました");
-      }
-    } catch (error) {
-      console.error("SubsidyChatbot: スタイル注入中にエラーが発生しました:", error);
-      setInitializationError("スタイルの適用に失敗しました");
-    }
-  }, [stylesInjected]);
-
-  // Difyスクリプトの初期化を強制する
+  // Difyスクリプトの読み込み状態
+  const [isDifyScriptLoaded, setIsDifyScriptLoaded] = useState(false);
+  const [difyInitError, setDifyInitError] = useState<string | null>(null);
+  
+  // スクリプトの読み込みタイムアウト時間（ミリ秒）
+  const scriptLoadTimeout = 30000; // 30秒
+  const forceInitTimeout = 10000; // 10秒後に強制初期化を試みる
+  
+  // チェック間隔（ミリ秒）
+  const checkInterval = 1000; // 1秒ごとにチェック
+  
+  // Difyスクリプトを強制的に初期化する関数
   const forceDifyInitialization = useCallback(() => {
+    console.log("Difyスクリプトの強制初期化を試みます");
+    
     try {
-      console.log("SubsidyChatbot: Difyスクリプトの初期化を強制します");
-      
-      // グローバルフラグを設定
-      window.difyScriptsInitialized = true;
-      
-      // 各チャットボットの初期化状態を確認
-      const isDifyAvailable = Boolean(window.difyChatbot || window.DifyAI);
-      const isShoukiboAvailable = Boolean(window.shoukiboJizokaChatbot);
-      const isShorikikaAvailable = Boolean(window.shorikika_chatbot);
-      
-      // 状態を更新
-      setDifyLoaded(isDifyAvailable);
-      setShoukiboLoaded(isShoukiboAvailable);
-      setShorikikaLoaded(isShorikikaAvailable);
-      
-      // ボタンの非表示処理
-      hideAllChatButtons();
-      
-      // チャットボットのスタイルを適用
-      adjustChatbotStyles();
-      
-      // カスタム閉じるボタンを追加
-      setTimeout(addCustomCloseButtons, 1000);
-      
-      console.log("SubsidyChatbot: 初期化強制処理が完了しました");
-      return true;
-    } catch (error) {
-      console.error("SubsidyChatbot: 初期化強制中にエラーが発生しました:", error);
-      setInitializationError("チャットボットの初期化に失敗しました");
-      return false;
-    }
-  }, []);
-
-  // チャットボットスクリプトのロード状態を監視する
-  useEffect(() => {
-    const checkInterval = 300; // 300ms間隔でチェック (より短く)
-    const maxWaitTime = 30000; // 30秒を最大待機時間とする (短縮)
-    let totalElapsedTime = 0;
-    let forceInitialized = false;
-
-    console.log("SubsidyChatbot: チャットボットスクリプトのロード状態チェックを開始します");
-
-    // 一般的なDifyスクリプトのロード状態を監視
-    const checkDifyLoaded = setInterval(() => {
-      // すでに強制初期化済みならチェックを停止
-      if (forceInitialized || window.difyScriptsInitialized) {
-        clearInterval(checkDifyLoaded);
+      // すでに初期化済みの場合は何もしない
+      if (window.subsidyChatbotInitialized) {
+        console.log("Difyスクリプトはすでに初期化されています");
         return;
       }
-
-      const isDifyAvailable = Boolean(window.difyChatbot || window.DifyAI);
-      const difyButtonExists = Boolean(document.getElementById('dify-chatbot-bubble-button'));
-
-      if ((isDifyAvailable || difyButtonExists) && !difyLoaded) {
-        console.log("SubsidyChatbot: 一般的なDifyスクリプトが正常にロードされました");
-        setDifyLoaded(true);
-
-        // ボタンを非表示にする
-        const button = document.getElementById('dify-chatbot-bubble-button');
-        if (button) {
-          button.style.display = 'none';
+      
+      // 初期化試行済みフラグを設定
+      window.difyInitializationAttempted = true;
+      
+      // Difyスクリプトの存在を確認
+      const difyScript = document.querySelector('script[src*="dify"]');
+      if (!difyScript) {
+        console.error("Difyスクリプトが見つかりません");
+        setDifyInitError("Difyスクリプトが見つかりません");
+        return;
+      }
+      
+      // スクリプトを再読み込み
+      const scriptSrc = difyScript.getAttribute('src');
+      if (scriptSrc) {
+        const newScript = document.createElement('script');
+        newScript.src = scriptSrc;
+        newScript.async = true;
+        newScript.defer = true;
+        newScript.onload = () => {
+          console.log("Difyスクリプトが再読み込みされました");
+          setIsDifyScriptLoaded(true);
+          
+          // 初期化成功フラグを設定
+          window.subsidyChatbotInitialized = true;
+          
+          // スタイルを適用
+          applyCustomStyles();
+        };
+        newScript.onerror = () => {
+          console.error("Difyスクリプトの再読み込みに失敗しました");
+          setDifyInitError("Difyスクリプトの読み込みに失敗しました");
+        };
+        
+        // 古いスクリプトを削除
+        difyScript.parentNode?.removeChild(difyScript);
+        
+        // 新しいスクリプトを追加
+        document.head.appendChild(newScript);
+      }
+    } catch (error) {
+      console.error("Difyスクリプトの強制初期化中にエラーが発生しました:", error);
+      setDifyInitError(`初期化エラー: ${error instanceof Error ? error.message : String(error)}`);
+    }
+  }, []);
+  
+  // カスタムスタイルを適用する関数
+  const applyCustomStyles = useCallback(() => {
+    console.log("カスタムスタイルを適用します");
+    
+    try {
+      // 既存のカスタムスタイルを削除
+      const existingStyle = document.getElementById('subsidy-chatbot-custom-styles');
+      if (existingStyle) {
+        existingStyle.remove();
+      }
+      
+      // カスタムスタイルを作成
+      const style = document.createElement('style');
+      style.id = 'subsidy-chatbot-custom-styles';
+      style.innerHTML = `
+        /* チャットボットウィンドウのスタイル */
+        .dify-chatbot-bubble-window {
+          position: fixed !important;
+          bottom: 80px !important;
+          right: 20px !important;
+          width: 380px !important;
+          max-width: 90vw !important;
+          height: 600px !important;
+          max-height: 70vh !important;
+          border-radius: 10px !important;
+          overflow: hidden !important;
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
+          z-index: 10000 !important;
+          display: flex !important;
+          flex-direction: column !important;
+          background-color: #fff !important;
+          
+          /* モバイル対応 */
+          @media (max-width: 480px) {
+            bottom: 70px !important;
+            right: 10px !important;
+            width: calc(100vw - 20px) !important;
+            height: calc(100vh - 140px) !important;
+          }
         }
-      }
-
-      totalElapsedTime += checkInterval;
+        
+        /* チャットボットボタンのスタイル */
+        .dify-chatbot-bubble-button {
+          position: fixed !important;
+          bottom: 20px !important;
+          right: 20px !important;
+          width: 50px !important;
+          height: 50px !important;
+          border-radius: 50% !important;
+          background-color: #6366f1 !important;
+          color: white !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          cursor: pointer !important;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+          z-index: 9999 !important;
+          
+          /* モバイル対応 */
+          @media (max-width: 480px) {
+            bottom: 15px !important;
+            right: 15px !important;
+          }
+        }
+        
+        /* チャットボットウィンドウを強制的に表示 */
+        #dify-chatbot-bubble-window.dify-chatbot-bubble-window,
+        #shoukibo-jizoka-chatbot-window.dify-chatbot-bubble-window,
+        #shorikika-chatbot-window.dify-chatbot-bubble-window {
+          display: flex !important;
+          opacity: 1 !important;
+          visibility: visible !important;
+        }
+      `;
       
-      // 10秒経過したら強制初期化を試みる (早めに対応)
-      if (totalElapsedTime >= 10000 && !initialLoadAttempted) {
-        setInitialLoadAttempted(true);
-        console.log("SubsidyChatbot: 10秒経過したため強制初期化を試みます");
-        forceInitialized = forceDifyInitialization();
-      }
+      // スタイルをヘッドに追加
+      document.head.appendChild(style);
+    } catch (error) {
+      console.error("カスタムスタイルの適用中にエラーが発生しました:", error);
+    }
+  }, []);
+  
+  // カスタム閉じるボタンを追加する関数
+  const addCustomCloseButtons = useCallback(() => {
+    console.log("カスタム閉じるボタンを追加します");
+    
+    try {
+      // チャットボットウィンドウのヘッダーを取得
+      const chatWindows = [
+        { id: 'dify-chatbot-bubble-window', selector: '#dify-chatbot-bubble-window .dify-chatbot-bubble-window-header' },
+        { id: 'shoukibo-jizoka-chatbot-window', selector: '#shoukibo-jizoka-chatbot-window .dify-chatbot-bubble-window-header' },
+        { id: 'shorikika-chatbot-window', selector: '#shorikika-chatbot-window .dify-chatbot-bubble-window-header' }
+      ];
       
-      // 最大待機時間を超えた場合
-      if (totalElapsedTime >= maxWaitTime) {
-        console.warn("SubsidyChatbot: 最大待機時間を超えました");
+      // 各チャットウィンドウに閉じるボタンを追加
+      chatWindows.forEach(({ id, selector }) => {
+        const header = document.querySelector(selector);
+        if (header && !header.querySelector('.custom-close-button')) {
+          const closeButton = document.createElement('button');
+          closeButton.innerHTML = '×';
+          closeButton.className = 'custom-close-button';
+          closeButton.setAttribute('style', `
+            position: absolute !important;
+            top: 10px !important;
+            right: 10px !important;
+            width: 30px !important;
+            height: 30px !important;
+            border-radius: 50% !important;
+            background-color: rgba(255, 255, 255, 0.2) !important;
+            border: none !important;
+            color: white !important;
+            font-size: 18px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            cursor: pointer !important;
+            transition: background-color 0.3s !important;
+            z-index: 10000 !important;
+          `);
+          closeButton.onclick = function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            const chatWindow = document.getElementById(id);
+            if (chatWindow) {
+              chatWindow.style.display = 'none';
+            }
+          };
+          header.appendChild(closeButton);
+        }
+      });
+    } catch (error) {
+      console.error("カスタム閉じるボタンの追加中にエラーが発生しました:", error);
+    }
+  }, []);
+  
+  // Difyスクリプトの読み込み状態を監視
+  useEffect(() => {
+    console.log("Difyスクリプトの読み込み状態を監視します");
+    
+    // 初期化済みフラグをリセット
+    window.subsidyChatbotInitialized = false;
+    window.difyInitializationAttempted = false;
+    
+    // スタイルを適用
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', applyCustomStyles);
+    } else {
+      applyCustomStyles();
+    }
+    
+    // Difyスクリプトの読み込み状態を確認するタイマー
+    const checkDifyLoaded = setInterval(() => {
+      const isDifyAvailable = Boolean(window.difyChatbot || window.DifyAI);
+      
+      if (isDifyAvailable) {
+        console.log("Difyスクリプトが読み込まれました");
+        setIsDifyScriptLoaded(true);
+        window.subsidyChatbotInitialized = true;
         clearInterval(checkDifyLoaded);
         
-        // 最後の強制初期化を試みる
-        if (!forceInitialized) {
-          forceInitialized = forceDifyInitialization();
-        }
-        
-        // それでも失敗した場合はエラーを表示
-        if (!forceInitialized) {
-          toast.error("チャットボットの読み込みに失敗しました。ページを再読み込みしてください。");
-        }
+        // カスタム閉じるボタンを追加
+        setTimeout(addCustomCloseButtons, 1000);
       }
     }, checkInterval);
-
+    
+    // 強制初期化タイマー
+    const forceInitTimer = setTimeout(() => {
+      if (!window.subsidyChatbotInitialized && !window.difyInitializationAttempted) {
+        console.log(`${forceInitTimeout}ミリ秒経過しても初期化されていないため、強制初期化を試みます`);
+        forceDifyInitialization();
+      }
+    }, forceInitTimeout);
+    
+    // スクリプト読み込みタイムアウト
+    const timeoutTimer = setTimeout(() => {
+      if (!isDifyScriptLoaded) {
+        console.error(`${scriptLoadTimeout}ミリ秒経過してもDifyスクリプトが読み込まれませんでした`);
+        setDifyInitError("Difyスクリプトの読み込みがタイムアウトしました");
+        clearInterval(checkDifyLoaded);
+      }
+    }, scriptLoadTimeout);
+    
+    // ウィンドウロード完了時にもスタイルを再適用
+    window.addEventListener('load', () => {
+      applyCustomStyles();
+      setTimeout(addCustomCloseButtons, 1000);
+    });
+    
     // クリーンアップ関数
     return () => {
       clearInterval(checkDifyLoaded);
+      clearTimeout(timeoutTimer);
+      clearTimeout(forceInitTimer);
+      document.removeEventListener('DOMContentLoaded', applyCustomStyles);
     };
-  }, [difyLoaded, initialLoadAttempted, forceDifyInitialization]);
-
-  // 全てのチャットボタンを非表示にする関数
-  const hideAllChatButtons = () => {
-    const chatButtons = [
-      document.getElementById('dify-chatbot-bubble-button'),
-      document.getElementById('shoukibo-jizoka-chatbot-button'),
-      document.getElementById('shorikika-chatbot-button')
-    ];
-
-    chatButtons.forEach(button => {
-      if (button) {
-        button.style.display = 'none';
-      }
-    });
-  };
-
-  // カスタム閉じるボタンを追加する関数
-  const addCustomCloseButtons = () => {
-    // 各チャットウィンドウに閉じるボタンを追加
-    const chatWindows = [
-      { id: 'dify-chatbot-bubble-window', buttonId: 'dify-close-button' },
-      { id: 'shoukibo-jizoka-chatbot-window', buttonId: 'shoukibo-close-button' },
-      { id: 'shorikika-chatbot-window', buttonId: 'shorikika-close-button' }
-    ];
-
-    chatWindows.forEach(({id, buttonId}) => {
-      const window = document.getElementById(id);
-      if (window) {
-        // 既存のボタンがあれば削除
-        const existingButton = document.getElementById(buttonId);
-        if (existingButton) {
-          existingButton.remove();
-        }
-
-        // ヘッダー要素を探す
-        const header = window.querySelector('.dify-chatbot-window-header');
-        if (header instanceof HTMLElement) {
-          // 新しいボタンを作成
-          const closeButton = document.createElement('button');
-          closeButton.id = buttonId;
-          closeButton.className = 'custom-close-button';
-          closeButton.innerHTML = '✕';
-          closeButton.title = 'チャットを閉じる';
-
-          // クリックイベント
-          closeButton.addEventListener('click', () => {
-            window.style.display = 'none';
-          });
-
-          // ヘッダーに追加
-          header.appendChild(closeButton);
-          console.log(`チャットウィンドウ ${id} に閉じるボタンを追加しました`);
-        }
-      }
-    });
-  };
-
-  // チャットボットのスタイルを調整する関数
-  const adjustChatbotStyles = () => {
-    try {
-      console.log("SubsidyChatbot: チャットボットのスタイルを調整します");
-
-      // 各チャットボットウィンドウのスタイルを調整
-      const chatWindows = [
-        document.getElementById('dify-chatbot-bubble-window'),
-        document.getElementById('shoukibo-jizoka-chatbot-window'),
-        document.getElementById('shorikika-chatbot-window')
-      ];
-
-      chatWindows.forEach(window => {
-        if (window) {
-          console.log(`SubsidyChatbot: ${window.id}のスタイルを調整します`);
-
-          // サイズと位置を設定 - !importantを使用
-          window.setAttribute('style', `
-            width: 24rem !important;
-            height: 50rem !important;
-            max-height: 90vh !important;
-            max-width: calc(100vw - 32px) !important;
-            bottom: 2rem !important;
-            right: 1rem !important;
-            z-index: 99995 !important;
-            position: fixed !important;
-            display: flex !important;
-            flex-direction: column !important;
-            overflow: hidden !important;
-            border-radius: 0.5rem !important;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
-          `);
-
-          // ヘッダー要素を探す
-          const header = window.querySelector('.dify-chatbot-window-header');
-          if (header instanceof HTMLElement) {
-            header.setAttribute('style', `
-              background-color: #1C64F2 !important;
-              padding: 0.75rem !important;
-              color: white !important;
-              position: relative !important;
-              z-index: 99996 !important;
-            `);
-          }
-
-          // Difyデフォルトの閉じるボタンを非表示
-          const closeBtn = window.querySelector('.dify-chatbot-window-close-btn');
-          if (closeBtn instanceof HTMLElement) {
-            closeBtn.style.display = 'none';
-          }
-          
-          // モバイル対応のための追加スタイル
-          if (window.offsetWidth < 768) {
-            window.setAttribute('style', window.getAttribute('style') + `
-              width: 100% !important;
-              height: 100% !important;
-              max-height: 100% !important;
-              max-width: 100% !important;
-              top: 0 !important;
-              left: 0 !important;
-              right: 0 !important;
-              bottom: 0 !important;
-              border-radius: 0 !important;
-            `);
-          }
-        }
+  }, [applyCustomStyles, addCustomCloseButtons, forceDifyInitialization, forceInitTimeout, scriptLoadTimeout, checkInterval]);
+  
+  // エラーメッセージを表示
+  useEffect(() => {
+    if (difyInitError) {
+      toast.error("チャットボットの初期化に失敗しました", {
+        description: difyInitError,
+        duration: 5000,
       });
-
-      // 青いチャットボタンを非表示にする
-      hideAllChatButtons();
-
-      console.log("SubsidyChatbot: チャットボットのスタイル調整が完了しました");
-    } catch (error) {
-      console.error("SubsidyChatbot: スタイル調整中にエラーが発生しました:", error);
     }
-  };
-
-  // チャットボットのスタイルを取得する関数
-  const getChatbotStyles = () => {
-    return `
-      /* 共通のチャットウィンドウスタイル */
-      #dify-chatbot-bubble-window,
-      #shoukibo-jizoka-chatbot-window,
-      #shorikika-chatbot-window {
-        width: 24rem !important;
-        height: 50rem !important;
-        max-height: 90vh !important;
-        max-width: calc(100vw - 32px) !important;
-        bottom: 2rem !important;
-        right: 1rem !important;
-        transform: none !important;
-        margin-bottom: 0 !important;
-        z-index: 99995 !important;
-        position: fixed !important;
-        display: flex !important;
-        flex-direction: column !important;
-        overflow: hidden !important;
-        border-radius: 0.5rem !important;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
-      }
-
-      /* ヘッダーのスタイリング - 上部の青いバー（共通） */
-      .dify-chatbot-window-header {
-        background-color: #1C64F2 !important;
-        padding: 0.75rem !important;
-        color: white !important;
-        position: relative !important;
-        z-index: 99996 !important;
-      }
-
-      /* Difyデフォルトの閉じるボタンを非表示 */
-      .dify-chatbot-window-close-btn {
-        display: none !important;
-      }
-
-      /* カスタム閉じるボタン */
-      .custom-close-button {
-        position: absolute !important;
-        top: 10px !important;
-        right: 10px !important;
-        background-color: transparent !important;
-        border: none !important;
-        color: white !important;
-        width: 30px !important;
-        height: 30px !important;
-        font-size: 20px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        cursor: pointer !important;
-        z-index: 2147483650 !important;
-      }
-
-      .custom-close-button:hover {
-        background-color: rgba(255, 255, 255, 0.2) !important;
-        border-radius: 50% !important;
-      }
-
-      /* 入力エリアのスタイリング（共通） */
-      .dify-chatbot-window-footer {
-        position: sticky !important;
-        bottom: 0 !important;
-        background-color: white !important;
-        padding: 12px !important;
-        z-index: 99996 !important;
-        box-shadow: 0 -2px 10px rgba(0,0,0,0.1) !important;
-        margin-top: auto !important;
-      }
-
-      /* レスポンシブ対応（共通） - 強化版 */
-      @media (max-width: 768px) {
-        #dify-chatbot-bubble-window,
-        #shoukibo-jizoka-chatbot-window,
-        #shorikika-chatbot-window {
-          width: 100% !important;
-          height: 100% !important;
-          max-height: 100% !important;
-          max-width: 100% !important;
-          top: 0 !important;
-          left: 0 !important;
-          right: 0 !important;
-          bottom: 0 !important;
-          border-radius: 0 !important;
-        }
-      }
-
-      /* 高さが小さい画面用の調整 */
-      @media (max-height: 700px) {
-        #dify-chatbot-bubble-window,
-        #shoukibo-jizoka-chatbot-window,
-        #shorikika-chatbot-window {
-          top: 0 !important;
-          height: 100vh !important;
-          max-height: 100vh !important;
-          border-radius: 0 !important;
-        }
-      }
-
-      /* 青いボタンを非表示にする */
-      #dify-chatbot-bubble-button,
-      #shoukibo-jizoka-chatbot-button,
-      #shorikika-chatbot-button {
-        display: none !important;
-      }
-    `;
-  };
-
-  // エラー表示
-  if (initializationError) {
-    return (
-      <div className="p-4 bg-red-50 border border-red-200 rounded-md text-red-700 mb-4">
-        <p className="font-medium">チャットボットの初期化エラー</p>
-        <p>{initializationError}</p>
-        <button 
-          className="mt-2 px-3 py-1 bg-red-100 hover:bg-red-200 rounded-md text-sm"
-          onClick={() => window.location.reload()}
-        >
-          ページを再読み込み
-        </button>
-      </div>
-    );
-  }
-
+  }, [difyInitError]);
+  
+  // このコンポーネントは何も表示しない
   return null;
 };
 

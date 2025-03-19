@@ -1,5 +1,5 @@
-import { Suspense, useEffect } from "react";
-import { HashRouter } from "react-router-dom";
+import { Suspense, useEffect, lazy } from "react";
+import { BrowserRouter } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { TooltipProvider } from "@radix-ui/react-tooltip";
@@ -43,13 +43,14 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
-        <HashRouter>
-          {/* チャットボット初期化コンポーネント */}
+        <BrowserRouter basename="/">
+          {/* チャットボット初期化コンポーネント - Suspenseの外に配置 */}
+          <ChatbotInitializer />
+          
           <Suspense fallback={<div className="loading">Loading...</div>}>
-            <ChatbotInitializer />
-            
             <Routes>
               <Route path="/" element={<Index />} />
+              <Route path="/index" element={<Index />} />
               <Route path="/ai-glossary" element={<AIGlossary />} />
               <Route path="/ai-tools" element={<AITools />} />
               
@@ -68,7 +69,7 @@ function App() {
             </Routes>
           </Suspense>
           <Toaster position="top-right" />
-        </HashRouter>
+        </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
   );
