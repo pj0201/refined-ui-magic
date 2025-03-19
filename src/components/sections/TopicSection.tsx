@@ -116,7 +116,7 @@ export const TopicSection = () => {
   }, [openChatbot, startShoukiboJizokaChat, startShorikikaChat]);
 
   if (isLoading) return <div className="loading">トピックを読み込み中...</div>;
-  if (error) return <div className="error">エラーが発生しました: {error instanceof Error ? error.message : String(error)}</div>;
+  if (error) return <div className="error">エラーが発生しました: {error && typeof error === 'object' && 'message' in error ? (error as Error).message : String(error)}</div>;
   if (!topics || topics.length === 0) return <div className="no-topics">トピックがありません</div>;
 
   return (

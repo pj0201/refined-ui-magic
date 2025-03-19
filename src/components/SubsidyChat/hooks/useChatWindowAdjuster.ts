@@ -20,6 +20,17 @@ export const useChatWindowAdjuster = (isLoaded: boolean) => {
         `;
         chatWindow.classList.add('dify-hidden');
         
+        // ウィンドウが閉じられたときにbodyにdify-closed-windowクラスを追加
+        // これにより、クラスセレクタを使って白画面問題を防止
+        document.body.classList.add('dify-closed-window');
+        
+        // 親要素も非表示に
+        const parent = chatWindow.parentElement;
+        if (parent) {
+          parent.style.display = 'none';
+          parent.style.visibility = 'hidden';
+        }
+        
         console.log(`チャットウィンドウ ${windowId} を安全に閉じました`);
       }
     } catch (error) {
@@ -41,6 +52,9 @@ export const useChatWindowAdjuster = (isLoaded: boolean) => {
           chatWindow.style.top = '50px';
         }
         
+        // ウィンドウが表示された時にbodyからdify-closed-windowクラスを削除
+        document.body.classList.remove('dify-closed-window');
+        
         // 閉じるボタンを追加/更新する
         const header = chatWindow.querySelector('.dify-chatbot-bubble-window-header') ||
                       chatWindow.querySelector('.dify-chatbot-window-header');
@@ -50,6 +64,24 @@ export const useChatWindowAdjuster = (isLoaded: boolean) => {
           closeButton.innerHTML = '×';
           closeButton.className = 'custom-close-button';
           closeButton.setAttribute('aria-label', 'チャットを閉じる');
+          closeButton.style.cssText = `
+            position: absolute !important;
+            top: 10px !important;
+            right: 10px !important;
+            width: 30px !important;
+            height: 30px !important;
+            border-radius: 50% !important;
+            background-color: rgba(255, 255, 255, 0.2) !important;
+            border: none !important;
+            color: white !important;
+            font-size: 18px !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            cursor: pointer !important;
+            transition: background-color 0.3s !important;
+            z-index: 10000 !important;
+          `;
           closeButton.onclick = (e) => {
             e.preventDefault();
             e.stopPropagation();
@@ -77,6 +109,33 @@ export const useChatWindowAdjuster = (isLoaded: boolean) => {
       
       windowIds.forEach(id => adjustChatWindow(id));
     };
+    
+    // 白画面問題防止のためのスタイルを追加
+    const addPreventiveStyles = () => {
+      const style = document.createElement('style');
+      style.textContent = `
+        /* 白画面問題を防止するためのスタイル */
+        body.dify-closed-window {
+          background-color: inherit !important;
+          overflow: auto !important;
+        }
+        
+        .dify-hidden {
+          display: none !important;
+          visibility: hidden !important;
+          opacity: 0 !important;
+          pointer-events: none !important;
+          position: absolute !important;
+          left: -9999px !important;
+          z-index: -9999 !important;
+        }
+      `;
+      document.head.appendChild(style);
+      console.log("白画面問題防止用のスタイルを追加しました");
+    };
+    
+    // 予防的スタイルを追加
+    addPreventiveStyles();
     
     // ウィンドウリサイズ時にチャットウィンドウを調整
     window.addEventListener('resize', adjustAllChatWindows);

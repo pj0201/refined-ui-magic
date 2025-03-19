@@ -1,3 +1,4 @@
+
 // グローバル関数の型定義
 interface Window {
   // チャットボット関連のグローバル関数
@@ -26,6 +27,7 @@ interface Window {
   // 一般チャットボット
   difyChatbot?: {
     toggle: () => void;
+    open?: () => void;
     sendMessage?: (message: string) => void;
   };
   DifyAI?: {
@@ -36,12 +38,14 @@ interface Window {
   // 小規模持続化補助金チャットボット
   shoukiboJizokaChatbot?: {
     toggle: () => void;
+    open?: () => void;
     sendMessage?: (message: string) => void;
   };
   
   // 省力化投資補助金チャットボット
   shorikika_chatbot?: {
     toggle: () => void;
+    open?: () => void;
     sendMessage?: (message: string) => void;
   };
   

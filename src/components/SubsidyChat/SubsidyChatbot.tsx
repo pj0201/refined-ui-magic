@@ -1,12 +1,15 @@
+
 import { useEffect, useState, useCallback } from "react";
 import { toast } from "sonner";
 import { hideDifyBranding } from './styles/chatButtonStyles';
+import { useChatWindowAdjuster } from './hooks/useChatWindowAdjuster';
 
 // グローバルウィンドウオブジェクトの型拡張
 declare global {
   interface Window {
     difyChatbot?: {
       toggle: () => void;
+      open?: () => void;
       sendMessage?: (message: string) => void;
     };
     DifyAI?: {
@@ -111,6 +114,9 @@ export const SubsidyChatbot = () => {
   // Difyスクリプトの読み込み状態
   const [isDifyScriptLoaded, setIsDifyScriptLoaded] = useState(false);
   const [difyInitError, setDifyInitError] = useState<string | null>(null);
+  
+  // useChatWindowAdjusterを使用
+  useChatWindowAdjuster(isDifyScriptLoaded);
   
   // スクリプトの読み込みタイムアウト時間（ミリ秒）
   const scriptLoadTimeout = 30000; // 30秒
@@ -460,7 +466,7 @@ export const openShoukiboJizokaChat = () => {
       console.log("SubsidyChatbot.openShoukiboJizokaChat: shoukiboJizokaChatbot APIを使用");
       
       // まずopen関数があればそれを使用
-      if (typeof window.shoukiboJizokaChatbot.open === 'function') {
+      if (window.shoukiboJizokaChatbot && typeof window.shoukiboJizokaChatbot.open === 'function') {
         window.shoukiboJizokaChatbot.open();
       } else {
         window.shoukiboJizokaChatbot.toggle();
@@ -545,7 +551,7 @@ export const openShorikikaChat = () => {
       console.log("SubsidyChatbot.openShorikikaChat: shorikika_chatbot APIを使用");
       
       // まずopen関数があればそれを使用
-      if (typeof window.shorikika_chatbot.open === 'function') {
+      if (window.shorikika_chatbot && typeof window.shorikika_chatbot.open === 'function') {
         window.shorikika_chatbot.open();
       } else {
         window.shorikika_chatbot.toggle();

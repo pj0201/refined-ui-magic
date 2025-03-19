@@ -27,7 +27,8 @@ interface DifyChatConfig {
  */
 interface DifyChatbotInterface {
   toggle: () => void;
-  isOpen: boolean;
+  open?: () => void; // オプションのopen関数を追加
+  isOpen?: boolean;
   sendMessage: (message: string) => void;
 }
 
