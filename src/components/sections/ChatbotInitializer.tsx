@@ -230,46 +230,100 @@ export const useChatbotInitializer = () => {
         }
       });
       
-      // ボタンを探して直接クリック
-      const chatButton = document.getElementById("shorikika-chatbot-button");
-      if (chatButton) {
-        console.log("省力化投資補助金ボタンをクリックします");
+      // まず右下の青いボタンが存在するか確認
+      const difyButton = document.getElementById("dify-chatbot-bubble-button");
+      if (difyButton) {
+        console.log("Difyボタンが見つかりました - 省力化投資補助金チャットを開始します");
         
-        // クリックイベントを強制的に発生させる
-        const clickEvent = new MouseEvent('click', {
+        // まずDifyボタンをクリックして基本のチャットウィンドウを開く
+        const difyClickEvent = new MouseEvent('click', {
           view: window,
           bubbles: true,
           cancelable: true
         });
-        chatButton.dispatchEvent(clickEvent);
+        difyButton.dispatchEvent(difyClickEvent);
         
-        // ウィンドウを強制的に表示
+        // 少し待ってからウィンドウを表示
         setTimeout(function() {
-          const chatWindow = document.getElementById("shorikika-chatbot-window");
+          const chatWindow = document.getElementById("dify-chatbot-bubble-window");
           if (chatWindow) {
             chatWindow.style.display = 'flex';
             chatWindow.style.opacity = '1';
             chatWindow.style.visibility = 'visible';
-          }
-          
-          // 閉じるボタンを追加
-          const header = document.querySelector('#shorikika-chatbot-window .dify-chatbot-bubble-window-header');
-          if (header && !header.querySelector('.custom-close-button')) {
-            const closeButton = document.createElement('button');
-            closeButton.innerHTML = '×';
-            closeButton.className = 'custom-close-button';
-            closeButton.onclick = function(e) {
-              e.preventDefault();
-              e.stopPropagation();
-              const chatWindow = document.getElementById('shorikika-chatbot-window');
-              if (chatWindow) chatWindow.style.display = 'none';
-            };
-            header.appendChild(closeButton);
+            
+            // 省力化投資補助金用のIDを設定
+            chatWindow.id = "shorikika-chatbot-window";
+            
+            // 閉じるボタンを追加
+            const header = chatWindow.querySelector('.dify-chatbot-bubble-window-header');
+            if (header && !header.querySelector('.custom-close-button')) {
+              const closeButton = document.createElement('button');
+              closeButton.innerHTML = '×';
+              closeButton.className = 'custom-close-button';
+              closeButton.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                chatWindow.style.display = 'none';
+              };
+              header.appendChild(closeButton);
+            }
+            
+            // タイトルを変更（もし可能であれば）
+            const titleElement = header?.querySelector('.dify-chatbot-bubble-window-title');
+            if (titleElement) {
+              titleElement.textContent = '省力化投資補助金チャット';
+            }
+            
+            // 初期メッセージを送信（もし可能であれば）
+            if (window.difyChatbot && window.difyChatbot.sendMessage) {
+              setTimeout(() => {
+                window.difyChatbot.sendMessage("省力化投資補助金について教えてください");
+              }, 1000);
+            }
           }
         }, 300);
       } else {
-        console.error("省力化投資補助金のチャットボタンが見つかりませんでした");
-        toast.error("チャットボットの読み込みに失敗しました。ページを再読み込みしてください。");
+        // 専用ボタンを探して直接クリック（バックアップ方法）
+        const chatButton = document.getElementById("shorikika-chatbot-button");
+        if (chatButton) {
+          console.log("省力化投資補助金ボタンをクリックします");
+          
+          // クリックイベントを強制的に発生させる
+          const clickEvent = new MouseEvent('click', {
+            view: window,
+            bubbles: true,
+            cancelable: true
+          });
+          chatButton.dispatchEvent(clickEvent);
+          
+          // ウィンドウを強制的に表示
+          setTimeout(function() {
+            const chatWindow = document.getElementById("shorikika-chatbot-window");
+            if (chatWindow) {
+              chatWindow.style.display = 'flex';
+              chatWindow.style.opacity = '1';
+              chatWindow.style.visibility = 'visible';
+            }
+            
+            // 閉じるボタンを追加
+            const header = document.querySelector('#shorikika-chatbot-window .dify-chatbot-bubble-window-header');
+            if (header && !header.querySelector('.custom-close-button')) {
+              const closeButton = document.createElement('button');
+              closeButton.innerHTML = '×';
+              closeButton.className = 'custom-close-button';
+              closeButton.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                const chatWindow = document.getElementById('shorikika-chatbot-window');
+                if (chatWindow) chatWindow.style.display = 'none';
+              };
+              header.appendChild(closeButton);
+            }
+          }, 300);
+        } else {
+          console.error("省力化投資補助金のチャットボタンが見つかりませんでした");
+          toast.error("チャットボットの読み込みに失敗しました。ページを再読み込みしてください。");
+        }
       }
     } catch (error) {
       console.error("省力化投資補助金チャットボットの開始中にエラーが発生しました:", error);
@@ -313,6 +367,11 @@ export const useChatbotInitializer = () => {
       const shorikikaButton = document.getElementById("shorikika-chatbot-button");
       if (shorikikaButton) {
         console.log("省力化投資補助金チャットボットが読み込まれました");
+        setIsShorikikaLoaded(true);
+        clearInterval(checkShorikikaLoaded);
+      } else if (document.getElementById("dify-chatbot-bubble-button")) {
+        // 省力化投資補助金用の専用ボタンがない場合は、Difyボタンが読み込まれたら準備完了とする
+        console.log("Difyボタンを省力化投資補助金チャットボットとして使用します");
         setIsShorikikaLoaded(true);
         clearInterval(checkShorikikaLoaded);
       }
