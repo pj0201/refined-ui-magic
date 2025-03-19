@@ -102,6 +102,39 @@ export const getChatWindowStyles = (): string => `
     z-index: -1 !important;
   }
 
+  /* エラーメッセージを「しばらくお待ちください」に変更 */
+  .dify-error-message, 
+  [class*="error-message"], 
+  [class*="errorMessage"],
+  [class*="Error"],
+  [class*="error"] {
+    display: block !important;
+    color: #4B5563 !important;
+    font-weight: normal !important;
+    font-size: 0.9rem !important;
+    text-align: center !important;
+    padding: 1rem !important;
+    margin: 1rem 0 !important;
+    border: none !important;
+    background: none !important;
+  }
+  
+  .dify-error-message::before,
+  [class*="error-message"]::before,
+  [class*="errorMessage"]::before,
+  [class*="Error"]::before,
+  [class*="error"]::before {
+    content: 'しばらくお待ちください...' !important;
+  }
+  
+  .dify-error-message *,
+  [class*="error-message"] *,
+  [class*="errorMessage"] *,
+  [class*="Error"] *,
+  [class*="error"] * {
+    display: none !important;
+  }
+
   /* モバイル対応 */
   @media (max-width: 640px) {
     #dify-chatbot-bubble-window,

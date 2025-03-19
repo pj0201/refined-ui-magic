@@ -73,12 +73,6 @@ const addCustomCloseButtonsGlobal = () => {
               opacity: 0 !important;
               visibility: hidden !important;
               pointer-events: none !important;
-              width: 0 !important;
-              height: 0 !important;
-              position: absolute !important;
-              left: -9999px !important;
-              top: -9999px !important;
-              z-index: -1 !important;
             `;
             
             // 親要素も非表示にする試み
@@ -120,7 +114,7 @@ export const SubsidyChatbot = () => {
   
   // スクリプトの読み込みタイムアウト時間（ミリ秒）
   const scriptLoadTimeout = 30000; // 30秒
-  const forceInitTimeout = 10000; // 10秒後に強制初期化を試みる
+  const forceInitTimeout = 5000; // 5秒後に強制初期化を試みる
   
   // チェック間隔（ミリ秒）
   const checkInterval = 1000; // 1秒ごとにチェック
@@ -213,7 +207,7 @@ export const SubsidyChatbot = () => {
       const difyScript = document.querySelector('script[src*="dify"]');
       if (!difyScript) {
         console.error("Difyスクリプトが見つかりません");
-        setDifyInitError("Difyスクリプトが見つかりません");
+        setDifyInitError("loading");
         return;
       }
       
@@ -227,6 +221,7 @@ export const SubsidyChatbot = () => {
         newScript.onload = () => {
           console.log("Difyスクリプトが再読み込みされました");
           setIsDifyScriptLoaded(true);
+          setDifyInitError(null);
           
           // 初期化成功フラグを設定
           window.subsidyChatbotInitialized = true;
@@ -236,7 +231,7 @@ export const SubsidyChatbot = () => {
         };
         newScript.onerror = () => {
           console.error("Difyスクリプトの再読み込みに失敗しました");
-          setDifyInitError("Difyスクリプトの読み込みに失敗しました");
+          setDifyInitError("loading");
         };
         
         // 古いスクリプトを削除
@@ -247,9 +242,9 @@ export const SubsidyChatbot = () => {
       }
     } catch (error) {
       console.error("Difyスクリプトの強制初期化中にエラーが発生しました:", error);
-      setDifyInitError(`初期化エラー: ${error instanceof Error ? error.message : String(error)}`);
+      setDifyInitError("loading");
     }
-  }, []);
+  }, [applyCustomStyles]);
   
   // Difyスクリプトの読み込み状態を監視
   useEffect(() => {
@@ -265,6 +260,23 @@ export const SubsidyChatbot = () => {
     } else {
       applyCustomStyles();
     }
+    
+    // UIが開いた瞬間からDifyボットを立ち上げる
+    // Difyのスクリプトを事前に読み込み
+    const preloadDifyScript = () => {
+      const existingScript = document.querySelector('script[src*="dify"]');
+      if (!existingScript) {
+        const script = document.createElement('script');
+        script.src = "https://udify.app/embed.js";
+        script.async = true;
+        script.defer = true;
+        document.head.appendChild(script);
+        console.log("Difyスクリプトを事前に読み込みました");
+      }
+    };
+    
+    // 即時実行
+    preloadDifyScript();
     
     // Difyスクリプトの読み込み状態を確認するタイマー
     const checkDifyLoaded = setInterval(() => {
@@ -296,7 +308,7 @@ export const SubsidyChatbot = () => {
     const timeoutTimer = setTimeout(() => {
       if (!isDifyScriptLoaded) {
         console.error(`${scriptLoadTimeout}ミリ秒経過してもDifyスクリプトが読み込まれませんでした`);
-        setDifyInitError("Difyスクリプトの読み込みがタイムアウトしました");
+        setDifyInitError("loading");
         clearInterval(checkDifyLoaded);
       }
     }, scriptLoadTimeout);
@@ -320,6 +332,73 @@ export const SubsidyChatbot = () => {
   useEffect(() => {
     if (difyInitError) {
       console.error(`チャットボットの読み込みに失敗しました: ${difyInitError}`);
+      
+      // エラーメッセージ表示のカスタマイズ
+      const customizeErrorMessages = () => {
+        try {
+          // エラーメッセージ要素を探す
+          const errorElements = document.querySelectorAll('.dify-error-message, [class*="error-message"], [class*="errorMessage"]');
+          
+          errorElements.forEach(element => {
+            if (element instanceof HTMLElement) {
+              // エラーメッセージを「しばらくお待ちください」に変更
+              element.textContent = 'しばらくお待ちください...';
+              element.style.color = '#4B5563'; // グレーの色
+              element.style.fontWeight = 'normal';
+              element.style.fontSize = '0.9rem';
+              element.style.textAlign = 'center';
+              element.style.padding = '1rem';
+              element.style.margin = '1rem 0';
+              element.style.border = 'none';
+              element.style.background = 'none';
+            }
+          });
+          
+          // CSSでエラーメッセージのスタイルを上書き
+          const style = document.createElement('style');
+          style.textContent = `
+            .dify-error-message, 
+            [class*="error-message"], 
+            [class*="errorMessage"] {
+              display: block !important;
+              color: #4B5563 !important;
+              font-weight: normal !important;
+              font-size: 0.9rem !important;
+              text-align: center !important;
+              padding: 1rem !important;
+              margin: 1rem 0 !important;
+              border: none !important;
+              background: none !important;
+            }
+            
+            .dify-error-message::before,
+            [class*="error-message"]::before,
+            [class*="errorMessage"]::before {
+              content: 'しばらくお待ちください...' !important;
+            }
+            
+            .dify-error-message *,
+            [class*="error-message"] *,
+            [class*="errorMessage"] * {
+              display: none !important;
+            }
+          `;
+          document.head.appendChild(style);
+        } catch (error) {
+          console.error("エラーメッセージのカスタマイズ中にエラーが発生しました:", error);
+        }
+      };
+      
+      // エラーメッセージのカスタマイズを実行
+      customizeErrorMessages();
+      
+      // 定期的にエラーメッセージをチェックして上書き
+      const intervalId = setInterval(customizeErrorMessages, 1000);
+      
+      // クリーンアップ関数
+      return () => {
+        clearInterval(intervalId);
+      };
     }
   }, [difyInitError]);
   
