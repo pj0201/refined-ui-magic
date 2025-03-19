@@ -1,25 +1,42 @@
 /**
- * チャットボタンのスタイル定義
+ * チャットボタンとDifyブランディング関連のスタイル定義
  */
-export const getChatButtonStyles = (): string => `
-  /* チャットボタンのスタイリング */
-  #dify-chatbot-bubble-button {
-    background-color: #1C64F2 !important;
-    bottom: 8rem !important;
-    right: 1rem !important;
-    z-index: 99995 !important;
-    position: fixed !important;
-    display: block !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    width: 48px !important;
-    height: 48px !important;
-    border-radius: 50% !important;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
-    cursor: pointer !important;
-  }
-`;
 
+/**
+ * 青いボタンを非表示にする関数
+ * チャットボットの青いボタンを完全に非表示にします
+ */
+export const hideBlueButton = () => {
+  const style = document.createElement('style');
+  style.textContent = `
+    /* 青いボタンを完全に非表示 */
+    #dify-chatbot-bubble-button,
+    .dify-chatbot-bubble-button,
+    [id^="dify-chatbot-bubble-button"],
+    [class^="dify-chatbot-bubble-button"],
+    [id*="dify-chatbot-bubble-button"],
+    [class*="dify-chatbot-bubble-button"],
+    [id*="chatbot-bubble-button"],
+    [class*="chatbot-bubble-button"] {
+      display: none !important;
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+      width: 0 !important;
+      height: 0 !important;
+      position: absolute !important;
+      left: -9999px !important;
+      top: -9999px !important;
+      z-index: -1 !important;
+    }
+  `;
+  document.head.appendChild(style);
+};
+
+/**
+ * Difyのブランディングとエラーメッセージを非表示にする関数
+ * フッター、ロゴ、「Powered by」などの要素とエラーメッセージを非表示にします
+ */
 export const hideDifyBranding = () => {
   const style = document.createElement('style');
   style.textContent = `

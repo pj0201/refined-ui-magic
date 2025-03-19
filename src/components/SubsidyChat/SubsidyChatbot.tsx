@@ -132,46 +132,10 @@ export const SubsidyChatbot = () => {
   
   // カスタムスタイルを適用する関数
   const applyCustomStyles = useCallback(() => {
-    console.log("カスタムスタイルを適用します");
-    
     try {
-      // 既存のカスタムスタイルを削除
-      const existingStyle = document.getElementById('subsidy-chatbot-custom-styles');
-      if (existingStyle) {
-        existingStyle.remove();
-      }
-      
-      // カスタムスタイルを作成
       const style = document.createElement('style');
-      style.id = 'subsidy-chatbot-custom-styles';
-      style.innerHTML = `
-        /* チャットボットウィンドウのスタイル */
-        .dify-chatbot-bubble-window {
-          position: fixed !important;
-          bottom: 80px !important;
-          right: 20px !important;
-          width: 380px !important;
-          max-width: 90vw !important;
-          height: 600px !important;
-          max-height: 70vh !important;
-          border-radius: 10px !important;
-          overflow: hidden !important;
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15) !important;
-          z-index: 10000 !important;
-          display: flex !important;
-          flex-direction: column !important;
-          background-color: #fff !important;
-          
-          /* モバイル対応 */
-          @media (max-width: 480px) {
-            bottom: 70px !important;
-            right: 10px !important;
-            width: calc(100vw - 20px) !important;
-            height: calc(100vh - 140px) !important;
-          }
-        }
-        
-        /* チャットボットボタンのスタイル - 非表示 */
+      style.textContent = `
+        /* 青いボタンを非表示にする */
         .dify-chatbot-bubble-button,
         #dify-chatbot-bubble-button,
         [id^="dify-chatbot-bubble-button"],
@@ -180,20 +144,52 @@ export const SubsidyChatbot = () => {
           opacity: 0 !important;
           visibility: hidden !important;
           pointer-events: none !important;
+          width: 0 !important;
+          height: 0 !important;
+          position: absolute !important;
+          left: -9999px !important;
+          top: -9999px !important;
+          z-index: -1 !important;
         }
         
-        /* チャットボットウィンドウを強制的に表示 */
-        #dify-chatbot-bubble-window.dify-chatbot-bubble-window,
-        #shoukibo-jizoka-chatbot-window.dify-chatbot-bubble-window,
-        #shorikika-chatbot-window.dify-chatbot-bubble-window {
+        /* チャットウィンドウのスタイル */
+        #dify-chatbot-bubble-window,
+        #shoukibo-jizoka-chatbot-window,
+        #shorikika-chatbot-window {
+          width: 24rem !important;
+          height: 50rem !important;
+          max-height: 90vh !important;
+          max-width: calc(100vw - 32px) !important;
+          bottom: auto !important;
+          top: 50px !important;
+          right: 20px !important;
+          transform: none !important;
+          margin-bottom: 0 !important;
+          z-index: 99995 !important;
+          position: fixed !important;
           display: flex !important;
-          opacity: 1 !important;
-          visibility: visible !important;
+          flex-direction: column !important;
+          overflow: hidden !important;
+          border-radius: 0.5rem !important;
+          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+        }
+        
+        /* モバイル対応 */
+        @media (max-width: 640px) {
+          #dify-chatbot-bubble-window,
+          #shoukibo-jizoka-chatbot-window,
+          #shorikika-chatbot-window {
+            width: calc(100vw - 32px) !important;
+            height: 80vh !important;
+            bottom: 1rem !important;
+            right: 1rem !important;
+            left: 1rem !important;
+            top: auto !important;
+          }
         }
       `;
-      
-      // スタイルをヘッドに追加
       document.head.appendChild(style);
+      console.log("カスタムスタイルを適用しました");
     } catch (error) {
       console.error("カスタムスタイルの適用中にエラーが発生しました:", error);
     }

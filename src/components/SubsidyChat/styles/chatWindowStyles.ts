@@ -1,6 +1,6 @@
-
 /**
  * チャットウィンドウのスタイル定義
+ * 一般チャット、小規模持続化補助金チャット、省力化投資補助金チャットの共通スタイル
  */
 export const getChatWindowStyles = (): string => `
   /* 共通のチャットウィンドウスタイル */
@@ -11,8 +11,9 @@ export const getChatWindowStyles = (): string => `
     height: 50rem !important;
     max-height: 90vh !important;
     max-width: calc(100vw - 32px) !important;
-    bottom: 2rem !important;
-    right: 1rem !important;
+    bottom: auto !important;
+    top: 50px !important;
+    right: 20px !important;
     transform: none !important;
     margin-bottom: 0 !important;
     z-index: 99995 !important;
@@ -25,67 +26,93 @@ export const getChatWindowStyles = (): string => `
   }
 
   /* ヘッダーのスタイリング - 上部の青いバー（共通） */
+  .dify-chatbot-bubble-window-header,
   .dify-chatbot-window-header {
     background-color: #1C64F2 !important;
     padding: 0.75rem !important;
     color: white !important;
+    font-weight: 600 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
     position: relative !important;
-    z-index: 99996 !important;
   }
-  
-  /* Difyデフォルトの閉じるボタンを非表示 */
-  .dify-chatbot-window-close-btn {
-    display: none !important;
-  }
-  
-  /* カスタム閉じるボタン */
+
+  /* チャットウィンドウ内閉じるボタン */
+  .chat-window-close-button,
   .custom-close-button {
     position: absolute !important;
     top: 10px !important;
     right: 10px !important;
-    background-color: transparent !important;
-    border: none !important;
+    background-color: rgba(255, 255, 255, 0.2) !important;
     color: white !important;
+    border: none !important;
+    border-radius: 50% !important;
     width: 30px !important;
     height: 30px !important;
-    font-size: 20px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     cursor: pointer !important;
-    z-index: 2147483650 !important;
+    font-size: 18px !important;
+    z-index: 10000 !important;
   }
-  
+
+  /* チャットウィンドウ内閉じるボタンのホバー状態 */
+  .chat-window-close-button:hover,
   .custom-close-button:hover {
-    background-color: rgba(255, 255, 255, 0.2) !important;
-    border-radius: 50% !important;
+    background-color: rgba(255, 255, 255, 0.3) !important;
   }
-  
-  /* 入力エリアのスタイリング（共通） */
-  .dify-chatbot-window-footer {
-    position: sticky !important;
-    bottom: 0 !important;
+
+  /* チャットウィンドウ内コンテンツ */
+  .dify-chatbot-bubble-window-content {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    padding: 1rem !important;
     background-color: white !important;
-    padding: 12px !important;
-    z-index: 99996 !important;
-    box-shadow: 0 -2px 10px rgba(0,0,0,0.1) !important;
-    margin-top: auto !important;
   }
-  
-  /* レスポンシブ対応（共通） */
-  @media (max-height: 700px) {
+
+  /* フッターの非表示 */
+  .dify-chatbot-bubble-window-footer,
+  [class*="dify-chatbot-bubble-window-footer"],
+  [id*="dify-chatbot-bubble-window-footer"] {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    height: 0 !important;
+  }
+
+  /* 青いボタンを完全に非表示 */
+  #dify-chatbot-bubble-button,
+  .dify-chatbot-bubble-button,
+  [id^="dify-chatbot-bubble-button"],
+  [class^="dify-chatbot-bubble-button"],
+  [id*="dify-chatbot-bubble-button"],
+  [class*="dify-chatbot-bubble-button"] {
+    display: none !important;
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+    z-index: -1 !important;
+  }
+
+  /* モバイル対応 */
+  @media (max-width: 640px) {
     #dify-chatbot-bubble-window,
     #shoukibo-jizoka-chatbot-window,
     #shorikika-chatbot-window {
-      top: 20px !important;
-      height: calc(100vh - 50px) !important;
+      width: calc(100vw - 32px) !important;
+      height: 80vh !important;
+      bottom: 1rem !important;
+      right: 1rem !important;
+      left: 1rem !important;
+      top: auto !important;
     }
-  }
-  
-  /* 青いチャットボタンを非表示 */
-  #dify-chatbot-bubble-button,
-  #shoukibo-jizoka-chatbot-button,
-  #shorikika-chatbot-button {
-    display: none !important;
   }
 `;
