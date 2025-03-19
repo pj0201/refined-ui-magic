@@ -116,7 +116,15 @@ export const TopicSection = () => {
   }, [openChatbot, startShoukiboJizokaChat, startShorikikaChat]);
 
   if (isLoading) return <div className="loading">トピックを読み込み中...</div>;
-  if (error) return <div className="error">エラーが発生しました: {error ? (typeof error === 'object' && 'message' in error ? (error as Error).message : String(error)) : 'Unknown error'}</div>;
+  
+  // Fix for the TS18047 error - error is possibly null
+  if (error) {
+    const errorMessage = typeof error === 'object' && error !== null && 'message' in error 
+      ? (error as Error).message 
+      : String(error);
+    return <div className="error">エラーが発生しました: {errorMessage}</div>;
+  }
+  
   if (!topics || topics.length === 0) return <div className="no-topics">トピックがありません</div>;
 
   return (
