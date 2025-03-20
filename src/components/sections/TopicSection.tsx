@@ -117,11 +117,21 @@ export const TopicSection = () => {
 
   if (isLoading) return <div className="loading">トピックを読み込み中...</div>;
   
-  // Fix for the TS18047 error - ensuring error is properly handled
+  // Properly handle the error case, ensuring that error is not null
   if (error !== null) {
-    const errorMessage = typeof error === 'object' && error !== null && 'message' in error 
-      ? (error as Error).message 
-      : String(error);
+    // Create a local errorMessage variable that TypeScript knows is not null
+    let errorMessage = "不明なエラーが発生しました";
+    
+    if (typeof error === 'object' && error !== null) {
+      if ('message' in error) {
+        errorMessage = (error as Error).message;
+      } else {
+        errorMessage = String(error);
+      }
+    } else if (typeof error === 'string') {
+      errorMessage = error;
+    }
+    
     return <div className="error">エラーが発生しました: {errorMessage}</div>;
   }
   
