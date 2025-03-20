@@ -117,8 +117,8 @@ export const TopicSection = () => {
 
   if (isLoading) return <div className="loading">トピックを読み込み中...</div>;
   
-  // Fix for the TS18047 error - error is possibly null
-  if (error) {
+  // Fix for the TS18047 error - ensuring error is properly handled
+  if (error !== null) {
     const errorMessage = typeof error === 'object' && error !== null && 'message' in error 
       ? (error as Error).message 
       : String(error);
