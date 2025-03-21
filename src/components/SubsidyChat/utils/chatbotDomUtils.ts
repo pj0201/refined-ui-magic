@@ -157,6 +157,16 @@ export const setupChatbotStyles = () => {
         background-color: rgba(255, 255, 255, 0.3) !important;
       }
       
+      /* エラーメッセージの非表示 */
+      .dify-error-message, 
+      [class*="error-message"], 
+      [class*="errorMessage"],
+      #shoukibo-jizoka-chatbot-window .error,
+      #shorikika-chatbot-window .error,
+      #dify-chatbot-bubble-window .error {
+        display: none !important;
+      }
+      
       /* モバイル対応 */
       @media (max-width: 640px) {
         #dify-chatbot-bubble-window,

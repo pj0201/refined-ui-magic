@@ -42,10 +42,12 @@ export const createChatWindowContent = (title: string, iframeSrc: string) => {
       <iframe 
         src="${iframeSrc}" 
         style="width: 100%; height: 100%; border: none; display: block; position: absolute; top: 0; left: 0; right: 0; bottom: 0;"
-        allow="microphone"
+        allow="microphone *"
+        allowfullscreen="true"
         title="${title}"
         loading="eager"
         frameborder="0"
+        sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals allow-downloads"
       ></iframe>
     </div>
   `;
