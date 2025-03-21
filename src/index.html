@@ -135,6 +135,23 @@
       a[href*="dify.ai"] {
         display: none !important;
       }
+      
+      /* モックチャットウィンドウ */
+      #mock-chat-window {
+        position: fixed;
+        top: 50px;
+        right: 20px;
+        width: 380px;
+        height: 600px;
+        max-height: 80vh;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        z-index: 99999;
+        overflow: hidden;
+      }
     </style>
   </head>
   <body>
@@ -148,7 +165,7 @@
       }
     </script>
     <script
-      src="https://cdn.jsdelivr.net/npm/@dify-ai/chatbot/dist/index.min.js"
+      src="https://unpkg.com/@dify-ai/chatbot@0.1.25/dist/index.min.js"
       id="shoukibo-jizoka-chatbot"
       data-chat-name="小規模持続化補助金AI相談"
       referrerpolicy="no-referrer"
@@ -158,7 +175,8 @@
       data-button-id="shoukibo-jizoka-chatbot-button"
       async
       defer
-      onload="console.log('小規模持続化補助金チャットボットスクリプトが読み込まれました');">
+      onload="console.log('小規模持続化補助金チャットボットスクリプトが読み込まれました');"
+      onerror="console.error('小規模持続化補助金チャットボットスクリプトの読み込みに失敗しました');">
     </script>
     
     <!-- 省力化投資補助金専用チャットボット設定 -->
@@ -169,7 +187,7 @@
       }
     </script>
     <script
-      src="https://cdn.jsdelivr.net/npm/@dify-ai/chatbot/dist/index.min.js"
+      src="https://unpkg.com/@dify-ai/chatbot@0.1.25/dist/index.min.js"
       id="shorikika-chatbot"
       data-chat-name="省力化投資補助金AI相談"
       referrerpolicy="no-referrer"
@@ -179,7 +197,8 @@
       data-button-id="shorikika-chatbot-button"
       async
       defer
-      onload="console.log('省力化投資補助金チャットボットスクリプトが読み込まれました');">
+      onload="console.log('省力化投資補助金チャットボットスクリプトが読み込まれました');"
+      onerror="console.error('省力化投資補助金チャットボットスクリプトの読み込みに失敗しました');">
     </script>
     
     <script type="module" src="/src/main.tsx"></script>

@@ -1,3 +1,4 @@
+
 import { TopicItem } from "./TopicItem";
 import { useTopicData } from "@/hooks/useTopicData";
 import { useEffect, useState, useCallback, useRef } from "react";
@@ -13,7 +14,8 @@ export const TopicSection = () => {
     if (typeof window.startShoukiboJizokaChat === 'function') {
       window.startShoukiboJizokaChat();
     } else {
-      toast.error("小規模持続化補助金チャットボットが初期化されていません。ページを再読み込みしてください。");
+      console.error("小規模持続化補助金チャットボット関数が見つかりません");
+      toast.error("チャットボットを開けませんでした。ページを再読み込みしてください。");
     }
   }, []);
   
@@ -21,14 +23,17 @@ export const TopicSection = () => {
     if (typeof window.startShorikikaChat === 'function') {
       window.startShorikikaChat();
     } else {
-      toast.error("省力化投資補助金チャットボットが初期化されていません。ページを再読み込みしてください。");
+      console.error("省力化投資補助金チャットボット関数が見つかりません");
+      toast.error("チャットボットを開けませんでした。ページを再読み込みしてください。");
     }
   }, []);
 
   // チャットボットの読み込み状態を確認
   useEffect(() => {
     const checkChatsReady = () => {
-      if (window.shoukiboJizokaChatbot || window.shorikika_chatbot) {
+      // グローバル関数が設定されているかを確認
+      if (typeof window.startShoukiboJizokaChat === 'function' || 
+          typeof window.startShorikikaChat === 'function') {
         setChatbotsReady(true);
         return true;
       }
@@ -38,35 +43,23 @@ export const TopicSection = () => {
     // 初回チェック
     if (checkChatsReady()) return;
     
-    // Difyのスクリプトがページに追加されたか監視
-    const observer = new MutationObserver((mutations) => {
-      for (const mutation of mutations) {
-        if (mutation.type === 'childList') {
-          for (const node of mutation.addedNodes) {
-            if (node instanceof HTMLScriptElement && node.src.includes('dify')) {
-              // スクリプトが見つかったら、準備完了と見なす
-              setChatbotsReady(true);
-              observer.disconnect();
-              return;
-            }
-          }
-        }
+    // 定期的に確認
+    const interval = setInterval(() => {
+      if (checkChatsReady()) {
+        clearInterval(interval);
       }
-    });
-    
-    // DOMの変更を監視
-    observer.observe(document.head, { childList: true, subtree: true });
+    }, 1000);
     
     // 10秒後にタイムアウト
     const timeout = setTimeout(() => {
       if (!chatbotsReady) {
         console.log("チャットボットの読み込みがタイムアウトしました");
-        observer.disconnect();
+        clearInterval(interval);
       }
     }, 10000);
     
     return () => {
-      observer.disconnect();
+      clearInterval(interval);
       clearTimeout(timeout);
     };
   }, [chatbotsReady]);

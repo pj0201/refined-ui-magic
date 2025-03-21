@@ -27,6 +27,14 @@ export const SubsidyChatbot = () => {
     window.openSmallBusinessChatbot = startShoukiboJizokaChat;
     window.openSubsidyChatbot = startShorikikaChat;
 
+    // 5秒後にチャットボット初期化状態を確認
+    setTimeout(() => {
+      // 初期化されていない場合、コンソールに警告を出す
+      if (!window.shoukiboJizokaChatbot && !window.shorikika_chatbot) {
+        console.warn("チャットボットの初期化に失敗しました。フォールバックモードを使用します。");
+      }
+    }, 5000);
+
     return () => {
       // クリーンアップ（画面遷移時）
       console.log("補助金チャットボットグローバル関数をクリーンアップします");
