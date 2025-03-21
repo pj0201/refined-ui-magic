@@ -28,6 +28,7 @@ interface Window {
   difyChatbot?: {
     toggle: () => void;
     open?: () => void;
+    close?: () => void;
     sendMessage?: (message: string) => void;
   };
   DifyAI?: {
@@ -39,6 +40,7 @@ interface Window {
   shoukiboJizokaChatbot?: {
     toggle: () => void;
     open?: () => void;
+    close?: () => void;
     sendMessage?: (message: string) => void;
   };
   
@@ -46,6 +48,7 @@ interface Window {
   shorikika_chatbot?: {
     toggle: () => void;
     open?: () => void;
+    close?: () => void;
     sendMessage?: (message: string) => void;
   };
   
@@ -55,4 +58,6 @@ interface Window {
   openSmallBusinessChatbot: () => void; // 後方互換性のため
   startShorikikaChat: () => void;
   openSubsidyChatbot: () => void; // 後方互換性のため
+  subsidyChatbotInitialized?: boolean;
+  difyInitializationAttempted?: boolean;
 }

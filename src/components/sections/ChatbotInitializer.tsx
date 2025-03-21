@@ -2,23 +2,6 @@
 import { useEffect } from "react";
 import { toast } from "sonner";
 
-// グローバルウィンドウオブジェクトの型拡張
-declare global {
-  interface Window {
-    difyChatbot?: {
-      toggle: () => void;
-      open?: () => void;
-      close?: () => void;
-    };
-    DifyAI?: {
-      toggleUI: (show: boolean) => void;
-    };
-    openChatbot?: () => void;
-    startShoukiboJizokaChat?: () => void;
-    startShorikikaChat?: () => void;
-  }
-}
-
 /**
  * チャットボット初期化コンポーネント
  * このコンポーネントはチャットボットの初期化と制御を担当します

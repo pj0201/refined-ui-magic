@@ -2,27 +2,6 @@
 import { useCallback } from "react";
 import { toast } from "sonner";
 
-// グローバルウィンドウオブジェクトの型拡張
-declare global {
-  interface Window {
-    difyChatbot?: {
-      toggle: () => void;
-      open?: () => void;
-      close?: () => void;
-    };
-    shoukiboJizokaChatbot?: {
-      toggle: () => void;
-      open?: () => void;
-      close?: () => void;
-    };
-    shorikika_chatbot?: {
-      toggle: () => void;
-      open?: () => void;
-      close?: () => void;
-    };
-  }
-}
-
 /**
  * チャットウィンドウ操作用カスタムフック（シンプル化版）
  */
@@ -36,12 +15,12 @@ export const useChatWindows = () => {
       if (window.difyChatbot) {
         console.log("Difyグローバルオブジェクトを使用して一般チャットを開きます");
         
-        // 他のチャットボットを閉じる
-        if (window.shoukiboJizokaChatbot?.close) {
-          window.shoukiboJizokaChatbot.close();
+        // 他のチャットボットを閉じる試み
+        if (window.shoukiboJizokaChatbot?.toggle) {
+          window.shoukiboJizokaChatbot.toggle();
         }
-        if (window.shorikika_chatbot?.close) {
-          window.shorikika_chatbot.close();
+        if (window.shorikika_chatbot?.toggle) {
+          window.shorikika_chatbot.toggle();
         }
         
         // openメソッドを優先して使用
@@ -72,12 +51,12 @@ export const useChatWindows = () => {
       if (window.shoukiboJizokaChatbot) {
         console.log("グローバルオブジェクトを使用して小規模持続化補助金チャットを開きます");
         
-        // 他のチャットボットを閉じる
-        if (window.difyChatbot?.close) {
-          window.difyChatbot.close();
+        // 他のチャットボットを閉じる試み
+        if (window.difyChatbot?.toggle) {
+          window.difyChatbot.toggle();
         }
-        if (window.shorikika_chatbot?.close) {
-          window.shorikika_chatbot.close();
+        if (window.shorikika_chatbot?.toggle) {
+          window.shorikika_chatbot.toggle();
         }
         
         // openメソッドを優先して使用
@@ -127,12 +106,12 @@ export const useChatWindows = () => {
       if (window.shorikika_chatbot) {
         console.log("グローバルオブジェクトを使用して省力化投資補助金チャットを開きます");
         
-        // 他のチャットボットを閉じる
-        if (window.difyChatbot?.close) {
-          window.difyChatbot.close();
+        // 他のチャットボットを閉じる試み
+        if (window.difyChatbot?.toggle) {
+          window.difyChatbot.toggle();
         }
-        if (window.shoukiboJizokaChatbot?.close) {
-          window.shoukiboJizokaChatbot.close();
+        if (window.shoukiboJizokaChatbot?.toggle) {
+          window.shoukiboJizokaChatbot.toggle();
         }
         
         // openメソッドを優先して使用
