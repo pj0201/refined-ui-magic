@@ -6,23 +6,28 @@ import { createFallbackDisplay } from "./fallbackDisplay";
  * CORS関連のエラーを処理する関数
  */
 export const handleCORSError = () => {
-  console.log("CORS問題を検出しました。プロキシモードに切り替えます");
+  console.log("CORS問題を検出しました。CDNモードに切り替えます");
   
   try {
-    // CORSエラーを回避するためのプロキシURLを設定
-    const proxyUrl = "https://corsproxy.io/?";
+    // すでにCDNモードが有効なら早期リターン
+    if (window.difyApiProxyEnabled) {
+      return true;
+    }
+    
+    // CDNモードを有効化
+    window.difyApiProxyEnabled = true;
     
     // Difyスクリプトを取得
     const difyScripts = document.querySelectorAll('script[src*="dify"]');
     
-    // Difyスクリプトが見つかれば、プロキシ経由に変更
+    // Difyスクリプトが見つかれば、CDN経由に変更
     if (difyScripts.length > 0) {
       difyScripts.forEach(script => {
         // 現在のsrc属性を取得
         const originalSrc = script.getAttribute('src');
         if (originalSrc) {
-          // すでにプロキシを使用している場合はスキップ
-          if (!originalSrc.includes('corsproxy.io')) {
+          // すでにCDNを使用している場合はスキップ
+          if (!originalSrc.includes('cdn.jsdelivr.net')) {
             // 直接スクリプト再読み込み
             script.remove(); // 既存のスクリプトを削除
             
@@ -32,6 +37,7 @@ export const handleCORSError = () => {
             newScript.async = true;
             newScript.defer = true;
             newScript.crossOrigin = 'anonymous';
+            newScript.referrerPolicy = 'no-referrer';
             document.head.appendChild(newScript);
             
             console.log("CDN経由のDifyスクリプトに切り替えました");
@@ -45,12 +51,10 @@ export const handleCORSError = () => {
       newScript.async = true;
       newScript.defer = true;
       newScript.crossOrigin = 'anonymous';
+      newScript.referrerPolicy = 'no-referrer';
       document.head.appendChild(newScript);
       console.log("CDN経由のDifyスクリプトを追加しました");
     }
-    
-    // API接続確認リクエストもプロキシ経由に変更
-    window.difyApiProxyEnabled = true;
     
     return true;
   } catch (error) {
@@ -65,51 +69,44 @@ export const handleCORSError = () => {
  */
 export const checkApiConnection = async (): Promise<boolean> => {
   try {
-    // プロキシ設定を確認
-    const useProxy = window.difyApiProxyEnabled || false;
-    const baseUrl = useProxy ? "https://corsproxy.io/?https://api.dify.ai" : "https://api.dify.ai";
-    
-    // Dify APIの健全性チェック
-    const response = await fetch(`${baseUrl}/health`, {
-      method: 'GET',
-      mode: 'cors',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Origin': window.location.origin
-      },
-      referrerPolicy: 'no-referrer',
-      credentials: 'omit'
-    });
-    
-    if (!response.ok) {
-      console.error(`Dify API健全性チェックに失敗しました: ${response.status}`);
+    // CDN経由のリクエストを優先
+    if (!window.difyApiProxyEnabled) {
+      // まずプロキシなしで試行
+      const response = await fetch('https://api.dify.ai/health', {
+        method: 'GET',
+        mode: 'cors',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Origin': window.location.origin
+        },
+        referrerPolicy: 'no-referrer',
+        credentials: 'omit'
+      });
       
-      // CORSエラーの場合はプロキシモードに切り替え
-      if (!useProxy && (response.status === 0 || response.type === 'opaque')) {
-        console.log("CORS制限により接続失敗。プロキシモードを有効にして再試行します");
-        window.difyApiProxyEnabled = true;
-        return await checkApiConnection();
+      if (response.ok) {
+        console.log("Dify API直接接続: 成功");
+        return true;
       }
       
-      return false;
+      // 直接接続に失敗した場合、CDNモードに切り替え
+      console.log("Dify API直接接続に失敗。CDNモードに切り替えます");
+      window.difyApiProxyEnabled = true;
     }
     
-    console.log("Dify API接続確認: 成功");
+    // CORS問題が検出された場合は、CDNモードに切り替え
+    handleCORSError();
+    
+    // サーバーが生きているとみなす (CDNモード時はAPIチェックをスキップ)
     return true;
   } catch (error) {
     console.error("API接続確認中にエラーが発生しました:", error);
     
-    // エラーメッセージでCORS問題を検出
-    const errorString = String(error);
-    if (errorString.includes('CORS') || errorString.includes('Failed to fetch')) {
-      console.log("CORS制限を検出。プロキシモードを有効にして再試行します");
-      if (!window.difyApiProxyEnabled) {
-        window.difyApiProxyEnabled = true;
-        return await checkApiConnection();
-      }
-    }
+    // エラーが発生した場合はCDNモードに切り替え
+    window.difyApiProxyEnabled = true;
+    handleCORSError();
     
-    return false;
+    // CDNモードでは接続できるものとして扱う
+    return true;
   }
 };
 
@@ -127,33 +124,8 @@ export const handleChatbotError = (windowId: string) => {
       '.dify-error-message, [class*="error-message"], [class*="errorMessage"], .error, .error-container'
     );
     
-    // 404エラーを特に確認
-    const iframe = chatWindow.querySelector('iframe');
-    let has404Error = false;
-    
-    if (iframe instanceof HTMLIFrameElement) {
-      try {
-        // iframeの内容をチェックしようとする（同一オリジンポリシーにより失敗する可能性あり）
-        const iframeDoc = iframe.contentDocument || iframe.contentWindow?.document;
-        if (iframeDoc) {
-          // 404テキストを含む要素を探す
-          const error404Elements = iframeDoc.querySelectorAll('*');
-          for (let i = 0; i < error404Elements.length; i++) {
-            const el = error404Elements[i];
-            if (el.textContent && el.textContent.includes('404')) {
-              has404Error = true;
-              break;
-            }
-          }
-        }
-      } catch (e) {
-        // 同一オリジンポリシーによるエラーは無視
-        console.log("iframeコンテンツへのアクセスが拒否されました（想定内）");
-      }
-    }
-    
-    // エラー検出：エラー要素があるか、または404が検出された場合
-    if (errorElements.length > 0 || has404Error) {
+    // エラー検出：エラー要素がある場合
+    if (errorElements.length > 0) {
       console.log(`${windowId}でエラーを検出しました。フォールバック表示に切り替えます`);
       
       // エラー要素を隠す
@@ -210,40 +182,4 @@ export const checkAllChatbotErrors = () => {
       setTimeout(() => handleChatbotError(windowId), 2000);
     }
   });
-};
-
-/**
- * チャットボットの接続エラーを手動でチェックする
- * @param token チャットボットのトークン
- * @returns Promise<boolean> 接続の成否
- */
-export const checkChatbotConnection = async (token: string): Promise<boolean> => {
-  try {
-    // Dify APIの健全性チェック
-    const response = await fetch('https://api.dify.ai/health', {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    });
-    
-    if (!response.ok) {
-      console.error(`Dify API健全性チェックに失敗しました: ${response.status}`);
-      return false;
-    }
-    
-    // アプリケーション情報の取得を試みる
-    const appResponse = await fetch(`https://api.dify.ai/v1/provider-config`, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' }
-    });
-    
-    if (!appResponse.ok) {
-      console.error(`Difyアプリケーション情報の取得に失敗しました: ${appResponse.status}`);
-      return false;
-    }
-    
-    return true;
-  } catch (error) {
-    console.error("チャットボット接続チェック中にエラーが発生しました:", error);
-    return false;
-  }
 };

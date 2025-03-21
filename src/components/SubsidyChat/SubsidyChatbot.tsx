@@ -4,43 +4,7 @@ import { hideDifyBranding } from './styles/chatButtonStyles';
 import { useChatWindowAdjuster } from './hooks/useChatWindowAdjuster';
 import { handleCORSError, checkApiConnection } from './utils/errorHandling';
 
-// グローバルウィンドウオブジェクトの型拡張
-declare global {
-  interface Window {
-    difyChatbot?: {
-      toggle: () => void;
-      open?: () => void;
-      close?: () => void;
-      sendMessage?: (message: string) => void;
-    };
-    DifyAI?: {
-      toggleUI: (show: boolean) => void;
-      sendMessage?: (message: string) => void;
-    };
-    // 他のグローバル変数・関数
-    openChatbot?: () => void;
-    startShoukiboJizokaChat?: () => void;
-    openSmallBusinessChatbot?: () => void;
-    startShorikikaChat?: () => void;
-    openSubsidyChatbot?: () => void;
-    subsidyChatbotInitialized?: boolean;
-    difyInitializationAttempted?: boolean;
-    difyApiProxyEnabled?: boolean; // CORS対応プロキシ使用フラグ
-    // Type-compatible declarations for chatbots
-    shoukiboJizokaChatbot?: {
-      toggle: () => void;
-      open?: () => void;
-      close?: () => void;
-      sendMessage?: (message: string) => void;
-    };
-    shorikika_chatbot?: {
-      toggle: () => void;
-      open?: () => void;
-      close?: () => void;
-      sendMessage?: (message: string) => void;
-    };
-  }
-}
+// グローバルウィンドウオブジェクトの型をグローバル.d.tsから継承
 
 // カスタム閉じるボタンを追加する関数
 const addCustomCloseButtonsGlobal = () => {
@@ -257,7 +221,7 @@ export const SubsidyChatbot = () => {
         return;
       }
       
-      // スクリプトを再読み込み
+      // クリーンアップとスクリプト再読み込み
       const scriptSrc = difyScript.getAttribute('src');
       if (scriptSrc) {
         const newScript = document.createElement('script');
@@ -338,15 +302,15 @@ export const SubsidyChatbot = () => {
       applyCustomStyles();
     }
     
-    // UIが開いた瞬間からDifyボットを立ち上げる
-    // Difyのスクリプトを事前に読み込み
+    // Difyスクリプトを事前に読み込み
     const preloadDifyScript = () => {
       const existingScript = document.querySelector('script[src*="dify"]');
       if (!existingScript) {
         const script = document.createElement('script');
-        script.src = "https://api.dify.ai/embed.js";
+        script.src = "https://cdn.jsdelivr.net/npm/@dify-ai/chatbot/dist/index.min.js";
         script.async = true;
         script.defer = true;
+        script.crossOrigin = "anonymous";
         document.head.appendChild(script);
         console.log("Difyスクリプトを事前に読み込みました");
       }

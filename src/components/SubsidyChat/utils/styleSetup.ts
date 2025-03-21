@@ -4,19 +4,30 @@
  */
 export const setupChatbotStyles = () => {
   try {
+    // 既存のスタイルを確認
+    const existingStyle = document.getElementById('dify-chatbot-styles');
+    if (existingStyle) {
+      console.log("既存のスタイルを更新します");
+      existingStyle.remove();
+    }
+    
+    // 新しいスタイル要素を作成
     const style = document.createElement('style');
+    style.id = 'dify-chatbot-styles';
     style.textContent = `
       /* チャットウィンドウのスタイル */
       #dify-chatbot-bubble-window,
       #shoukibo-jizoka-chatbot-window,
-      #shorikika-chatbot-window {
-        width: 24rem !important;
-        height: 50rem !important;
-        max-height: 90vh !important;
-        max-width: calc(100vw - 32px) !important;
-        bottom: auto !important;
-        top: 50px !important;
+      #shorikika-chatbot-window,
+      [class*="dify-chatbot-bubble-window"] {
+        width: 380px !important;
+        height: 600px !important;
+        max-height: 80vh !important;
+        max-width: calc(100vw - 40px) !important;
+        bottom: 20px !important;
         right: 20px !important;
+        top: auto !important;
+        left: auto !important;
         transform: none !important;
         margin-bottom: 0 !important;
         z-index: 99995 !important;
@@ -24,8 +35,8 @@ export const setupChatbotStyles = () => {
         display: flex !important;
         flex-direction: column !important;
         overflow: hidden !important;
-        border-radius: 0.5rem !important;
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+        border-radius: 10px !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
         background-color: #fff !important;
       }
       
@@ -89,13 +100,55 @@ export const setupChatbotStyles = () => {
         background-color: rgba(255, 255, 255, 0.3) !important;
       }
       
-      /* エラーメッセージの非表示 */
+      /* Difyのブランディングを非表示 */
+      .dify-chatbot-bubble-window-footer,
+      [class*="dify"] [class*="footer"],
+      [class*="powered-by"],
+      a[href*="dify.ai"] {
+        display: none !important;
+      }
+      
+      /* 青いボタンを非表示にする */
+      .dify-chatbot-bubble-button,
+      #dify-chatbot-bubble-button,
+      [id^="dify-chatbot-bubble-button"],
+      [class^="dify-chatbot-bubble-button"] {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        width: 0 !important;
+        height: 0 !important;
+        position: absolute !important;
+        left: -9999px !important;
+        top: -9999px !important;
+        z-index: -1 !important;
+      }
+      
+      /* エラーメッセージを「しばらくお待ちください」に変更 */
       .dify-error-message, 
       [class*="error-message"], 
-      [class*="errorMessage"],
-      #shoukibo-jizoka-chatbot-window .error,
-      #shorikika-chatbot-window .error,
-      #dify-chatbot-bubble-window .error {
+      [class*="errorMessage"] {
+        display: block !important;
+        color: #4B5563 !important;
+        font-weight: normal !important;
+        font-size: 0.9rem !important;
+        text-align: center !important;
+        padding: 1rem !important;
+        margin: 1rem 0 !important;
+        border: none !important;
+        background: none !important;
+      }
+      
+      .dify-error-message::before,
+      [class*="error-message"]::before,
+      [class*="errorMessage"]::before {
+        content: 'しばらくお待ちください...' !important;
+      }
+      
+      .dify-error-message *,
+      [class*="error-message"] *,
+      [class*="errorMessage"] * {
         display: none !important;
       }
       
