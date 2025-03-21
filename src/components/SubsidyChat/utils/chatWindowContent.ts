@@ -40,8 +40,10 @@ export const createChatWindowContent = (title: string, iframeSrc: string) => {
     ">
       <iframe 
         src="${iframeSrc}" 
-        style="width: 100%; height: 100%; border: none;"
+        style="width: 100%; height: 100%; border: none; display: block;"
         allow="microphone"
+        title="${title}"
+        loading="eager"
       ></iframe>
     </div>
   `;

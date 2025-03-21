@@ -8,17 +8,12 @@ export const safelyCloseWindow = (windowId: string) => {
   try {
     const chatWindow = document.getElementById(windowId);
     if (chatWindow) {
-      // 安全な閉じ方のために複数のプロパティを設定
-      chatWindow.style.cssText = `
-        display: none !important;
-        opacity: 0 !important;
-        visibility: hidden !important;
-        pointer-events: none !important;
-        z-index: -1 !important;
-      `;
-      chatWindow.classList.add('dify-hidden');
-      
+      // ウィンドウを完全に削除
+      chatWindow.remove();
       console.log(`チャットウィンドウ ${windowId} を安全に閉じました`);
+      
+      // スタイルクリーンアップ
+      document.body.classList.remove('chatbot-window-active');
     }
   } catch (error) {
     console.error(`チャットウィンドウ ${windowId} を閉じる際にエラーが発生しました:`, error);
