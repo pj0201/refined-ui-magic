@@ -75,6 +75,10 @@ const glossaryTerms = [
     definition: "AIシステムと外部アプリケーションを連携させるためのインターフェース。機能やサービスを提供"
   },
   {
+    term: "APIキー (API Key)",
+    definition: "AIサービスやAPIにアクセスするための認証キー。セキュリティと利用制限の管理に使用される"
+  },
+  {
     term: "ブラウザユース (Browser Use)",
     definition: "Webブラウザ上で直接AIモデルを実行する技術。サーバーレスでローカルでの処理が可能"
   },
@@ -83,16 +87,44 @@ const glossaryTerms = [
     definition: "AIモデルをユーザーの端末上で直接実行する方式。プライバシー保護やオフライン利用が可能"
   },
   {
-    term: "Github",
-    definition: "AIプロジェクトやコードの共有・管理プラットフォーム。多くのオープンソースAIモデルやツールが公開"
+    term: "ローカル環境 (Local Environment)",
+    definition: "開発者が自分のコンピュータ上でAIモデルを動かすための設定環境。データプライバシーとカスタマイズの自由度が高い"
+  },
+  {
+    term: "GitHub",
+    definition: "AIプロジェクトやコードの共有・管理プラットフォーム。多くのオープンソースAIモデルやツールが公開されている"
+  },
+  {
+    term: "Git",
+    definition: "コードのバージョン管理システム。AIモデルやアプリケーションの開発履歴を追跡し、複数の開発者が協働できる"
   },
   {
     term: "リポジトリ (Repository)",
-    definition: "AIプロジェクトのソースコードや関連ファイルを格納・管理する場所。バージョン管理が可能"
+    definition: "AIプロジェクトのソースコードや関連ファイルを格納・管理する場所。バージョン管理が可能で共同開発の基盤となる"
+  },
+  {
+    term: "YAML",
+    definition: "人間が読みやすい形式のデータシリアライゼーション言語。AIモデルの設定ファイルやワークフロー定義に広く使用される"
   },
   {
     term: "SQL (Structured Query Language)",
     definition: "AIシステムでデータを操作・分析するための標準的なデータベース言語"
+  },
+  {
+    term: "Docker",
+    definition: "アプリケーションをコンテナ化する技術。AIモデルの依存関係を含む環境を一貫して再現可能にする"
+  },
+  {
+    term: "サンドボックス (Sandbox)",
+    definition: "安全に隔離された環境でAIモデルをテストできる仕組み。セキュリティリスクを軽減しながら実験が可能"
+  },
+  {
+    term: "TypeScript",
+    definition: "JavaScriptを拡張した静的型付け言語。AIフロントエンドの開発において型安全性を提供し、バグの早期発見を支援"
+  },
+  {
+    term: "Node.js",
+    definition: "JavaScriptをサーバーサイドで実行するランタイム環境。AIアプリケーションのバックエンド開発に広く利用される"
   },
 
   // プロンプトとトークン
@@ -119,6 +151,10 @@ const glossaryTerms = [
   {
     term: "ハルシネーション (Hallucination)",
     definition: "AIモデルが事実でない情報を自信を持って生成してしまう現象。精度向上の課題の一つ"
+  },
+  {
+    term: "マークダウン (Markdown)",
+    definition: "軽量マークアップ言語の一種。AI生成テキストの構造化や書式設定に用いられ、多くのAIツールが出力形式として採用"
   },
 
   // 学習手法
@@ -173,6 +209,40 @@ const glossaryTerms = [
   {
     term: "正則化 (Regularization)",
     definition: "過学習を防ぐためのテクニック。モデルの複雑さを制御する"
+  },
+
+  // 開発プロセス関連
+  {
+    term: "Accept",
+    definition: "AIモデルやシステムの出力や機能が要件を満たしているかを検証し承認するプロセス"
+  },
+  {
+    term: "ウォーターホール (Waterhole)",
+    definition: "AIプロジェクトにおいて、共通の情報源や知識ベースとして機能する中央集約型のリソース"
+  },
+  {
+    term: "アジャイル (Agile)",
+    definition: "反復的かつ漸進的なアプローチでAI開発を行う方法論。柔軟性と迅速な適応を重視"
+  },
+  {
+    term: "オーケストレーション (Orchestration)",
+    definition: "複数のAIシステムやサービスを連携させ、統合的に管理・制御するプロセス"
+  },
+  {
+    term: "プロビジョニング (Provisioning)",
+    definition: "AIモデルを実行するためのリソースや環境を準備し、構成するプロセス"
+  },
+  {
+    term: "ワイヤーフレーム (Wireframe)",
+    definition: "AIアプリケーションのユーザーインターフェースの基本構造を示す簡略図"
+  },
+  {
+    term: "ロールバック (Rollback)",
+    definition: "AIモデルやシステムを以前のバージョンや状態に戻すプロセス。問題発生時の対応策として重要"
+  },
+  {
+    term: "デプロイ (Deploy)",
+    definition: "AIモデルやアプリケーションを本番環境に展開し、実際に使用可能な状態にするプロセス"
   }
 ];
 

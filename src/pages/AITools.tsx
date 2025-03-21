@@ -1,5 +1,5 @@
 
-import { Brain, Code, FileVideo, Home, Image, MessageSquare, ScrollText, Zap, Search } from "lucide-react";
+import { Brain, Code, FileVideo, Home, Image, MessageSquare, ScrollText, Zap, Search, Database, Shield, LineChart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { CategorySection } from "@/components/AITools/CategorySection";
@@ -11,36 +11,36 @@ const toolCategories = [
     icon: Brain,
     tools: [
       { 
-        name: "ChatGPT-o1",
-        description: "OpenAIの基本モデル。一般的な会話や文章生成に最適。コストパフォーマンスに優れる" 
+        name: "Claude 3.5 Sonnet",
+        description: "Anthropicの最新モデル。長文処理と複雑なタスクに特化した高度な理解力と文脈把握能力を持つAI" 
       },
       { 
-        name: "ChatGPT-o1pro",
-        description: "高度な分析と専門的なタスクに対応。長文処理と複雑な指示に強い上位モデル" 
+        name: "GPT-4o",
+        description: "OpenAIの最新モデル。テキスト・画像・音声のマルチモーダル処理が可能で、高度な推論能力を持つ" 
       },
       { 
-        name: "ChatGPT-o3mini",
-        description: "軽量で高速な応答が特徴。シンプルなタスクや短い会話に最適化された省コストモデル" 
+        name: "Gemini 1.5 Pro",
+        description: "GoogleのAIモデル。長文脈理解と多言語対応に優れ、様々な形式のデータを統合的に処理可能" 
       },
       { 
-        name: "GEMINI",
-        description: "Googleの最新AI。マルチモーダル対応で、テキスト・画像・音声を統合的に処理" 
+        name: "Llama 3.1",
+        description: "Metaのオープンソースモデル。高精度な推論と多様なタスク処理能力を持ち、カスタマイズが容易" 
       },
       { 
-        name: "Grok 3",
-        description: "リアルタイムデータを活用した対話型AI。ユーモアのある応答が特徴" 
+        name: "Grok 2",
+        description: "xAIの対話型モデル。リアルタイムデータアクセスと風刺的ユーモアが特徴の革新的AI" 
       },
       { 
-        name: "Claude Sonnet",
-        description: "Anthropicの高性能モデル。長文処理と分析が得意で、高い正確性を実現" 
+        name: "Mistral Large",
+        description: "Mistral AIの高性能モデル。効率的なアーキテクチャで高速処理と低リソースでの動作を実現" 
       },
       { 
-        name: "DeepSeek",
-        description: "深い文脈理解と専門知識を備えたAI。研究開発向けの高度な機能を提供" 
+        name: "Perplexity AI",
+        description: "リアルタイム検索機能を統合した対話型AI。最新情報に基づく回答と情報源の透明性を提供" 
       },
       { 
-        name: "Hunyuan",
-        description: "中国語と英語のバイリンガルAI。アジア圏のビジネス利用に最適" 
+        name: "DeepSeek Coder",
+        description: "コーディング特化型AI。複雑なプログラミング課題解決と技術文書理解に優れた性能を発揮" 
       }
     ]
   },
@@ -49,20 +49,20 @@ const toolCategories = [
     icon: Code,
     tools: [
       { 
-        name: "v0",
-        description: "AIを活用したウェブアプリケーション開発プラットフォーム。直感的なインターフェース" 
+        name: "v0.dev",
+        description: "Vercelのコンポーネント生成AI。UIデザインからコードを自動生成し、React開発を大幅に効率化" 
       },
       { 
         name: "Cursor",
-        description: "AIパワードのコードエディタ。リアルタイムのコード補完と最適化を提供" 
+        description: "AIパワードのコードエディタ。GPT-4と連携したリアルタイムのコード補完と最適化を提供" 
       },
       { 
-        name: "Roocode",
-        description: "効率的なコード生成と最適化を行うAIツール。開発プロセスを加速" 
+        name: "GitHub Copilot",
+        description: "GitHubとOpenAIの共同開発コーディングアシスタント。コンテキストを理解したコード提案が可能" 
       },
       { 
-        name: "Windsurf",
-        description: "フロントエンド開発に特化したAIツール。モダンなUIコンポーネントを自動生成" 
+        name: "Replit Ghostwriter",
+        description: "コード生成と問題解決を支援するAIツール。学習とリアルタイムフィードバックでスキル向上をサポート" 
       }
     ]
   },
@@ -72,15 +72,15 @@ const toolCategories = [
     tools: [
       { 
         name: "Lovable",
-        description: "AIを活用したWebアプリケーション開発プラットフォーム。効率的な開発を実現" 
+        description: "AIを活用したWebアプリケーション開発プラットフォーム。直感的な対話でコードを生成し効率的な開発を実現" 
       },
       { 
-        name: "Ray2",
-        description: "分散システム開発のためのAIパワードフレームワーク" 
+        name: "Vercel AI SDK",
+        description: "AI機能を簡単に統合できるReactフレームワーク。ストリーミングUIと最適化されたAI応答を実装可能" 
       },
       { 
-        name: "GEAR.indigo",
-        description: "開発プロジェクトの費用見積もりと工程管理を支援するAI。予算・進捗の最適化を実現" 
+        name: "Plasmic",
+        description: "ノーコードでAIパワードのWebサイト・アプリ開発が可能なプラットフォーム。デザインから実装まで効率化" 
       }
     ]
   },
@@ -89,12 +89,16 @@ const toolCategories = [
     icon: Search,
     tools: [
       { 
-        name: "GENSPARK",
-        description: "AIを活用した高度な検索エンジン。業界特化型の情報収集と分析が可能" 
+        name: "Kagi Search",
+        description: "AIを活用したプライバシー重視の検索エンジン。カスタマイズ性が高く高品質な検索結果を提供" 
       },
       { 
-        name: "Felo",
-        description: "マルチソース検索と情報統合のAIプラットフォーム。複数のデータソースを横断的に分析" 
+        name: "Perplexity",
+        description: "AIによる情報検索と要約を行うプラットフォーム。複数のソースから信頼性の高い回答を生成" 
+      },
+      { 
+        name: "You.com",
+        description: "AIを統合した次世代検索エンジン。検索結果の要約と視覚的な情報整理機能を提供" 
       }
     ]
   },
@@ -103,12 +107,16 @@ const toolCategories = [
     icon: FileVideo,
     tools: [
       { 
-        name: "Kling",
-        description: "AIによる高品質な動画生成ツール。編集も自動化" 
+        name: "Runway Gen-3",
+        description: "テキストから高品質な映像コンテンツを生成するAIツール。創造的な映像制作をシンプル化" 
       },
       { 
-        name: "Veo2",
-        description: "スポーツ分析や動画編集に特化したAI動画処理ツール" 
+        name: "Sora",
+        description: "OpenAIの動画生成AI。簡単な指示から複雑なシーンや動きを含む高品質な動画を作成可能" 
+      },
+      { 
+        name: "Pika Labs",
+        description: "テキストプロンプトから短時間で魅力的な動画コンテンツを作成できるAIプラットフォーム" 
       }
     ]
   },
@@ -117,12 +125,62 @@ const toolCategories = [
     icon: Image,
     tools: [
       { 
-        name: "Flux",
-        description: "高品質な画像生成AIツール。商用利用に適した権利処理付き" 
+        name: "DALL-E 3",
+        description: "OpenAIの高精度画像生成モデル。詳細な指示から精巧なイメージを作成可能" 
       },
       { 
-        name: "Goku AI",
-        description: "アニメ風イラスト生成に特化したAIツール" 
+        name: "Midjourney V6",
+        description: "芸術的表現に優れた画像生成AI。リアルからファンタジーまで様々なスタイルに対応" 
+      },
+      { 
+        name: "Stable Diffusion 3",
+        description: "オープンソースの画像生成モデル。高度なカスタマイズとローカル実行が可能" 
+      }
+    ]
+  },
+  {
+    category: "データ分析",
+    icon: Database,
+    tools: [
+      { 
+        name: "Akkio",
+        description: "ノーコードのAI予測分析プラットフォーム。ビジネスデータから素早く洞察を引き出す" 
+      },
+      { 
+        name: "MindsDB",
+        description: "AIを既存データベースに統合するオープンソースツール。予測機能をSQLで簡単に実装可能" 
+      },
+      { 
+        name: "Obviously AI",
+        description: "コード不要で予測モデルを構築・展開できるAIプラットフォーム。データサイエンスを民主化" 
+      }
+    ]
+  },
+  {
+    category: "セキュリティ",
+    icon: Shield,
+    tools: [
+      { 
+        name: "Darktrace",
+        description: "AIを活用したサイバーセキュリティプラットフォーム。異常検知と自動対応で企業を保護" 
+      },
+      { 
+        name: "Crowdstrike Falcon",
+        description: "AIパワードのエンドポイント保護プラットフォーム。高度な脅威をリアルタイムで検知・対応" 
+      }
+    ]
+  },
+  {
+    category: "ビジネスインテリジェンス",
+    icon: LineChart,
+    tools: [
+      { 
+        name: "ThoughtSpot",
+        description: "自然言語検索でデータ分析が可能なAIプラットフォーム。複雑なクエリを簡単に実行" 
+      },
+      { 
+        name: "Tableau with Einstein",
+        description: "AIを統合した可視化プラットフォーム。データから自動的に洞察を発見し表示" 
       }
     ]
   },
@@ -132,15 +190,15 @@ const toolCategories = [
     tools: [
       { 
         name: "Kotaba",
-        description: "日本語に特化した自然言語処理AI。文脈理解が優れている" 
+        description: "日本語に特化した自然言語処理AI。文脈理解と日本語特有の表現に対応" 
       },
       { 
         name: "Geospy",
-        description: "地理空間データ分析のためのAIツール" 
+        description: "地理空間データ分析のためのAIツール。位置情報の高度な解析と予測を実現" 
       },
       { 
         name: "Firecrawl",
-        description: "Webクローリングと情報抽出に特化したAIツール" 
+        description: "Webクローリングと情報抽出に特化したAIツール。膨大なウェブデータから価値ある情報を収集" 
       }
     ]
   }

@@ -34,12 +34,20 @@ export const topics: Topic[] = [
     id: 4,
     content: "AI用語について",
     link: "/ai-glossary",
-    keywords: ["AI", "経営コンサルティング"]
+    keywords: ["AI", "経営コンサルティング", "ビジネス活用", "デジタル化"]
   },
   {
     id: 5,
     content: "おすすめのAIツール一覧",
     link: "/ai-tools",
-    keywords: ["AI", "業務効率化", "神戸", "兵庫"]
+    keywords: ["AI", "業務効率化", "神戸", "兵庫", "デジタルトランスフォーメーション"]
+  },
+  {
+    id: 6,
+    isNew: true,
+    content: "ローカルAIの活用で業務効率化とデータプライバシー向上\n最新のLLMモデルをオンプレミスで利用するメリットとは",
+    date: "2024/11",
+    link: "/ai-glossary",
+    keywords: ["AI", "ローカルAI", "データプライバシー", "業務効率化", "兵庫"]
   }
 ];
