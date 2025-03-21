@@ -41,13 +41,8 @@ export const setupGlobalFunctions = () => {
       console.log("小規模持続化補助金チャットボットを開きます");
       
       try {
-        // 他のチャットウィンドウを閉じる
-        const otherWindows = document.querySelectorAll('#shorikika-chatbot-window, #mock-chat-window');
-        otherWindows.forEach(window => {
-          if (window && window instanceof HTMLElement && window.style.display !== 'none') {
-            window.style.display = 'none';
-          }
-        });
+        // 他のチャットウィンドウを確実に閉じる
+        closeAllChatWindows();
 
         // グローバルオブジェクトを使用
         if (window.shoukiboJizokaChatbot) {
@@ -55,6 +50,9 @@ export const setupGlobalFunctions = () => {
           const chatWindow = document.getElementById('shoukibo-jizoka-chatbot-window');
           if (chatWindow) {
             chatWindow.style.display = 'flex';
+            chatWindow.style.opacity = '1';
+            chatWindow.style.visibility = 'visible';
+            document.body.classList.add('chatbot-window-active');
           }
           
           // openメソッドがあればそれを使用
@@ -89,13 +87,8 @@ export const setupGlobalFunctions = () => {
       console.log("省力化投資補助金チャットボットを開きます");
       
       try {
-        // 他のチャットウィンドウを閉じる
-        const otherWindows = document.querySelectorAll('#shoukibo-jizoka-chatbot-window, #mock-chat-window');
-        otherWindows.forEach(window => {
-          if (window && window instanceof HTMLElement && window.style.display !== 'none') {
-            window.style.display = 'none';
-          }
-        });
+        // 他のチャットウィンドウを確実に閉じる
+        closeAllChatWindows();
 
         // グローバルオブジェクトを使用
         if (window.shorikika_chatbot) {
@@ -103,6 +96,9 @@ export const setupGlobalFunctions = () => {
           const chatWindow = document.getElementById('shorikika-chatbot-window');
           if (chatWindow) {
             chatWindow.style.display = 'flex';
+            chatWindow.style.opacity = '1';
+            chatWindow.style.visibility = 'visible';
+            document.body.classList.add('chatbot-window-active');
           }
           
           // openメソッドがあればそれを使用
@@ -132,13 +128,34 @@ export const setupGlobalFunctions = () => {
       }
     };
     
+    // 全てのチャットウィンドウを閉じる関数
+    const closeAllChatWindows = () => {
+      const windowIds = [
+        'shoukibo-jizoka-chatbot-window',
+        'shorikika-chatbot-window',
+        'dify-chatbot-bubble-window',
+        'mock-chat-window'
+      ];
+      
+      windowIds.forEach(id => {
+        const window = document.getElementById(id);
+        if (window && window.style.display !== 'none') {
+          window.style.display = 'none';
+          console.log(`${id}を閉じました`);
+        }
+      });
+    };
+    
     // フォールバックチャットを表示する関数
     const showFallbackChat = (title: string, windowId: string) => {
       console.log(`フォールバックチャットを表示: ${title}`);
       
-      // 既存のモックウィンドウ
+      // 既存のモックウィンドウを確認
       let existingWindow = document.getElementById(windowId);
       const mockWindow = document.getElementById('mock-chat-window');
+      
+      // 他のすべてのウィンドウを閉じる
+      closeAllChatWindows();
       
       // モックウィンドウが既に存在する場合は表示
       if (mockWindow) {

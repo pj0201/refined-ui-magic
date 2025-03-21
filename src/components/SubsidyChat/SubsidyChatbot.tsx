@@ -21,20 +21,34 @@ export const SubsidyChatbot = () => {
 
     // グローバル関数を設定
     if (typeof window.startShoukiboJizokaChat !== 'function') {
-      window.startShoukiboJizokaChat = startShoukiboJizokaChat;
+      window.startShoukiboJizokaChat = () => {
+        // 実行前に他のウィンドウを閉じる
+        closeAllChatWindows();
+        startShoukiboJizokaChat();
+      };
     }
     
     if (typeof window.startShorikikaChat !== 'function') {
-      window.startShorikikaChat = startShorikikaChat;
+      window.startShorikikaChat = () => {
+        // 実行前に他のウィンドウを閉じる
+        closeAllChatWindows();
+        startShorikikaChat();
+      };
     }
     
     // 後方互換性のための関数を設定
     if (typeof window.openSmallBusinessChatbot !== 'function') {
-      window.openSmallBusinessChatbot = startShoukiboJizokaChat;
+      window.openSmallBusinessChatbot = () => {
+        closeAllChatWindows();
+        startShoukiboJizokaChat();
+      };
     }
     
     if (typeof window.openSubsidyChatbot !== 'function') {
-      window.openSubsidyChatbot = startShorikikaChat;
+      window.openSubsidyChatbot = () => {
+        closeAllChatWindows();
+        startShorikikaChat();
+      };
     }
 
     return () => {
@@ -42,6 +56,24 @@ export const SubsidyChatbot = () => {
       console.log("補助金チャットボットグローバル関数をクリーンアップします");
     };
   }, [startShoukiboJizokaChat, startShorikikaChat, isInitialized]);
+
+  // ウィンドウの競合を避けるために他のウィンドウを閉じる関数
+  const closeAllChatWindows = () => {
+    const windowIds = [
+      'shoukibo-jizoka-chatbot-window',
+      'shorikika-chatbot-window',
+      'dify-chatbot-bubble-window',
+      'mock-chat-window'
+    ];
+    
+    windowIds.forEach(id => {
+      const window = document.getElementById(id);
+      if (window && window.style.display !== 'none') {
+        window.style.display = 'none';
+        console.log(`${id}を閉じました (SubsidyChatbot)`);
+      }
+    });
+  };
 
   // ChatbotInitializerを返す
   return <ChatbotInitializer />;

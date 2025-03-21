@@ -64,68 +64,14 @@ export const createFallbackDisplay = (windowId: string, title: string) => {
           // ウィンドウをいったん閉じる
           chatWindow.style.display = 'none';
           
-          // 更新を試みる - ページをリロードせずにスクリプトを再読込
-          const scriptId = windowId === 'shoukibo-jizoka-chatbot-window' ? 'shoukibo-jizoka-chatbot' : 'shorikika-chatbot';
-          const oldScript = document.getElementById(scriptId);
-          
-          if (oldScript) {
-            // 古いスクリプトを削除
-            oldScript.remove();
-            
-            // 新しいスクリプトを作成
-            const newScript = document.createElement('script');
-            newScript.id = scriptId;
-            newScript.src = 'https://unpkg.com/@dify-ai/chatbot@0.1.25/dist/index.min.js';
-            newScript.setAttribute('crossorigin', 'anonymous');
-            newScript.setAttribute('referrerpolicy', 'no-referrer');
-            
-            if (windowId === 'shoukibo-jizoka-chatbot-window') {
-              newScript.setAttribute('data-chat-name', '小規模持続化補助金AI相談');
-              newScript.setAttribute('data-element-id', 'shoukibo-jizoka-chatbot');
-              newScript.setAttribute('data-window-id', 'shoukibo-jizoka-chatbot-window');
-              newScript.setAttribute('data-button-id', 'shoukibo-jizoka-chatbot-button');
-            } else {
-              newScript.setAttribute('data-chat-name', '省力化投資補助金AI相談');
-              newScript.setAttribute('data-element-id', 'shorikika-chatbot');
-              newScript.setAttribute('data-window-id', 'shorikika-chatbot-window');
-              newScript.setAttribute('data-button-id', 'shorikika-chatbot-button');
-            }
-            
-            newScript.async = true;
-            newScript.defer = true;
-            
-            // イベントハンドラを追加
-            newScript.onload = () => {
-              console.log(`${scriptId}スクリプトが再読み込みされました`);
-              // 対応するチャットボットを再起動
-              setTimeout(() => {
-                if (windowId === 'shoukibo-jizoka-chatbot-window' && window.startShoukiboJizokaChat) {
-                  window.startShoukiboJizokaChat();
-                } else if (windowId === 'shorikika-chatbot-window' && window.startShorikikaChat) {
-                  window.startShorikikaChat();
-                }
-              }, 500);
-            };
-            
-            newScript.onerror = () => {
-              console.error(`${scriptId}スクリプトの再読み込みに失敗しました`);
-              // 対応するチャットボットを再起動（フォールバックとして）
-              if (windowId === 'shoukibo-jizoka-chatbot-window' && window.startShoukiboJizokaChat) {
-                window.startShoukiboJizokaChat();
-              } else if (windowId === 'shorikika-chatbot-window' && window.startShorikikaChat) {
-                window.startShorikikaChat();
-              }
-            };
-            
-            // ドキュメントに追加
-            document.body.appendChild(newScript);
+          // 更新を試みる - 対応するチャットボットを再起動
+          if (windowId === 'shoukibo-jizoka-chatbot-window' && window.startShoukiboJizokaChat) {
+            window.startShoukiboJizokaChat();
+          } else if (windowId === 'shorikika-chatbot-window' && window.startShorikikaChat) {
+            window.startShorikikaChat();
           } else {
-            // スクリプトが見つからない場合は、既存の関数を使用
-            if (windowId === 'shoukibo-jizoka-chatbot-window' && window.startShoukiboJizokaChat) {
-              window.startShoukiboJizokaChat();
-            } else if (windowId === 'shorikika-chatbot-window' && window.startShorikikaChat) {
-              window.startShorikikaChat();
-            }
+            // スクリプトを再読み込み
+            reloadChatbotScript(windowId);
           }
         }
       });
@@ -143,4 +89,78 @@ export const createFallbackDisplay = (windowId: string, title: string) => {
   }, 100);
   
   return container;
+};
+
+/**
+ * チャットボットスクリプトを再読み込みする関数
+ */
+const reloadChatbotScript = (windowId: string) => {
+  try {
+    const scriptId = windowId === 'shoukibo-jizoka-chatbot-window' ? 'shoukibo-jizoka-chatbot' : 'shorikika-chatbot';
+    const oldScript = document.getElementById(scriptId);
+    
+    if (oldScript) {
+      // 古いスクリプトを削除
+      oldScript.remove();
+      
+      // 新しいスクリプトを作成
+      const newScript = document.createElement('script');
+      newScript.id = scriptId;
+      newScript.src = 'https://unpkg.com/@dify-ai/chatbot@0.1.25/dist/index.min.js';
+      newScript.setAttribute('crossorigin', 'anonymous');
+      newScript.setAttribute('referrerpolicy', 'no-referrer');
+      
+      if (windowId === 'shoukibo-jizoka-chatbot-window') {
+        newScript.setAttribute('data-chat-name', '小規模持続化補助金AI相談');
+        newScript.setAttribute('data-element-id', 'shoukibo-jizoka-chatbot');
+        newScript.setAttribute('data-window-id', 'shoukibo-jizoka-chatbot-window');
+        newScript.setAttribute('data-button-id', 'shoukibo-jizoka-chatbot-button');
+      } else {
+        newScript.setAttribute('data-chat-name', '省力化投資補助金AI相談');
+        newScript.setAttribute('data-element-id', 'shorikika-chatbot');
+        newScript.setAttribute('data-window-id', 'shorikika-chatbot-window');
+        newScript.setAttribute('data-button-id', 'shorikika-chatbot-button');
+      }
+      
+      newScript.async = true;
+      newScript.defer = true;
+      
+      // イベントハンドラを追加
+      newScript.onload = () => {
+        console.log(`${scriptId}スクリプトが再読み込みされました`);
+        // 対応するチャットボットを再起動
+        setTimeout(() => {
+          if (windowId === 'shoukibo-jizoka-chatbot-window' && window.startShoukiboJizokaChat) {
+            window.startShoukiboJizokaChat();
+          } else if (windowId === 'shorikika-chatbot-window' && window.startShorikikaChat) {
+            window.startShorikikaChat();
+          }
+        }, 500);
+      };
+      
+      newScript.onerror = () => {
+        console.error(`${scriptId}スクリプトの再読み込みに失敗しました`);
+        // 対応するチャットボットを再起動（フォールバックとして）
+        if (windowId === 'shoukibo-jizoka-chatbot-window' && window.startShoukiboJizokaChat) {
+          window.startShoukiboJizokaChat();
+        } else if (windowId === 'shorikika-chatbot-window' && window.startShorikikaChat) {
+          window.startShorikikaChat();
+        }
+      };
+      
+      // ドキュメントに追加
+      document.body.appendChild(newScript);
+      console.log(`${scriptId}スクリプトを再読み込みしました`);
+    } else {
+      console.warn(`${windowId}のスクリプトが見つかりません`);
+      // スクリプトが見つからない場合は、既存の関数を使用
+      if (windowId === 'shoukibo-jizoka-chatbot-window' && window.startShoukiboJizokaChat) {
+        window.startShoukiboJizokaChat();
+      } else if (windowId === 'shorikika-chatbot-window' && window.startShorikikaChat) {
+        window.startShorikikaChat();
+      }
+    }
+  } catch (error) {
+    console.error('チャットボットスクリプトの再読み込み中にエラーが発生しました:', error);
+  }
 };
