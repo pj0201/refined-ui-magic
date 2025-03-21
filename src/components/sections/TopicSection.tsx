@@ -117,13 +117,13 @@ export const TopicSection = () => {
 
   if (isLoading) return <div className="loading">トピックを読み込み中...</div>;
   
-  // Handle the case where error exists
+  // Handle the case where error exists - Fix TypeScript errors here
   if (error) {
-    // Create a safe error message string regardless of error type
+    // Create a safe error message string without using instanceof or accessing .message
     const errorMessage = typeof error === 'string' 
       ? error 
-      : error instanceof Error 
-        ? error.message
+      : typeof error === 'object' && error !== null && 'message' in error
+        ? (error as { message: string }).message
         : "不明なエラーが発生しました";
     
     return <div className="error">エラーが発生しました: {errorMessage}</div>;
