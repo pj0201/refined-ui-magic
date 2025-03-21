@@ -14,6 +14,13 @@ export const safelyCloseWindow = (windowId: string) => {
       
       // スタイルクリーンアップ
       document.body.classList.remove('chatbot-window-active');
+      
+      // 関連する追加要素も削除
+      const relatedElements = document.querySelectorAll(`[data-related-to="${windowId}"]`);
+      relatedElements.forEach(el => el.remove());
+      
+      // イベントを発行して閉じられたことを通知
+      window.dispatchEvent(new CustomEvent('chatbot-window-closed', { detail: { windowId } }));
     }
   } catch (error) {
     console.error(`チャットウィンドウ ${windowId} を閉じる際にエラーが発生しました:`, error);
@@ -103,6 +110,27 @@ export const setupChatbotStyles = () => {
         position: relative !important;
       }
       
+      /* チャットウィンドウのコンテンツ */
+      .dify-chatbot-bubble-window-content {
+        flex: 1 !important;
+        overflow: hidden !important;
+        position: relative !important;
+        height: calc(100% - 50px) !important;
+      }
+      
+      /* iframe スタイル修正 */
+      .dify-chatbot-bubble-window-content iframe {
+        width: 100% !important;
+        height: 100% !important;
+        border: none !important;
+        display: block !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+      }
+      
       /* 閉じるボタン */
       .chat-window-close-button,
       .custom-close-button {
@@ -174,6 +202,12 @@ export const addCustomCloseButtons = (safelyCloseWindowFn: (windowId: string) =>
           e.preventDefault();
           e.stopPropagation();
           safelyCloseWindowFn(id);
+          
+          // 閉じた後に少し待機してから次の操作を許可
+          setTimeout(() => {
+            // イベントを発行して閉じられたことを通知
+            window.dispatchEvent(new CustomEvent('chatbot-closed-completely', { detail: { windowId: id } }));
+          }, 500);
         };
         header.appendChild(closeButton);
         console.log(`${id} に閉じるボタンを追加しました`);
@@ -197,10 +231,14 @@ export const closeOtherChatWindows = (keepWindowId: string, safelyCloseWindowFn:
     
     windowIds.forEach(id => {
       if (id !== keepWindowId) {
-        safelyCloseWindowFn(id);
+        const window = document.getElementById(id);
+        if (window) {
+          safelyCloseWindowFn(id);
+        }
       }
     });
   } catch (error) {
     console.error("他のチャットウィンドウを閉じる際にエラーが発生しました:", error);
   }
 };
+

@@ -37,13 +37,15 @@ export const createChatWindowContent = (title: string, iframeSrc: string) => {
       flex: 1;
       overflow: hidden;
       position: relative;
+      height: calc(100% - 50px);
     ">
       <iframe 
         src="${iframeSrc}" 
-        style="width: 100%; height: 100%; border: none; display: block;"
+        style="width: 100%; height: 100%; border: none; display: block; position: absolute; top: 0; left: 0; right: 0; bottom: 0;"
         allow="microphone"
         title="${title}"
         loading="eager"
+        frameborder="0"
       ></iframe>
     </div>
   `;
