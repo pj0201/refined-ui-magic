@@ -64,8 +64,8 @@ export const useChatWindows = () => {
       `;
       
       // HTMLコンテンツを設定
-      // 完全なURLを設定（サブドメインを含む）
-      const iframeSrc = "https://udify.app/chatbot/UlZEhca44ZNfJtdS";
+      // udify.app → api.dify.ai に変更し、正しいトークンを設定
+      const iframeSrc = "https://api.dify.ai/embed/UlZEhca44ZNfJtdS";
       chatbotWindow.innerHTML = createChatWindowContent("一般チャット", iframeSrc);
       
       // DOMに追加
@@ -129,7 +129,8 @@ export const useChatWindows = () => {
       `;
       
       // HTMLコンテンツを設定 - 完全なURLを指定
-      const iframeSrc = "https://udify.app/chatbot/jpVCvswMb5KaQFLk";
+      // udify.app → api.dify.ai に変更し、正しいトークンを設定
+      const iframeSrc = "https://api.dify.ai/embed/jpVCvswMb5KaQFLk";
       chatbotWindow.innerHTML = createChatWindowContent("小規模持続化補助金チャット", iframeSrc);
       
       // DOMに追加
@@ -190,7 +191,8 @@ export const useChatWindows = () => {
       `;
       
       // HTMLコンテンツを設定 - 完全なURLを指定
-      const iframeSrc = "https://udify.app/chatbot/kAwDqVSCnjM6ZfEY";
+      // udify.app → api.dify.ai に変更し、正しいトークンを設定
+      const iframeSrc = "https://api.dify.ai/embed/kAwDqVSCnjM6ZfEY";
       chatbotWindow.innerHTML = createChatWindowContent("省力化投資補助金チャット", iframeSrc);
       
       // DOMに追加

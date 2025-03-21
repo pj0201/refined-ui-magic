@@ -4,9 +4,10 @@
  */
 export const createChatWindowContent = (title: string, iframeSrc: string) => {
   // iframeのURLが正しいことを確認
+  // udify.app → api.dify.ai に変更
   const safeIframeSrc = iframeSrc.startsWith('https://') 
     ? iframeSrc 
-    : `https://udify.app/chatbot/${iframeSrc}`;
+    : `https://api.dify.ai/chatbot/${iframeSrc}`;
   
   const htmlContent = `
     <div class="dify-chatbot-bubble-window-header" style="
@@ -53,6 +54,7 @@ export const createChatWindowContent = (title: string, iframeSrc: string) => {
         loading="eager"
         frameborder="0"
         sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-modals allow-downloads"
+        referrerpolicy="no-referrer"
       ></iframe>
     </div>
   `;
