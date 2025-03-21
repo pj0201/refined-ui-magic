@@ -8,6 +8,7 @@ interface Window {
   // 後方互換性のための関数
   openSmallBusinessChatbot?: () => void;
   openSubsidyChatbot?: () => void;
+  openChatbot?: () => void;
   
   // チャットボット設定
   shoukiboJizokaChatbotConfig?: {
@@ -29,6 +30,14 @@ interface Window {
   
   // 省力化投資補助金チャットボット
   shorikika_chatbot?: {
+    toggle: () => void;
+    open?: () => void;
+    close?: () => void;
+    sendMessage?: (message: string) => void;
+  };
+  
+  // Dify一般チャットボット
+  difyChatbot?: {
     toggle: () => void;
     open?: () => void;
     close?: () => void;

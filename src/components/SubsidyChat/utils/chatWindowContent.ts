@@ -127,13 +127,6 @@ export const createScriptBasedChatWindow = (chatbotId: string, title: string) =>
     const chatWindow = document.getElementById(chatbotId + '-window');
     if (chatWindow) {
       chatWindow.style.display = 'none';
-      
-      // グローバルオブジェクトを使用して閉じる
-      if (chatbotId === 'dify-chatbot' && window.difyChatbot) {
-        if (typeof window.difyChatbot.toggle === 'function') {
-          window.difyChatbot.toggle();
-        }
-      }
     }
     
     console.log(`${chatbotId}を閉じました`);

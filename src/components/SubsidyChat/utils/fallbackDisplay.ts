@@ -48,9 +48,7 @@ export const createFallbackDisplay = (windowId: string, title: string) => {
           chatWindow.remove();
           
           // 対応するチャットボットを再起動
-          if (windowId === 'dify-chatbot-bubble-window' && window.openChatbot) {
-            window.openChatbot();
-          } else if (windowId === 'shoukibo-jizoka-chatbot-window' && window.startShoukiboJizokaChat) {
+          if (windowId === 'shoukibo-jizoka-chatbot-window' && window.startShoukiboJizokaChat) {
             window.startShoukiboJizokaChat();
           } else if (windowId === 'shorikika-chatbot-window' && window.startShorikikaChat) {
             window.startShorikikaChat();

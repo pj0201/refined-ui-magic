@@ -1,4 +1,3 @@
-
 import { TopicItem } from "./TopicItem";
 import { useTopicData } from "@/hooks/useTopicData";
 import { useEffect, useState, useCallback, useRef } from "react";
@@ -10,14 +9,6 @@ export const TopicSection = () => {
   const chatInitialized = useRef(false);
   
   // チャットボットの開始関数
-  const openChatbot = useCallback(() => {
-    if (typeof window.openChatbot === 'function') {
-      window.openChatbot();
-    } else {
-      toast.error("チャットボットが初期化されていません。ページを再読み込みしてください。");
-    }
-  }, []);
-  
   const startShoukiboJizokaChat = useCallback(() => {
     if (typeof window.startShoukiboJizokaChat === 'function') {
       window.startShoukiboJizokaChat();
@@ -37,7 +28,7 @@ export const TopicSection = () => {
   // チャットボットの読み込み状態を確認
   useEffect(() => {
     const checkChatsReady = () => {
-      if (window.difyChatbot) {
+      if (window.shoukiboJizokaChatbot || window.shorikika_chatbot) {
         setChatbotsReady(true);
         return true;
       }
@@ -97,13 +88,13 @@ export const TopicSection = () => {
         return;
       }
       
-      // 一般チャットボットを開く（デフォルト）
-      openChatbot();
+      // デフォルトは小規模持続化補助金チャットボットを開く
+      startShoukiboJizokaChat();
     } catch (error) {
       console.error('チャットボットを開く際にエラーが発生しました:', error);
       toast.error('チャットボットを開けませんでした。ページを再読み込みしてください。');
     }
-  }, [openChatbot, startShoukiboJizokaChat, startShorikikaChat]);
+  }, [startShoukiboJizokaChat, startShorikikaChat]);
 
   if (isLoading) return <div className="loading">トピックを読み込み中...</div>;
   
