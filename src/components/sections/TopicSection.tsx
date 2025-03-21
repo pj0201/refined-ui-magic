@@ -117,7 +117,7 @@ export const TopicSection = () => {
 
   if (isLoading) return <div className="loading">トピックを読み込み中...</div>;
   
-  // Handle the case where error exists - Fix TypeScript errors here
+  // Handle the case where error exists
   if (error) {
     // Create a safe error message string without using instanceof or accessing .message
     const errorMessage = typeof error === 'string' 
