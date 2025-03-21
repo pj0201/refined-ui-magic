@@ -8,9 +8,176 @@
     <title>PLANNINGJOY株式会社</title>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+    
+    <!-- チャットボット共通スタイル -->
+    <style id="dify-chat-styles">
+      /* チャットボットスタイルは JavaScript で動的に挿入されます */
+      
+      /* 基本スタイルのみ定義 */
+      #dify-chatbot-bubble-window,
+      #shoukibo-jizoka-chatbot-window,
+      #shorikika-chatbot-window {
+        width: 90vw !important;
+        max-width: 24rem !important;
+        height: 80vh !important;
+        max-height: 50rem !important;
+        position: fixed !important;
+        bottom: auto !important;
+        top: 50px !important;
+        right: 20px !important;
+        z-index: 2147483647 !important;
+        border-radius: 12px !important;
+        overflow: hidden !important;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        background-color: #fff !important;
+        opacity: 1 !important;
+        visibility: visible !important;
+      }
+      
+      /* モバイル向け調整 */
+      @media (max-width: 640px) {
+        #dify-chatbot-bubble-window,
+        #shoukibo-jizoka-chatbot-window,
+        #shorikika-chatbot-window {
+          width: 90vw !important;
+          height: 70vh !important;
+          top: 15vh !important;
+          right: 5vw !important;
+          left: 5vw !important;
+        }
+      }
+      
+      /* カスタム閉じるボタン */
+      .custom-close-button {
+        position: absolute !important;
+        top: 10px !important;
+        right: 10px !important;
+        background-color: transparent !important;
+        border: none !important;
+        color: white !important;
+        width: 30px !important;
+        height: 30px !important;
+        font-size: 20px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+        z-index: 2147483650 !important;
+        border-radius: 50% !important;
+        transition: background-color 0.2s ease !important;
+      }
+      
+      .custom-close-button:hover {
+        background-color: rgba(255, 255, 255, 0.2) !important;
+      }
+      
+      /* チャットボットボタンのスタイル */
+      #dify-chatbot-bubble-button,
+      #shoukibo-jizoka-chatbot-button,
+      #shorikika-chatbot-button {
+        position: fixed !important;
+        bottom: 20px !important;
+        right: 20px !important;
+        width: 50px !important;
+        height: 50px !important;
+        border-radius: 50% !important;
+        background-color: #6366f1 !important;
+        color: white !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        cursor: pointer !important;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1) !important;
+        z-index: 9999 !important;
+      }
+      
+      /* チャットウィンドウが表示されている時はボタンを非表示 */
+      .chatbot-window-active #dify-chatbot-bubble-button,
+      .chatbot-window-active #shoukibo-jizoka-chatbot-button,
+      .chatbot-window-active #shorikika-chatbot-button {
+        display: none !important;
+      }
+      
+      /* エラーメッセージのスタイル上書き */
+      .dify-error-message, 
+      [class*="error-message"], 
+      [class*="errorMessage"] {
+        display: none !important;
+      }
+      
+      /* フォールバックメッセージ */
+      #chat-fallback-message {
+        text-align: center;
+        padding: 2rem;
+        font-size: 0.9rem;
+        color: #4B5563;
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
+    
+    <!-- Dify 一般チャットボット設定 -->
+    <script>
+      window.difyChatbotConfig = {
+        token: 'UlZEhca44ZNfJtdS',
+        serverUrl: 'https://api.dify.ai'
+      }
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@dify-ai/chatbot/dist/index.min.js"
+      id="UlZEhca44ZNfJtdS"
+      async
+      defer
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+      onload="console.log('一般チャットボットスクリプトが読み込まれました');">
+    </script>
+    
+    <!-- 小規模持続化補助金専用チャットボット設定 -->
+    <script>
+      window.shoukiboJizokaChatbotConfig = {
+        token: 'jpVCvswMb5KaQFLk', 
+        serverUrl: 'https://api.dify.ai'
+      }
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@dify-ai/chatbot/dist/index.min.js"
+      id="shoukibo-jizoka-chatbot"
+      data-chat-name="小規模持続化補助金AI相談"
+      referrerpolicy="no-referrer"
+      crossorigin="anonymous"
+      data-element-id="shoukibo-jizoka-chatbot"
+      data-window-id="shoukibo-jizoka-chatbot-window"
+      data-button-id="shoukibo-jizoka-chatbot-button"
+      async
+      defer
+      onload="console.log('小規模持続化補助金チャットボットスクリプトが読み込まれました');">
+    </script>
+    
+    <!-- 省力化投資補助金専用チャットボット設定 -->
+    <script>
+      window.shorikikaChatbotConfig = {
+        token: 'kAwDqVSCnjM6ZfEY', 
+        serverUrl: 'https://api.dify.ai'
+      }
+    </script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/@dify-ai/chatbot/dist/index.min.js"
+      id="shorikika-chatbot"
+      data-chat-name="省力化投資補助金AI相談"
+      referrerpolicy="no-referrer"
+      crossorigin="anonymous"
+      data-element-id="shorikika-chatbot"
+      data-window-id="shorikika-chatbot-window"
+      data-button-id="shorikika-chatbot-button"
+      async
+      defer
+      onload="console.log('省力化投資補助金チャットボットスクリプトが読み込まれました');">
+    </script>
+    
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
