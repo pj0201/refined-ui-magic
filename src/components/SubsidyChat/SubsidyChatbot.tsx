@@ -1,3 +1,4 @@
+
 import { useEffect, useState, useCallback } from "react";
 import { toast } from "sonner";
 import { hideDifyBranding } from './styles/chatButtonStyles';
@@ -16,6 +17,14 @@ declare global {
       toggleUI: (show: boolean) => void;
       sendMessage?: (message: string) => void;
     };
+    // 他のグローバル変数・関数
+    openChatbot?: () => void;
+    startShoukiboJizokaChat?: () => void;
+    openSmallBusinessChatbot?: () => void;
+    startShorikikaChat?: () => void;
+    openSubsidyChatbot?: () => void;
+    subsidyChatbotInitialized?: boolean;
+    difyInitializationAttempted?: boolean;
   }
 }
 
