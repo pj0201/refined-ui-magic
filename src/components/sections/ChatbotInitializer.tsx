@@ -23,28 +23,15 @@ export const ChatbotInitializer: React.FC = () => {
       }, 3000);
       
       // DifyのURLやトークンが変更された可能性を確認するために、
-      // APIの可用性を定期的にチェック
+      // APIの可用性を定期的にチェック - ただしCORSエラーを避けるために特別なチェック方法を使用
       const intervalCheck = setInterval(() => {
-        // Fetch APIを使用して簡単なConnectivity Check
-        fetch('https://api.dify.ai/health', { 
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-          mode: 'cors',
-        })
-        .then(response => {
-          if (!response.ok) {
-            console.error(`Dify API Health Check failed with status: ${response.status}`);
-            throw new Error('Dify API connection failed');
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log("Dify API Health Check successful:", data);
-        })
-        .catch(error => {
-          console.error("Dify API Health Check error:", error);
-          // エラー時にはコンソールにのみ出力し、ユーザーには表示しない
-        });
+        // スクリプトベースでのチェック - window.difyChatbotが存在するかどうか
+        if (window.difyChatbot) {
+          console.log("Difyチャットボットが利用可能です");
+        } else {
+          console.warn("Difyチャットボットが見つかりません - 再初期化が必要かもしれません");
+          // ここでは直接再初期化せず、問題を検出するだけ
+        }
       }, 60000); // 1分ごとにチェック
       
       return () => {
