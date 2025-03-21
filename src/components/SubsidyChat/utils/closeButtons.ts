@@ -2,7 +2,7 @@
 /**
  * カスタム閉じるボタンを追加する関数
  */
-export const addCustomCloseButtons = (safelyCloseWindowFn: (windowId: string) => void) => {
+export const addCustomCloseButtons = (closeWindowCallback: (windowId: string) => void) => {
   try {
     // チャットボットウィンドウのヘッダーを取得
     const chatWindows = [
@@ -18,20 +18,30 @@ export const addCustomCloseButtons = (safelyCloseWindowFn: (windowId: string) =>
         const closeButton = document.createElement('button');
         closeButton.innerHTML = '×';
         closeButton.className = 'custom-close-button';
-        closeButton.setAttribute('aria-label', 'チャットを閉じる');
-        closeButton.onclick = function(e) {
+        closeButton.setAttribute('style', `
+          position: absolute !important;
+          top: 10px !important;
+          right: 10px !important;
+          width: 30px !important;
+          height: 30px !important;
+          border-radius: 50% !important;
+          background-color: rgba(255, 255, 255, 0.2) !important;
+          border: none !important;
+          color: white !important;
+          font-size: 18px !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          cursor: pointer !important;
+          transition: background-color 0.3s !important;
+          z-index: 10000 !important;
+        `);
+        closeButton.onclick = (e) => {
           e.preventDefault();
           e.stopPropagation();
-          safelyCloseWindowFn(id);
-          
-          // 閉じた後に少し待機してから次の操作を許可
-          setTimeout(() => {
-            // イベントを発行して閉じられたことを通知
-            window.dispatchEvent(new CustomEvent('chatbot-closed-completely', { detail: { windowId: id } }));
-          }, 500);
+          closeWindowCallback(id);
         };
         header.appendChild(closeButton);
-        console.log(`${id} に閉じるボタンを追加しました`);
       }
     });
   } catch (error) {

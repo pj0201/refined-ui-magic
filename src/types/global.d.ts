@@ -19,7 +19,7 @@ interface Window {
     token: string;
     serverUrl: string;
   };
-  shorikika_chatbotConfig?: {
+  shorikikaChatbotConfig?: {
     token: string;
     serverUrl: string;
   };

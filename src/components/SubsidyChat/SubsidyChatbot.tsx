@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useCallback } from "react";
 import { toast } from "sonner";
 import { hideDifyBranding } from './styles/chatButtonStyles';
@@ -283,7 +282,7 @@ export const SubsidyChatbot = () => {
       const existingScript = document.querySelector('script[src*="dify"]');
       if (!existingScript) {
         const script = document.createElement('script');
-        script.src = "https://udify.app/embed.js";
+        script.src = "https://api.dify.ai/embed.js";
         script.async = true;
         script.defer = true;
         document.head.appendChild(script);

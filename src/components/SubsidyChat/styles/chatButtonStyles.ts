@@ -1,63 +1,31 @@
 
 /**
- * チャットボタンとDifyブランディング関連のスタイル定義
- */
-
-/**
- * Difyのブランディングとエラーメッセージを非表示にする関数
- * フッター、ロゴ、「Powered by」などの要素とエラーメッセージを非表示にします
+ * Difyのブランディングを非表示にする関数
  */
 export const hideDifyBranding = () => {
-  const style = document.createElement('style');
-  style.textContent = `
-    /* Difyのブランディングを完全に非表示にする */
-    .dify-chatbot-bubble-window-footer,
-    .dify-chatbot-bubble-window-footer *,
-    [class*="dify-chatbot-bubble-window-footer"],
-    [id*="dify-chatbot-bubble-window-footer"],
-    [class*="dify"] [class*="footer"],
-    [id*="dify"] [class*="footer"],
-    [class*="powered-by"],
-    [id*="powered-by"],
-    [class*="powered"],
-    [id*="powered"],
-    [class*="brand"],
-    [id*="brand"],
-    [class*="logo"],
-    [id*="logo"],
-    a[href*="dify.ai"],
-    a[href*="langgenius"],
-    a[href*="chat.langgenius"],
-    img[src*="dify"],
-    img[src*="langgenius"] {
-      display: none !important;
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
-    }
-    
-    /* カスタム閉じるボタンのスタイル */
-    .custom-close-button {
-      position: absolute !important;
-      top: 10px !important;
-      right: 10px !important;
-      width: 30px !important;
-      height: 30px !important;
-      border-radius: 50% !important;
-      background-color: rgba(255, 255, 255, 0.2) !important;
-      border: none !important;
-      color: white !important;
-      font-size: 18px !important;
-      display: flex !important;
-      align-items: center !important;
-      justify-content: center !important;
-      cursor: pointer !important;
-      z-index: 10000 !important;
-    }
-    
-    .custom-close-button:hover {
-      background-color: rgba(255, 255, 255, 0.4) !important;
-    }
-  `;
-  document.head.appendChild(style);
+  try {
+    const style = document.createElement('style');
+    style.textContent = `
+      /* Difyのブランディング要素を非表示 */
+      .dify-chatbot-bubble-window-footer,
+      [class*="dify"] [class*="footer"],
+      [class*="powered-by"],
+      a[href*="dify.ai"],
+      [class*="footer-powered"] {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        height: 0 !important;
+        width: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+      }
+    `;
+    document.head.appendChild(style);
+    console.log("Difyのブランディングを非表示にしました");
+  } catch (error) {
+    console.error("Difyブランディングの非表示処理中にエラーが発生しました:", error);
+  }
 };

@@ -1,9 +1,10 @@
 
 /**
- * Difyの青いボタンを非表示にする関数
+ * 青いデフォルトのチャットボタンを非表示にする関数
  */
 export const hideBlueButton = () => {
   try {
+    // スタイルを追加して青いボタンを非表示にする
     const style = document.createElement('style');
     style.textContent = `
       /* 青いボタンを非表示にする */
@@ -18,8 +19,8 @@ export const hideBlueButton = () => {
       }
     `;
     document.head.appendChild(style);
-    console.log("青いボタンを非表示にするスタイルを適用しました");
+    console.log("青いボタンを非表示にしました");
   } catch (error) {
-    console.error("青いボタンを非表示にする中にエラーが発生しました:", error);
+    console.error("青いボタンの非表示処理中にエラーが発生しました:", error);
   }
 };

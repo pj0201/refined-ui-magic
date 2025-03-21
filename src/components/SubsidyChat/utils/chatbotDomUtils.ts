@@ -1,5 +1,4 @@
 
-import { toast } from "sonner";
 import { safelyCloseWindow } from "./windowClose";
 import { hideBlueButton } from "./buttonHide";
 import { setupChatbotStyles } from "./styleSetup";

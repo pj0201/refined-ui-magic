@@ -1,8 +1,9 @@
 
 /**
  * 他のチャットウィンドウを閉じる関数
+ * @param currentWindowId 開いたままにするウィンドウのID
  */
-export const closeOtherChatWindows = (keepWindowId: string, safelyCloseWindowFn: (windowId: string) => void) => {
+export const closeOtherChatWindows = (currentWindowId: string) => {
   try {
     const windowIds = [
       'dify-chatbot-bubble-window',
@@ -11,10 +12,10 @@ export const closeOtherChatWindows = (keepWindowId: string, safelyCloseWindowFn:
     ];
     
     windowIds.forEach(id => {
-      if (id !== keepWindowId) {
+      if (id !== currentWindowId) {
         const window = document.getElementById(id);
         if (window) {
-          safelyCloseWindowFn(id);
+          window.style.display = 'none';
         }
       }
     });
