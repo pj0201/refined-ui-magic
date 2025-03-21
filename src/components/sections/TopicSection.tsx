@@ -117,21 +117,14 @@ export const TopicSection = () => {
 
   if (isLoading) return <div className="loading">トピックを読み込み中...</div>;
   
-  // Handle the case where error is not null
-  if (error !== null) {
-    // Create a local errorMessage variable that TypeScript knows is not null
-    const errorMessage = (() => {
-      if (typeof error === 'object' && error !== null) {
-        if ('message' in error) {
-          return (error as Error).message;
-        }
-        return String(error);
-      }
-      if (typeof error === 'string') {
-        return error;
-      }
-      return "不明なエラーが発生しました";
-    })();
+  // Handle the case where error exists
+  if (error) {
+    // Create a safe error message string regardless of error type
+    const errorMessage = typeof error === 'string' 
+      ? error 
+      : error && typeof error === 'object' && 'message' in error
+        ? String((error as Error).message)
+        : "不明なエラーが発生しました";
     
     return <div className="error">エラーが発生しました: {errorMessage}</div>;
   }
