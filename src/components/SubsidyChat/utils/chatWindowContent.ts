@@ -1,10 +1,10 @@
 
 /**
  * チャットボット用のHTMLコンテンツを作成する関数
+ * Difyの埋め込みアプローチに合わせた実装
  */
 export const createChatWindowContent = (title: string, iframeSrc: string) => {
   // iframeのURLが正しいことを確認
-  // コードを簡素化し、api.dify.aiを使用
   const safeIframeSrc = iframeSrc.startsWith('https://') 
     ? iframeSrc 
     : `https://api.dify.ai/embed/${iframeSrc}`;
@@ -63,8 +63,8 @@ export const createChatWindowContent = (title: string, iframeSrc: string) => {
 };
 
 /**
- * Difyのデフォルトボット用に最適化された代替表示を作成する関数
- * Scriptタグ方式で埋め込む場合に使用
+ * スクリプトタグ方式で埋め込む場合のコンテナを作成する関数
+ * Difyのデフォルトbot用に最適化
  */
 export const createScriptBasedChatWindow = (chatbotId: string, title: string) => {
   const containerElement = document.createElement('div');
@@ -118,6 +118,27 @@ export const createScriptBasedChatWindow = (chatbotId: string, title: string) =>
   `;
   closeButton.textContent = '×';
   
+  // 閉じるボタンのクリックイベントを設定
+  closeButton.onclick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // ウィンドウを閉じる処理を実行
+    const chatWindow = document.getElementById(chatbotId + '-window');
+    if (chatWindow) {
+      chatWindow.style.display = 'none';
+      
+      // グローバルオブジェクトを使用して閉じる
+      if (chatbotId === 'dify-chatbot' && window.difyChatbot) {
+        if (typeof window.difyChatbot.toggle === 'function') {
+          window.difyChatbot.toggle();
+        }
+      }
+    }
+    
+    console.log(`${chatbotId}を閉じました`);
+  };
+  
   // チャットコンテンツのコンテナを作成
   const contentContainer = document.createElement('div');
   contentContainer.className = 'dify-script-window-content';
@@ -151,4 +172,23 @@ export const createScriptBasedChatWindow = (chatbotId: string, title: string) =>
   containerElement.appendChild(contentContainer);
   
   return containerElement;
+};
+
+// スクリプトタグ埋め込み用の設定を生成する関数
+export const createDifyEmbedScript = (chatPath: string, containerId: string) => {
+  const script = document.createElement('script');
+  script.id = `${containerId}-script`;
+  script.async = true;
+  script.defer = true;
+  script.src = 'https://udify.app/embed.js';
+  script.dataset.chatbotConfig = JSON.stringify({
+    api_url: 'https://api.dify.ai/v1',
+    chat_path: chatPath,
+    container_id: containerId,
+    theme: 'auto',
+    default_opening: true,
+    position: 'right'
+  });
+  
+  return script;
 };

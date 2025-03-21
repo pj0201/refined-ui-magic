@@ -1,37 +1,7 @@
+
 /**
  * チャットボタンとDifyブランディング関連のスタイル定義
  */
-
-/**
- * 青いボタンを非表示にする関数
- * チャットボットの青いボタンを完全に非表示にします
- */
-export const hideBlueButton = () => {
-  const style = document.createElement('style');
-  style.textContent = `
-    /* 青いボタンを完全に非表示 */
-    #dify-chatbot-bubble-button,
-    .dify-chatbot-bubble-button,
-    [id^="dify-chatbot-bubble-button"],
-    [class^="dify-chatbot-bubble-button"],
-    [id*="dify-chatbot-bubble-button"],
-    [class*="dify-chatbot-bubble-button"],
-    [id*="chatbot-bubble-button"],
-    [class*="chatbot-bubble-button"] {
-      display: none !important;
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
-      width: 0 !important;
-      height: 0 !important;
-      position: absolute !important;
-      left: -9999px !important;
-      top: -9999px !important;
-      z-index: -1 !important;
-    }
-  `;
-  document.head.appendChild(style);
-};
 
 /**
  * Difyのブランディングとエラーメッセージを非表示にする関数
@@ -64,27 +34,29 @@ export const hideDifyBranding = () => {
       opacity: 0 !important;
       visibility: hidden !important;
       pointer-events: none !important;
-      width: 0 !important;
-      height: 0 !important;
-      position: absolute !important;
-      left: -9999px !important;
-      top: -9999px !important;
-      z-index: -1 !important;
     }
     
-    /* エラーメッセージも非表示にする */
-    .dify-error-message,
-    [class*="dify-error"],
-    [id*="dify-error"],
-    [class*="error-message"],
-    [id*="error-message"],
-    .toast-error,
-    [class*="toast-error"],
-    [id*="toast-error"] {
-      display: none !important;
-      opacity: 0 !important;
-      visibility: hidden !important;
-      pointer-events: none !important;
+    /* カスタム閉じるボタンのスタイル */
+    .custom-close-button {
+      position: absolute !important;
+      top: 10px !important;
+      right: 10px !important;
+      width: 30px !important;
+      height: 30px !important;
+      border-radius: 50% !important;
+      background-color: rgba(255, 255, 255, 0.2) !important;
+      border: none !important;
+      color: white !important;
+      font-size: 18px !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: pointer !important;
+      z-index: 10000 !important;
+    }
+    
+    .custom-close-button:hover {
+      background-color: rgba(255, 255, 255, 0.4) !important;
     }
   `;
   document.head.appendChild(style);
