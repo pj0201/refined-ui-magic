@@ -38,10 +38,12 @@ export const ChatbotInitializer: React.FC = () => {
     hideBlueButton();
     
     // 初期化後に閉じるボタンを追加
-    setTimeout(addCustomCloseButtons, 2000);
+    // safelyCloseWindow関数をパラメータとして渡す
+    setTimeout(() => addCustomCloseButtons(() => {}), 2000);
     
     // 定期的に閉じるボタンをチェック
-    const buttonInterval = setInterval(addCustomCloseButtons, 5000);
+    // safelyCloseWindow関数をパラメータとして渡す
+    const buttonInterval = setInterval(() => addCustomCloseButtons(() => {}), 5000);
     
     // クリーンアップ関数
     return () => {
@@ -132,7 +134,8 @@ export const ChatbotInitializer: React.FC = () => {
             const chatWindow = document.getElementById('shoukibo-jizoka-chatbot-window');
             if (chatWindow) {
               chatWindow.style.display = 'flex';
-              addCustomCloseButtons();
+              // ここで空の関数を渡す
+              addCustomCloseButtons(() => {});
             }
           }, 500);
         } else if (typeof window.openSmallBusinessChatbot === 'function') {
@@ -175,7 +178,8 @@ export const ChatbotInitializer: React.FC = () => {
             const chatWindow = document.getElementById('shorikika-chatbot-window');
             if (chatWindow) {
               chatWindow.style.display = 'flex';
-              addCustomCloseButtons();
+              // ここで空の関数を渡す
+              addCustomCloseButtons(() => {});
             }
           }, 500);
         } else if (typeof window.openSubsidyChatbot === 'function') {
