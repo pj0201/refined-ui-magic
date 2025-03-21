@@ -1,228 +1,216 @@
 
 import { toast } from "sonner";
+import { createFallbackDisplay } from "../../SubsidyChat/utils/fallbackDisplay";
 
 /**
  * グローバル関数のセットアップ
+ * チャットボットのグローバル関数を設定し、初期化状態を追跡します
  */
 export const setupGlobalFunctions = () => {
   console.log("チャットボットグローバル関数を設定します");
   
+  // 既に初期化されているか確認
+  if (typeof window.startShoukiboJizokaChat === 'function' && 
+      typeof window.startShorikikaChat === 'function') {
+    console.log("チャットボットグローバル関数は既に設定されています");
+    return true;
+  }
+  
   try {
+    // 初期化状態を追跡する
+    const chatbotInitStatus = {
+      shoukiboInitialized: !!window.shoukiboJizokaChatbot,
+      shorikikaInitialized: !!window.shorikika_chatbot,
+      loadAttempted: true
+    };
+    
+    // チャットボットのロードエラーイベントリスナーを設定
+    document.addEventListener('chatbot-load-error', (event: any) => {
+      const detail = event.detail || {};
+      console.warn(`チャットボットロードエラー検出: ${detail.type || '不明'}`);
+      
+      if (detail.type === 'shoukibo') {
+        chatbotInitStatus.shoukiboInitialized = false;
+      } else if (detail.type === 'shorikika') {
+        chatbotInitStatus.shorikikaInitialized = false;
+      }
+    });
+    
     // 小規模持続化補助金チャットボットを開く関数
     window.startShoukiboJizokaChat = () => {
       console.log("小規模持続化補助金チャットボットを開きます");
+      
       try {
         // 他のチャットウィンドウを閉じる
-        const otherWindows = [
-          document.getElementById('shorikika-chatbot-window')
-        ];
-
+        const otherWindows = document.querySelectorAll('#shorikika-chatbot-window, #mock-chat-window');
         otherWindows.forEach(window => {
-          if (window && window.style.display !== 'none') {
+          if (window && window instanceof HTMLElement && window.style.display !== 'none') {
             window.style.display = 'none';
           }
         });
 
         // グローバルオブジェクトを使用
         if (window.shoukiboJizokaChatbot) {
+          // ウィンドウを表示する
+          const chatWindow = document.getElementById('shoukibo-jizoka-chatbot-window');
+          if (chatWindow) {
+            chatWindow.style.display = 'flex';
+          }
+          
+          // openメソッドがあればそれを使用
           if (typeof window.shoukiboJizokaChatbot.open === 'function') {
             window.shoukiboJizokaChatbot.open();
           } else if (typeof window.shoukiboJizokaChatbot.toggle === 'function') {
-            window.shoukiboJizokaChatbot.toggle();
-          }
-          
-          // ウィンドウが表示されたか確認
-          setTimeout(() => {
-            const chatWindow = document.getElementById('shoukibo-jizoka-chatbot-window');
-            if (chatWindow) {
-              chatWindow.style.display = 'flex';
+            // toggleメソッドの場合はウィンドウの状態を確認
+            const isVisible = chatWindow && 
+                             getComputedStyle(chatWindow).display !== 'none' && 
+                             getComputedStyle(chatWindow).visibility !== 'hidden';
+            
+            if (!isVisible) {
+              window.shoukiboJizokaChatbot.toggle();
             }
-          }, 500);
-        } else {
-          // モックインターフェースの使用（CDNの読み込みに失敗した場合）
-          showMockChatInterface('小規模持続化補助金AI相談');
+          }
+          return;
         }
+        
+        // フォールバック表示
+        showFallbackChat('小規模持続化補助金AI相談', 'shoukibo-jizoka-chatbot-window');
       } catch (error) {
         console.error("小規模持続化補助金チャットボットの開始中にエラー:", error);
         toast.error("チャットボットを開けませんでした。ページを再読み込みしてください。");
+        
+        // エラー時のフォールバック
+        showFallbackChat('小規模持続化補助金AI相談', 'shoukibo-jizoka-chatbot-window');
       }
     };
     
     // 省力化投資補助金チャットボットを開く関数
     window.startShorikikaChat = () => {
       console.log("省力化投資補助金チャットボットを開きます");
+      
       try {
         // 他のチャットウィンドウを閉じる
-        const otherWindows = [
-          document.getElementById('shoukibo-jizoka-chatbot-window')
-        ];
-
+        const otherWindows = document.querySelectorAll('#shoukibo-jizoka-chatbot-window, #mock-chat-window');
         otherWindows.forEach(window => {
-          if (window && window.style.display !== 'none') {
+          if (window && window instanceof HTMLElement && window.style.display !== 'none') {
             window.style.display = 'none';
           }
         });
 
         // グローバルオブジェクトを使用
         if (window.shorikika_chatbot) {
+          // ウィンドウを表示する
+          const chatWindow = document.getElementById('shorikika-chatbot-window');
+          if (chatWindow) {
+            chatWindow.style.display = 'flex';
+          }
+          
+          // openメソッドがあればそれを使用
           if (typeof window.shorikika_chatbot.open === 'function') {
             window.shorikika_chatbot.open();
           } else if (typeof window.shorikika_chatbot.toggle === 'function') {
-            window.shorikika_chatbot.toggle();
-          }
-          
-          // ウィンドウが表示されたか確認
-          setTimeout(() => {
-            const chatWindow = document.getElementById('shorikika-chatbot-window');
-            if (chatWindow) {
-              chatWindow.style.display = 'flex';
+            // toggleメソッドの場合はウィンドウの状態を確認
+            const isVisible = chatWindow && 
+                             getComputedStyle(chatWindow).display !== 'none' && 
+                             getComputedStyle(chatWindow).visibility !== 'hidden';
+            
+            if (!isVisible) {
+              window.shorikika_chatbot.toggle();
             }
-          }, 500);
-        } else {
-          // モックインターフェースの使用（CDNの読み込みに失敗した場合）
-          showMockChatInterface('省力化投資補助金AI相談');
+          }
+          return;
         }
+        
+        // フォールバック表示
+        showFallbackChat('省力化投資補助金AI相談', 'shorikika-chatbot-window');
       } catch (error) {
         console.error("省力化投資補助金チャットボットの開始中にエラー:", error);
         toast.error("チャットボットを開けませんでした。ページを再読み込みしてください。");
+        
+        // エラー時のフォールバック
+        showFallbackChat('省力化投資補助金AI相談', 'shorikika-chatbot-window');
       }
     };
     
-    // モックチャットインターフェースを表示する関数
-    const showMockChatInterface = (title: string) => {
-      console.log(`モックチャットインターフェースを表示: ${title}`);
+    // フォールバックチャットを表示する関数
+    const showFallbackChat = (title: string, windowId: string) => {
+      console.log(`フォールバックチャットを表示: ${title}`);
       
-      // 既存のモックウィンドウを確認
-      let mockWindow = document.getElementById('mock-chat-window');
-      if (!mockWindow) {
-        // モックウィンドウの作成
-        mockWindow = document.createElement('div');
-        mockWindow.id = 'mock-chat-window';
-        mockWindow.style.cssText = `
-          position: fixed;
-          top: 50px;
-          right: 20px;
-          width: 380px;
-          height: 600px;
-          max-height: 80vh;
-          background: white;
-          border-radius: 10px;
-          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-          display: flex;
-          flex-direction: column;
-          z-index: 99999;
-          overflow: hidden;
-        `;
-        
-        // ヘッダーの作成
-        const header = document.createElement('div');
-        header.style.cssText = `
-          background-color: #1C64F2;
-          padding: 15px;
-          color: white;
-          font-weight: bold;
-          position: relative;
-        `;
-        header.innerText = title;
-        
-        // 閉じるボタンの作成
-        const closeButton = document.createElement('button');
-        closeButton.innerHTML = '×';
-        closeButton.style.cssText = `
-          position: absolute;
-          right: 10px;
-          top: 10px;
-          background: rgba(255,255,255,0.2);
-          border: none;
-          color: white;
-          width: 30px;
-          height: 30px;
-          border-radius: 50%;
-          font-size: 18px;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        `;
-        closeButton.onclick = () => {
-          mockWindow?.remove();
-        };
-        
-        // コンテンツの作成
-        const content = document.createElement('div');
-        content.style.cssText = `
-          flex: 1;
-          padding: 20px;
-          overflow-y: auto;
-          display: flex;
-          flex-direction: column;
-        `;
-        
-        // メッセージの追加
-        const message = document.createElement('div');
-        message.style.cssText = `
-          background-color: #f0f0f0;
-          padding: 15px;
-          border-radius: 8px;
-          margin-bottom: 15px;
-          align-self: flex-start;
-          max-width: 80%;
-        `;
-        message.innerText = 'こんにちは！AI相談チャットです。現在、技術的な問題によりチャットボットが読み込めません。ページを再読み込みするか、後ほどお試しください。';
-        
-        // 入力エリアの作成
-        const inputArea = document.createElement('div');
-        inputArea.style.cssText = `
-          padding: 15px;
-          border-top: 1px solid #eee;
-          display: flex;
-        `;
-        
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.placeholder = 'メッセージを入力...';
-        input.disabled = true;
-        input.style.cssText = `
-          flex: 1;
-          padding: 10px;
-          border: 1px solid #ddd;
-          border-radius: 4px;
-          margin-right: 10px;
-        `;
-        
-        const sendButton = document.createElement('button');
-        sendButton.innerText = '送信';
-        sendButton.disabled = true;
-        sendButton.style.cssText = `
-          background-color: #1C64F2;
-          color: white;
-          border: none;
-          padding: 10px 15px;
-          border-radius: 4px;
-          cursor: not-allowed;
-          opacity: 0.5;
-        `;
-        
-        // 要素の追加
-        header.appendChild(closeButton);
-        inputArea.appendChild(input);
-        inputArea.appendChild(sendButton);
-        content.appendChild(message);
-        
-        mockWindow.appendChild(header);
-        mockWindow.appendChild(content);
-        mockWindow.appendChild(inputArea);
-        
-        document.body.appendChild(mockWindow);
-      } else {
-        // 既存のモックウィンドウを表示
+      // 既存のモックウィンドウ
+      let existingWindow = document.getElementById(windowId);
+      const mockWindow = document.getElementById('mock-chat-window');
+      
+      // モックウィンドウが既に存在する場合は表示
+      if (mockWindow) {
         mockWindow.style.display = 'flex';
+        return;
       }
+      
+      // 対象のウィンドウが存在する場合
+      if (existingWindow) {
+        // 内容をクリア
+        existingWindow.innerHTML = '';
+        existingWindow.style.display = 'flex';
+        
+        // 新しいフォールバック表示を作成して追加
+        const fallbackContent = createFallbackDisplay(windowId, title);
+        existingWindow.appendChild(fallbackContent);
+        return;
+      }
+      
+      // 新しいフォールバックウィンドウを作成
+      const newFallbackWindow = document.createElement('div');
+      newFallbackWindow.id = 'mock-chat-window';
+      
+      // スタイル設定
+      newFallbackWindow.style.cssText = `
+        position: fixed;
+        top: 50px;
+        right: 20px;
+        width: 380px;
+        height: 600px;
+        max-height: 80vh;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        z-index: 99999;
+        overflow: hidden;
+      `;
+      
+      // フォールバック内容を作成
+      const fallbackContent = createFallbackDisplay(windowId, title);
+      newFallbackWindow.appendChild(fallbackContent);
+      
+      // ボディに追加
+      document.body.appendChild(newFallbackWindow);
     };
     
-    // 後方互換性のための関数もセット
+    // 後方互換性のための関数
     window.openSmallBusinessChatbot = window.startShoukiboJizokaChat;
     window.openSubsidyChatbot = window.startShorikikaChat;
+    
+    // チャットボットの初期化状態を確認
+    setTimeout(() => {
+      const shoukiboLoaded = !!window.shoukiboJizokaChatbot;
+      const shorikikaLoaded = !!window.shorikika_chatbot;
+      
+      chatbotInitStatus.shoukiboInitialized = shoukiboLoaded;
+      chatbotInitStatus.shorikikaInitialized = shorikikaLoaded;
+      
+      console.log(`チャットボット初期化状態: 小規模持続化=${shoukiboLoaded}, 省力化投資=${shorikikaLoaded}`);
+      
+      // 初期化に失敗した場合は警告
+      if (!shoukiboLoaded || !shorikikaLoaded) {
+        console.warn("一部のチャットボットの初期化に失敗しました。フォールバックモードを使用します。");
+      }
+      
+      // 初期化完了イベントを発行
+      document.dispatchEvent(new CustomEvent('chatbot-initialized', {
+        detail: { shoukiboLoaded, shorikikaLoaded }
+      }));
+    }, 3000);
     
     return true;
   } catch (error) {

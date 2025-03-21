@@ -11,8 +11,6 @@
     
     <!-- チャットボット共通スタイル -->
     <style id="dify-chat-styles">
-      /* チャットボットスタイルは JavaScript で動的に挿入されます */
-      
       /* 基本スタイルのみ定義 */
       #shoukibo-jizoka-chatbot-window,
       #shorikika-chatbot-window {
@@ -176,7 +174,7 @@
       async
       defer
       onload="console.log('小規模持続化補助金チャットボットスクリプトが読み込まれました');"
-      onerror="console.error('小規模持続化補助金チャットボットスクリプトの読み込みに失敗しました');">
+      onerror="console.error('小規模持続化補助金チャットボットスクリプトの読み込みに失敗しました'); document.dispatchEvent(new CustomEvent('chatbot-load-error', {detail: {type: 'shoukibo'}}));">
     </script>
     
     <!-- 省力化投資補助金専用チャットボット設定 -->
@@ -198,7 +196,7 @@
       async
       defer
       onload="console.log('省力化投資補助金チャットボットスクリプトが読み込まれました');"
-      onerror="console.error('省力化投資補助金チャットボットスクリプトの読み込みに失敗しました');">
+      onerror="console.error('省力化投資補助金チャットボットスクリプトの読み込みに失敗しました'); document.dispatchEvent(new CustomEvent('chatbot-load-error', {detail: {type: 'shorikika'}}));">
     </script>
     
     <script type="module" src="/src/main.tsx"></script>

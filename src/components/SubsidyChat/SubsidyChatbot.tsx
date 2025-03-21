@@ -10,7 +10,7 @@ import { ChatbotInitializer } from "../chatbot/ChatbotInitializer";
  */
 export const SubsidyChatbot = () => {
   const initialized = useRef(false);
-  const { startShoukiboJizokaChat, startShorikikaChat } = useChatWindows();
+  const { startShoukiboJizokaChat, startShorikikaChat, isInitialized } = useChatWindows();
 
   // グローバル関数の設定
   useEffect(() => {
@@ -20,32 +20,28 @@ export const SubsidyChatbot = () => {
     console.log("補助金チャットボットグローバル関数を設定します");
 
     // グローバル関数を設定
-    window.startShoukiboJizokaChat = startShoukiboJizokaChat;
-    window.startShorikikaChat = startShorikikaChat;
+    if (typeof window.startShoukiboJizokaChat !== 'function') {
+      window.startShoukiboJizokaChat = startShoukiboJizokaChat;
+    }
+    
+    if (typeof window.startShorikikaChat !== 'function') {
+      window.startShorikikaChat = startShorikikaChat;
+    }
     
     // 後方互換性のための関数を設定
-    window.openSmallBusinessChatbot = startShoukiboJizokaChat;
-    window.openSubsidyChatbot = startShorikikaChat;
-
-    // 5秒後にチャットボット初期化状態を確認
-    setTimeout(() => {
-      // 初期化されていない場合、コンソールに警告を出す
-      if (!window.shoukiboJizokaChatbot && !window.shorikika_chatbot) {
-        console.warn("チャットボットの初期化に失敗しました。フォールバックモードを使用します。");
-      }
-    }, 5000);
+    if (typeof window.openSmallBusinessChatbot !== 'function') {
+      window.openSmallBusinessChatbot = startShoukiboJizokaChat;
+    }
+    
+    if (typeof window.openSubsidyChatbot !== 'function') {
+      window.openSubsidyChatbot = startShorikikaChat;
+    }
 
     return () => {
-      // クリーンアップ（画面遷移時）
+      // クリーンアップは必要な場合のみ実行（画面遷移時など）
       console.log("補助金チャットボットグローバル関数をクリーンアップします");
-      
-      // グローバル関数を削除
-      delete window.startShoukiboJizokaChat;
-      delete window.startShorikikaChat;
-      delete window.openSmallBusinessChatbot;
-      delete window.openSubsidyChatbot;
     };
-  }, [startShoukiboJizokaChat, startShorikikaChat]);
+  }, [startShoukiboJizokaChat, startShorikikaChat, isInitialized]);
 
   // ChatbotInitializerを返す
   return <ChatbotInitializer />;

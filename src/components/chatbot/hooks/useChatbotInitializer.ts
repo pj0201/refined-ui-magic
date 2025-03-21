@@ -25,10 +25,30 @@ export const useChatbotInitializer = () => {
     setupChatbotStyles();
     
     // 初期化後に閉じるボタンを追加
-    setTimeout(() => addCustomCloseButtons(), 2000);
+    const addButtonsAndCheckStatus = () => {
+      addCustomCloseButtons();
+      
+      // チャットボットの初期化状態を確認
+      const shoukiboLoaded = !!window.shoukiboJizokaChatbot;
+      const shorikikaLoaded = !!window.shorikika_chatbot;
+      
+      return { shoukiboLoaded, shorikikaLoaded };
+    };
     
-    // 定期的に閉じるボタンをチェック
-    const buttonInterval = setInterval(() => addCustomCloseButtons(), 5000);
+    // 初回チェック
+    setTimeout(addButtonsAndCheckStatus, 2000);
+    
+    // 定期的に閉じるボタンをチェック（5秒間隔で3回）
+    let checkCount = 0;
+    const buttonInterval = setInterval(() => {
+      const status = addButtonsAndCheckStatus();
+      checkCount++;
+      
+      // 3回チェック後または両方のチャットボットが初期化された場合は終了
+      if (checkCount >= 3 || (status.shoukiboLoaded && status.shorikikaLoaded)) {
+        clearInterval(buttonInterval);
+      }
+    }, 5000);
     
     // クリーンアップ関数
     return () => {
