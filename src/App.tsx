@@ -1,3 +1,4 @@
+
 import { Suspense, useEffect, lazy } from "react";
 import { HashRouter } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
@@ -24,7 +25,7 @@ import KeieishaHoshoPage from "./pages/plans/KeieishaHoshoPage";
 import SafetyNetPage from "./pages/plans/SafetyNetPage";
 
 // チャットボット初期化コンポーネント
-import { ChatbotInitializer } from "./components/sections/ChatbotInitializer";
+import { ChatbotInitializer } from "./components/chatbot/ChatbotInitializer";
 
 const queryClient = new QueryClient({
   defaultOptions: {

@@ -1,7 +1,7 @@
 
 import { useEffect, useRef } from "react";
 import { useChatWindows } from "./hooks/useChatWindows";
-import { ChatbotInitializer } from "../sections/ChatbotInitializer";
+import { ChatbotInitializer } from "../chatbot/ChatbotInitializer";
 
 /**
  * 補助金チャットボットコンポーネント
