@@ -1,4 +1,3 @@
-
 import { useEffect, useState, useCallback, useRef } from "react";
 import { toast } from "sonner";
 import { hideDifyBranding } from './styles/chatButtonStyles';
@@ -27,8 +26,19 @@ declare global {
     subsidyChatbotInitialized?: boolean;
     difyInitializationAttempted?: boolean;
     difyApiProxyEnabled?: boolean; // CORS対応プロキシ使用フラグ
-    shoukiboJizokaChatbot?: any;
-    shorikika_chatbot?: any;
+    // Type-compatible declarations for chatbots
+    shoukiboJizokaChatbot?: {
+      toggle: () => void;
+      open?: () => void;
+      close?: () => void;
+      sendMessage?: (message: string) => void;
+    };
+    shorikika_chatbot?: {
+      toggle: () => void;
+      open?: () => void;
+      close?: () => void;
+      sendMessage?: (message: string) => void;
+    };
   }
 }
 

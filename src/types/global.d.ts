@@ -52,12 +52,8 @@ interface Window {
     sendMessage?: (message: string) => void;
   };
   
-  // グローバル関数
-  openChatbot: () => void;
-  startShoukiboJizokaChat: () => void;
-  openSmallBusinessChatbot: () => void; // 後方互換性のため
-  startShorikikaChat: () => void;
-  openSubsidyChatbot: () => void; // 後方互換性のため
+  // その他のフラグ
   subsidyChatbotInitialized?: boolean;
   difyInitializationAttempted?: boolean;
+  difyApiProxyEnabled?: boolean;
 }
