@@ -14,7 +14,6 @@
       /* チャットボットスタイルは JavaScript で動的に挿入されます */
       
       /* 基本スタイルのみ定義 */
-      #dify-chatbot-bubble-window,
       #shoukibo-jizoka-chatbot-window,
       #shorikika-chatbot-window {
         width: 90vw !important;
@@ -38,7 +37,6 @@
       
       /* モバイル向け調整 */
       @media (max-width: 640px) {
-        #dify-chatbot-bubble-window,
         #shoukibo-jizoka-chatbot-window,
         #shorikika-chatbot-window {
           width: 90vw !important;
@@ -74,7 +72,6 @@
       }
       
       /* チャットボットボタンのスタイル */
-      #dify-chatbot-bubble-button,
       #shoukibo-jizoka-chatbot-button,
       #shorikika-chatbot-button {
         position: fixed !important;
@@ -94,7 +91,6 @@
       }
       
       /* チャットウィンドウが表示されている時はボタンを非表示 */
-      .chatbot-window-active #dify-chatbot-bubble-button,
       .chatbot-window-active #shoukibo-jizoka-chatbot-button,
       .chatbot-window-active #shorikika-chatbot-button {
         display: none !important;
@@ -114,27 +110,35 @@
         font-size: 0.9rem;
         color: #4B5563;
       }
+      
+      /* 青いボタンを非表示にする */
+      .dify-chatbot-bubble-button,
+      #dify-chatbot-bubble-button,
+      [id^="dify-chatbot-bubble-button"],
+      [class^="dify-chatbot-bubble-button"] {
+        display: none !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+        pointer-events: none !important;
+        width: 0 !important;
+        height: 0 !important;
+        position: absolute !important;
+        left: -9999px !important;
+        top: -9999px !important;
+        z-index: -1 !important;
+      }
+      
+      /* Difyのブランディングを非表示 */
+      .dify-chatbot-bubble-window-footer,
+      [class*="dify"] [class*="footer"],
+      [class*="powered-by"],
+      a[href*="dify.ai"] {
+        display: none !important;
+      }
     </style>
   </head>
   <body>
     <div id="root"></div>
-    
-    <!-- Dify 一般チャットボット設定 -->
-    <script>
-      window.difyChatbotConfig = {
-        token: 'UlZEhca44ZNfJtdS',
-        serverUrl: 'https://api.dify.ai'
-      }
-    </script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/@dify-ai/chatbot/dist/index.min.js"
-      id="UlZEhca44ZNfJtdS"
-      async
-      defer
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-      onload="console.log('一般チャットボットスクリプトが読み込まれました');">
-    </script>
     
     <!-- 小規模持続化補助金専用チャットボット設定 -->
     <script>

@@ -4,17 +4,12 @@ interface Window {
   // チャットボット関連のグローバル関数
   startShoukiboJizokaChat?: () => void;
   startShorikikaChat?: () => void;
-  openChatbot?: () => void;
   
   // 後方互換性のための関数
   openSmallBusinessChatbot?: () => void;
   openSubsidyChatbot?: () => void;
   
   // チャットボット設定
-  difyChatbotConfig?: {
-    token: string;
-    serverUrl: string;
-  };
   shoukiboJizokaChatbotConfig?: {
     token: string;
     serverUrl: string;
@@ -22,18 +17,6 @@ interface Window {
   shorikikaChatbotConfig?: {
     token: string;
     serverUrl: string;
-  };
-  
-  // 一般チャットボット
-  difyChatbot?: {
-    toggle: () => void;
-    open?: () => void;
-    close?: () => void;
-    sendMessage?: (message: string) => void;
-  };
-  DifyAI?: {
-    toggleUI: (show: boolean) => void;
-    sendMessage?: (message: string) => void;
   };
   
   // 小規模持続化補助金チャットボット
@@ -51,9 +34,4 @@ interface Window {
     close?: () => void;
     sendMessage?: (message: string) => void;
   };
-  
-  // その他のフラグ
-  subsidyChatbotInitialized?: boolean;
-  difyInitializationAttempted?: boolean;
-  difyApiProxyEnabled?: boolean;
 }
