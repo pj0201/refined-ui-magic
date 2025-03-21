@@ -28,6 +28,7 @@ interface DifyChatConfig {
 interface DifyChatbotInterface {
   toggle: () => void;
   open?: () => void; // オプションのopen関数を追加
+  close?: () => void; // オプションのclose関数を追加
   isOpen?: boolean;
   sendMessage: (message: string) => void;
 }
@@ -54,6 +55,19 @@ declare global {
     DifyChat?: DifyChatInterface;
     difyChatbot?: DifyChatbotInterface;
     difyChatbotConfig?: DifyChatbotConfig;
+    // 小規模持続化補助金/省力化投資補助金チャットボット
+    shoukiboJizokaChatbot?: DifyChatbotInterface;
+    shorikika_chatbot?: DifyChatbotInterface;
+    // グローバル関数
+    openChatbot?: () => void;
+    startShoukiboJizokaChat?: () => void;
+    openSmallBusinessChatbot?: () => void;
+    startShorikikaChat?: () => void;
+    openSubsidyChatbot?: () => void;
+    // 状態フラグ
+    subsidyChatbotInitialized?: boolean;
+    difyInitializationAttempted?: boolean;
+    difyApiProxyEnabled?: boolean; // CORSプロキシの有効/無効を示すフラグ
   }
 }
 

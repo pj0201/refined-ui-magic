@@ -1,7 +1,9 @@
-import { useEffect, useState, useCallback } from "react";
+
+import { useEffect, useState, useCallback, useRef } from "react";
 import { toast } from "sonner";
 import { hideDifyBranding } from './styles/chatButtonStyles';
 import { useChatWindowAdjuster } from './hooks/useChatWindowAdjuster';
+import { handleCORSError, checkApiConnection } from './utils/errorHandling';
 
 // グローバルウィンドウオブジェクトの型拡張
 declare global {
@@ -24,6 +26,9 @@ declare global {
     openSubsidyChatbot?: () => void;
     subsidyChatbotInitialized?: boolean;
     difyInitializationAttempted?: boolean;
+    difyApiProxyEnabled?: boolean; // CORS対応プロキシ使用フラグ
+    shoukiboJizokaChatbot?: any;
+    shorikika_chatbot?: any;
   }
 }
 
@@ -115,6 +120,7 @@ export const SubsidyChatbot = () => {
   // Difyスクリプトの読み込み状態
   const [isDifyScriptLoaded, setIsDifyScriptLoaded] = useState(false);
   const [difyInitError, setDifyInitError] = useState<string | null>(null);
+  const corsErrorDetected = useRef(false);
   
   // useChatWindowAdjusterを使用
   useChatWindowAdjuster(isDifyScriptLoaded);
@@ -218,11 +224,26 @@ export const SubsidyChatbot = () => {
       // 初期化試行済みフラグを設定
       window.difyInitializationAttempted = true;
       
+      // CORS問題が検出された場合は、プロキシ経由に切り替え
+      if (corsErrorDetected.current) {
+        handleCORSError();
+      }
+      
       // Difyスクリプトの存在を確認
       const difyScript = document.querySelector('script[src*="dify"]');
       if (!difyScript) {
         console.error("Difyスクリプトが見つかりません");
         setDifyInitError("loading");
+        
+        // CDN経由でスクリプトを追加
+        const newScript = document.createElement('script');
+        newScript.src = 'https://cdn.jsdelivr.net/npm/@dify-ai/chatbot/dist/index.min.js';
+        newScript.async = true;
+        newScript.defer = true;
+        newScript.crossOrigin = 'anonymous';
+        document.head.appendChild(newScript);
+        console.log("CDN経由でDifyスクリプトを追加しました");
+        
         return;
       }
       
@@ -230,7 +251,15 @@ export const SubsidyChatbot = () => {
       const scriptSrc = difyScript.getAttribute('src');
       if (scriptSrc) {
         const newScript = document.createElement('script');
-        newScript.src = scriptSrc;
+        
+        // CORS問題が検出された場合はCDN経由に切り替え
+        if (corsErrorDetected.current) {
+          newScript.src = 'https://cdn.jsdelivr.net/npm/@dify-ai/chatbot/dist/index.min.js';
+          newScript.crossOrigin = 'anonymous';
+        } else {
+          newScript.src = scriptSrc;
+        }
+        
         newScript.async = true;
         newScript.defer = true;
         newScript.onload = () => {
@@ -247,6 +276,13 @@ export const SubsidyChatbot = () => {
         newScript.onerror = () => {
           console.error("Difyスクリプトの再読み込みに失敗しました");
           setDifyInitError("loading");
+          
+          // CORS問題の可能性があるため、CDN経由に切り替え
+          if (!corsErrorDetected.current) {
+            corsErrorDetected.current = true;
+            handleCORSError();
+            forceDifyInitialization();
+          }
         };
         
         // 古いスクリプトを削除
@@ -258,6 +294,12 @@ export const SubsidyChatbot = () => {
     } catch (error) {
       console.error("Difyスクリプトの強制初期化中にエラーが発生しました:", error);
       setDifyInitError("loading");
+      
+      // CORS問題の可能性があるため、CDN経由に切り替え
+      if (!corsErrorDetected.current) {
+        corsErrorDetected.current = true;
+        handleCORSError();
+      }
     }
   }, [applyCustomStyles]);
   
@@ -268,6 +310,16 @@ export const SubsidyChatbot = () => {
     // 初期化済みフラグをリセット
     window.subsidyChatbotInitialized = false;
     window.difyInitializationAttempted = false;
+    window.difyApiProxyEnabled = false;
+    
+    // APIの接続状態を確認
+    checkApiConnection().then(connected => {
+      if (!connected) {
+        console.log("Dify APIに接続できません。CORS問題の可能性があります");
+        corsErrorDetected.current = true;
+        handleCORSError();
+      }
+    });
     
     // スタイルを適用
     if (document.readyState === 'loading') {

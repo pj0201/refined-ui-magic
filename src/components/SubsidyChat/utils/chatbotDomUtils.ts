@@ -4,6 +4,7 @@ import { hideBlueButton } from "./buttonHide";
 import { setupChatbotStyles } from "./styleSetup";
 import { addCustomCloseButtons } from "./closeButtons";
 import { closeOtherChatWindows } from "./windowManagement";
+import { handleCORSError, checkApiConnection } from "./errorHandling";
 
 // 他のファイルからアクセスできるように、すべての関数をエクスポート
 export {
@@ -11,5 +12,7 @@ export {
   hideBlueButton,
   setupChatbotStyles,
   addCustomCloseButtons,
-  closeOtherChatWindows
+  closeOtherChatWindows,
+  handleCORSError,
+  checkApiConnection
 };

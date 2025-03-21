@@ -1,6 +1,7 @@
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { toast } from "sonner";
+import { handleCORSError, checkApiConnection } from "../SubsidyChat/utils/chatbotDomUtils";
 
 // グローバルウィンドウオブジェクトの型拡張
 declare global {
@@ -15,6 +16,7 @@ declare global {
       toggleUI: (show: boolean) => void;
       sendMessage?: (message: string) => void;
     };
+    difyApiProxyEnabled?: boolean;
   }
 }
 
@@ -23,30 +25,58 @@ declare global {
  * このコンポーネントはチャットボットの初期化と制御を担当します
  */
 export const ChatbotInitializer: React.FC = () => {
+  // 初期化実行フラグ
+  const initialized = useRef(false);
+  
   // 初期化状態
   useEffect(() => {
+    // 一度だけ実行するための条件
+    if (initialized.current) return;
+    initialized.current = true;
+    
     console.log("チャットボット初期化を開始します");
 
     // DifyスクリプトとAPIの状態を確認
     const checkDifyAPI = async () => {
       try {
-        const response = await fetch('https://api.dify.ai/health', {
-          method: 'GET',
-          mode: 'cors',
-          headers: { 'Content-Type': 'application/json' },
-          referrerPolicy: 'no-referrer'
-        });
+        // CORS対応: API接続を確認
+        const isConnected = await checkApiConnection();
         
-        if (response.ok) {
-          console.log("Dify API接続確認: 成功");
-        } else {
-          console.error(`Dify API接続確認: 失敗 (${response.status})`);
-          toast.error("チャットボットサーバーに接続できません。しばらく待ってからお試しください。", {
-            duration: 5000,
-          });
+        if (!isConnected) {
+          console.error("Dify APIに接続できません");
+          
+          // CORS問題を検出した場合は対応
+          const corsFixed = handleCORSError();
+          
+          if (corsFixed) {
+            toast.info("チャットボット接続を復旧中です...", {
+              duration: 3000,
+            });
+            
+            // 少し待ってから再試行
+            setTimeout(async () => {
+              const retryConnection = await checkApiConnection();
+              if (!retryConnection) {
+                toast.error("チャットボットサーバーに接続できません。しばらく待ってからお試しください。", {
+                  duration: 5000,
+                });
+              }
+            }, 3000);
+          } else {
+            toast.error("チャットボットサーバーに接続できません。しばらく待ってからお試しください。", {
+              duration: 5000,
+            });
+          }
         }
       } catch (error) {
         console.error("Dify API接続確認中にエラー発生:", error);
+        
+        // CORS問題を検出して対応
+        handleCORSError();
+        
+        toast.error("チャットボットサーバーに接続できません。しばらく待ってからお試しください。", {
+          duration: 5000,
+        });
       }
     };
     
