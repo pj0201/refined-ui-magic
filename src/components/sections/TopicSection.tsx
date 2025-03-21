@@ -122,8 +122,8 @@ export const TopicSection = () => {
     // Create a safe error message string regardless of error type
     const errorMessage = typeof error === 'string' 
       ? error 
-      : error && typeof error === 'object' && 'message' in error
-        ? String((error as Error).message)
+      : error instanceof Error 
+        ? error.message
         : "不明なエラーが発生しました";
     
     return <div className="error">エラーが発生しました: {errorMessage}</div>;

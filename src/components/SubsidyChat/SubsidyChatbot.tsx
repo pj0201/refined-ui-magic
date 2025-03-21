@@ -172,6 +172,14 @@ export const SubsidyChatbot = () => {
           overflow: hidden !important;
           border-radius: 0.5rem !important;
           box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04) !important;
+          background-color: #fff !important;
+        }
+        
+        /* プレーンコードテキストを非表示 */
+        #shoukibo-jizoka-chatbot-window > pre,
+        #shorikika-chatbot-window > pre,
+        #dify-chatbot-bubble-window > pre {
+          display: none !important;
         }
         
         /* モバイル対応 */
