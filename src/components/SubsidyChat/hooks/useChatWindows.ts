@@ -1,16 +1,31 @@
 
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { toast } from "sonner";
 import { 
   safelyCloseWindow, 
   closeOtherChatWindows 
 } from "../utils/chatbotDomUtils";
 import { createChatWindowContent } from "../utils/chatWindowContent";
+import { handleChatbotError, checkAllChatbotErrors } from "../utils/errorHandling";
 
 /**
  * チャットウィンドウ操作用カスタムフック
  */
 export const useChatWindows = () => {
+  // 定期的にエラーチェックを実行
+  useEffect(() => {
+    // 初回チェック
+    const initialCheck = setTimeout(checkAllChatbotErrors, 3000);
+    
+    // 定期チェック
+    const intervalCheck = setInterval(checkAllChatbotErrors, 10000);
+    
+    return () => {
+      clearTimeout(initialCheck);
+      clearInterval(intervalCheck);
+    };
+  }, []);
+
   // 一般チャットボットを開く関数
   const openChatbot = useCallback(() => {
     console.log("一般チャットボットを開きます (useChatWindows)");
@@ -49,6 +64,7 @@ export const useChatWindows = () => {
       `;
       
       // HTMLコンテンツを設定
+      // 完全なURLを設定（サブドメインを含む）
       const iframeSrc = "https://udify.app/chatbot/UlZEhca44ZNfJtdS";
       chatbotWindow.innerHTML = createChatWindowContent("一般チャット", iframeSrc);
       
@@ -64,6 +80,9 @@ export const useChatWindows = () => {
           safelyCloseWindow("dify-chatbot-bubble-window");
         });
       }
+      
+      // エラーチェック
+      setTimeout(() => handleChatbotError('dify-chatbot-bubble-window'), 2000);
       
       console.log("一般チャットウィンドウを表示しました");
     } catch (error) {
@@ -109,7 +128,7 @@ export const useChatWindows = () => {
         background-color: #fff;
       `;
       
-      // HTMLコンテンツを設定
+      // HTMLコンテンツを設定 - 完全なURLを指定
       const iframeSrc = "https://udify.app/chatbot/jpVCvswMb5KaQFLk";
       chatbotWindow.innerHTML = createChatWindowContent("小規模持続化補助金チャット", iframeSrc);
       
@@ -170,7 +189,7 @@ export const useChatWindows = () => {
         background-color: #fff;
       `;
       
-      // HTMLコンテンツを設定
+      // HTMLコンテンツを設定 - 完全なURLを指定
       const iframeSrc = "https://udify.app/chatbot/kAwDqVSCnjM6ZfEY";
       chatbotWindow.innerHTML = createChatWindowContent("省力化投資補助金チャット", iframeSrc);
       

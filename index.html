@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
   <head>
@@ -99,6 +100,21 @@
       .chatbot-window-active #shorikika-chatbot-button {
         display: none !important;
       }
+      
+      /* エラーメッセージのスタイル上書き */
+      .dify-error-message, 
+      [class*="error-message"], 
+      [class*="errorMessage"] {
+        display: none !important;
+      }
+      
+      /* フォールバックメッセージ */
+      #chat-fallback-message {
+        text-align: center;
+        padding: 2rem;
+        font-size: 0.9rem;
+        color: #4B5563;
+      }
     </style>
   </head>
   <body>
@@ -115,6 +131,7 @@
       src="https://udify.app/embed.min.js"
       id="UlZEhca44ZNfJtdS"
       async
+      defer
       onload="console.log('一般チャットボットスクリプトが読み込まれました');">
     </script>
     
@@ -133,6 +150,7 @@
       data-window-id="shoukibo-jizoka-chatbot-window"
       data-button-id="shoukibo-jizoka-chatbot-button"
       async
+      defer
       onload="console.log('小規模持続化補助金チャットボットスクリプトが読み込まれました');">
     </script>
     
@@ -151,6 +169,7 @@
       data-window-id="shorikika-chatbot-window"
       data-button-id="shorikika-chatbot-button"
       async
+      defer
       onload="console.log('省力化投資補助金チャットボットスクリプトが読み込まれました');">
     </script>
     

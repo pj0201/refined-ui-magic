@@ -3,6 +3,11 @@
  * チャットボット用のHTMLコンテンツを作成する関数
  */
 export const createChatWindowContent = (title: string, iframeSrc: string) => {
+  // iframeのURLが正しいことを確認
+  const safeIframeSrc = iframeSrc.startsWith('https://') 
+    ? iframeSrc 
+    : `https://udify.app/chatbot/${iframeSrc}`;
+  
   const htmlContent = `
     <div class="dify-chatbot-bubble-window-header" style="
       background-color: #1C64F2;
@@ -40,7 +45,7 @@ export const createChatWindowContent = (title: string, iframeSrc: string) => {
       height: calc(100% - 50px);
     ">
       <iframe 
-        src="${iframeSrc}" 
+        src="${safeIframeSrc}" 
         style="width: 100%; height: 100%; border: none; display: block; position: absolute; top: 0; left: 0; right: 0; bottom: 0;"
         allow="microphone *"
         allowfullscreen="true"
