@@ -1,4 +1,3 @@
-
 // グローバル関数の型定義
 interface Window {
   // チャットボット関連のグローバル関数
@@ -8,7 +7,10 @@ interface Window {
   // 後方互換性のための関数
   openSmallBusinessChatbot?: () => void;
   openSubsidyChatbot?: () => void;
-  openChatbot?: () => void;
+  openChatbot?: (message?: string) => void;
+  
+  // テスト用の基本チャットウィンドウ
+  openBasicWindow?: () => void;
   
   // チャットボット設定
   shoukiboJizokaChatbotConfig?: {

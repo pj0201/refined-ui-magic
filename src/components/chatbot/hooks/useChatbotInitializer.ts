@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from "react";
 import { setupChatbotStyles } from "../utils/styleUtils";
 import { addCustomCloseButtons } from "../utils/buttonUtils";
@@ -35,7 +34,7 @@ export const useChatbotInitializer = () => {
       return { shoukiboLoaded, shorikikaLoaded };
     };
     
-    // 初回チェック
+    // 初回チェック - 少し遅延させて確実に実行
     setTimeout(addButtonsAndCheckStatus, 2000);
     
     // ウィンドウがロードされた後に閉じるボタンの追加を試みる
@@ -93,7 +92,7 @@ export const useChatbotInitializer = () => {
       mockWindow = document.createElement('div');
       mockWindow.id = 'mock-chat-window';
       
-      // スタイル設定
+      // スタイル設定 - z-indexを高くして確実に表示されるようにする
       mockWindow.style.cssText = `
         position: fixed;
         top: 50px;
@@ -106,7 +105,7 @@ export const useChatbotInitializer = () => {
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         display: flex;
         flex-direction: column;
-        z-index: 99999;
+        z-index: 2147483647;
         overflow: hidden;
       `;
       
@@ -149,7 +148,7 @@ export const useChatbotInitializer = () => {
       justify-content: center !important;
       cursor: pointer !important;
       transition: background-color 0.3s !important;
-      z-index: 10000 !important;
+      z-index: 2147483647 !important;
     `;
     closeButton.onclick = () => {
       if (mockWindow) {

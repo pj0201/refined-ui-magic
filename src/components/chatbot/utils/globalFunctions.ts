@@ -1,4 +1,3 @@
-
 import { toast } from "sonner";
 import { createFallbackDisplay } from "../../SubsidyChat/utils/fallbackDisplay";
 
@@ -52,12 +51,14 @@ export const setupGlobalFunctions = () => {
             chatWindow.style.display = 'flex';
             chatWindow.style.opacity = '1';
             chatWindow.style.visibility = 'visible';
+            chatWindow.style.zIndex = '2147483647'; // 最大のz-indexを設定
             document.body.classList.add('chatbot-window-active');
           }
           
           // openメソッドがあればそれを使用
           if (typeof window.shoukiboJizokaChatbot.open === 'function') {
             window.shoukiboJizokaChatbot.open();
+            return;
           } else if (typeof window.shoukiboJizokaChatbot.toggle === 'function') {
             // toggleメソッドの場合はウィンドウの状態を確認
             const isVisible = chatWindow && 
@@ -66,7 +67,13 @@ export const setupGlobalFunctions = () => {
             
             if (!isVisible) {
               window.shoukiboJizokaChatbot.toggle();
+              return;
             }
+          }
+          
+          // 上記のメソッドがない場合はフォールバック表示を使用
+          if (!chatWindow || getComputedStyle(chatWindow).display === 'none') {
+            showFallbackChat('小規模持続化補助金AI相談', 'shoukibo-jizoka-chatbot-window');
           }
           return;
         }
@@ -98,12 +105,14 @@ export const setupGlobalFunctions = () => {
             chatWindow.style.display = 'flex';
             chatWindow.style.opacity = '1';
             chatWindow.style.visibility = 'visible';
+            chatWindow.style.zIndex = '2147483647'; // 最大のz-indexを設定
             document.body.classList.add('chatbot-window-active');
           }
           
           // openメソッドがあればそれを使用
           if (typeof window.shorikika_chatbot.open === 'function') {
             window.shorikika_chatbot.open();
+            return;
           } else if (typeof window.shorikika_chatbot.toggle === 'function') {
             // toggleメソッドの場合はウィンドウの状態を確認
             const isVisible = chatWindow && 
@@ -112,7 +121,13 @@ export const setupGlobalFunctions = () => {
             
             if (!isVisible) {
               window.shorikika_chatbot.toggle();
+              return;
             }
+          }
+          
+          // 上記のメソッドがない場合はフォールバック表示を使用
+          if (!chatWindow || getComputedStyle(chatWindow).display === 'none') {
+            showFallbackChat('省力化投資補助金AI相談', 'shorikika-chatbot-window');
           }
           return;
         }
@@ -144,6 +159,9 @@ export const setupGlobalFunctions = () => {
           console.log(`${id}を閉じました`);
         }
       });
+      
+      // bodyからクラスを削除
+      document.body.classList.remove('chatbot-window-active');
     };
     
     // フォールバックチャットを表示する関数
@@ -160,6 +178,7 @@ export const setupGlobalFunctions = () => {
       // モックウィンドウが既に存在する場合は表示
       if (mockWindow) {
         mockWindow.style.display = 'flex';
+        mockWindow.style.zIndex = '2147483647'; // 最大のz-indexを設定
         return;
       }
       
@@ -168,6 +187,7 @@ export const setupGlobalFunctions = () => {
         // 内容をクリア
         existingWindow.innerHTML = '';
         existingWindow.style.display = 'flex';
+        existingWindow.style.zIndex = '2147483647'; // 最大のz-indexを設定
         
         // 新しいフォールバック表示を作成して追加
         const fallbackContent = createFallbackDisplay(windowId, title);
@@ -192,7 +212,7 @@ export const setupGlobalFunctions = () => {
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         display: flex;
         flex-direction: column;
-        z-index: 99999;
+        z-index: 2147483647;
         overflow: hidden;
       `;
       
@@ -207,6 +227,20 @@ export const setupGlobalFunctions = () => {
     // 後方互換性のための関数
     window.openSmallBusinessChatbot = window.startShoukiboJizokaChat;
     window.openSubsidyChatbot = window.startShorikikaChat;
+    
+    // 一般的なチャットボットを開く関数
+    window.openChatbot = (message?: string) => {
+      console.log("一般的なチャットボットを開きます");
+      
+      // メッセージがある場合は小規模持続化補助金チャットボットを開く
+      if (message && typeof message === 'string') {
+        window.startShoukiboJizokaChat();
+        return;
+      }
+      
+      // デフォルトでは小規模持続化補助金チャットボットを開く
+      window.startShoukiboJizokaChat();
+    };
     
     // チャットボットの初期化状態を確認
     setTimeout(() => {

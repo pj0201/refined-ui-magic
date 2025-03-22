@@ -1,4 +1,3 @@
-
 import { Suspense, useEffect, lazy } from "react";
 import { HashRouter } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
@@ -26,6 +25,8 @@ import SafetyNetPage from "./pages/plans/SafetyNetPage";
 
 // チャットボット初期化コンポーネント
 import { ChatbotInitializer } from "./components/chatbot/ChatbotInitializer";
+// テスト用チャットウィンドウ
+import BasicChatWindow from "./components/chat/BasicChatWindow";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -41,12 +42,26 @@ function App() {
     console.log("App: チャットボットの初期化を開始します");
   }, []);
 
+  // テストチャットを開く関数
+  const openTestChat = () => {
+    console.log("テストチャットを開きます");
+    if (typeof window.openBasicWindow === 'function') {
+      window.openBasicWindow();
+    } else {
+      console.error("openBasicWindow関数が見つかりません");
+      alert("テストチャットを開けません。ページを再読み込みしてください。");
+    }
+  };
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <HashRouter>
           {/* チャットボット初期化コンポーネント - Suspenseの外に配置 */}
           <ChatbotInitializer />
+          
+          {/* テスト用のBasicChatWindow */}
+          <BasicChatWindow title="テストチャット" />
           
           <Suspense fallback={<div className="loading">Loading...</div>}>
             <Routes>
@@ -69,6 +84,28 @@ function App() {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>
+          
+          {/* テストチャットを開くボタン */}
+          <button
+            onClick={openTestChat}
+            style={{
+              position: 'fixed',
+              bottom: '20px',
+              right: '20px',
+              backgroundColor: '#1C64F2',
+              color: 'white',
+              border: 'none',
+              borderRadius: '4px',
+              padding: '10px 15px',
+              fontWeight: 'bold',
+              cursor: 'pointer',
+              boxShadow: '0 2px 5px rgba(0, 0, 0, 0.2)',
+              zIndex: 1000,
+            }}
+          >
+            テストチャットを開く
+          </button>
+          
           <Toaster position="top-right" />
         </HashRouter>
       </TooltipProvider>

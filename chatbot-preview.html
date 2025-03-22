@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>チャットボットプレビュー</title>
+    <style>
+        body {
+            font-family: 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', Meiryo, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f7fb;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background-color: #1C64F2;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .preview-section {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+        h2 {
+            color: #1C64F2;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        .chat-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #1C64F2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 15px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        .chat-window {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 350px;
+            height: 500px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 2147483647;
+        }
+        .chat-header {
+            background-color: #1C64F2;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .chat-header-title {
+            font-weight: bold;
+        }
+        .close-button {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0 5px;
+        }
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            background-color: #f9fafb;
+        }
+        .message {
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 80%;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            word-break: break-word;
+        }
+        .message.bot {
+            align-self: flex-start;
+            background-color: white;
+            color: black;
+        }
+        .message.user {
+            align-self: flex-end;
+            background-color: #1C64F2;
+            color: white;
+        }
+        .chat-input {
+            border-top: 1px solid #e5e7eb;
+            padding: 10px;
+            display: flex;
+            background-color: white;
+        }
+        .chat-input textarea {
+            flex: 1;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            padding: 8px 12px;
+            resize: none;
+            height: 40px;
+            outline: none;
+            font-family: inherit;
+        }
+        .send-button {
+            background-color: #1C64F2;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 0 15px;
+            margin-left: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            height: 40px;
+        }
+        .fallback-window {
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            width: 380px;
+            height: 600px;
+            max-height: 80vh;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            z-index: 2147483647;
+            overflow: hidden;
+        }
+        .fallback-header {
+            background-color: #1C64F2;
+            color: white;
+            padding: 15px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        .fallback-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            text-align: center;
+            background-color: #f9fafb;
+        }
+        .fallback-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        .retry-button {
+            background-color: #1C64F2;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            font-weight: medium;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .fallback-close-button {
+            background-color: transparent;
+            color: #4a5568;
+            border: 1px solid #d1d5db;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            font-weight: medium;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .custom-close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            z-index: 2147483647;
+        }
+        .toggle-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .toggle-button {
+            background-color: #e5e7eb;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .toggle-button.active {
+            background-color: #1C64F2;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>チャットボットUI修正プレビュー</h1>
+    </header>
+
+    <div class="container">
+        <div class="preview-section">
+            <h2>実装したチャットボットUI</h2>
+            <p>以下のボタンで各種チャットボットUIのプレビューを切り替えることができます。</p>
+            
+            <div class="toggle-buttons">
+                <button class="toggle-button active" onclick="showPreview('basic')">基本チャットウィンドウ</button>
+                <button class="toggle-button" onclick="showPreview('fallback')">フォールバック表示</button>
+            </div>
+            
+            <!-- 基本チャットウィンドウ -->
+            <div id="basic-preview" class="chat-window">
+                <div class="chat-header">
+                    <div class="chat-header-title">テストチャット</div>
+                    <button class="close-button" onclick="hideAllPreviews()">×</button>
+                </div>
+                <div class="chat-messages">
+                    <div class="message bot">こんにちは！何かお手伝いできることはありますか？</div>
+                    <div class="message user">チャットボットの表示に問題があります</div>
+                    <div class="message bot">「チャットボットの表示に問題があります」についてのお問い合わせありがとうございます。現在テスト中のため、実際の回答は提供できません。</div>
+                </div>
+                <div class="chat-input">
+                    <textarea placeholder="メッセージを入力..."></textarea>
+                    <button class="send-button">送信</button>
+                </div>
+            </div>
+            
+            <!-- フォールバック表示 -->
+            <div id="fallback-preview" class="fallback-window" style="display: none;">
+                <div class="fallback-header">
+                    小規模持続化補助金AI相談
+                    <button class="custom-close-button" onclick="hideAllPreviews()">×</button>
+                </div>
+                <div class="fallback-content">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 1rem;">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <h3 style="margin-bottom: 1rem; font-weight: bold; color: #1a202c;">小規模持続化補助金AI相談</h3>
+                    <p style="margin-bottom: 1rem; color: #4a5568;">
+                        現在、チャットボットサーバーに接続できません。<br>
+                        ネットワーク接続を確認し、しばらく待ってから再度お試しください。
+                    </p>
+                    <div class="fallback-buttons">
+                        <button class="retry-button">もう一度試す</button>
+                        <button class="fallback-close-button" onclick="hideAllPreviews()">閉じる</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="preview-section">
+            <h2>主な修正点</h2>
+            <ul>
+                <li><strong>z-indexの最適化</strong>: チャットウィンドウのz-indexを最大値（2147483647）に設定し、他の要素に隠れないようにしました</li>
+                <li><strong>表示ロジックの改善</strong>: ウィンドウが確実に表示されるよう、複数の表示プロパティ（display, opacity, visibility）を設定しました</li>
+                <li><strong>フォールバック機能の強化</strong>: チャットボットが読み込めない場合のフォールバック表示を改善しました</li>
+                <li><strong>テスト用の基本チャットウィンドウ</strong>: シンプルなテスト用チャットウィンドウを実装し、テストを容易にしました</li>
+            </ul>
+        </div>
+    </div>
+
+    <button class="chat-button" onclick="showPreview('basic')">テストチャットを開く</button>
+
+    <script>
+        function showPreview(type) {
+            // すべてのプレビューを非表示
+            hideAllPreviews();
+            
+            // 指定されたプレビューを表示
+            if (type === 'basic') {
+                document.getElementById('basic-preview').style.display = 'flex';
+                document.querySelectorAll('.toggle-button')[0].classList.add('active');
+            } else if (type === 'fallback') {
+                document.getElementById('fallback-preview').style.display = 'flex';
+                document.querySelectorAll('.toggle-button')[1].classList.add('active');
+            }
+        }
+        
+        function hideAllPreviews() {
+            document.getElementById('basic-preview').style.display = 'none';
+            document.getElementById('fallback-preview').style.display = 'none';
+            
+            // トグルボタンのアクティブ状態をリセット
+            document.querySelectorAll('.toggle-button').forEach(button => {
+                button.classList.remove('active');
+            });
+        }
+    </script>
+</body>
+</html>
