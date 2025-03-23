@@ -1,10 +1,12 @@
 // グローバル関数の型定義
 interface Window {
   // チャットボット関連のグローバル関数
+  openShoukiboJizokaChat?: () => void;
+  openShorikikaChat?: () => void;
+  
+  // 後方互換性のための関数（旧関数名）
   startShoukiboJizokaChat?: () => void;
   startShorikikaChat?: () => void;
-  
-  // 後方互換性のための関数
   openSmallBusinessChatbot?: () => void;
   openSubsidyChatbot?: () => void;
   openChatbot?: (message?: string) => void;
@@ -45,4 +47,10 @@ interface Window {
     close?: () => void;
     sendMessage?: (message: string) => void;
   };
+  
+  // チャットボット初期化状態
+  chatbotInitialized?: boolean;
+  
+  // Dify AI オブジェクト
+  DifyAI?: any;
 }

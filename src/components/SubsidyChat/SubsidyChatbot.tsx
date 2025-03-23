@@ -1,4 +1,3 @@
-
 import { useEffect, useRef } from "react";
 import { useChatWindows } from "./hooks/useChatWindows";
 import { ChatbotInitializer } from "../chatbot/ChatbotInitializer";
@@ -20,16 +19,16 @@ export const SubsidyChatbot = () => {
     console.log("補助金チャットボットグローバル関数を設定します");
 
     // グローバル関数を設定
-    if (typeof window.startShoukiboJizokaChat !== 'function') {
-      window.startShoukiboJizokaChat = () => {
+    if (typeof window.openShoukiboJizokaChat !== 'function') {
+      window.openShoukiboJizokaChat = () => {
         // 実行前に他のウィンドウを閉じる
         closeAllChatWindows();
         startShoukiboJizokaChat();
       };
     }
     
-    if (typeof window.startShorikikaChat !== 'function') {
-      window.startShorikikaChat = () => {
+    if (typeof window.openShorikikaChat !== 'function') {
+      window.openShorikikaChat = () => {
         // 実行前に他のウィンドウを閉じる
         closeAllChatWindows();
         startShorikikaChat();

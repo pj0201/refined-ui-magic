@@ -1,4 +1,3 @@
-
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -36,11 +35,18 @@ export const useChatWindows = () => {
     const initialCheck = () => {
       const shoukiboReady = !!window.shoukiboJizokaChatbot;
       const shorikikaReady = !!window.shorikika_chatbot;
+      const isInitialized = !!window.chatbotInitialized;
+      
       setChatbotStatus({
         shoukiboReady,
         shorikikaReady,
-        initialized: true
+        initialized: isInitialized || (shoukiboReady && shorikikaReady)
       });
+      
+      if (shoukiboReady && shorikikaReady && !window.chatbotInitialized) {
+        window.chatbotInitialized = true;
+        console.log("チャットボット初期化完了を検出しました");
+      }
     };
     
     // 初期化イベントのリスナー
@@ -51,6 +57,8 @@ export const useChatWindows = () => {
         shorikikaReady: !!detail.shorikikaLoaded,
         initialized: true
       });
+      
+      window.chatbotInitialized = true;
     };
     
     // 最初のチェック
@@ -76,14 +84,13 @@ export const useChatWindows = () => {
       // 先に他のチャットウィンドウを全て閉じる
       closeAllChatWindows();
       
-      if (typeof window.startShoukiboJizokaChat === 'function') {
-        window.startShoukiboJizokaChat();
+      if (window.shoukiboJizokaChatbot && typeof window.shoukiboJizokaChatbot.open === 'function') {
+        window.shoukiboJizokaChatbot.open();
+      } else if (window.shoukiboJizokaChatbot && typeof window.shoukiboJizokaChatbot.toggle === 'function') {
+        window.shoukiboJizokaChatbot.toggle();
       } else {
         console.error("小規模持続化補助金チャットボット関数が見つかりません");
         toast.error("チャットボットを開けませんでした。ページを再読み込みしてください。");
-        
-        // フォールバック表示を行う処理
-        showFallbackChat('小規模持続化補助金AI相談', 'shoukibo-jizoka-chatbot-window');
       }
     } catch (error) {
       console.error("小規模持続化補助金チャットボットの開始中にエラーが発生しました:", error);
@@ -99,29 +106,19 @@ export const useChatWindows = () => {
       // 先に他のチャットウィンドウを全て閉じる
       closeAllChatWindows();
       
-      if (typeof window.startShorikikaChat === 'function') {
-        window.startShorikikaChat();
+      if (window.shorikika_chatbot && typeof window.shorikika_chatbot.open === 'function') {
+        window.shorikika_chatbot.open();
+      } else if (window.shorikika_chatbot && typeof window.shorikika_chatbot.toggle === 'function') {
+        window.shorikika_chatbot.toggle();
       } else {
         console.error("省力化投資補助金チャットボット関数が見つかりません");
         toast.error("チャットボットを開けませんでした。ページを再読み込みしてください。");
-        
-        // フォールバック表示を行う処理
-        showFallbackChat('省力化投資補助金AI相談', 'shorikika-chatbot-window');
       }
     } catch (error) {
       console.error("省力化投資補助金チャットボットの開始中にエラーが発生しました:", error);
       toast.error("チャットボットを開けませんでした。ページを再読み込みしてください。");
     }
   }, [chatbotStatus.shorikikaReady, closeAllChatWindows]);
-
-  // フォールバックチャットを表示する関数
-  const showFallbackChat = (title: string, windowId: string) => {
-    // モックウィンドウの作成と表示は別のコンポーネントで行う
-    const event = new CustomEvent('show-fallback-chat', {
-      detail: { title, windowId }
-    });
-    document.dispatchEvent(event);
-  };
 
   // ステータスとメソッドを返す
   return {
