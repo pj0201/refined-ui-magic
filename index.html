@@ -25,6 +25,8 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         z-index: 10000;
         overflow: hidden;
+        display: flex;
+        flex-direction: column;
       }
       
       /* ヘッダー */
@@ -47,7 +49,64 @@
         overflow-y: auto;
         padding: 15px;
         background-color: #f9f9f9;
-        height: calc(100% - 50px);
+        height: calc(100% - 120px);
+      }
+      
+      /* チャットメッセージ */
+      .chat-messages {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .message {
+        max-width: 80%;
+        padding: 10px 15px;
+        border-radius: 18px;
+        line-height: 1.5;
+        font-size: 14px;
+      }
+      
+      .bot-message {
+        align-self: flex-start;
+        background-color: #f0f2f5;
+        color: #333;
+        border-bottom-left-radius: 4px;
+      }
+      
+      .user-message {
+        align-self: flex-end;
+        background-color: #0066cc;
+        color: white;
+        border-bottom-right-radius: 4px;
+      }
+      
+      /* チャット入力エリア */
+      .chat-input {
+        display: flex;
+        padding: 10px 15px;
+        background-color: white;
+        border-top: 1px solid #e5e7eb;
+      }
+      
+      .chat-input input {
+        flex: 1;
+        padding: 10px 15px;
+        border: 1px solid #d1d5db;
+        border-radius: 20px;
+        outline: none;
+        font-size: 14px;
+      }
+      
+      .chat-input button {
+        background-color: #0066cc;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        padding: 10px 15px;
+        margin-left: 10px;
+        cursor: pointer;
+        font-weight: 500;
       }
       
       /* 閉じるボタン */
@@ -195,16 +254,52 @@
         // コンテンツ要素を作成
         const content = document.createElement('div');
         content.className = 'chatbot-content';
-        content.innerHTML = `<div style="padding: 20px; text-align: center;">${title}に関するご質問にお答えします。</div>`;
+        
+        // チャットメッセージエリアを作成
+        const messagesArea = document.createElement('div');
+        messagesArea.className = 'chat-messages';
+        
+        // 初期メッセージを追加
+        const initialMessage = document.createElement('div');
+        initialMessage.className = 'message bot-message';
+        initialMessage.textContent = `こんにちは！${title}です。どのようにお手伝いできますか？`;
+        messagesArea.appendChild(initialMessage);
+        
+        // コンテンツにメッセージエリアを追加
+        content.appendChild(messagesArea);
+        
+        // チャット入力エリアを作成
+        const inputArea = document.createElement('div');
+        inputArea.className = 'chat-input';
+        
+        // 入力フィールドを作成
+        const inputField = document.createElement('input');
+        inputField.type = 'text';
+        inputField.placeholder = 'メッセージを入力...';
+        inputField.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            sendMessage(windowId);
+          }
+        });
+        
+        // 送信ボタンを作成
+        const sendButton = document.createElement('button');
+        sendButton.textContent = '送信';
+        sendButton.onclick = function() {
+          sendMessage(windowId);
+        };
+        
+        // 入力エリアに要素を追加
+        inputArea.appendChild(inputField);
+        inputArea.appendChild(sendButton);
         
         // 要素を組み立て
         chatWindow.appendChild(header);
         chatWindow.appendChild(content);
+        chatWindow.appendChild(inputArea);
         
-        // bodyに追加
+        // ボディに追加
         document.body.appendChild(chatWindow);
-        
-        return chatWindow;
       }
       
       // グローバル関数のセットアップ
@@ -278,6 +373,70 @@
         
         // カスタムイベントを発火してウィンドウが閉じたことを通知
         document.dispatchEvent(new CustomEvent('chatWindowsClosed'));
+      }
+      
+      // メッセージを送信する関数
+      function sendMessage(windowId) {
+        const chatWindow = document.getElementById(windowId);
+        if (!chatWindow) return;
+        
+        const inputField = chatWindow.querySelector('.chat-input input');
+        const messagesArea = chatWindow.querySelector('.chat-messages');
+        
+        if (!inputField || !messagesArea) return;
+        
+        const message = inputField.value.trim();
+        if (!message) return;
+        
+        // ユーザーメッセージを追加
+        const userMessage = document.createElement('div');
+        userMessage.className = 'message user-message';
+        userMessage.textContent = message;
+        messagesArea.appendChild(userMessage);
+        
+        // 入力フィールドをクリア
+        inputField.value = '';
+        
+        // スクロールを一番下に
+        messagesArea.scrollTop = messagesArea.scrollHeight;
+        
+        // ボットの返信を追加（実際のAPIと連携する場合はここを変更）
+        setTimeout(() => {
+          const botMessage = document.createElement('div');
+          botMessage.className = 'message bot-message';
+          
+          // 簡易的な応答ロジック
+          let response = '';
+          const lowerMessage = message.toLowerCase();
+          
+          if (windowId === 'shoukibo-jizoka-chatbot-window') {
+            if (lowerMessage.includes('申請方法') || lowerMessage.includes('どうやって申請')) {
+              response = '小規模持続化補助金の申請方法は、まず「jGrants」というサイトで電子申請を行います。申請には、経営計画書と補助事業計画書の作成が必要です。詳細な手順についてはお問い合わせください。';
+            } else if (lowerMessage.includes('締め切り') || lowerMessage.includes('期限')) {
+              response = '小規模持続化補助金の締め切りは公募回によって異なります。最新の情報は公式サイトでご確認ください。';
+            } else if (lowerMessage.includes('条件') || lowerMessage.includes('対象')) {
+              response = '小規模持続化補助金の対象は、商工会議所・商工会の管轄地域で事業を営む小規模事業者です。従業員数が商業・サービス業では5人以下、製造業・その他の業種では20人以下の事業者が対象となります。';
+            } else {
+              response = '小規模持続化補助金に関するご質問ありがとうございます。具体的にどのような情報をお求めですか？申請方法、対象条件、補助金額などについてお答えできます。';
+            }
+          } else if (windowId === 'shorikika-chatbot-window') {
+            if (lowerMessage.includes('申請方法') || lowerMessage.includes('どうやって申請')) {
+              response = '省力化投資補助金の申請方法は、まず「jGrants」というサイトで電子申請を行います。申請には、事業計画書と投資計画書の作成が必要です。詳細な手順についてはお問い合わせください。';
+            } else if (lowerMessage.includes('締め切り') || lowerMessage.includes('期限')) {
+              response = '省力化投資補助金の締め切りは公募回によって異なります。最新の情報は公式サイトでご確認ください。';
+            } else if (lowerMessage.includes('条件') || lowerMessage.includes('対象')) {
+              response = '省力化投資補助金の対象は、中小企業・小規模事業者等です。生産性向上や業務効率化のための設備投資を行う事業者が対象となります。';
+            } else {
+              response = '省力化投資補助金に関するご質問ありがとうございます。具体的にどのような情報をお求めですか？申請方法、対象条件、補助金額などについてお答えできます。';
+            }
+          }
+          
+          botMessage.textContent = response;
+          messagesArea.appendChild(botMessage);
+          
+          // スクロールを一番下に
+          messagesArea.scrollTop = messagesArea.scrollHeight;
+        }, 1000);
       }
     </script>
     
