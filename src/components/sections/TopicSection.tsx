@@ -1,4 +1,3 @@
-
 import { TopicItem } from "./TopicItem";
 import { useTopicData } from "@/hooks/useTopicData";
 import { useEffect, useState, useCallback } from "react";
@@ -8,51 +7,85 @@ import { useChatWindows } from "@/components/SubsidyChat/hooks/useChatWindows";
 export const TopicSection = () => {
   const { topics, isLoading, error } = useTopicData();
   const { 
-    isInitialized, 
-    isShoukiboReady, 
-    isShorikikaReady, 
-    startShoukiboJizokaChat, 
-    startShorikikaChat 
+    chatbotStatus, 
+    chatbotVisibility,
+    openShoukiboChat, 
+    openShorikikaChat 
   } = useChatWindows();
   
   const [showStatus, setShowStatus] = useState(false);
   
-  // 初期化状態のログ
+  // 初期化状態のログと監視
   useEffect(() => {
-    if (isInitialized) {
-      console.log(`チャットボット初期化状態: 小規模持続化=${isShoukiboReady}, 省力化投資=${isShorikikaReady}`);
-      
-      // 両方のチャットボットが初期化されていない場合は注意メッセージを表示
-      if (!isShoukiboReady && !isShorikikaReady) {
-        setShowStatus(true);
-      }
+    const isInitialized = window.chatbotsInitialized === true;
+    console.log(`TopicSection: チャットボット初期化状態:`, {
+      isInitialized,
+      chatbotStatus
+    });
+    
+    // 両方のチャットボットが初期化されていない場合は注意メッセージを表示
+    if (!isInitialized || (!chatbotStatus.shoukiboLoaded && !chatbotStatus.shorikikaLoaded)) {
+      setShowStatus(true);
+    } else {
+      setShowStatus(false);
     }
-  }, [isInitialized, isShoukiboReady, isShorikikaReady]);
+    
+    // 初期化完了イベントのリスナー
+    const handleInitialized = () => {
+      console.log('TopicSection: チャットボット初期化完了イベントを受信しました');
+      setShowStatus(false);
+    };
+    
+    // イベントリスナーを追加
+    document.addEventListener('chatbotsInitialized', handleInitialized);
+    
+    // クリーンアップ
+    return () => {
+      document.removeEventListener('chatbotsInitialized', handleInitialized);
+    };
+  }, [chatbotStatus]);
 
   // トピックに応じたチャットボットを開く関数
   const handleTopicChat = useCallback((content: string) => {
     console.log(`トピックチャット開始: ${content}`);
     
     try {
-      // 小規模持続化補助金のチャットボットを開く
-      if (content.includes('小規模持続化補助金')) {
-        startShoukiboJizokaChat();
+      // チャットボットが初期化されていない場合は初期化を試みる
+      if (!window.chatbotsInitialized && typeof window.initChatbots === 'function') {
+        console.log('チャットボットが初期化されていないため、初期化を試みます');
+        window.initChatbots();
+        // 初期化後に少し待ってからチャットを開く
+        setTimeout(() => {
+          openChatForTopic(content);
+        }, 1000);
         return;
       }
       
-      // 省力化投資補助金のチャットボットを開く
-      if (content.includes('省力化投資補助金')) {
-        startShorikikaChat();
-        return;
-      }
-      
-      // デフォルトは小規模持続化補助金チャットボットを開く
-      startShoukiboJizokaChat();
+      // 通常の処理
+      openChatForTopic(content);
     } catch (error) {
       console.error('チャットボットを開く際にエラーが発生しました:', error);
       toast.error('チャットボットを開けませんでした。ページを再読み込みしてください。');
     }
-  }, [startShoukiboJizokaChat, startShorikikaChat]);
+  }, [openShoukiboChat, openShorikikaChat]);
+  
+  // トピックに応じたチャットボットを開く内部関数
+  const openChatForTopic = useCallback((content: string) => {
+    // 小規模持続化補助金のチャットボットを開く
+    if (content.includes('小規模持続化補助金')) {
+      openShoukiboChat();
+      return;
+    }
+    
+    // 省力化投資補助金のチャットボットを開く
+    if (content.includes('省力化投資補助金')) {
+      openShorikikaChat();
+      return;
+    }
+    
+    // デフォルトは小規模持続化補助金チャットボットを開く
+    openShoukiboChat();
+  }, [openShoukiboChat, openShorikikaChat]);
 
   if (isLoading) return <div className="loading">トピックを読み込み中...</div>;
   

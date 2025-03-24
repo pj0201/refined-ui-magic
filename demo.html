@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>チャットボットデモ</title>
+    <style>
+      body {
+        font-family: 'Noto Sans JP', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+      }
+      
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+      
+      header {
+        background-color: #0066cc;
+        color: white;
+        padding: 20px;
+        text-align: center;
+      }
+      
+      h1 {
+        margin: 0;
+        font-size: 24px;
+      }
+      
+      .content {
+        background-color: white;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      
+      .button-container {
+        display: flex;
+        gap: 20px;
+        margin-top: 20px;
+        flex-wrap: wrap;
+      }
+      
+      .chat-button {
+        background-color: #0066cc;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+      }
+      
+      .chat-button:hover {
+        background-color: #0055aa;
+      }
+      
+      /* チャットボットウィンドウのスタイル */
+      #shoukibo-jizoka-chatbot-window,
+      #shorikika-chatbot-window {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 400px;
+        height: 600px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 10000;
+        overflow: hidden;
+      }
+      
+      /* ヘッダー */
+      .chatbot-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 15px;
+        background-color: #0066cc;
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+      }
+      
+      /* コンテンツ */
+      .chatbot-content {
+        flex: 1;
+        overflow-y: auto;
+        padding: 15px;
+        background-color: #f9f9f9;
+        height: calc(100% - 50px);
+      }
+      
+      /* 閉じるボタン */
+      .chatbot-close-button {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        padding: 5px;
+        margin-left: 10px;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: background-color 0.2s;
+      }
+      
+      .chatbot-close-button:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+      }
+      
+      /* モバイル対応 */
+      @media (max-width: 480px) {
+        #shoukibo-jizoka-chatbot-window,
+        #shorikika-chatbot-window {
+          width: 90%;
+          height: 80%;
+          bottom: 10px;
+          right: 5%;
+          left: 5%;
+        }
+      }
+      
+      /* チャットメッセージ */
+      .chat-messages {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+      
+      .message {
+        max-width: 80%;
+        padding: 10px 15px;
+        border-radius: 10px;
+        line-height: 1.5;
+      }
+      
+      .bot-message {
+        align-self: flex-start;
+        background-color: #e9e9e9;
+      }
+      
+      .user-message {
+        align-self: flex-end;
+        background-color: #0066cc;
+        color: white;
+      }
+      
+      /* チャット入力 */
+      .chat-input {
+        display: flex;
+        padding: 10px;
+        background-color: white;
+        border-top: 1px solid #e0e0e0;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      
+      .chat-input input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #e0e0e0;
+        border-radius: 5px;
+        margin-right: 10px;
+      }
+      
+      .chat-input button {
+        background-color: #0066cc;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>PLANNINGJOY株式会社 | 創業から承継まで経営の羅針盤</h1>
+    </header>
+    
+    <div class="container">
+      <div class="content">
+        <h2>補助金チャットボットデモ</h2>
+        <p>以下のボタンをクリックして、それぞれのチャットボットを開いてください。</p>
+        
+        <div class="button-container">
+          <button class="chat-button" onclick="openShoukiboChat()">小規模持続化補助金チャットボット</button>
+          <button class="chat-button" onclick="openShorikikaChat()">省力化投資補助金チャットボット</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 小規模持続化補助金チャットボットウィンドウ -->
+    <div id="shoukibo-jizoka-chatbot-window" style="display: none;">
+      <div class="chatbot-header">
+        小規模持続化補助金チャットボット
+        <button class="chatbot-close-button" onclick="closeAllChats()">✕</button>
+      </div>
+      <div class="chatbot-content">
+        <div class="chat-messages">
+          <div class="message bot-message">
+            こんにちは！小規模持続化補助金について質問があればお気軽にどうぞ。
+          </div>
+          <div class="message user-message">
+            申請の条件を教えてください
+          </div>
+          <div class="message bot-message">
+            小規模持続化補助金の申請条件は以下の通りです：
+            <br><br>
+            1. 小規模事業者であること（商業・サービス業は従業員5人以下、製造業・その他は20人以下）
+            <br>
+            2. 持続的な経営に向けた経営計画を策定していること
+            <br>
+            3. 地域の商工会・商工会議所の支援を受けながら事業を実施すること
+            <br><br>
+            詳細についてさらに質問があればお聞きください。
+          </div>
+        </div>
+      </div>
+      <div class="chat-input">
+        <input type="text" placeholder="メッセージを入力...">
+        <button>送信</button>
+      </div>
+    </div>
+    
+    <!-- 省力化投資補助金チャットボットウィンドウ -->
+    <div id="shorikika-chatbot-window" style="display: none;">
+      <div class="chatbot-header">
+        省力化投資補助金チャットボット
+        <button class="chatbot-close-button" onclick="closeAllChats()">✕</button>
+      </div>
+      <div class="chatbot-content">
+        <div class="chat-messages">
+          <div class="message bot-message">
+            こんにちは！省力化投資補助金について質問があればお気軽にどうぞ。
+          </div>
+          <div class="message user-message">
+            補助率と上限額を教えてください
+          </div>
+          <div class="message bot-message">
+            省力化投資補助金の補助率と上限額は以下の通りです：
+            <br><br>
+            1. 補助率：中小企業者は1/2、小規模事業者は2/3
+            <br>
+            2. 補助上限額：750万円～1,250万円（類型によって異なります）
+            <br><br>
+            具体的な申請内容によって変わる場合がありますので、詳細についてはお気軽にお問い合わせください。
+          </div>
+        </div>
+      </div>
+      <div class="chat-input">
+        <input type="text" placeholder="メッセージを入力...">
+        <button>送信</button>
+      </div>
+    </div>
+    
+    <script>
+      // チャットボットウィンドウを開く関数
+      function openShoukiboChat() {
+        closeAllChats();
+        document.getElementById('shoukibo-jizoka-chatbot-window').style.display = 'block';
+      }
+      
+      function openShorikikaChat() {
+        closeAllChats();
+        document.getElementById('shorikika-chatbot-window').style.display = 'block';
+      }
+      
+      // 全てのチャットボットを閉じる関数
+      function closeAllChats() {
+        document.getElementById('shoukibo-jizoka-chatbot-window').style.display = 'none';
+        document.getElementById('shorikika-chatbot-window').style.display = 'none';
+      }
+    </script>
+  </body>
+</html>

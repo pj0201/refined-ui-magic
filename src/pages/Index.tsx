@@ -1,11 +1,9 @@
-
 import { HeroSection } from "@/components/sections/HeroSection";
 import { ConsultingSection } from "@/components/sections/ConsultingSection";
 import { CompanyProfileSection } from "@/components/sections/CompanyProfileSection";
 import { SupportAreasSection } from "@/components/sections/SupportAreasSection";
 import { BusinessPlansSection } from "@/components/sections/BusinessPlansSection";
 import { TopicSection } from "@/components/sections/TopicSection";
-import { SubsidyChatbot } from "@/components/SubsidyChat/SubsidyChatbot";
 import { Helmet } from 'react-helmet';
 import { ContactForm } from "@/components/ContactForm";
 import { useState } from "react";
@@ -81,8 +79,6 @@ const Index = () => {
 
       {/* Back to top button */}
       <BackToTopButton />
-
-      <SubsidyChatbot />
     </div>
   );
 };

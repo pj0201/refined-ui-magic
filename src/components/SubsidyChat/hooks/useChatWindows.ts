@@ -1,132 +1,139 @@
-import { useCallback, useEffect, useState } from "react";
-import { toast } from "sonner";
+import { useState, useEffect, useCallback } from 'react';
 
 /**
- * チャットウィンドウ操作用カスタムフック
+ * チャットウィンドウの状態を管理するフック
  */
 export const useChatWindows = () => {
+  // チャットボットの状態
   const [chatbotStatus, setChatbotStatus] = useState({
-    shoukiboReady: false,
-    shorikikaReady: false,
-    initialized: false
+    shoukiboLoaded: false,
+    shorikikaLoaded: false
   });
-  
-  // チャットウィンドウを閉じる関数
-  const closeAllChatWindows = useCallback(() => {
-    const windowIds = [
-      'shoukibo-jizoka-chatbot-window',
-      'shorikika-chatbot-window',
-      'dify-chatbot-bubble-window',
-      'mock-chat-window'
-    ];
-    
-    windowIds.forEach(id => {
-      const window = document.getElementById(id);
-      if (window && window.style.display !== 'none') {
-        window.style.display = 'none';
-        console.log(`${id}を閉じました (useChatWindows)`);
-      }
-    });
-  }, []);
-  
+
+  // チャットボットの表示状態
+  const [chatbotVisibility, setChatbotVisibility] = useState({
+    shoukiboVisible: false,
+    shorikikaVisible: false
+  });
+
   // 初期化状態を確認
   useEffect(() => {
-    // 即時確認
-    const initialCheck = () => {
-      const shoukiboReady = !!window.shoukiboJizokaChatbot;
-      const shorikikaReady = !!window.shorikika_chatbot;
-      const isInitialized = !!window.chatbotInitialized;
+    // グローバル変数からチャットボットの初期化状態を確認
+    const isInitialized = window.chatbotsInitialized === true;
+    
+    // グローバル関数が存在するか確認
+    const shoukiboFunctionExists = typeof window.openShoukiboJizokaChat === 'function';
+    const shorikikaFunctionExists = typeof window.openShorikikaChat === 'function';
+    
+    setChatbotStatus({
+      shoukiboLoaded: isInitialized && shoukiboFunctionExists,
+      shorikikaLoaded: isInitialized && shorikikaFunctionExists
+    });
+    
+    // ウィンドウの表示状態を監視
+    const checkVisibility = () => {
+      const shoukiboWindow = document.getElementById('shoukibo-jizoka-chatbot-window');
+      const shorikikaWindow = document.getElementById('shorikika-chatbot-window');
       
-      setChatbotStatus({
-        shoukiboReady,
-        shorikikaReady,
-        initialized: isInitialized || (shoukiboReady && shorikikaReady)
-      });
-      
-      if (shoukiboReady && shorikikaReady && !window.chatbotInitialized) {
-        window.chatbotInitialized = true;
-        console.log("チャットボット初期化完了を検出しました");
+      if (shoukiboWindow || shorikikaWindow) {
+        setChatbotVisibility({
+          shoukiboVisible: shoukiboWindow ? 
+            shoukiboWindow.style.display === 'block' || shoukiboWindow.style.display === 'flex' : 
+            false,
+          shorikikaVisible: shorikikaWindow ? 
+            shorikikaWindow.style.display === 'block' || shorikikaWindow.style.display === 'flex' : 
+            false
+        });
       }
     };
     
-    // 初期化イベントのリスナー
-    const handleInitialized = (event: any) => {
-      const detail = event.detail || {};
-      setChatbotStatus({
-        shoukiboReady: !!detail.shoukiboLoaded,
-        shorikikaReady: !!detail.shorikikaLoaded,
-        initialized: true
-      });
-      
-      window.chatbotInitialized = true;
-    };
+    // 初回チェック
+    checkVisibility();
     
-    // 最初のチェック
-    initialCheck();
+    // 定期的に表示状態を確認
+    const intervalId = setInterval(checkVisibility, 1000);
     
-    // 初期化イベントリスナーを追加
-    document.addEventListener('chatbot-initialized', handleInitialized);
-    
-    // 3秒後に再確認
-    const timer = setTimeout(initialCheck, 3000);
-    
+    // クリーンアップ
     return () => {
-      document.removeEventListener('chatbot-initialized', handleInitialized);
-      clearTimeout(timer);
+      clearInterval(intervalId);
     };
   }, []);
-  
-  // 小規模持続化補助金チャットボットを開く関数
-  const startShoukiboJizokaChat = useCallback(() => {
-    console.log(`小規模持続化補助金チャットボットを開きます（準備状態: ${chatbotStatus.shoukiboReady ? '完了' : '未完了'}）`);
-    
-    try {
-      // 先に他のチャットウィンドウを全て閉じる
-      closeAllChatWindows();
-      
-      if (window.shoukiboJizokaChatbot && typeof window.shoukiboJizokaChatbot.open === 'function') {
-        window.shoukiboJizokaChatbot.open();
-      } else if (window.shoukiboJizokaChatbot && typeof window.shoukiboJizokaChatbot.toggle === 'function') {
-        window.shoukiboJizokaChatbot.toggle();
-      } else {
-        console.error("小規模持続化補助金チャットボット関数が見つかりません");
-        toast.error("チャットボットを開けませんでした。ページを再読み込みしてください。");
-      }
-    } catch (error) {
-      console.error("小規模持続化補助金チャットボットの開始中にエラーが発生しました:", error);
-      toast.error("チャットボットを開けませんでした。ページを再読み込みしてください。");
-    }
-  }, [chatbotStatus.shoukiboReady, closeAllChatWindows]);
-  
-  // 省力化投資補助金チャットボットを開く関数
-  const startShorikikaChat = useCallback(() => {
-    console.log(`省力化投資補助金チャットボットを開きます（準備状態: ${chatbotStatus.shorikikaReady ? '完了' : '未完了'}）`);
-    
-    try {
-      // 先に他のチャットウィンドウを全て閉じる
-      closeAllChatWindows();
-      
-      if (window.shorikika_chatbot && typeof window.shorikika_chatbot.open === 'function') {
-        window.shorikika_chatbot.open();
-      } else if (window.shorikika_chatbot && typeof window.shorikika_chatbot.toggle === 'function') {
-        window.shorikika_chatbot.toggle();
-      } else {
-        console.error("省力化投資補助金チャットボット関数が見つかりません");
-        toast.error("チャットボットを開けませんでした。ページを再読み込みしてください。");
-      }
-    } catch (error) {
-      console.error("省力化投資補助金チャットボットの開始中にエラーが発生しました:", error);
-      toast.error("チャットボットを開けませんでした。ページを再読み込みしてください。");
-    }
-  }, [chatbotStatus.shorikikaReady, closeAllChatWindows]);
 
-  // ステータスとメソッドを返す
+  // 小規模持続化補助金チャットボットを開く
+  const openShoukiboChat = useCallback(() => {
+    try {
+      // グローバル関数を使用
+      if (typeof window.openChatWindow === 'function') {
+        window.openChatWindow('shoukibo-jizoka-chatbot-window');
+      }
+      
+      setChatbotVisibility({
+        shoukiboVisible: true,
+        shorikikaVisible: false
+      });
+    } catch (error) {
+      // エラーを表示しない
+    }
+  }, []);
+
+  // 省力化投資補助金チャットボットを開く
+  const openShorikikaChat = useCallback(() => {
+    try {
+      // グローバル関数を使用
+      if (typeof window.openChatWindow === 'function') {
+        window.openChatWindow('shorikika-chatbot-window');
+      }
+      
+      setChatbotVisibility({
+        shoukiboVisible: false,
+        shorikikaVisible: true
+      });
+    } catch (error) {
+      // エラーを表示しない
+    }
+  }, []);
+
+  // 全てのチャットボットを閉じる
+  const closeAllChats = useCallback(() => {
+    try {
+      // グローバル関数を使用
+      if (typeof window.closeAllChatWindows === 'function') {
+        window.closeAllChatWindows();
+      }
+      
+      setChatbotVisibility({
+        shoukiboVisible: false,
+        shorikikaVisible: false
+      });
+    } catch (error) {
+      // エラーを表示しない
+    }
+  }, []);
+
   return {
-    isInitialized: chatbotStatus.initialized,
-    isShoukiboReady: chatbotStatus.shoukiboReady,
-    isShorikikaReady: chatbotStatus.shorikikaReady,
-    startShoukiboJizokaChat,
-    startShorikikaChat,
-    closeAllChatWindows
+    chatbotStatus,
+    chatbotVisibility,
+    openShoukiboChat,
+    openShorikikaChat,
+    closeAllChats
   };
 };
+
+// グローバル型定義の拡張
+declare global {
+  interface Window {
+    // チャットボット関連のグローバル変数
+    chatbotsInitialized?: boolean;
+    
+    // チャットボット関連のグローバル関数
+    openShoukiboJizokaChat?: () => void;
+    openShorikikaChat?: () => void;
+    startShoukiboJizokaChat?: () => void;
+    startShorikikaChat?: () => void;
+    openSmallBusinessChatbot?: () => void;
+    openSubsidyChatbot?: () => void;
+    initChatbots?: () => void;
+    openChatWindow?: (windowName: string) => void;
+    closeAllChatWindows?: () => void;
+  }
+}

@@ -1,4 +1,4 @@
-import { Suspense, useEffect, lazy } from "react";
+import { Suspense, useEffect } from "react";
 import { HashRouter } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -38,6 +38,12 @@ function App() {
   // チャットボットの初期化
   useEffect(() => {
     console.log("App: チャットボットの初期化を開始します");
+    
+    // DOMContentLoadedイベントが既に発生している場合は直接初期化
+    if (document.readyState === 'complete' && typeof window.initChatbots === 'function') {
+      console.log("App: DOMContentLoadedイベントが既に発生しているため、直接初期化します");
+      window.initChatbots();
+    }
   }, []);
 
   return (
