@@ -176,16 +176,12 @@
         shoukibo: {
           elementId: 'shoukibo-jizoka-chatbot',
           title: '小規模持続化補助金チャットボット',
-          apiEndpoint: 'https://api.dify.ai/v1/chat-messages',
-          apiKey: 'app-QdJEAoOJXQeGGXnbAJrGjEzN',
-          conversationId: ''
+          serviceId: 'QdJEAoOJXQeGGXnbAJrGjEzN'
         },
         shorikika: {
           elementId: 'shorikika-chatbot',
           title: '省力化投資補助金チャットボット',
-          apiEndpoint: 'https://api.dify.ai/v1/chat-messages',
-          apiKey: 'app-bWEBiLRQkjLXVYJEZZMHWbYr',
-          conversationId: ''
+          serviceId: 'bWEBiLRQkjLXVYJEZZMHWbYr'
         }
       };
       
@@ -208,8 +204,8 @@
         
         try {
           // チャットボットウィンドウを作成
-          createChatbotWindow('shoukibo-jizoka-chatbot-window', CHATBOT_CONFIG.shoukibo.title);
-          createChatbotWindow('shorikika-chatbot-window', CHATBOT_CONFIG.shorikika.title);
+          createChatbotWindow('shoukibo-jizoka-chatbot-window', CHATBOT_CONFIG.shoukibo.title, CHATBOT_CONFIG.shoukibo.serviceId);
+          createChatbotWindow('shorikika-chatbot-window', CHATBOT_CONFIG.shorikika.title, CHATBOT_CONFIG.shorikika.serviceId);
           
           // グローバル関数をセットアップ
           setupGlobalFunctions();
@@ -226,7 +222,7 @@
       }
       
       // チャットボットウィンドウを作成
-      function createChatbotWindow(windowId, title) {
+      function createChatbotWindow(windowId, title, serviceId) {
         // 既存のウィンドウがあれば削除
         const existingWindow = document.getElementById(windowId);
         if (existingWindow) {
@@ -261,51 +257,23 @@
         const content = document.createElement('div');
         content.className = 'chatbot-content';
         
-        // チャットメッセージエリアを作成
-        const messagesArea = document.createElement('div');
-        messagesArea.className = 'chat-messages';
+        // Difyチャットボットを埋め込む
+        const difyContainer = document.createElement('div');
+        difyContainer.id = `dify-container-${windowId}`;
+        difyContainer.style.width = '100%';
+        difyContainer.style.height = '100%';
+        difyContainer.style.border = 'none';
         
-        // 初期メッセージを追加
-        const initialMessage = document.createElement('div');
-        initialMessage.className = 'message bot-message';
-        initialMessage.textContent = `こんにちは！${title}です。どのようにお手伝いできますか？`;
-        messagesArea.appendChild(initialMessage);
-        
-        // コンテンツにメッセージエリアを追加
-        content.appendChild(messagesArea);
-        
-        // チャット入力エリアを作成
-        const inputArea = document.createElement('div');
-        inputArea.className = 'chat-input';
-        
-        // 入力フィールドを作成
-        const inputField = document.createElement('input');
-        inputField.type = 'text';
-        inputField.placeholder = 'メッセージを入力...';
-        inputField.addEventListener('keypress', function(e) {
-          if (e.key === 'Enter') {
-            sendMessage(windowId);
-          }
-        });
-        
-        // 送信ボタンを作成
-        const sendButton = document.createElement('button');
-        sendButton.textContent = '送信';
-        sendButton.onclick = function() {
-          sendMessage(windowId);
-        };
-        
-        // 入力エリアに要素を追加
-        inputArea.appendChild(inputField);
-        inputArea.appendChild(sendButton);
+        content.appendChild(difyContainer);
         
         // 要素を組み立て
         chatWindow.appendChild(header);
         chatWindow.appendChild(content);
-        chatWindow.appendChild(inputArea);
         
         // ボディに追加
         document.body.appendChild(chatWindow);
+        
+        return chatWindow;
       }
       
       // グローバル関数のセットアップ
@@ -334,32 +302,57 @@
       
       // チャットウィンドウを開く
       function openChatWindow(windowId) {
-        // 全てのチャットウィンドウを閉じる
+        // 他のウィンドウを閉じる
         closeAllChatWindows();
         
-        // 指定されたチャットウィンドウを表示
+        // 指定されたウィンドウを表示
         const chatWindow = document.getElementById(windowId);
+        
         if (chatWindow) {
-          chatWindow.style.display = 'block';
+          chatWindow.style.display = 'flex';
+          
+          // Difyチャットボットを初期化
+          const difyContainer = document.getElementById(`dify-container-${windowId}`);
+          if (difyContainer && !difyContainer.hasChildNodes()) {
+            let serviceId;
+            let title;
+            
+            if (windowId === 'shoukibo-jizoka-chatbot-window') {
+              serviceId = CHATBOT_CONFIG.shoukibo.serviceId;
+              title = CHATBOT_CONFIG.shoukibo.title;
+            } else if (windowId === 'shorikika-chatbot-window') {
+              serviceId = CHATBOT_CONFIG.shorikika.serviceId;
+              title = CHATBOT_CONFIG.shorikika.title;
+            }
+            
+            if (serviceId) {
+              // Difyウィジェットスクリプトを読み込み
+              const script = document.createElement('script');
+              script.src = 'https://cdn.dify.ai/webchat/v1.0.0/webchat.js';
+              script.async = true;
+              script.onload = function() {
+                // Difyウィジェットを初期化
+                if (window.DifyChat) {
+                  new window.DifyChat({
+                    container: difyContainer,
+                    serviceId: serviceId,
+                    authToken: '',
+                    apiEndpoint: 'https://api.dify.ai/v1',
+                    themeColor: '#0066cc',
+                    welcomeMessage: `こんにちは！${title}です。どのようにお手伝いできますか？`,
+                    poweredBy: false,
+                    hideBranding: true,
+                    showEmoji: false,
+                    position: 'center'
+                  });
+                }
+              };
+              document.head.appendChild(script);
+            }
+          }
           
           // カスタムイベントを発火してウィンドウが開いたことを通知
-          document.dispatchEvent(new CustomEvent('chatWindowOpened', { 
-            detail: { windowId: windowId } 
-          }));
-        } else {
-          // ウィンドウが見つからない場合は再初期化
-          if (!window.chatbotsInitialized) {
-            initChatbots();
-            setTimeout(() => openChatWindow(windowId), 100);
-          } else {
-            // ウィンドウを再作成
-            const title = windowId.includes('shoukibo') 
-              ? CHATBOT_CONFIG.shoukibo.title 
-              : CHATBOT_CONFIG.shorikika.title;
-            
-            const newWindow = createChatbotWindow(windowId, title);
-            newWindow.style.display = 'block';
-          }
+          document.dispatchEvent(new CustomEvent('chatWindowOpened', { detail: { windowId } }));
         }
       }
       
@@ -379,105 +372,6 @@
         
         // カスタムイベントを発火してウィンドウが閉じたことを通知
         document.dispatchEvent(new CustomEvent('chatWindowsClosed'));
-      }
-      
-      // メッセージを送信する関数
-      function sendMessage(windowId) {
-        const chatWindow = document.getElementById(windowId);
-        if (!chatWindow) return;
-        
-        const inputField = chatWindow.querySelector('.chat-input input');
-        const messagesArea = chatWindow.querySelector('.chat-messages');
-        
-        if (!inputField || !messagesArea) return;
-        
-        const message = inputField.value.trim();
-        if (!message) return;
-        
-        // ユーザーメッセージを追加
-        const userMessage = document.createElement('div');
-        userMessage.className = 'message user-message';
-        userMessage.textContent = message;
-        messagesArea.appendChild(userMessage);
-        
-        // 入力フィールドをクリア
-        inputField.value = '';
-        
-        // スクロールを一番下に
-        messagesArea.scrollTop = messagesArea.scrollHeight;
-        
-        // 送信ボタンを無効化
-        const sendButton = chatWindow.querySelector('.chat-input button');
-        if (sendButton) {
-          sendButton.disabled = true;
-          sendButton.textContent = '送信中...';
-        }
-        
-        // APIの設定を取得
-        let apiConfig;
-        if (windowId === 'shoukibo-jizoka-chatbot-window') {
-          apiConfig = CHATBOT_CONFIG.shoukibo;
-        } else if (windowId === 'shorikika-chatbot-window') {
-          apiConfig = CHATBOT_CONFIG.shorikika;
-        } else {
-          return;
-        }
-        
-        // Dify APIにリクエストを送信
-        fetch(apiConfig.apiEndpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiConfig.apiKey}`
-          },
-          body: JSON.stringify({
-            inputs: {},
-            query: message,
-            response_mode: 'streaming',
-            conversation_id: apiConfig.conversationId || undefined,
-            user: 'user'
-          })
-        })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('APIリクエストに失敗しました');
-          }
-          return response.json();
-        })
-        .then(data => {
-          // 会話IDを保存
-          if (data.conversation_id) {
-            apiConfig.conversationId = data.conversation_id;
-          }
-          
-          // ボットの返信を追加
-          const botMessage = document.createElement('div');
-          botMessage.className = 'message bot-message';
-          botMessage.textContent = data.answer || '申し訳ありませんが、応答を生成できませんでした。';
-          messagesArea.appendChild(botMessage);
-          
-          // スクロールを一番下に
-          messagesArea.scrollTop = messagesArea.scrollHeight;
-        })
-        .catch(error => {
-          console.error('エラー:', error);
-          
-          // エラーメッセージを表示
-          const errorMessage = document.createElement('div');
-          errorMessage.className = 'message bot-message';
-          errorMessage.textContent = '申し訳ありませんが、一時的な問題が発生しました。後でもう一度お試しください。';
-          messagesArea.appendChild(errorMessage);
-          
-          // スクロールを一番下に
-          messagesArea.scrollTop = messagesArea.scrollHeight;
-        })
-        .finally(() => {
-          // 送信ボタンを再度有効化
-          if (sendButton) {
-            sendButton.disabled = false;
-            sendButton.textContent = '送信';
-          }
-        });
       }
     </script>
     
