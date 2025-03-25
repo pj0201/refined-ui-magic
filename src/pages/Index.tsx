@@ -12,7 +12,6 @@ import { PrivacyPolicyModal } from "@/components/modals/PrivacyPolicyModal";
 import { TermsOfServiceModal } from "@/components/modals/TermsOfServiceModal";
 import { BackToTopButton } from "@/components/BackToTopButton";
 import { Link } from "react-router-dom";
-import { ExternalLink } from "lucide-react";
 
 const Index = () => {
   const [privacyPolicyOpen, setPrivacyPolicyOpen] = useState(false);
@@ -32,7 +31,7 @@ const Index = () => {
       <SupportAreasSection />
       <BusinessPlansSection />
       
-      {/* FAQ Section - Restored from previous version (2 weeks ago) */}
+      {/* よくあるご質問セクション - テーブル形式のUIに更新 */}
       <section id="faq" className="py-16 px-4 relative overflow-hidden">
         {/* 背景画像 */}
         <div 
@@ -62,15 +61,8 @@ const Index = () => {
               <p className="text-gray-700">神戸・兵庫を中心に、関西全域でサービスを提供しています。オンラインでのコンサルティングも可能ですので、遠方の方もご相談ください。</p>
             </div>
             <div className="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-5px]">
-              <h3 className="text-xl font-semibold mb-3 text-blue-700">詳しい質問はどこで見られますか？</h3>
-              <p className="text-gray-700 flex items-center">
-                より詳細な質問と回答は
-                <Link to="/faq" className="text-blue-600 hover:text-blue-800 flex items-center ml-1 font-medium">
-                  FAQページ
-                  <ExternalLink className="w-4 h-4 ml-1" />
-                </Link>
-                をご覧ください。
-              </p>
+              <h3 className="text-xl font-semibold mb-3 text-blue-700">AI導入にはどのくらいのコストがかかりますか？</h3>
+              <p className="text-gray-700">AI導入のコストは目的や規模によって異なります。汎用AIツールは月額数千円から利用可能ですが、カスタマイズされたソリューションの開発には数十万円からかかることもあります。初回相談でお見積りいたします。</p>
             </div>
           </div>
         </div>

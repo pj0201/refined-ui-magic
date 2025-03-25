@@ -57,6 +57,9 @@ export const TopicItem = ({
   
   // 経営者保証のトピックかどうかを判定（ID=3）
   const isCompactLayout = id === 3;
+  
+  // 経営者保証関連項目かどうかを判定（ID=3）
+  const isFinanceRelated = id === 3;
 
   return (
     <div
@@ -104,6 +107,7 @@ export const TopicItem = ({
                 size="sm"
                 className={cn(
                   isAiRelated && "bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white border-0",
+                  isFinanceRelated && "bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white border-0",
                   isCompactLayout && "p-1.5 h-auto min-h-0 text-xs"
                 )}
               >
