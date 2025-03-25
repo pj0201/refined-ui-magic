@@ -106,7 +106,7 @@ export const TopicSection = () => {
   return (
     <section className="topics-section">
       <div className="container mx-auto px-4 py-12">
-        <h2 className="text-3xl font-bold mb-8 text-center">トピックス</h2>
+        <h2 className="text-3xl font-bold mb-8 text-center">よくあるご質問</h2>
         
         {showStatus && (
           <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-md text-yellow-800 text-sm">

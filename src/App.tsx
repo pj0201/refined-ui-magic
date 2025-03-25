@@ -1,3 +1,4 @@
+
 import { Suspense, useEffect } from "react";
 import { HashRouter } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
@@ -11,6 +12,7 @@ import AIGlossary from "./pages/AIGlossary";
 import AITools from "./pages/AITools";
 import AISupportPage from "./pages/AISupportPage";
 import NotFound from "./pages/NotFound";
+import FAQPage from "./pages/FAQPage";
 
 // プランページ
 import PosucoroPage from "./pages/plans/PosucoroPage";
@@ -61,6 +63,7 @@ function App() {
               <Route path="/ai-glossary" element={<AIGlossary />} />
               <Route path="/ai-tools" element={<AITools />} />
               <Route path="/ai-support" element={<AISupportPage />} />
+              <Route path="/faq" element={<FAQPage />} />
               
               <Route path="/plans/posucoro" element={<PosucoroPage />} />
               <Route path="/plans/keiei-kaizen" element={<KeieiKaizenPage />} />

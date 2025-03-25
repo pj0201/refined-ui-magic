@@ -46,16 +46,11 @@ const AISupportPage = () => {
             AI導入支援サポート
           </h1>
           <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto">
-            企業のAI活用をサポートします。業種業態に応じた非属人化、省力化、自動化を実現します。
+            AI活用で業務を変革。<br />
+            貴社の課題に合わせた最適なAIソリューションを提案します。
           </p>
           <div className="bg-white p-6 rounded-lg shadow-md inline-block mb-8">
-            <p className="text-gray-700 text-lg">2025年までに<span className="font-bold text-purple-700">47%の企業</span>がAIを本格導入予定</p>
-          </div>
-          <div>
-            <Button size="lg" className="bg-purple-600 hover:bg-purple-700">
-              <Users className="h-5 w-5 mr-2" />
-              お問い合わせはこちら
-            </Button>
+            <p className="text-gray-700 text-lg">2026年までに<span className="font-bold text-purple-700">70%以上の企業</span>がAIを業務に導入予定</p>
           </div>
         </section>
 
@@ -98,12 +93,12 @@ const AISupportPage = () => {
               <CardHeader className="flex flex-row items-center gap-4">
                 <Brain className="h-8 w-8 text-purple-500" />
                 <div>
-                  <CardTitle>研修・勉強会</CardTitle>
+                  <CardTitle>AIセミナー</CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-base">
-                  経営者向け、実務担当者向けの各種研修を提供。AIリテラシーを高め、自社内でのAI活用人材を育成します。
+                  全階層の方を対象としたAIセミナーを開催。AIリテラシーを高め、自社内でのAI活用スキルを育成します。
                 </CardDescription>
               </CardContent>
             </Card>
@@ -133,9 +128,9 @@ const AISupportPage = () => {
                 <BookOpen className="h-6 w-6 text-purple-600" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold mb-2">AIリテラシー研修</h3>
+                <h3 className="text-xl font-semibold mb-2">AIセミナー</h3>
                 <p className="text-gray-600">
-                  経営者向け、実務担当者向けの研修プログラムを提供。AIの基礎から実践的な活用方法まで学べます。
+                  あらゆる階層の方を対象としたAIセミナーを開催。AIの基礎から実践的な活用方法まで学べます。
                 </p>
               </div>
             </div>
@@ -176,15 +171,15 @@ const AISupportPage = () => {
             <Card>
               <CardHeader>
                 <CardTitle>製造業A社</CardTitle>
-                <CardDescription className="text-base font-medium">生産管理業務の効率化</CardDescription>
+                <CardDescription className="text-base font-medium">AIセミナー実施による業務改善</CardDescription>
               </CardHeader>
               <CardContent>
                 <p className="text-gray-700 mb-4">
-                  生産計画の策定や在庫管理にAIを活用し、業務時間を40%削減。予測精度が向上し、在庫コストも20%削減しました。
+                  全社員向けAIセミナーを実施後、社内でのAI活用が促進され、業務時間を40%削減。生産性が大幅に向上しました。
                 </p>
                 <div className="flex items-center gap-2 text-purple-600">
                   <Clock className="h-4 w-4" />
-                  <span className="text-sm">導入期間: 約3ヶ月</span>
+                  <span className="text-sm">導入期間: 約2ヶ月</span>
                 </div>
               </CardContent>
             </Card>
@@ -208,7 +203,7 @@ const AISupportPage = () => {
           </div>
         </section>
 
-        {/* CTAセクション */}
+        {/* CTAセクション - 末尾に移動 */}
         <section className="text-center bg-gradient-to-r from-purple-600 to-indigo-600 rounded-xl p-8 text-white">
           <h2 className="text-3xl font-bold mb-4">AI導入の第一歩を踏み出しませんか？</h2>
           <p className="text-xl mb-8">
