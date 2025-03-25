@@ -49,7 +49,6 @@
         overflow-y: auto;
         padding: 15px;
         background-color: #f9f9f9;
-        height: calc(100% - 120px);
       }
       
       /* チャットメッセージ */
@@ -59,54 +58,63 @@
         gap: 10px;
       }
       
+      /* メッセージ */
       .message {
         max-width: 80%;
         padding: 10px 15px;
         border-radius: 18px;
-        line-height: 1.5;
-        font-size: 14px;
+        word-break: break-word;
       }
       
+      /* ボットメッセージ */
       .bot-message {
         align-self: flex-start;
-        background-color: #f0f2f5;
-        color: #333;
-        border-bottom-left-radius: 4px;
+        background-color: #e9e9e9;
       }
       
+      /* ユーザーメッセージ */
       .user-message {
         align-self: flex-end;
         background-color: #0066cc;
         color: white;
-        border-bottom-right-radius: 4px;
       }
       
-      /* チャット入力エリア */
+      /* 入力エリア */
       .chat-input {
         display: flex;
+        align-items: center;
         padding: 10px 15px;
         background-color: white;
-        border-top: 1px solid #e5e7eb;
+        border-top: 1px solid #e0e0e0;
       }
       
+      /* 入力フィールド */
       .chat-input input {
         flex: 1;
-        padding: 10px 15px;
-        border: 1px solid #d1d5db;
+        padding: 10px;
+        border: 1px solid #e0e0e0;
         border-radius: 20px;
         outline: none;
         font-size: 14px;
       }
       
+      /* 送信ボタン */
       .chat-input button {
+        margin-left: 10px;
+        padding: 10px 15px;
         background-color: #0066cc;
         color: white;
         border: none;
         border-radius: 20px;
-        padding: 10px 15px;
-        margin-left: 10px;
         cursor: pointer;
-        font-weight: 500;
+        font-size: 14px;
+        font-weight: bold;
+      }
+      
+      /* 送信ボタン（無効時） */
+      .chat-input button:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
       }
       
       /* 閉じるボタン */
@@ -114,55 +122,10 @@
         background: none;
         border: none;
         color: white;
-        font-size: 20px;
+        font-size: 18px;
         cursor: pointer;
-        padding: 5px;
-        margin-left: 10px;
-        width: 30px;
-        height: 30px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        transition: background-color 0.2s;
-      }
-      
-      .chatbot-close-button:hover {
-        background-color: rgba(255, 255, 255, 0.2);
-      }
-      
-      /* モバイル対応 */
-      @media (max-width: 480px) {
-        #shoukibo-jizoka-chatbot-window,
-        #shorikika-chatbot-window {
-          width: 90%;
-          height: 80%;
-          bottom: 10px;
-          right: 5%;
-          left: 5%;
-        }
-      }
-      
-      /* Difyブランディングを非表示 */
-      .dify-chatbot-powered-by,
-      .dify-powered-by,
-      [class*="powered-by"],
-      [class*="branding"] {
-        display: none !important;
-        visibility: hidden !important;
-        opacity: 0 !important;
-        height: 0 !important;
-        width: 0 !important;
-        overflow: hidden !important;
-        position: absolute !important;
-        pointer-events: none !important;
-      }
-      
-      /* エラーメッセージを非表示 */
-      .error-message,
-      .error-container,
-      [class*="error"] {
-        display: none !important;
+        padding: 0;
+        margin: 0;
       }
     </style>
   </head>
@@ -178,14 +141,14 @@
           title: '小規模持続化補助金チャットボット',
           serviceId: 'QdJEAoOJXQeGGXnbAJrGjEzN',
           apiEndpoint: 'https://api.dify.ai/v1',
-          apiKey: 'app-QdJEAoOJXQeGGXnbAJrGjEzN'
+          apiKey: 'sk-QdJEAoOJXQeGGXnbAJrGjEzN'
         },
         shorikika: {
           elementId: 'shorikika-chatbot',
           title: '省力化投資補助金チャットボット',
           serviceId: 'bWEBiLRQkjLXVYJEZZMHWbYr',
           apiEndpoint: 'https://api.dify.ai/v1',
-          apiKey: 'app-bWEBiLRQkjLXVYJEZZMHWbYr'
+          apiKey: 'sk-bWEBiLRQkjLXVYJEZZMHWbYr'
         }
       };
       
@@ -397,114 +360,117 @@
           sendButton.textContent = '送信中...';
         }
         
-        // APIの設定を取得
-        let apiConfig = {};
-        if (windowId === 'shoukibo-jizoka-chatbot-window') {
-          apiConfig = {
-            apiEndpoint: CHATBOT_CONFIG.shoukibo.apiEndpoint + '/chat-messages',
-            apiKey: CHATBOT_CONFIG.shoukibo.apiKey,
-            conversationId: window.shoukiboConversationId
-          };
-        } else if (windowId === 'shorikika-chatbot-window') {
-          apiConfig = {
-            apiEndpoint: CHATBOT_CONFIG.shorikika.apiEndpoint + '/chat-messages',
-            apiKey: CHATBOT_CONFIG.shorikika.apiKey,
-            conversationId: window.shorikikanConversationId
-          };
-        }
-        
-        // Dify APIを呼び出す
-        fetch(apiConfig.apiEndpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${apiConfig.apiKey}`
-          },
-          body: JSON.stringify({
-            inputs: {},
-            query: message,
-            response_mode: 'blocking',
-            conversation_id: apiConfig.conversationId || undefined,
-            user: 'user'
-          })
-        })
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('APIリクエストに失敗しました');
-          }
-          return response.json();
-        })
-        .then(data => {
-          // 会話IDを保存
-          if (data.conversation_id) {
-            if (windowId === 'shoukibo-jizoka-chatbot-window') {
-              window.shoukiboConversationId = data.conversation_id;
-            } else if (windowId === 'shorikika-chatbot-window') {
-              window.shorikikanConversationId = data.conversation_id;
-            }
-          }
-          
-          // ボットの応答を表示
-          const botMessage = document.createElement('div');
-          botMessage.className = 'message bot-message';
-          botMessage.textContent = data.answer || '申し訳ありませんが、応答を生成できませんでした。';
-          messagesArea.appendChild(botMessage);
-          
-          // スクロールを一番下に
-          messagesArea.scrollTop = messagesArea.scrollHeight;
-        })
-        .catch(error => {
-          console.error('Error:', error);
-          
-          // エラーメッセージを表示（ユーザーには表示しない）
-          console.error('APIエラー:', error.message);
-          
-          // フォールバックの応答を表示
-          const botMessage = document.createElement('div');
-          botMessage.className = 'message bot-message';
-          
-          let response = '';
-          const lowerMessage = message.toLowerCase();
-          
+        // 簡易的な応答ロジック - APIが失敗した場合のフォールバック
+        setTimeout(() => {
+          // APIの設定を取得
+          let apiConfig = {};
           if (windowId === 'shoukibo-jizoka-chatbot-window') {
-            if (lowerMessage.includes('申請方法') || lowerMessage.includes('どうやって申請')) {
-              response = '小規模持続化補助金の申請方法は、まず「jGrants」というサイトで電子申請を行います。申請には、経営計画書と補助事業計画書の作成が必要です。詳細な手順についてはお問い合わせください。';
-            } else if (lowerMessage.includes('締め切り') || lowerMessage.includes('期限')) {
-              response = '小規模持続化補助金の締め切りは公募回によって異なります。最新の情報は公式サイトでご確認ください。';
-            } else if (lowerMessage.includes('条件') || lowerMessage.includes('対象')) {
-              response = '小規模持続化補助金の対象は、商工会議所・商工会の管轄地域で事業を営む小規模事業者です。従業員数が商業・サービス業では5人以下、製造業・その他の業種では20人以下の事業者が対象となります。';
-            } else if (lowerMessage.includes('補助金額') || lowerMessage.includes('いくら')) {
-              response = '小規模持続化補助金の補助金額は、通常枠で最大50万円（補助率2/3）です。特別枠ではさらに高額になる場合があります。';
-            } else {
-              response = '小規模持続化補助金に関するご質問ありがとうございます。具体的にどのような情報をお求めですか？申請方法、対象条件、補助金額などについてお答えできます。';
-            }
+            apiConfig = {
+              apiEndpoint: CHATBOT_CONFIG.shoukibo.apiEndpoint + '/chat-messages',
+              apiKey: CHATBOT_CONFIG.shoukibo.apiKey,
+              conversationId: window.shoukiboConversationId
+            };
           } else if (windowId === 'shorikika-chatbot-window') {
-            if (lowerMessage.includes('申請方法') || lowerMessage.includes('どうやって申請')) {
-              response = '省力化投資補助金の申請方法は、まず「jGrants」というサイトで電子申請を行います。申請には、事業計画書と投資計画書の作成が必要です。詳細な手順についてはお問い合わせください。';
-            } else if (lowerMessage.includes('締め切り') || lowerMessage.includes('期限')) {
-              response = '省力化投資補助金の締め切りは公募回によって異なります。最新の情報は公式サイトでご確認ください。';
-            } else if (lowerMessage.includes('条件') || lowerMessage.includes('対象')) {
-              response = '省力化投資補助金の対象は、中小企業・小規模事業者等です。生産性向上や業務効率化のための設備投資を行う事業者が対象となります。';
-            } else if (lowerMessage.includes('補助金額') || lowerMessage.includes('いくら')) {
-              response = '省力化投資補助金の補助金額は、最大750万円（補助率1/2）です。企業規模や申請内容によって変動します。';
-            } else {
-              response = '省力化投資補助金に関するご質問ありがとうございます。具体的にどのような情報をお求めですか？申請方法、対象条件、補助金額などについてお答えできます。';
+            apiConfig = {
+              apiEndpoint: CHATBOT_CONFIG.shorikika.apiEndpoint + '/chat-messages',
+              apiKey: CHATBOT_CONFIG.shorikika.apiKey,
+              conversationId: window.shorikikanConversationId
+            };
+          }
+          
+          // Dify APIを呼び出す
+          fetch(apiConfig.apiEndpoint, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${apiConfig.apiKey}`
+            },
+            body: JSON.stringify({
+              inputs: {},
+              query: message,
+              response_mode: 'blocking',
+              conversation_id: apiConfig.conversationId || undefined,
+              user: 'user'
+            })
+          })
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('APIリクエストに失敗しました');
             }
-          }
-          
-          botMessage.textContent = response;
-          messagesArea.appendChild(botMessage);
-          
-          // スクロールを一番下に
-          messagesArea.scrollTop = messagesArea.scrollHeight;
-        })
-        .finally(() => {
-          // 送信ボタンを再度有効化
-          if (sendButton) {
-            sendButton.disabled = false;
-            sendButton.textContent = '送信';
-          }
-        });
+            return response.json();
+          })
+          .then(data => {
+            // 会話IDを保存
+            if (data.conversation_id) {
+              if (windowId === 'shoukibo-jizoka-chatbot-window') {
+                window.shoukiboConversationId = data.conversation_id;
+              } else if (windowId === 'shorikika-chatbot-window') {
+                window.shorikikanConversationId = data.conversation_id;
+              }
+            }
+            
+            // ボットの応答を表示
+            const botMessage = document.createElement('div');
+            botMessage.className = 'message bot-message';
+            botMessage.textContent = data.answer || '申し訳ありませんが、応答を生成できませんでした。';
+            messagesArea.appendChild(botMessage);
+            
+            // スクロールを一番下に
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            
+            // エラーメッセージを表示（ユーザーには表示しない）
+            console.error('APIエラー:', error.message);
+            
+            // フォールバックの応答を表示
+            const botMessage = document.createElement('div');
+            botMessage.className = 'message bot-message';
+            
+            let response = '';
+            const lowerMessage = message.toLowerCase();
+            
+            if (windowId === 'shoukibo-jizoka-chatbot-window') {
+              if (lowerMessage.includes('申請方法') || lowerMessage.includes('どうやって申請')) {
+                response = '小規模持続化補助金の申請方法は、まず「jGrants」というサイトで電子申請を行います。申請には、経営計画書と補助事業計画書の作成が必要です。詳細な手順についてはお問い合わせください。';
+              } else if (lowerMessage.includes('締め切り') || lowerMessage.includes('期限')) {
+                response = '小規模持続化補助金の締め切りは公募回によって異なります。最新の情報は公式サイトでご確認ください。';
+              } else if (lowerMessage.includes('条件') || lowerMessage.includes('対象')) {
+                response = '小規模持続化補助金の対象は、商工会議所・商工会の管轄地域で事業を営む小規模事業者です。従業員数が商業・サービス業では5人以下、製造業・その他の業種では20人以下の事業者が対象となります。';
+              } else if (lowerMessage.includes('補助金額') || lowerMessage.includes('いくら')) {
+                response = '小規模持続化補助金の補助金額は、通常枠で最大50万円（補助率2/3）です。特別枠ではさらに高額になる場合があります。';
+              } else {
+                response = '小規模持続化補助金に関するご質問ありがとうございます。具体的にどのような情報をお求めですか？申請方法、対象条件、補助金額などについてお答えできます。';
+              }
+            } else if (windowId === 'shorikika-chatbot-window') {
+              if (lowerMessage.includes('申請方法') || lowerMessage.includes('どうやって申請')) {
+                response = '省力化投資補助金の申請方法は、まず「jGrants」というサイトで電子申請を行います。申請には、事業計画書と投資計画書の作成が必要です。詳細な手順についてはお問い合わせください。';
+              } else if (lowerMessage.includes('締め切り') || lowerMessage.includes('期限')) {
+                response = '省力化投資補助金の締め切りは公募回によって異なります。最新の情報は公式サイトでご確認ください。';
+              } else if (lowerMessage.includes('条件') || lowerMessage.includes('対象')) {
+                response = '省力化投資補助金の対象は、中小企業・小規模事業者等です。生産性向上や業務効率化のための設備投資を行う事業者が対象となります。';
+              } else if (lowerMessage.includes('補助金額') || lowerMessage.includes('いくら')) {
+                response = '省力化投資補助金の補助金額は、最大750万円（補助率1/2）です。企業規模や申請内容によって変動します。';
+              } else {
+                response = '省力化投資補助金に関するご質問ありがとうございます。具体的にどのような情報をお求めですか？申請方法、対象条件、補助金額などについてお答えできます。';
+              }
+            }
+            
+            botMessage.textContent = response;
+            messagesArea.appendChild(botMessage);
+            
+            // スクロールを一番下に
+            messagesArea.scrollTop = messagesArea.scrollHeight;
+          })
+          .finally(() => {
+            // 送信ボタンを再度有効化
+            if (sendButton) {
+              sendButton.disabled = false;
+              sendButton.textContent = '送信';
+            }
+          });
+        }, 100);
       }
       
       // 全てのチャットウィンドウを閉じる
