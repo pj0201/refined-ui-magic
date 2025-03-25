@@ -62,7 +62,7 @@ const Index = () => {
             </div>
             <div className="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-5px]">
               <h3 className="text-xl font-semibold mb-3 text-blue-700">AI導入にはどのくらいのコストがかかりますか？</h3>
-              <p className="text-gray-700">AI導入のコストは目的や規模によって異なります。汎用AIツールは月額数千円から利用可能ですが、カスタマイズされたソリューションの開発には数十万円からかかることもあります。初回相談でお見積りいたします。</p>
+              <p className="text-gray-700">AI導入のコストは目的や規模によって異なります。汎用AIツールは有料版は月額数千円（月に20USドルが多い）から利用可能ですが、pro版など最上位モデルは月に200ドルや数百ドルのものも有ります。</p>
             </div>
             <div className="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-5px]">
               <h3 className="text-xl font-semibold mb-3 text-blue-700">創業前の相談はいつまでにするべきですか？</h3>
@@ -70,7 +70,7 @@ const Index = () => {
             </div>
             <div className="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-5px]">
               <h3 className="text-xl font-semibold mb-3 text-blue-700">急ぎの案件にも対応していますか？</h3>
-              <p className="text-gray-700">はい、お急ぎの案件にも可能な限り迅速に対応いたします。特に申請期限が迫っている補助金や、経営危機に関わる相談は優先的に対応させていただきますので、お早めにご連絡ください。</p>
+              <p className="text-gray-700">はい、お急ぎの案件にも可能な限り迅速に対応いたします。経営危機に関わるご相談は迅速に対応させていただきますので、お早めにご連絡ください。</p>
             </div>
           </div>
         </div>
