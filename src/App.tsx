@@ -9,6 +9,7 @@ import { Toaster } from "sonner";
 import Index from "./pages/Index";
 import AIGlossary from "./pages/AIGlossary";
 import AITools from "./pages/AITools";
+import AISupportPage from "./pages/AISupportPage";
 import NotFound from "./pages/NotFound";
 
 // プランページ
@@ -59,6 +60,7 @@ function App() {
               <Route path="/index" element={<Index />} />
               <Route path="/ai-glossary" element={<AIGlossary />} />
               <Route path="/ai-tools" element={<AITools />} />
+              <Route path="/ai-support" element={<AISupportPage />} />
               
               <Route path="/plans/posucoro" element={<PosucoroPage />} />
               <Route path="/plans/keiei-kaizen" element={<KeieiKaizenPage />} />

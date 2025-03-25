@@ -34,20 +34,26 @@ export const TopicItem = ({
   // AIアイコンの選択 - ID基づいて異なるアイコンを表示
   const getAiIcon = () => {
     switch (id) {
-      case 3: // AI用語について
+      case 1: // AI導入支援サポート
+        return <Sparkles className="h-5 w-5 text-purple-600" />;
+      case 3: // 経営者保証なしの融資
+        return <Brain className="h-5 w-5 text-blue-600" />;
+      case 4: // AI用語について
         return <Brain className="h-5 w-5 text-purple-600" />;
-      case 4: // おすすめのAIツール一覧
+      case 5: // おすすめのAIツール一覧
         return <Wrench className="h-5 w-5 text-blue-500" />;
+      case 6: // 省力化投資補助金
+        return <Sparkles className="h-5 w-5 text-yellow-500" />;
       default:
         return isNew ? <Sparkles className="h-5 w-5 text-yellow-500" /> : <Bot className="h-5 w-5 text-gray-500" />;
     }
   };
 
   // AI関連アイテムかどうかを判定
-  const isAiRelated = id >= 3;
+  const isAiRelated = id === 1 || id === 4 || id === 5;
 
-  // 補助金関連項目（トップの2つ）かどうかを判定
-  const isSubsidyRelated = id <= 2;
+  // 補助金関連項目かどうかを判定
+  const isSubsidyRelated = id === 2 || id === 6;
 
   return (
     <div
@@ -66,7 +72,7 @@ export const TopicItem = ({
           {getAiIcon()}
         </span>
         
-        {isNew && id !== 3 && ( // ID 3 (銀行の記事)の場合はNEWラベルを表示しない
+        {isNew && (
           <span className="text-red-600 text-sm font-semibold">
             NEW
           </span>
@@ -98,7 +104,7 @@ export const TopicItem = ({
               </Button>
             </Link>
           )}
-          {id <= 2 && (
+          {isSubsidyRelated && (
             <Button 
               variant="outline" 
               size="sm" 
