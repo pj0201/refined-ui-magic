@@ -96,12 +96,12 @@ export const TopicSection = () => {
         className="absolute inset-0 bg-cover bg-center z-0"
         style={{ 
           backgroundImage: `url("https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&q=80")`,
-          filter: 'brightness(0.95)'
+          filter: 'brightness(0.9)'
         }}
       />
       
       {/* オーバーレイ */}
-      <div className="absolute inset-0 bg-white/80 z-[1]"></div>
+      <div className="absolute inset-0 bg-white/70 z-[1]"></div>
       
       <div className="container mx-auto fade-in relative z-10">
         <h2 className="text-3xl font-bold mb-8 text-center">お知らせ</h2>

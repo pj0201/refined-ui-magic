@@ -32,40 +32,40 @@ const Index = () => {
       <SupportAreasSection />
       <BusinessPlansSection />
       
-      {/* FAQ Section - Restored from previous version */}
+      {/* FAQ Section - Restored from previous version (2 weeks ago) */}
       <section id="faq" className="py-16 px-4 relative overflow-hidden">
         {/* 背景画像 */}
         <div 
           className="absolute inset-0 bg-cover bg-center z-0"
           style={{ 
             backgroundImage: `url("https://images.unsplash.com/photo-1552581234-26160f608093?auto=format&fit=crop&q=80")`,
-            filter: 'brightness(0.95)'
+            filter: 'brightness(0.85)'
           }}
         />
         
         {/* オーバーレイ */}
-        <div className="absolute inset-0 bg-white/85 z-[1]"></div>
+        <div className="absolute inset-0 bg-white/75 z-[1]"></div>
         
         <div className="container mx-auto relative z-10">
-          <h2 className="text-3xl font-bold mb-8 text-center">よくあるご質問</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-            <div className="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-md transition-transform hover:scale-[1.02]">
-              <h3 className="text-xl font-semibold mb-3">初回相談は無料ですか？</h3>
-              <p>はい、初回の経営相談は無料で承っております。お客様の課題やニーズをしっかりと把握させていただき、最適なサポート方法をご提案いたします。</p>
+          <h2 className="text-3xl font-bold mb-12 text-center">よくあるご質問</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            <div className="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-5px]">
+              <h3 className="text-xl font-semibold mb-3 text-blue-700">初回相談は無料ですか？</h3>
+              <p className="text-gray-700">はい、初回の経営相談は無料で承っております。お客様の課題やニーズをしっかりと把握させていただき、最適なサポート方法をご提案いたします。</p>
             </div>
-            <div className="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-md transition-transform hover:scale-[1.02]">
-              <h3 className="text-xl font-semibold mb-3">補助金申請のサポート内容は？</h3>
-              <p>事業計画書の作成から申請書類の提出まで、一貫してサポートいたします。また、採択率を高めるためのアドバイスも提供しています。</p>
+            <div className="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-5px]">
+              <h3 className="text-xl font-semibold mb-3 text-blue-700">補助金申請のサポート内容は？</h3>
+              <p className="text-gray-700">事業計画書の作成から申請書類の提出まで、一貫してサポートいたします。また、採択率を高めるためのアドバイスも提供しています。</p>
             </div>
-            <div className="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-md transition-transform hover:scale-[1.02]">
-              <h3 className="text-xl font-semibold mb-3">対応エリアはどこですか？</h3>
-              <p>神戸・兵庫を中心に、関西全域でサービスを提供しています。オンラインでのコンサルティングも可能ですので、遠方の方もご相談ください。</p>
+            <div className="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-5px]">
+              <h3 className="text-xl font-semibold mb-3 text-blue-700">対応エリアはどこですか？</h3>
+              <p className="text-gray-700">神戸・兵庫を中心に、関西全域でサービスを提供しています。オンラインでのコンサルティングも可能ですので、遠方の方もご相談ください。</p>
             </div>
-            <div className="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-md transition-transform hover:scale-[1.02]">
-              <h3 className="text-xl font-semibold mb-3">詳しい質問はどこで見られますか？</h3>
-              <p className="flex items-center">
+            <div className="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl hover:translate-y-[-5px]">
+              <h3 className="text-xl font-semibold mb-3 text-blue-700">詳しい質問はどこで見られますか？</h3>
+              <p className="text-gray-700 flex items-center">
                 より詳細な質問と回答は
-                <Link to="/faq" className="text-blue-600 hover:text-blue-800 flex items-center ml-1">
+                <Link to="/faq" className="text-blue-600 hover:text-blue-800 flex items-center ml-1 font-medium">
                   FAQページ
                   <ExternalLink className="w-4 h-4 ml-1" />
                 </Link>
