@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { 
   Brain, 
-  Clock, 
   BookOpen, 
   Users, 
   Sparkles, 
@@ -19,14 +18,30 @@ import {
 
 const AISupportPage = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-purple-50 relative">
+      {/* AI背景要素 */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none opacity-10">
+        <img 
+          src="/lovable-uploads/48c4d18a-f636-4c33-8562-63034fb88968.png" 
+          alt="" 
+          className="absolute top-20 right-10 w-64 h-64 object-contain"
+        />
+        <img 
+          src="/lovable-uploads/215b3cb0-0a3f-4bb3-bdca-bedabb486622.png" 
+          alt="" 
+          className="absolute bottom-40 left-10 w-48 h-48 object-contain"
+        />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-purple-400 to-indigo-500 rounded-full blur-3xl opacity-10"></div>
+        <div className="absolute bottom-1/3 right-1/4 w-64 h-64 bg-gradient-to-r from-blue-400 to-cyan-300 rounded-full blur-3xl opacity-10"></div>
+      </div>
+      
       <Helmet>
         <title>AI導入支援サポート | PLANNINGJOY株式会社</title>
         <meta name="description" content="企業のAI活用をサポートします。研修や勉強会なども行います。業種業態に応じた非属人化、省力化、自動化を支援します。" />
       </Helmet>
 
       {/* ヘッダー */}
-      <header className="bg-white shadow-sm">
+      <header className="bg-white shadow-sm relative z-10">
         <div className="container mx-auto py-4 px-4 flex justify-between items-center">
           <Link to="/" className="flex items-center text-gray-800 hover:text-purple-600 transition-colors">
             <ArrowLeft className="h-5 w-5 mr-2" />
@@ -36,7 +51,7 @@ const AISupportPage = () => {
       </header>
 
       {/* メインコンテンツ */}
-      <main className="container mx-auto py-10 px-4">
+      <main className="container mx-auto py-10 px-4 relative z-10">
         {/* ヒーローセクション */}
         <section className="text-center mb-16">
           <div className="inline-block p-2 bg-purple-100 rounded-full text-purple-700 mb-4">
@@ -60,7 +75,7 @@ const AISupportPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* カード1 */}
             <Card>
-              <CardHeader className="flex flex-row items-center gap-4">
+              <CardHeader className="flex flex-row items-center gap-4 pb-2">
                 <Bot className="h-8 w-8 text-purple-500" />
                 <div>
                   <CardTitle>業務課題に特化</CardTitle>
@@ -75,7 +90,7 @@ const AISupportPage = () => {
 
             {/* カード2 */}
             <Card>
-              <CardHeader className="flex flex-row items-center gap-4">
+              <CardHeader className="flex flex-row items-center gap-4 pb-2">
                 <Target className="h-8 w-8 text-purple-500" />
                 <div>
                   <CardTitle>段階的な導入支援</CardTitle>
@@ -90,7 +105,7 @@ const AISupportPage = () => {
 
             {/* カード3 */}
             <Card>
-              <CardHeader className="flex flex-row items-center gap-4">
+              <CardHeader className="flex flex-row items-center gap-4 pb-2">
                 <Brain className="h-8 w-8 text-purple-500" />
                 <div>
                   <CardTitle>AIセミナー</CardTitle>
@@ -168,70 +183,54 @@ const AISupportPage = () => {
           <h2 className="text-3xl font-bold mb-8 text-center">セミナー事例</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* 事例1 */}
-            <Card>
-              <CardHeader>
+            <Card className="overflow-hidden">
+              <CardHeader className="pb-2">
                 <CardTitle>小売業K社</CardTitle>
                 <CardDescription className="text-base font-medium">ターゲット層ごとのAI活用</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-700 mb-4">
+                <p className="text-gray-700">
                   営業系と事務系で活用方法が分かれたため、AIの一般知識からスタート。ある程度認識を進めたあとで、業務に活用できるAI勉強会を開催しました。
                 </p>
-                <div className="flex items-center gap-2 text-purple-600">
-                  <Clock className="h-4 w-4" />
-                  <span className="text-sm">実施期間: 約3ヶ月</span>
-                </div>
               </CardContent>
             </Card>
 
             {/* 事例2 */}
-            <Card>
-              <CardHeader>
+            <Card className="overflow-hidden">
+              <CardHeader className="pb-2">
                 <CardTitle>介護業S社</CardTitle>
                 <CardDescription className="text-base font-medium">非属人化と業務負担軽減</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-700 mb-4">
+                <p className="text-gray-700">
                   事務業務の非属人化と負担軽減をテーマに勉強会を開催。現状と近い将来の課題を抽出し共有のために言語化。経営幹部も交えて、AIを活用したワークフロー作成までサポートしました。
                 </p>
-                <div className="flex items-center gap-2 text-purple-600">
-                  <Clock className="h-4 w-4" />
-                  <span className="text-sm">実施期間: 約2ヶ月</span>
-                </div>
               </CardContent>
             </Card>
 
             {/* 事例3 - 追加 */}
-            <Card>
-              <CardHeader>
+            <Card className="overflow-hidden">
+              <CardHeader className="pb-2">
                 <CardTitle>サービス業H社</CardTitle>
                 <CardDescription className="text-base font-medium">幹部向け販促活用セミナー</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-700 mb-4">
+                <p className="text-gray-700">
                   幹部対象の販促に使うAIセミナーを開催。各生成AIの特徴や活用方法について、ハンズオンで各自が学びながら作成した成果物で、よりAIツールの認識を深めました。
                 </p>
-                <div className="flex items-center gap-2 text-purple-600">
-                  <Clock className="h-4 w-4" />
-                  <span className="text-sm">実施期間: 1日集中講座</span>
-                </div>
               </CardContent>
             </Card>
 
             {/* 事例4 - 追加 */}
-            <Card>
-              <CardHeader>
+            <Card className="overflow-hidden">
+              <CardHeader className="pb-2">
                 <CardTitle>サービス業界幹部向け</CardTitle>
                 <CardDescription className="text-base font-medium">実践的AI活用講座</CardDescription>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-700 mb-4">
+                <p className="text-gray-700">
                   生成AIとデータ分析・収集について複数回に分けて開催。ケースに応じたAIツールをハンズオン形式で進行。実戦的な内容で参加者の満足度アンケートはすべて「役に立つ内容だった」との評価をいただきました。
                 </p>
-                <div className="flex items-center gap-2 text-purple-600">
-                  <Clock className="h-4 w-4" />
-                  <span className="text-sm">実施期間: 全4回シリーズ</span>
-                </div>
               </CardContent>
             </Card>
           </div>
@@ -250,7 +249,7 @@ const AISupportPage = () => {
       </main>
 
       {/* フッター */}
-      <footer className="bg-gray-800 text-white py-8">
+      <footer className="bg-gray-800 text-white py-8 relative z-10">
         <div className="container mx-auto px-4 text-center">
           <p>&copy; {new Date().getFullYear()} PLANNINGJOY株式会社</p>
           <p className="mt-2">神戸・兵庫を拠点に、AI活用した経営コンサルティングを提供</p>

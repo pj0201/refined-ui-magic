@@ -1,3 +1,4 @@
+
 import { HeroSection } from "@/components/sections/HeroSection";
 import { ConsultingSection } from "@/components/sections/ConsultingSection";
 import { CompanyProfileSection } from "@/components/sections/CompanyProfileSection";
@@ -10,6 +11,7 @@ import { useState } from "react";
 import { PrivacyPolicyModal } from "@/components/modals/PrivacyPolicyModal";
 import { TermsOfServiceModal } from "@/components/modals/TermsOfServiceModal";
 import { BackToTopButton } from "@/components/BackToTopButton";
+import { Link } from "react-router-dom";
 
 const Index = () => {
   const [privacyPolicyOpen, setPrivacyPolicyOpen] = useState(false);
@@ -28,6 +30,32 @@ const Index = () => {
       <ConsultingSection />
       <SupportAreasSection />
       <BusinessPlansSection />
+      
+      {/* FAQ Section */}
+      <section id="faq" className="py-12 bg-gray-50">
+        <div className="container mx-auto px-4">
+          <h2 className="text-3xl font-bold mb-8 text-center">よくあるご質問</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <h3 className="text-xl font-semibold mb-3">初回相談は無料ですか？</h3>
+              <p>はい、初回の経営相談は無料で承っております。お客様の課題やニーズをしっかりと把握させていただき、最適なサポート方法をご提案いたします。</p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <h3 className="text-xl font-semibold mb-3">補助金申請のサポート内容は？</h3>
+              <p>事業計画書の作成から申請書類の提出まで、一貫してサポートいたします。また、採択率を高めるためのアドバイスも提供しています。</p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <h3 className="text-xl font-semibold mb-3">対応エリアはどこですか？</h3>
+              <p>神戸・兵庫を中心に、関西全域でサービスを提供しています。オンラインでのコンサルティングも可能ですので、遠方の方もご相談ください。</p>
+            </div>
+            <div className="bg-white p-6 rounded-lg shadow-md">
+              <h3 className="text-xl font-semibold mb-3">詳しい質問はどこで見られますか？</h3>
+              <p>より詳細な質問と回答は<Link to="/faq" className="text-blue-600 hover:underline">FAQページ</Link>をご覧ください。また、お問い合わせフォームからもご質問いただけます。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
       <CompanyProfileSection />
       
       {/* Contact Form Section - More compact version */}
