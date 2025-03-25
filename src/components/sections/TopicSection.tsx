@@ -90,9 +90,21 @@ export const TopicSection = () => {
   if (!topics || topics.length === 0) return <div className="no-topics">トピックがありません</div>;
 
   return (
-    <section className="topics-section">
-      <div className="container mx-auto px-4 py-12">
-        <h2 className="text-3xl font-bold mb-8 text-center">新着情報・お知らせ</h2>
+    <section className="topics-section relative py-20 px-4 overflow-hidden">
+      {/* 背景画像 */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center z-0"
+        style={{ 
+          backgroundImage: `url("https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&q=80")`,
+          filter: 'brightness(0.95)'
+        }}
+      />
+      
+      {/* オーバーレイ */}
+      <div className="absolute inset-0 bg-white/80 z-[1]"></div>
+      
+      <div className="container mx-auto fade-in relative z-10">
+        <h2 className="text-3xl font-bold mb-8 text-center">お知らせ</h2>
         
         {showStatus && (
           <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-md text-yellow-800 text-sm">

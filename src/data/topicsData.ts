@@ -49,11 +49,5 @@ export const topics: Topic[] = [
     content: "おすすめのAIツール一覧",
     link: "/ai-tools",
     keywords: ["AI", "業務効率化", "神戸", "兵庫", "デジタルトランスフォーメーション"]
-  },
-  {
-    id: 7,
-    content: "よくあるご質問",
-    link: "/faq",
-    keywords: ["FAQ", "質問", "相談", "神戸", "兵庫"]
   }
 ];
