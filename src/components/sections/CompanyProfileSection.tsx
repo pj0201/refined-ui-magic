@@ -1,3 +1,4 @@
+
 import { Mail } from "lucide-react";
 
 export const CompanyProfileSection = () => {
@@ -34,7 +35,7 @@ export const CompanyProfileSection = () => {
             <div className="text-[#403E43] space-y-6">
               <p className="flex flex-col xs:flex-row items-start xs:items-center gap-2 xs:gap-4">
                 <strong className="min-w-24">法人名：</strong>
-                <span>
+                <span className="font-bold">
                   <span className="inline-block">PLANNING</span>
                   <span className="font-bold inline-block"><span className="text-red-500">J</span>OY</span>
                   <span className="inline-block">株式会社</span>
@@ -42,13 +43,13 @@ export const CompanyProfileSection = () => {
               </p>
               <p className="flex flex-col xs:flex-row items-start xs:items-center gap-2 xs:gap-4">
                 <strong className="min-w-24">代表者：</strong>
-                <span>堀上 亮（経済産業省認定 経営革新等支援機関）</span>
+                <span className="font-bold">堀上 亮（経済産業省認定 経営革新等支援機関）</span>
               </p>
               <p className="flex flex-col xs:flex-row items-start xs:items-center gap-2 xs:gap-4">
                 <strong className="min-w-24">所在地：</strong>
-                <span className="inline-block">〒651-0084 兵庫県神戸市中央区磯辺通1-1-18</span>
+                <span className="inline-block font-bold">〒651-0084 兵庫県神戸市中央区磯辺通1-1-18</span>
                 <br className="xs:inline sm:hidden" />
-                <span className="inline-block ml-0 xs:ml-24 sm:ml-0">カサベラ国際プラザビル707号室</span>
+                <span className="inline-block ml-0 xs:ml-24 sm:ml-0 font-bold">カサベラ国際プラザビル707号室</span>
               </p>
               <div className="flex flex-col xs:flex-row items-start xs:items-center gap-2 xs:gap-4">
                 <strong className="min-w-24">連絡先：</strong>
@@ -56,11 +57,11 @@ export const CompanyProfileSection = () => {
                   <p>
                     <span className="inline-block">TEL/FAX</span>
                     <br className="xs:inline sm:hidden" />
-                    <span className="inline-block">078-600-0611</span>
+                    <span className="inline-block font-bold">078-600-0611</span>
                   </p>
                   <p className="flex items-center gap-2">
                     <Mail size={18} className="inline-block" />
-                    <span>MAIL hori@planjoy.net</span>
+                    <span className="font-bold">MAIL hori@planjoy.net</span>
                   </p>
                 </div>
               </div>
@@ -69,7 +70,7 @@ export const CompanyProfileSection = () => {
                 <div className="w-full">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
                     <div className="col-span-1">
-                      <ul className="list-none space-y-2">
+                      <ul className="list-none space-y-2 font-semibold">
                         <li>経営コンサルティング</li>
                         <li>業務改善全般（AIを活用した効率化や省力化）</li>
                         <li>資金調達サポート</li>
@@ -78,7 +79,7 @@ export const CompanyProfileSection = () => {
                       </ul>
                     </div>
                     <div className="col-span-1">
-                      <ul className="list-none space-y-2">
+                      <ul className="list-none space-y-2 font-semibold">
                         <li>各種計画策定サポート</li>
                         <li>事業承継サポート</li>
                         <li>業務ツール開発（AIを使った駆動開発）</li>
