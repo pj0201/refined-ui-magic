@@ -101,7 +101,7 @@ export const TopicItem = ({
             <Link to={link}>
               <Button 
                 variant="outline" 
-                size={isCompactLayout ? "xs" : "sm"}
+                size="sm"
                 className={cn(
                   isAiRelated && "bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white border-0",
                   isCompactLayout && "p-1.5 h-auto min-h-0 text-xs"
@@ -115,7 +115,7 @@ export const TopicItem = ({
           {isSubsidyRelated && (
             <Button 
               variant="outline" 
-              size={isCompactLayout ? "xs" : "sm"}
+              size="sm"
               className={cn(
                 "bg-purple-500 hover:bg-purple-600 text-white border-purple-500",
                 isCompactLayout && "p-1.5 h-auto min-h-0 text-xs"
