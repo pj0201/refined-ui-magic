@@ -55,16 +55,13 @@ export const TopicItem = ({
   // 補助金関連項目かどうかを判定
   const isSubsidyRelated = id === 2 || id === 6;
   
-  // 経営者保証のトピックかどうかを判定（ID=3）
-  const isCompactLayout = id === 3;
-  
   // 経営者保証関連項目かどうかを判定（ID=3）
   const isFinanceRelated = id === 3;
 
   return (
     <div
       className={cn(
-        "p-4 rounded-lg border shadow-sm transition-all duration-300 hover:shadow-md",
+        "p-4 rounded-lg border shadow-sm transition-all duration-300 hover:shadow-md relative flex flex-col h-full",
         isNew 
           ? "bg-blue-50 border-blue-200" 
           : isAiRelated 
@@ -89,49 +86,51 @@ export const TopicItem = ({
           </span>
         )}
       </div>
-      <div className={cn(
-        "flex items-center",
-        isCompactLayout ? "justify-between" : "justify-between flex-wrap"
-      )}>
+      
+      {/* コンテンツ部分 - より多くのスペースを確保 */}
+      <div className="flex-grow">
         <p className={cn(
-          "text-gray-800 whitespace-pre-line",
-          isCompactLayout && "text-sm max-w-[70%]", // コンパクトレイアウトの場合、テキストを小さく
+          "text-gray-800 whitespace-pre-line mb-4",
           isSubsidyRelated && "font-bold", // 補助金関連項目のテキストを太字に
           isAiRelated && "font-medium"
-        )}>{content}</p>
-        <div className="flex space-x-2">
-          {link && (
-            <Link to={link}>
-              <Button 
-                variant="outline" 
-                size="sm"
-                className={cn(
-                  isAiRelated && "bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white border-0",
-                  isFinanceRelated && "bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white border-0",
-                  isCompactLayout && "p-1.5 h-auto min-h-0 text-xs"
-                )}
-              >
-                {isAiRelated ? <Lightbulb className="h-4 w-4 mr-2" /> : <ExternalLink className={cn("mr-2", isCompactLayout ? "h-3 w-3" : "h-4 w-4")} />}
-                詳細を見る
-              </Button>
-            </Link>
-          )}
-          {isSubsidyRelated && (
+        )}>
+          {content}
+        </p>
+      </div>
+      
+      {/* ボタン部分 - 常に右下に配置 */}
+      <div className="flex justify-end mt-auto">
+        {link && (
+          <Link to={link}>
             <Button 
               variant="outline" 
               size="sm"
               className={cn(
-                "bg-purple-500 hover:bg-purple-600 text-white border-purple-500",
-                isCompactLayout && "p-1.5 h-auto min-h-0 text-xs"
+                isAiRelated && "bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white border-0",
+                isFinanceRelated && "bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white border-0"
               )}
-              onClick={openChatbot}
             >
-              <MessageCircle className={cn("mr-2", isCompactLayout ? "h-3 w-3" : "h-4 w-4")} />
-              相談する
+              {isAiRelated ? <Lightbulb className="h-4 w-4 mr-2" /> : <ExternalLink className="h-4 w-4 mr-2" />}
+              詳細を見る
             </Button>
-          )}
-        </div>
+          </Link>
+        )}
+        {isSubsidyRelated && (
+          <Button 
+            variant="outline" 
+            size="sm"
+            className={cn(
+              "bg-purple-500 hover:bg-purple-600 text-white border-purple-500",
+              link && "ml-2"
+            )}
+            onClick={openChatbot}
+          >
+            <MessageCircle className="h-4 w-4 mr-2" />
+            相談する
+          </Button>
+        )}
       </div>
+      
       {/* Hidden SEO keywords */}
       {keywords && (
         <span className="sr-only">
