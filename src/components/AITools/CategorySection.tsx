@@ -1,11 +1,7 @@
 
 import { LucideIcon } from "lucide-react";
 import { ToolCard } from "./ToolCard";
-
-interface Tool {
-  name: string;
-  description: string;
-}
+import { Tool } from "@/data/ai-tools/types";
 
 interface CategorySectionProps {
   category: string;
