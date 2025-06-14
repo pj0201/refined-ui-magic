@@ -23,18 +23,12 @@ export const ContactFormEmailJS = ({
     company: '',
     position: '',
     phone: '',
-    businessType: '',
-    employees: '',
-    inquiryType: '',
-    budget: '',
-    timeline: '',
-    currentChallenges: '',
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -59,12 +53,6 @@ export const ContactFormEmailJS = ({
         company: formData.company,
         position: formData.position,
         phone: formData.phone,
-        business_type: formData.businessType,
-        employees: formData.employees,
-        inquiry_type: formData.inquiryType,
-        budget: formData.budget,
-        timeline: formData.timeline,
-        current_challenges: formData.currentChallenges,
         message: formData.message,
         subject: subject,
         to_email: 'your-email@example.com',
@@ -117,12 +105,6 @@ PLANNINGJOY株式会社
         company: '',
         position: '',
         phone: '',
-        businessType: '',
-        employees: '',
-        inquiryType: '',
-        budget: '',
-        timeline: '',
-        currentChallenges: '',
         message: ''
       });
 
@@ -225,121 +207,6 @@ PLANNINGJOY株式会社
                     value={formData.phone}
                     onChange={handleChange}
                     placeholder="090-1234-5678"
-                    className="text-sm"
-                  />
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="businessType" className="text-sm">業種</Label>
-                    <select
-                      id="businessType"
-                      name="businessType"
-                      value={formData.businessType}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="">選択してください</option>
-                      <option value="製造業">製造業</option>
-                      <option value="建設業">建設業</option>
-                      <option value="小売業">小売業</option>
-                      <option value="卸売業">卸売業</option>
-                      <option value="サービス業">サービス業</option>
-                      <option value="IT・情報通信業">IT・情報通信業</option>
-                      <option value="飲食業">飲食業</option>
-                      <option value="医療・福祉">医療・福祉</option>
-                      <option value="その他">その他</option>
-                    </select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="employees" className="text-sm">従業員数</Label>
-                    <select
-                      id="employees"
-                      name="employees"
-                      value={formData.employees}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="">選択してください</option>
-                      <option value="1人（個人事業主）">1人（個人事業主）</option>
-                      <option value="2-5人">2-5人</option>
-                      <option value="6-20人">6-20人</option>
-                      <option value="21-50人">21-50人</option>
-                      <option value="51-100人">51-100人</option>
-                      <option value="101人以上">101人以上</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="inquiryType" className="text-sm">お問い合わせ種類</Label>
-                  <select
-                    id="inquiryType"
-                    name="inquiryType"
-                    value={formData.inquiryType}
-                    onChange={handleChange}
-                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  >
-                    <option value="">選択してください</option>
-                    <option value="補助金申請サポート">補助金申請サポート</option>
-                    <option value="AI導入支援">AI導入支援</option>
-                    <option value="経営コンサルティング">経営コンサルティング</option>
-                    <option value="創業支援">創業支援</option>
-                    <option value="事業承継">事業承継</option>
-                    <option value="その他">その他</option>
-                  </select>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="budget" className="text-sm">ご予算</Label>
-                    <select
-                      id="budget"
-                      name="budget"
-                      value={formData.budget}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="">選択してください</option>
-                      <option value="10万円未満">10万円未満</option>
-                      <option value="10-30万円">10-30万円</option>
-                      <option value="30-50万円">30-50万円</option>
-                      <option value="50-100万円">50-100万円</option>
-                      <option value="100万円以上">100万円以上</option>
-                      <option value="要相談">要相談</option>
-                    </select>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="timeline" className="text-sm">希望時期</Label>
-                    <select
-                      id="timeline"
-                      name="timeline"
-                      value={formData.timeline}
-                      onChange={handleChange}
-                      className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    >
-                      <option value="">選択してください</option>
-                      <option value="すぐに">すぐに</option>
-                      <option value="1ヶ月以内">1ヶ月以内</option>
-                      <option value="3ヶ月以内">3ヶ月以内</option>
-                      <option value="6ヶ月以内">6ヶ月以内</option>
-                      <option value="1年以内">1年以内</option>
-                      <option value="検討中">検討中</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="currentChallenges" className="text-sm">現在の経営課題</Label>
-                  <Textarea
-                    id="currentChallenges"
-                    name="currentChallenges"
-                    value={formData.currentChallenges}
-                    onChange={handleChange}
-                    placeholder="現在抱えている経営課題がございましたら、お聞かせください"
-                    rows={3}
                     className="text-sm"
                   />
                 </div>
