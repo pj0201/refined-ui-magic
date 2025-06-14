@@ -6,6 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "sonner";
 import emailjs from '@emailjs/browser';
 import { MessageSquarePlus } from "lucide-react";
@@ -23,6 +24,13 @@ export const ContactFormEmailJS = ({
     company: '',
     position: '',
     phone: '',
+    industry: '',
+    employees: '',
+    consultationType: '',
+    contactMethod: '',
+    urgency: '',
+    budget: '',
+    timeline: '',
     message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -30,6 +38,13 @@ export const ContactFormEmailJS = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSelectChange = (name: string, value: string) => {
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -53,6 +68,13 @@ export const ContactFormEmailJS = ({
         company: formData.company,
         position: formData.position,
         phone: formData.phone,
+        industry: formData.industry,
+        employees: formData.employees,
+        consultation_type: formData.consultationType,
+        contact_method: formData.contactMethod,
+        urgency: formData.urgency,
+        budget: formData.budget,
+        timeline: formData.timeline,
         message: formData.message,
         subject: subject,
         to_email: 'your-email@example.com',
@@ -80,6 +102,13 @@ export const ContactFormEmailJS = ({
 【会社名】${formData.company || '未入力'}
 【役職】${formData.position || '未入力'}
 【電話番号】${formData.phone || '未入力'}
+【業種】${formData.industry || '未入力'}
+【従業員数】${formData.employees || '未入力'}
+【相談内容】${formData.consultationType || '未入力'}
+【希望連絡方法】${formData.contactMethod || '未入力'}
+【緊急度】${formData.urgency || '未入力'}
+【予算規模】${formData.budget || '未入力'}
+【相談希望時期】${formData.timeline || '未入力'}
 【お問い合わせ内容】
 ${formData.message}
 
@@ -105,6 +134,13 @@ PLANNINGJOY株式会社
         company: '',
         position: '',
         phone: '',
+        industry: '',
+        employees: '',
+        consultationType: '',
+        contactMethod: '',
+        urgency: '',
+        budget: '',
+        timeline: '',
         message: ''
       });
 
@@ -130,7 +166,7 @@ PLANNINGJOY株式会社
             お問い合わせ・無料相談
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-[90vw] max-w-2xl max-h-[80vh] overflow-y-auto p-0" align="center" side="top">
+        <PopoverContent className="w-[90vw] max-w-3xl max-h-[85vh] overflow-y-auto p-0" align="center" side="top">
           <Card className="border-0 shadow-none">
             <CardHeader>
               <CardTitle className="text-xl font-bold text-center">お問い合わせフォーム</CardTitle>
@@ -198,28 +234,160 @@ PLANNINGJOY株式会社
                   </div>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="phone" className="text-sm">電話番号</Label>
-                  <Input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={handleChange}
-                    placeholder="090-1234-5678"
-                    className="text-sm"
-                  />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="phone" className="text-sm">電話番号</Label>
+                    <Input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="090-1234-5678"
+                      className="text-sm"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="industry" className="text-sm">業種・事業内容</Label>
+                    <Select value={formData.industry} onValueChange={(value) => handleSelectChange('industry', value)}>
+                      <SelectTrigger className="text-sm">
+                        <SelectValue placeholder="業種を選択してください" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="manufacturing">製造業</SelectItem>
+                        <SelectItem value="retail">小売業</SelectItem>
+                        <SelectItem value="service">サービス業</SelectItem>
+                        <SelectItem value="construction">建設業</SelectItem>
+                        <SelectItem value="it">IT・情報通信業</SelectItem>
+                        <SelectItem value="healthcare">医療・福祉</SelectItem>
+                        <SelectItem value="finance">金融業</SelectItem>
+                        <SelectItem value="education">教育・学習支援業</SelectItem>
+                        <SelectItem value="transportation">運輸・物流業</SelectItem>
+                        <SelectItem value="restaurant">飲食業</SelectItem>
+                        <SelectItem value="other">その他</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="employees" className="text-sm">従業員数</Label>
+                    <Select value={formData.employees} onValueChange={(value) => handleSelectChange('employees', value)}>
+                      <SelectTrigger className="text-sm">
+                        <SelectValue placeholder="従業員数を選択してください" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="1-5">1-5名</SelectItem>
+                        <SelectItem value="6-20">6-20名</SelectItem>
+                        <SelectItem value="21-50">21-50名</SelectItem>
+                        <SelectItem value="51-100">51-100名</SelectItem>
+                        <SelectItem value="101-300">101-300名</SelectItem>
+                        <SelectItem value="301+">301名以上</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="consultationType" className="text-sm">相談内容</Label>
+                    <Select value={formData.consultationType} onValueChange={(value) => handleSelectChange('consultationType', value)}>
+                      <SelectTrigger className="text-sm">
+                        <SelectValue placeholder="相談内容を選択してください" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="management">経営戦略・事業計画</SelectItem>
+                        <SelectItem value="subsidy">補助金申請サポート</SelectItem>
+                        <SelectItem value="ai">AI導入支援</SelectItem>
+                        <SelectItem value="startup">創業支援</SelectItem>
+                        <SelectItem value="succession">事業承継</SelectItem>
+                        <SelectItem value="finance">資金調達</SelectItem>
+                        <SelectItem value="marketing">マーケティング</SelectItem>
+                        <SelectItem value="operations">業務改善</SelectItem>
+                        <SelectItem value="other">その他</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="contactMethod" className="text-sm">希望連絡方法</Label>
+                    <Select value={formData.contactMethod} onValueChange={(value) => handleSelectChange('contactMethod', value)}>
+                      <SelectTrigger className="text-sm">
+                        <SelectValue placeholder="希望連絡方法を選択してください" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="email">メール</SelectItem>
+                        <SelectItem value="phone">電話</SelectItem>
+                        <SelectItem value="meeting">対面面談</SelectItem>
+                        <SelectItem value="online">オンライン面談</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="urgency" className="text-sm">緊急度</Label>
+                    <Select value={formData.urgency} onValueChange={(value) => handleSelectChange('urgency', value)}>
+                      <SelectTrigger className="text-sm">
+                        <SelectValue placeholder="緊急度を選択してください" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="urgent">至急（1週間以内）</SelectItem>
+                        <SelectItem value="high">高（1ヶ月以内）</SelectItem>
+                        <SelectItem value="medium">中（3ヶ月以内）</SelectItem>
+                        <SelectItem value="low">低（時期未定）</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="budget" className="text-sm">予算規模</Label>
+                    <Select value={formData.budget} onValueChange={(value) => handleSelectChange('budget', value)}>
+                      <SelectTrigger className="text-sm">
+                        <SelectValue placeholder="予算規模を選択してください" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="under50">50万円未満</SelectItem>
+                        <SelectItem value="50-100">50-100万円</SelectItem>
+                        <SelectItem value="100-300">100-300万円</SelectItem>
+                        <SelectItem value="300-500">300-500万円</SelectItem>
+                        <SelectItem value="500-1000">500-1000万円</SelectItem>
+                        <SelectItem value="over1000">1000万円以上</SelectItem>
+                        <SelectItem value="undecided">未定</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="timeline" className="text-sm">相談希望時期</Label>
+                    <Select value={formData.timeline} onValueChange={(value) => handleSelectChange('timeline', value)}>
+                      <SelectTrigger className="text-sm">
+                        <SelectValue placeholder="相談希望時期を選択してください" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="immediately">すぐに</SelectItem>
+                        <SelectItem value="thisweek">今週中</SelectItem>
+                        <SelectItem value="thismonth">今月中</SelectItem>
+                        <SelectItem value="nextmonth">来月</SelectItem>
+                        <SelectItem value="within3months">3ヶ月以内</SelectItem>
+                        <SelectItem value="undecided">未定</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="message" className="text-sm">お問い合わせ内容 *</Label>
+                  <Label htmlFor="message" className="text-sm">具体的なお問い合わせ内容 *</Label>
                   <Textarea
                     id="message"
                     name="message"
                     required
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="具体的なお問い合わせ内容をご記入ください..."
+                    placeholder="具体的なお問い合わせ内容、現在の課題、ご要望などを詳しくご記入ください..."
                     rows={6}
                     className="text-sm"
                   />
