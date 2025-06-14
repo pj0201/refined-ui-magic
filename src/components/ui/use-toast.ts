@@ -1,6 +1,8 @@
 
 // sonnerを直接使用するように変更
-export { toast } from "sonner";
+import { toast } from "sonner";
+
+export { toast };
 
 // 後方互換性のために空のuseToastフックを提供
 export const useToast = () => {
