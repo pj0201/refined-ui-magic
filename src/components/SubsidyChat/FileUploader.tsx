@@ -2,12 +2,11 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Upload } from 'lucide-react';
-import { useToast } from "@/components/ui/use-toast";
-import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
+import { apiClient } from "@/lib/api-client";
 
 export const FileUploader = () => {
   const [isUploading, setIsUploading] = useState(false);
-  const { toast } = useToast();
 
   const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
@@ -18,7 +17,6 @@ export const FileUploader = () => {
     let errorCount = 0;
 
     try {
-      // 複数ファイルを順次処理
       for (let i = 0; i < files.length; i++) {
         const file = files[i];
         
@@ -28,35 +26,20 @@ export const FileUploader = () => {
           continue;
         }
 
-        const formData = new FormData();
-        formData.append('file', file);
-
-        const { data, error } = await supabase.functions.invoke('process-pdf', {
-          body: formData,
-        });
-
-        if (error) {
+        try {
+          await apiClient.uploadFile(file);
+          successCount++;
+        } catch (error) {
           errorCount++;
           console.error(`${file.name}のアップロードに失敗:`, error);
-        } else {
-          successCount++;
         }
       }
 
-      // 全ての処理が完了したときのみ結果を表示
-      toast({
-        title: "処理完了",
-        description: `${files.length}個中${successCount}個のファイルの処理が完了しました${errorCount > 0 ? `\n${errorCount}個のファイルでエラーが発生` : ''}`,
-        variant: errorCount > 0 ? "destructive" : "default"
-      });
+      toast.success(`${files.length}個中${successCount}個のファイルの処理が完了しました${errorCount > 0 ? `\n${errorCount}個のファイルでエラーが発生` : ''}`);
 
     } catch (error) {
       console.error('アップロードエラー:', error);
-      toast({
-        title: "エラー",
-        description: "ファイルの処理中にエラーが発生しました",
-        variant: "destructive"
-      });
+      toast.error("ファイルの処理中にエラーが発生しました");
     } finally {
       setIsUploading(false);
     }
