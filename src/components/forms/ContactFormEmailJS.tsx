@@ -29,9 +29,7 @@ export const ContactFormEmailJS = ({
     budget: '',
     timeline: '',
     currentChallenges: '',
-    desiredOutcome: '',
-    message: '',
-    hearAboutUs: ''
+    message: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
@@ -67,9 +65,7 @@ export const ContactFormEmailJS = ({
         budget: formData.budget,
         timeline: formData.timeline,
         current_challenges: formData.currentChallenges,
-        desired_outcome: formData.desiredOutcome,
         message: formData.message,
-        hear_about_us: formData.hearAboutUs,
         subject: subject,
         to_email: 'your-email@example.com',
       };
@@ -101,7 +97,6 @@ export const ContactFormEmailJS = ({
 【ご予算】${formData.budget || '未入力'}
 【希望時期】${formData.timeline || '未入力'}
 【現在の課題】${formData.currentChallenges || '未入力'}
-【期待する成果】${formData.desiredOutcome || '未入力'}
 【お問い合わせ内容】
 ${formData.message}
 
@@ -133,9 +128,7 @@ PLANNINGJOY株式会社
         budget: '',
         timeline: '',
         currentChallenges: '',
-        desiredOutcome: '',
-        message: '',
-        hearAboutUs: ''
+        message: ''
       });
 
       setOpen(false);
@@ -359,19 +352,6 @@ PLANNINGJOY株式会社
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="desiredOutcome" className="text-sm">期待する成果</Label>
-                  <Textarea
-                    id="desiredOutcome"
-                    name="desiredOutcome"
-                    value={formData.desiredOutcome}
-                    onChange={handleChange}
-                    placeholder="コンサルティングを通じて期待する成果をお聞かせください..."
-                    rows={3}
-                    className="text-sm"
-                  />
-                </div>
-
-                <div className="space-y-2">
                   <Label htmlFor="message" className="text-sm">お問い合わせ内容 *</Label>
                   <Textarea
                     id="message"
@@ -383,26 +363,6 @@ PLANNINGJOY株式会社
                     rows={4}
                     className="text-sm"
                   />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="hearAboutUs" className="text-sm">弊社を知ったきっかけ</Label>
-                  <select
-                    id="hearAboutUs"
-                    name="hearAboutUs"
-                    value={formData.hearAboutUs}
-                    onChange={handleChange}
-                    className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                  >
-                    <option value="">選択してください</option>
-                    <option value="Google検索">Google検索</option>
-                    <option value="Yahoo検索">Yahoo検索</option>
-                    <option value="SNS">SNS</option>
-                    <option value="知人・友人の紹介">知人・友人の紹介</option>
-                    <option value="商工会議所">商工会議所</option>
-                    <option value="セミナー・イベント">セミナー・イベント</option>
-                    <option value="その他">その他</option>
-                  </select>
                 </div>
 
                 <Button 
