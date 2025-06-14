@@ -21,5 +21,19 @@ export const basicConcepts: GlossaryTerm[] = [
   {
     term: "AI倫理 (AI Ethics)",
     definition: "AIの設計、開発、利用において、公平性、透明性、説明責任、プライバシー保護などの倫理原則を遵守すること。信頼性の高いAIシステム構築の基盤となる"
+  },
+  // トレンド用語追加
+  {
+    term: "Agentic AI（エージェンティックAI）",
+    definition: "従来のAIよりも自律性が高く、自己判断に基づいてタスクの設計・実行・計画ができるAIシステム。最新のAIエージェント技術の発展により、知識労働や複数AIの連携分野で注目されている。"
+  },
+  {
+    term: "AI Alignment（AIアライメント）",
+    definition: "AIが人間の意図や倫理・価値観と整合して行動すること、またはそれを実現するための技術・研究領域。安全で望ましいAI開発のために不可欠な概念。"
+  },
+  {
+    term: "Open Weight LLMs（オープンウェイトLLM）",
+    definition: "重みデータが公開された大規模言語モデルの総称。MetaのLlama 3やMistral、Stability AIのStableLMなどが代表例で、カスタマイズ性やエコシステム形成の中心的存在となっている。"
   }
 ];
+

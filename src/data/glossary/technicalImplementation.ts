@@ -77,5 +77,14 @@ export const technicalImplementation: GlossaryTerm[] = [
   {
     term: "ベクトルデータベース (Vector Database)",
     definition: "埋め込み（Embedding）されたベクトルデータを効率的に格納・検索するために特化したデータベース。RAGなどの外部知識利用型AIシステムの基盤となる"
+  },
+  // トレンド用語追加
+  {
+    term: "LLM Orchestration（LLMオーケストレーション）",
+    definition: "複数のAIモデルやツール、エージェントを組み合わせて、より高度で複雑なタスクや処理フローを自動的に設計・制御する手法や仕組み。AutoGenなどのフレームワークによって発展している。"
+  },
+  {
+    term: "Synthetic Data（シンセティックデータ）",
+    definition: "AIやアルゴリズムによって生成された人工データ。プライバシー保護やデータ拡張、モデル性能向上のため、医療や自動運転など幅広い分野で活用が拡大。"
   }
 ];
