@@ -1,5 +1,5 @@
 
-import { GlossaryCategory } from "@/data/glossaryData";
+import { GlossaryCategory } from "@/data/glossary/types";
 import { GlossaryTermCard } from "./GlossaryTermCard";
 
 interface GlossaryCategorySectionProps {

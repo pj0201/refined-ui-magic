@@ -1,7 +1,7 @@
 
 import { ExternalLink } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { GlossaryTerm } from "@/data/glossaryData";
+import { GlossaryTerm } from "@/data/glossary/types";
 
 interface GlossaryTermCardProps {
   term: GlossaryTerm;

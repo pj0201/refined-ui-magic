@@ -1,5 +1,5 @@
 
-import { GlossaryCategory } from "@/data/glossaryData";
+import { GlossaryCategory } from "@/data/glossary/types";
 import { Button } from "@/components/ui/button";
 import { Book } from "lucide-react";
 

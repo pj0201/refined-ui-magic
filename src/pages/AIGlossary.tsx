@@ -2,7 +2,7 @@
 import { Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { glossaryCategories } from "@/data/glossaryData";
+import { glossaryCategories } from "@/data/glossary";
 import { GlossaryCategorySection } from "@/components/glossary/GlossaryCategorySection";
 import { CategoryNavigation } from "@/components/glossary/CategoryNavigation";
 
