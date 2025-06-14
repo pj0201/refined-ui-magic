@@ -31,6 +31,10 @@ const basicConcepts: GlossaryTerm[] = [
   {
     term: "エージェント (Agent)",
     definition: "特定の目的を達成するために自律的に行動するAIシステム。環境を認識し、判断して行動を実行"
+  },
+  {
+    term: "AI倫理 (AI Ethics)",
+    definition: "AIの設計、開発、利用において、公平性、透明性、説明責任、プライバシー保護などの倫理原則を遵守すること。信頼性の高いAIシステム構築の基盤となる"
   }
 ];
 
@@ -81,6 +85,18 @@ const languageModels: GlossaryTerm[] = [
   {
     term: "RAG (Retrieval-Augmented Generation)",
     definition: "外部知識をリアルタイムで検索・参照しながら応答を生成する手法。最新情報や正確性の向上に貢献"
+  },
+  {
+    term: "生成AI (Generative AI)",
+    definition: "テキスト、画像、音声など、これまでにない新しいコンテンツを創造するAI技術。ビジネスにおけるコンテンツ制作、デザイン、顧客対応などで革新的な活用が期待される"
+  },
+  {
+    term: "マルチモーダルAI (Multimodal AI)",
+    definition: "複数の異なる種類のデータ（テキスト、画像、音声など）を同時に処理し、統合的に理解・生成するAI。人間のような多様な情報処理を可能にする"
+  },
+  {
+    term: "小さな言語モデル (Small Language Model / SLM)",
+    definition: "LLMよりも小規模な言語モデル。特定のタスクに特化することで、高速化やコスト削減、エッジデバイスでの実行を可能にする"
   }
 ];
 
@@ -141,6 +157,26 @@ const technicalImplementation: GlossaryTerm[] = [
   {
     term: "Node.js",
     definition: "JavaScriptをサーバーサイドで実行するランタイム環境。AIアプリケーションのバックエンド開発に広く利用される"
+  },
+  {
+    term: "クラウドAI (Cloud AI)",
+    definition: "クラウドサービスプロバイダー（AWS, Azure, GCPなど）が提供するAIサービスやプラットフォーム。インフラ構築の手間なく、スケーラブルなAIソリューションを迅速に導入できる"
+  },
+  {
+    term: "ノーコードAI / ローコードAI (No-code AI / Low-code AI)",
+    definition: "プログラミング知識がなくても、視覚的なインターフェースや簡易な記述でAIモデルの開発・導入を可能にするツールやプラットフォーム。AI活用の敷居を下げる"
+  },
+  {
+    term: "バイブコーディング (Vibe Coding)",
+    definition: "AIに自然言語で指示を出し、AIがコードを生成する新しいプログラミング手法。プログラミングの知識が少ない人でも、AIとの対話を通じて開発ができる"
+  },
+  {
+    term: "エッジAI (Edge AI)",
+    definition: "AIモデルをクラウドではなく、スマートフォンやIoTデバイスなどの「エッジ」で直接実行する技術。リアルタイム処理やプライバシー保護に貢献する"
+  },
+  {
+    term: "ベクトルデータベース (Vector Database)",
+    definition: "埋め込み（Embedding）されたベクトルデータを効率的に格納・検索するために特化したデータベース。RAGなどの外部知識利用型AIシステムの基盤となる"
   }
 ];
 
@@ -191,8 +227,8 @@ const learningMethods: GlossaryTerm[] = [
     definition: "試行錯誤を通じて最適な行動を学習する手法。ゲームAIや自律型ロボットの開発に活用"
   },
   {
-    term: "生成AI (Generative AI)",
-    definition: "テキスト、画像、音声などの新しいコンテンツを生成するAI技術"
+    term: "自己教師あり学習 (Self-supervised Learning)",
+    definition: "人間によるラベル付けなしに、データ自体から教師信号を生成して学習を行う手法。大量の未ラベルデータから効率的に知識を獲得できる"
   }
 ];
 
@@ -269,6 +305,14 @@ const developmentProcess: GlossaryTerm[] = [
   {
     term: "デプロイ (Deploy)",
     definition: "AIモデルやアプリケーションを本番環境に展開し、実際に使用可能な状態にするプロセス"
+  },
+  {
+    term: "PoC (Proof of Concept)",
+    definition: "AIプロジェクトを本格的に開始する前に、特定のアイデアや技術が実現可能であるかを検証するための試作・実証。リスクを抑えながら効果を評価できる"
+  },
+  {
+    term: "MLOps (Machine Learning Operations)",
+    definition: "機械学習モデルの開発から運用までの一連のライフサイクルを効率化・自動化するプラクティス。信頼性の高いAIシステムの構築に不可欠"
   }
 ];
 
