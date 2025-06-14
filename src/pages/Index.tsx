@@ -6,12 +6,11 @@ import { SupportAreasSection } from "@/components/sections/SupportAreasSection";
 import { BusinessPlansSection } from "@/components/sections/BusinessPlansSection";
 import { TopicSection } from "@/components/sections/TopicSection";
 import { Helmet } from 'react-helmet';
-import { ContactForm } from "@/components/ContactForm";
+import { ContactFormEmailJS } from "@/components/forms/ContactFormEmailJS";
 import { useState } from "react";
 import { PrivacyPolicyModal } from "@/components/modals/PrivacyPolicyModal";
 import { TermsOfServiceModal } from "@/components/modals/TermsOfServiceModal";
 import { BackToTopButton } from "@/components/BackToTopButton";
-import { Link } from "react-router-dom";
 
 const Index = () => {
   const [privacyPolicyOpen, setPrivacyPolicyOpen] = useState(false);
@@ -78,18 +77,10 @@ const Index = () => {
       
       <CompanyProfileSection />
       
-      {/* Contact Form Section - More compact version */}
-      <section id="contact" className="py-4 xs:py-6 px-3 xs:px-4 bg-gray-100">
+      {/* Contact Form Section - EmailJS版を使用 */}
+      <section id="contact" className="py-8 px-4 bg-gray-100">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl xs:text-3xl font-bold text-center mb-2 xs:mb-3">お問い合わせ</h2>
-          <div className="bg-white rounded-xl shadow-md p-2 xs:p-3">
-            <ContactForm 
-              subject="ホームページからのお問い合わせ"
-              buttonColor="text-blue-600"
-              borderColor="border-blue-600"
-              hoverColor="hover:bg-blue-50"
-            />
-          </div>
+          <ContactFormEmailJS subject="ホームページからのお問い合わせ" />
         </div>
       </section>
 
