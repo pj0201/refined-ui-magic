@@ -1,4 +1,3 @@
-
 import { HeroSection } from "@/components/sections/HeroSection";
 import { ConsultingSection } from "@/components/sections/ConsultingSection";
 import { CompanyProfileSection } from "@/components/sections/CompanyProfileSection";
@@ -77,9 +76,13 @@ const Index = () => {
       
       <CompanyProfileSection />
       
-      {/* Contact Form Section - EmailJS版を使用 */}
-      <section id="contact" className="py-8 px-4 bg-gray-100">
-        <div className="max-w-4xl mx-auto">
+      {/* Contact Form Section - コンパクトなボタン形式 */}
+      <section id="contact" className="py-16 px-4 bg-gradient-to-br from-blue-50 to-white">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-3xl font-bold mb-4">お問い合わせ・無料相談</h2>
+          <p className="text-gray-600 mb-8">
+            経営課題についてお気軽にご相談ください。初回相談は無料です。
+          </p>
           <ContactFormEmailJS subject="ホームページからのお問い合わせ" />
         </div>
       </section>

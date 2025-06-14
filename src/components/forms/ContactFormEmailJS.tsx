@@ -5,8 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { toast } from "sonner";
 import emailjs from '@emailjs/browser';
+import { MessageSquarePlus } from "lucide-react";
 
 interface ContactFormEmailJSProps {
   subject?: string;
@@ -19,11 +21,22 @@ export const ContactFormEmailJS = ({
     name: '',
     email: '',
     company: '',
-    message: ''
+    position: '',
+    phone: '',
+    businessType: '',
+    employees: '',
+    inquiryType: '',
+    budget: '',
+    timeline: '',
+    currentChallenges: '',
+    desiredOutcome: '',
+    message: '',
+    hearAboutUs: ''
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
@@ -42,26 +55,32 @@ export const ContactFormEmailJS = ({
     setIsSubmitting(true);
 
     try {
-      // EmailJSでメール送信
-      // TODO: EmailJSの設定値を入力する必要があります
       const templateParams = {
         from_name: formData.name,
         from_email: formData.email,
         company: formData.company,
+        position: formData.position,
+        phone: formData.phone,
+        business_type: formData.businessType,
+        employees: formData.employees,
+        inquiry_type: formData.inquiryType,
+        budget: formData.budget,
+        timeline: formData.timeline,
+        current_challenges: formData.currentChallenges,
+        desired_outcome: formData.desiredOutcome,
         message: formData.message,
+        hear_about_us: formData.hearAboutUs,
         subject: subject,
-        to_email: 'your-email@example.com', // 管理者のメールアドレスに変更してください
+        to_email: 'your-email@example.com',
       };
 
-      // 管理者への通知メール送信
       await emailjs.send(
-        'YOUR_SERVICE_ID', // EmailJSサービスID
-        'YOUR_TEMPLATE_ID', // EmailJSテンプレートID  
+        'YOUR_SERVICE_ID',
+        'YOUR_TEMPLATE_ID',
         templateParams,
-        'YOUR_PUBLIC_KEY' // EmailJS公開キー
+        'YOUR_PUBLIC_KEY'
       );
 
-      // 自動返信メール送信
       const autoReplyParams = {
         to_name: formData.name,
         to_email: formData.email,
@@ -75,6 +94,14 @@ export const ContactFormEmailJS = ({
 【お名前】${formData.name}
 【メールアドレス】${formData.email}
 【会社名】${formData.company || '未入力'}
+【役職】${formData.position || '未入力'}
+【業種】${formData.businessType || '未入力'}
+【従業員数】${formData.employees || '未入力'}
+【お問い合わせ種別】${formData.inquiryType || '未入力'}
+【ご予算】${formData.budget || '未入力'}
+【希望時期】${formData.timeline || '未入力'}
+【現在の課題】${formData.currentChallenges || '未入力'}
+【期待する成果】${formData.desiredOutcome || '未入力'}
 【お問い合わせ内容】
 ${formData.message}
 
@@ -86,21 +113,32 @@ PLANNINGJOY株式会社
       };
 
       await emailjs.send(
-        'YOUR_SERVICE_ID', // EmailJSサービスID
-        'YOUR_AUTO_REPLY_TEMPLATE_ID', // 自動返信用テンプレートID
+        'YOUR_SERVICE_ID',
+        'YOUR_AUTO_REPLY_TEMPLATE_ID',
         autoReplyParams,
-        'YOUR_PUBLIC_KEY' // EmailJS公開キー
+        'YOUR_PUBLIC_KEY'
       );
 
       toast.success("お問い合わせを送信しました。ありがとうございます！");
       
-      // フォームをリセット
       setFormData({
         name: '',
         email: '',
         company: '',
-        message: ''
+        position: '',
+        phone: '',
+        businessType: '',
+        employees: '',
+        inquiryType: '',
+        budget: '',
+        timeline: '',
+        currentChallenges: '',
+        desiredOutcome: '',
+        message: '',
+        hearAboutUs: ''
       });
+
+      setOpen(false);
 
     } catch (error) {
       console.error('メール送信エラー:', error);
@@ -111,75 +149,274 @@ PLANNINGJOY株式会社
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold text-center">お問い合わせ</CardTitle>
-        <CardDescription className="text-center">
-          お気軽にお問い合わせください。2営業日以内にご返信いたします。
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="name">お名前 *</Label>
-            <Input
-              id="name"
-              name="name"
-              type="text"
-              required
-              value={formData.name}
-              onChange={handleChange}
-              placeholder="田中太郎"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="email">メールアドレス *</Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              required
-              value={formData.email}
-              onChange={handleChange}
-              placeholder="example@company.com"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="company">会社名</Label>
-            <Input
-              id="company"
-              name="company"
-              type="text"
-              value={formData.company}
-              onChange={handleChange}
-              placeholder="株式会社サンプル"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="message">お問い合わせ内容 *</Label>
-            <Textarea
-              id="message"
-              name="message"
-              required
-              value={formData.message}
-              onChange={handleChange}
-              placeholder="お問い合わせ内容をご記入ください..."
-              rows={6}
-            />
-          </div>
-
+    <div className="w-full max-w-2xl mx-auto">
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
           <Button 
-            type="submit" 
-            className="w-full" 
-            disabled={isSubmitting}
+            size="lg" 
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 text-lg"
           >
-            {isSubmitting ? "送信中..." : "送信する"}
+            <MessageSquarePlus className="mr-2 h-5 w-5" />
+            お問い合わせ・無料相談
           </Button>
-        </form>
-      </CardContent>
-    </Card>
+        </PopoverTrigger>
+        <PopoverContent className="w-[90vw] max-w-2xl max-h-[80vh] overflow-y-auto p-0" align="center" side="top">
+          <Card className="border-0 shadow-none">
+            <CardHeader>
+              <CardTitle className="text-xl font-bold text-center">お問い合わせフォーム</CardTitle>
+              <CardDescription className="text-center text-sm">
+                お気軽にお問い合わせください。2営業日以内にご返信いたします。
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="name" className="text-sm">お名前 *</Label>
+                    <Input
+                      id="name"
+                      name="name"
+                      type="text"
+                      required
+                      value={formData.name}
+                      onChange={handleChange}
+                      placeholder="田中太郎"
+                      className="text-sm"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="email" className="text-sm">メールアドレス *</Label>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={handleChange}
+                      placeholder="example@company.com"
+                      className="text-sm"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="company" className="text-sm">会社名</Label>
+                    <Input
+                      id="company"
+                      name="company"
+                      type="text"
+                      value={formData.company}
+                      onChange={handleChange}
+                      placeholder="株式会社サンプル"
+                      className="text-sm"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="position" className="text-sm">役職</Label>
+                    <Input
+                      id="position"
+                      name="position"
+                      type="text"
+                      value={formData.position}
+                      onChange={handleChange}
+                      placeholder="代表取締役"
+                      className="text-sm"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="phone" className="text-sm">電話番号</Label>
+                    <Input
+                      id="phone"
+                      name="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={handleChange}
+                      placeholder="090-1234-5678"
+                      className="text-sm"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="businessType" className="text-sm">業種</Label>
+                    <select
+                      id="businessType"
+                      name="businessType"
+                      value={formData.businessType}
+                      onChange={handleChange}
+                      className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      <option value="">選択してください</option>
+                      <option value="製造業">製造業</option>
+                      <option value="建設業">建設業</option>
+                      <option value="卸売・小売業">卸売・小売業</option>
+                      <option value="サービス業">サービス業</option>
+                      <option value="IT・通信業">IT・通信業</option>
+                      <option value="飲食業">飲食業</option>
+                      <option value="医療・福祉">医療・福祉</option>
+                      <option value="不動産業">不動産業</option>
+                      <option value="その他">その他</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="employees" className="text-sm">従業員数</Label>
+                    <select
+                      id="employees"
+                      name="employees"
+                      value={formData.employees}
+                      onChange={handleChange}
+                      className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      <option value="">選択してください</option>
+                      <option value="1-5名">1-5名</option>
+                      <option value="6-20名">6-20名</option>
+                      <option value="21-50名">21-50名</option>
+                      <option value="51-100名">51-100名</option>
+                      <option value="101名以上">101名以上</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="inquiryType" className="text-sm">お問い合わせ種別</Label>
+                    <select
+                      id="inquiryType"
+                      name="inquiryType"
+                      value={formData.inquiryType}
+                      onChange={handleChange}
+                      className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      <option value="">選択してください</option>
+                      <option value="補助金申請サポート">補助金申請サポート</option>
+                      <option value="創業支援">創業支援</option>
+                      <option value="事業承継支援">事業承継支援</option>
+                      <option value="AI導入支援">AI導入支援</option>
+                      <option value="経営改善">経営改善</option>
+                      <option value="融資サポート">融資サポート</option>
+                      <option value="その他">その他</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="budget" className="text-sm">ご予算</Label>
+                    <select
+                      id="budget"
+                      name="budget"
+                      value={formData.budget}
+                      onChange={handleChange}
+                      className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      <option value="">選択してください</option>
+                      <option value="10万円未満">10万円未満</option>
+                      <option value="10-30万円">10-30万円</option>
+                      <option value="30-50万円">30-50万円</option>
+                      <option value="50-100万円">50-100万円</option>
+                      <option value="100万円以上">100万円以上</option>
+                      <option value="未定">未定</option>
+                    </select>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="timeline" className="text-sm">希望時期</Label>
+                    <select
+                      id="timeline"
+                      name="timeline"
+                      value={formData.timeline}
+                      onChange={handleChange}
+                      className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      <option value="">選択してください</option>
+                      <option value="すぐに">すぐに</option>
+                      <option value="1ヶ月以内">1ヶ月以内</option>
+                      <option value="3ヶ月以内">3ヶ月以内</option>
+                      <option value="6ヶ月以内">6ヶ月以内</option>
+                      <option value="1年以内">1年以内</option>
+                      <option value="未定">未定</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="currentChallenges" className="text-sm">現在の経営課題</Label>
+                  <Textarea
+                    id="currentChallenges"
+                    name="currentChallenges"
+                    value={formData.currentChallenges}
+                    onChange={handleChange}
+                    placeholder="現在抱えている経営上の課題をお聞かせください..."
+                    rows={3}
+                    className="text-sm"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="desiredOutcome" className="text-sm">期待する成果</Label>
+                  <Textarea
+                    id="desiredOutcome"
+                    name="desiredOutcome"
+                    value={formData.desiredOutcome}
+                    onChange={handleChange}
+                    placeholder="コンサルティングを通じて期待する成果をお聞かせください..."
+                    rows={3}
+                    className="text-sm"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="message" className="text-sm">お問い合わせ内容 *</Label>
+                  <Textarea
+                    id="message"
+                    name="message"
+                    required
+                    value={formData.message}
+                    onChange={handleChange}
+                    placeholder="具体的なお問い合わせ内容をご記入ください..."
+                    rows={4}
+                    className="text-sm"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="hearAboutUs" className="text-sm">弊社を知ったきっかけ</Label>
+                  <select
+                    id="hearAboutUs"
+                    name="hearAboutUs"
+                    value={formData.hearAboutUs}
+                    onChange={handleChange}
+                    className="flex h-9 w-full rounded-md border border-input bg-background px-3 py-1 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    <option value="">選択してください</option>
+                    <option value="Google検索">Google検索</option>
+                    <option value="Yahoo検索">Yahoo検索</option>
+                    <option value="SNS">SNS</option>
+                    <option value="知人・友人の紹介">知人・友人の紹介</option>
+                    <option value="商工会議所">商工会議所</option>
+                    <option value="セミナー・イベント">セミナー・イベント</option>
+                    <option value="その他">その他</option>
+                  </select>
+                </div>
+
+                <Button 
+                  type="submit" 
+                  className="w-full bg-blue-600 hover:bg-blue-700" 
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "送信中..." : "送信する"}
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </PopoverContent>
+      </Popover>
+    </div>
   );
 };
