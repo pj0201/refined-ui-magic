@@ -91,12 +91,13 @@ export const ContactFormEmailJS = ({
 【メールアドレス】${formData.email}
 【会社名】${formData.company || '未入力'}
 【役職】${formData.position || '未入力'}
+【電話番号】${formData.phone || '未入力'}
 【業種】${formData.businessType || '未入力'}
 【従業員数】${formData.employees || '未入力'}
 【お問い合わせ種別】${formData.inquiryType || '未入力'}
 【ご予算】${formData.budget || '未入力'}
 【希望時期】${formData.timeline || '未入力'}
-【現在の課題】${formData.currentChallenges || '未入力'}
+【現在の経営課題】${formData.currentChallenges || '未入力'}
 【お問い合わせ内容】
 ${formData.message}
 
