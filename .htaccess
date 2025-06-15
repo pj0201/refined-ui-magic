@@ -1,0 +1,41 @@
+
+RewriteEngine On
+
+# ------ planjoy.net系だけ正しく https://planjoy.net へ301リダイレクト ------
+# 1. 「www.planjoy.net」→「https://planjoy.net」へ
+RewriteCond %{HTTP_HOST} ^www\.planjoy\.net$ [NC]
+RewriteRule ^(.*)$ https://planjoy.net/$1 [R=301,L]
+
+# 2. 「http の planjoy.net」→「https の planjoy.net」へ
+RewriteCond %{HTTP_HOST} ^planjoy\.net$ [NC]
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://planjoy.net/$1 [R=301,L]
+# -------------------------------------------------------------------
+
+SetEnvIf Request_URI ".*" Ngx_Cache_NoCacheMode=off
+SetEnvIf Request_URI ".*" Ngx_Cache_AllCacheMode
+
+# BEGIN WordPress
+# "BEGIN WordPress" から "END WordPress" までのディレクティブ (行) は
+# 動的に生成され、WordPress フィルターによってのみ修正が可能です。
+# これらのマーカー間にあるディレクティブへのいかなる変更も上書きされてしまいます。
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+RewriteBase /
+RewriteRule ^index\.php$ - [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
+</IfModule>
+# END WordPress
+
+### BEGIN XPageSpeed - Do not edit the contents of this block! ###
+XPagespeedDisableFilters lazyload_images
+XPagespeedDisableFilters lazyload_css
+XPagespeedDisableFilters lazyload_javascript
+XPagespeed on
+<IfFile /var/xpagespeed/xpagespeed_ctl>
+XPagespeed off
+</IfFile>
+### END XPageSpeed - Do not edit the contents of this block! ###
