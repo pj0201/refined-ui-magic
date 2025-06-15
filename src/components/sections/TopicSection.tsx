@@ -4,7 +4,6 @@ import { useEffect, useState, useCallback } from "react";
 import { toast } from "sonner";
 import { useChatWindows } from "@/components/SubsidyChat/hooks/useChatWindows";
 import { ChatDialog } from "@/components/CustomChat/ChatDialog";
-import { shorikikaSubsidyInfo, shoukiboSubsidyInfo, formatSubsidyContext } from "@/data/subsidyInfo";
 import { Topic } from "@/data/topicsData";
 
 export const TopicSection = () => {
@@ -16,7 +15,6 @@ export const TopicSection = () => {
   
   const [showStatus, setShowStatus] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
-  const [chatContext, setChatContext] = useState("");
   const [chatTitle, setChatTitle] = useState("");
   
   useEffect(() => {
@@ -49,16 +47,12 @@ export const TopicSection = () => {
 
     try {
       if (topic.id === 6) { // 省力化投資補助金
-        const context = formatSubsidyContext(shorikikaSubsidyInfo);
-        setChatContext(context);
         setChatTitle("省力化投資補助金AI相談");
         setIsChatOpen(true);
         return;
       }
       
       if (topic.id === 2) { // 小規模持続化補助金
-        const context = formatSubsidyContext(shoukiboSubsidyInfo);
-        setChatContext(context);
         setChatTitle("小規模事業者持続化補助金AI相談");
         setIsChatOpen(true);
         return;
@@ -128,7 +122,6 @@ export const TopicSection = () => {
       <ChatDialog
         isOpen={isChatOpen}
         onOpenChange={setIsChatOpen}
-        context={chatContext}
         title={chatTitle}
       />
     </section>

@@ -1,8 +1,8 @@
+
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "https://esm.sh/@google/generative-ai@0.15.0";
-
-const googleApiKey = Deno.env.get('GOOGLE_API_KEY');
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -15,20 +15,52 @@ serve(async (req) => {
   }
 
   try {
-    if (!googleApiKey) {
-      throw new Error('GOOGLE_API_KEY is not set in environment variables.');
+    const googleApiKey = Deno.env.get('GOOGLE_API_KEY');
+    const supabaseUrl = Deno.env.get('SUPABASE_URL');
+    const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
+
+    if (!googleApiKey || !supabaseUrl || !supabaseServiceKey) {
+      throw new Error('Required environment variables are not set.');
     }
-
-    const { messages, context } = await req.json();
-
-    if (!messages || !context) {
-      throw new Error('Messages and context are required in the request body.');
-    }
-
+    
+    const supabase = createClient(supabaseUrl, supabaseServiceKey);
     const genAI = new GoogleGenerativeAI(googleApiKey);
+
+    const { messages } = await req.json();
+    if (!messages || !Array.isArray(messages) || messages.length === 0) {
+      throw new Error('Messages are required in the request body.');
+    }
+
+    const lastUserMessage = messages.findLast(m => m.role === 'user')?.content;
+    if (!lastUserMessage) {
+      throw new Error("No user message found to generate context.");
+    }
+
+    // 1. ユーザーの質問の意図をベクトル化
+    const embeddingModel = genAI.getGenerativeModel({ model: "text-embedding-004" });
+    const embeddingResult = await embeddingModel.embedContent(lastUserMessage);
+    const embedding = embeddingResult.embedding.values;
+
+    // 2. Supabase DBから関連情報を検索
+    const { data: documents, error: rpcError } = await supabase.rpc('match_subsidy_docs', {
+      query_embedding: embedding,
+      match_count: 3,
+    });
+
+    if (rpcError) {
+      console.error('Supabase RPC error:', rpcError);
+      throw new Error(`Failed to retrieve subsidy documents: ${rpcError.message}`);
+    }
+    
+    const context = documents && documents.length > 0
+      ? documents.map(doc => `・${doc.content}`).join('\n')
+      : "";
+
+    const systemInstruction = `あなたは、日本の補助金に関する専門家アシスタントです。提供された「コンテキスト」情報に基づいて、ユーザーからの質問に正確かつ丁寧に回答してください。コンテキストに情報がない、または無関係な場合は、推測で答えず正直に「関連情報が見つかりませんでした。より具体的なキーワードで再度お試しいただけますか？」と回答してください。回答は日本語で行ってください。\n\n以下がコンテキストです：\n---\n${context}\n---`;
+    
     const model = genAI.getGenerativeModel({ 
       model: "gemini-1.5-pro-latest",
-      systemInstruction: `あなたは、日本の補助金に関する専門家アシスタントです。提供された「コンテキスト」情報に基づいて、ユーザーからの質問に正確かつ丁寧に回答してください。コンテキストに情報がない場合は、その旨を正直に伝え、推測で答えないでください。回答は日本語で行ってください。\n\n以下がコンテキストです：\n---\n${context}\n---`,
+      systemInstruction,
     });
 
     const geminiMessages = messages.map(msg => ({

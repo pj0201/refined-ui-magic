@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useRef } from 'react';
 import {
   Dialog,
@@ -20,11 +19,10 @@ interface Message {
 interface ChatDialogProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
-  context: string;
   title: string;
 }
 
-export function ChatDialog({ isOpen, onOpenChange, context, title }: ChatDialogProps) {
+export function ChatDialog({ isOpen, onOpenChange, title }: ChatDialogProps) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -57,7 +55,6 @@ export function ChatDialog({ isOpen, onOpenChange, context, title }: ChatDialogP
       const { data, error } = await window.supabase.functions.invoke('generate-chat-response', {
         body: {
           messages: [...messages, userMessage],
-          context,
         },
       });
 
