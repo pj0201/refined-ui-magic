@@ -1,11 +1,12 @@
 
 RewriteEngine On
 
-# ------- すべて「planjoy.net」以外を https://planjoy.net にリダイレクト -------
+# ----------- すべての「planjoy.net」以外を https://planjoy.net にリダイレクト -----------
 RewriteCond %{HTTP_HOST} !^planjoy\.net$ [NC]
+RewriteCond %{HTTP_HOST} !^www\.planjoy\.net$ [NC]
 RewriteRule ^(.*)$ https://planjoy.net/ [R=301,L]
 
-# ------- 「http://planjoy.net」を「https://planjoy.net」にリダイレクト（念のため） -------
+# ----------- 「http://planjoy.net」を「https://planjoy.net」にリダイレクト -----------
 RewriteCond %{HTTP_HOST} ^planjoy\.net$ [NC]
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://planjoy.net/$1 [R=301,L]
