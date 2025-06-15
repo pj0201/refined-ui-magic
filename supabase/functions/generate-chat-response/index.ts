@@ -26,7 +26,7 @@ serve(async (req) => {
     const supabase = createClient(supabaseUrl, supabaseServiceKey);
     const genAI = new GoogleGenerativeAI(googleApiKey);
 
-    const { messages } = await req.json();
+    const { messages, subsidyKey } = await req.json();
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       throw new Error('Messages are required in the request body.');
     }
@@ -44,7 +44,7 @@ serve(async (req) => {
     // 2. Supabase DBから関連情報を検索
     const { data: documents, error: rpcError } = await supabase.rpc('match_subsidy_docs', {
       query_embedding: embedding,
-      match_count: 3,
+      match_count: 15, // フィルタリングのために多めに取得
     });
 
     if (rpcError) {
@@ -52,8 +52,18 @@ serve(async (req) => {
       throw new Error(`Failed to retrieve subsidy documents: ${rpcError.message}`);
     }
     
-    const context = documents && documents.length > 0
-      ? documents.map(doc => `・${doc.content}`).join('\n')
+    let contextDocs = documents;
+    if (subsidyKey && documents) {
+      console.log(`Filtering documents for source: ${subsidyKey}`);
+      contextDocs = documents.filter(doc => doc.source === subsidyKey);
+      console.log(`Found ${contextDocs.length} documents after filtering.`);
+    }
+
+    // フィルタリングされた中から上位3件を取得
+    const finalDocs = contextDocs ? contextDocs.slice(0, 3) : [];
+
+    const context = finalDocs.length > 0
+      ? finalDocs.map(doc => `・${doc.content}`).join('\n')
       : "";
 
     const systemInstruction = `あなたは、日本の補助金に関する専門家アシスタントです。提供された「コンテキスト」情報に基づいて、ユーザーからの質問に正確かつ丁寧に回答してください。コンテキストに情報がない、または無関係な場合は、推測で答えず正直に「関連情報が見つかりませんでした。より具体的なキーワードで再度お試しいただけますか？」と回答してください。回答は日本語で行ってください。\n\n以下がコンテキストです：\n---\n${context}\n---`;

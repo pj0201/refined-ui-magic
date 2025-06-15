@@ -16,6 +16,7 @@ export const TopicSection = () => {
   const [showStatus, setShowStatus] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [chatTitle, setChatTitle] = useState("");
+  const [chatSubsidyKey, setChatSubsidyKey] = useState<string | undefined>(undefined);
   
   useEffect(() => {
     const isInitialized = window.chatbotsInitialized === true;
@@ -48,12 +49,14 @@ export const TopicSection = () => {
     try {
       if (topic.id === 6) { // 省力化投資補助金
         setChatTitle("省力化投資補助金AI相談");
+        setChatSubsidyKey("shorikika");
         setIsChatOpen(true);
         return;
       }
       
       if (topic.id === 2) { // 小規模持続化補助金
         setChatTitle("小規模事業者持続化補助金AI相談");
+        setChatSubsidyKey("shoukibo");
         setIsChatOpen(true);
         return;
       }
@@ -123,6 +126,7 @@ export const TopicSection = () => {
         isOpen={isChatOpen}
         onOpenChange={setIsChatOpen}
         title={chatTitle}
+        subsidyKey={chatSubsidyKey}
       />
     </section>
   );
