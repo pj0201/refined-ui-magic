@@ -5,7 +5,7 @@ import { SupportAreasSection } from "@/components/sections/SupportAreasSection";
 import { BusinessPlansSection } from "@/components/sections/BusinessPlansSection";
 import { TopicSection } from "@/components/sections/TopicSection";
 import { Helmet } from 'react-helmet';
-import { ContactFormEmailJS } from "@/components/forms/ContactFormEmailJS";
+import { ContactForm } from "@/components/ContactForm";
 import { useState } from "react";
 import { PrivacyPolicyModal } from "@/components/modals/PrivacyPolicyModal";
 import { TermsOfServiceModal } from "@/components/modals/TermsOfServiceModal";
@@ -83,7 +83,7 @@ const Index = () => {
           <p className="text-gray-600 mb-8">
             経営課題についてお気軽にご相談ください。初回相談は無料です。
           </p>
-          <ContactFormEmailJS subject="ホームページからのお問い合わせ" />
+          <ContactForm subject="ホームページからのお問い合わせ" />
         </div>
       </section>
 

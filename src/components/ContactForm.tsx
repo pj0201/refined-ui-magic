@@ -1,20 +1,14 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { ExternalLink } from "lucide-react";
+import { MessageSquarePlus } from "lucide-react";
 
 interface ContactFormProps {
   subject?: string;
-  buttonColor?: string;
-  borderColor?: string;
-  hoverColor?: string;
 }
 
 export const ContactForm = ({ 
-  subject = "お問い合わせ", 
-  buttonColor = "text-blue-600", 
-  borderColor = "border-blue-600",
-  hoverColor = "hover:bg-blue-50"
+  subject = "ホームページからのお問い合わせ" 
 }: ContactFormProps) => {
   const [isLoading, setIsLoading] = useState(false);
   
@@ -31,16 +25,15 @@ export const ContactForm = ({
   };
 
   return (
-    <div className="text-center py-1">
-      <p className="mb-2 text-sm xs:text-base">お問い合わせには、Googleフォームを使用しております。</p>
+    <div className="w-full max-w-2xl mx-auto">
       <Button 
-        variant="outline"
-        className={`text-sm xs:text-base bg-white ${buttonColor} ${borderColor} ${hoverColor}`}
+        size="lg" 
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 text-lg"
         disabled={isLoading}
         onClick={openFormInNewTab}
       >
-        <ExternalLink className="mr-2 h-3 w-3 xs:h-4 xs:w-4" />
-        {isLoading ? "読み込み中..." : "お問い合わせフォームを開く"}
+        <MessageSquarePlus className="mr-2 h-5 w-5" />
+        {isLoading ? "読み込み中..." : "お問い合わせ・無料相談"}
       </Button>
     </div>
   );
