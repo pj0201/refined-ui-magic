@@ -27,6 +27,30 @@ export const shorikikaSubsidyInfo: Omit<SubsidyInfo, 'question' | 'content'> = {
   adoptionRate: "公募回制での審査により決定",
 };
 
+export const shoukiboSubsidyInfo: Omit<SubsidyInfo, 'question' | 'content'> = {
+  name: "小規模事業者持続化補助金（一般型）",
+  description: "小規模事業者が持続的な経営に向けた経営計画を自ら策定し、販路開拓や生産性向上の取組を支援する制度です。",
+  requirements: [
+    "商業・サービス業（宿泊・娯楽業除く）: 常時使用する従業員の数 5人以下",
+    "宿泊業・娯楽業: 常時使用する従業員の数 20人以下",
+    "製造業その他: 常時使用する従業員の数 20人以下",
+    "一人社長や個人事業主も対象となります。",
+    "補助事業の終了後、売上が増加または維持され、事業が継続されていること"
+  ],
+  period: {
+    start: "公募開始後",
+    end: "各回締切日まで"
+  },
+  amount: `補助上限額：
+- 通常枠: 50万円
+- 賃金引上枠、卒業枠、後継者支援枠、創業枠: 200万円
+- インボイス特例対象事業者は上記に50万円上乗せ
+      
+補助率：
+- 原則 2/3 (賃金引上枠のうち赤字事業者は 3/4)`,
+  adoptionRate: "公募回や申請枠により変動。概ね50%〜70%程度",
+};
+
 export function formatSubsidyContext(info: Omit<SubsidyInfo, 'question' | 'content'>): string {
   return `
 # ${info.name}

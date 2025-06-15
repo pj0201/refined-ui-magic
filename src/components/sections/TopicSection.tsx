@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { toast } from "sonner";
 import { useChatWindows } from "@/components/SubsidyChat/hooks/useChatWindows";
 import { ChatDialog } from "@/components/CustomChat/ChatDialog";
-import { shorikikaSubsidyInfo, formatSubsidyContext } from "@/data/subsidyInfo";
+import { shorikikaSubsidyInfo, shoukiboSubsidyInfo, formatSubsidyContext } from "@/data/subsidyInfo";
 import { Topic } from "@/data/topicsData";
 
 export const TopicSection = () => {
@@ -56,15 +56,11 @@ export const TopicSection = () => {
         return;
       }
       
-      // For other topics, use the old way for now
       if (topic.id === 2) { // 小規模持続化補助金
-        if (!window.chatbotsInitialized && typeof window.initChatbots === 'function') {
-          console.log('チャットボットが初期化されていないため、初期化を試みます');
-          window.initChatbots();
-          setTimeout(() => openShoukiboChat(), 1000);
-          return;
-        }
-        openShoukiboChat();
+        const context = formatSubsidyContext(shoukiboSubsidyInfo);
+        setChatContext(context);
+        setChatTitle("小規模事業者持続化補助金AI相談");
+        setIsChatOpen(true);
         return;
       }
       
