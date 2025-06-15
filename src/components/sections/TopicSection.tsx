@@ -5,6 +5,8 @@ import { toast } from "sonner";
 import { useChatWindows } from "@/components/SubsidyChat/hooks/useChatWindows";
 import { ChatDialog } from "@/components/CustomChat/ChatDialog";
 import { Topic } from "@/data/topicsData";
+import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
 
 export const TopicSection = () => {
   const { topics, isLoading, error } = useTopicData();
@@ -18,6 +20,21 @@ export const TopicSection = () => {
   const [chatTitle, setChatTitle] = useState("");
   const [chatSubsidyKey, setChatSubsidyKey] = useState<string | undefined>(undefined);
   
+  const handleSeedData = async () => {
+    toast.info("データベースに情報を格納中です...");
+    try {
+      const { error } = await supabase.functions.invoke('seed-subsidy-data');
+
+      if (error) throw error;
+      
+      toast.success("データベースへの情報格納が完了しました！チャットをお試しください。");
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      console.error('データベースのシード中にエラー:', errorMessage);
+      toast.error(`データベースへの情報格納中にエラーが発生しました: ${errorMessage}`);
+    }
+  };
+
   useEffect(() => {
     const isInitialized = window.chatbotsInitialized === true;
     console.log(`TopicSection: チャットボット初期化状態:`, {
@@ -99,7 +116,12 @@ export const TopicSection = () => {
       <div className="absolute inset-0 bg-white/70 z-[1]"></div>
       
       <div className="container mx-auto fade-in relative z-10">
-        <h2 className="text-3xl font-bold mb-8 text-center">お知らせ</h2>
+        <div className="flex justify-center items-center mb-8 gap-4">
+          <h2 className="text-3xl font-bold text-center">お知らせ</h2>
+          <Button onClick={handleSeedData} size="sm" className="bg-orange-500 hover:bg-orange-600 text-white">
+            AI用データ格納 (一度だけクリック)
+          </Button>
+        </div>
         
         {showStatus && (
           <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-md text-yellow-800 text-sm">
