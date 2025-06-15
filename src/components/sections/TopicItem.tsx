@@ -1,3 +1,4 @@
+
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -8,7 +9,8 @@ import {
   Sparkles, 
   Bot, 
   Lightbulb,
-  Wrench
+  Wrench,
+  ShieldCheck
 } from "lucide-react";
 
 interface TopicItemProps {
@@ -43,13 +45,15 @@ export const TopicItem = ({
         return <Wrench className="h-5 w-5 text-blue-500" />;
       case 6: // 省力化投資補助金
         return <Sparkles className="h-5 w-5 text-yellow-500" />;
+      case 7: // 危機対応後経営安定資金
+        return <ShieldCheck className="h-5 w-5 text-green-600" />;
       default:
         return isNew ? <Sparkles className="h-5 w-5 text-yellow-500" /> : <Bot className="h-5 w-5 text-gray-500" />;
     }
   };
 
   // AI関連アイテムかどうかを判定。ID=3（経営者保証）をスタイル統一のため追加
-  const isAiRelated = id === 1 || id === 3 || id === 4 || id === 5;
+  const isAiRelated = id === 1 || id === 3 || id === 4 || id === 5 || id === 7;
 
   // 補助金関連項目かどうかを判定
   const isSubsidyRelated = id === 2 || id === 6;

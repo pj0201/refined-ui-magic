@@ -1,3 +1,4 @@
+
 export interface Topic {
   id: number;
   isNew?: boolean;
@@ -15,6 +16,14 @@ export const topics: Topic[] = [
     date: "2026/04",
     link: "/ai-support",
     keywords: ["AI", "DX", "研修", "業務効率化", "神戸", "兵庫"]
+  },
+  {
+    id: 7,
+    isNew: true,
+    content: "危機対応後経営安定資金（セーフティネット貸付）のご案内\n災害・感染症等の影響で既往債務の返済負担にお悩みの方へ向けた融資制度です。",
+    date: "2025/06",
+    link: "/plans/safety-net",
+    keywords: ["融資", "セーフティネット", "資金繰り", "経営安定", "危機対応", "神戸", "兵庫"]
   },
   {
     id: 2,
