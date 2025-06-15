@@ -62,6 +62,13 @@ export const ContactFormEmailJS = ({
     setIsSubmitting(true);
 
     try {
+      // EmailJSの設定値を確認
+      const serviceId = 'service_vf5jkap';
+      const templateId = 'template_7qb6guj';
+      const publicKey = 'mtdgjtwpmt23468@gmail.com';
+
+      console.log('EmailJS設定:', { serviceId, templateId, publicKey });
+
       const templateParams = {
         from_name: formData.name,
         from_email: formData.email,
@@ -77,16 +84,19 @@ export const ContactFormEmailJS = ({
         timeline: formData.timeline,
         message: formData.message,
         subject: subject,
-        to_email: 'your-email@example.com',
+        to_email: 'mtdgjtwpmt23468@gmail.com',
       };
 
+      console.log('送信データ:', templateParams);
+
       await emailjs.send(
-        'YOUR_SERVICE_ID',
-        'YOUR_TEMPLATE_ID',
+        serviceId,
+        templateId,
         templateParams,
-        'YOUR_PUBLIC_KEY'
+        publicKey
       );
 
+      // 自動返信メール
       const autoReplyParams = {
         to_name: formData.name,
         to_email: formData.email,
@@ -119,12 +129,13 @@ PLANNINGJOY株式会社
 神戸・兵庫の経営コンサルティング`
       };
 
-      await emailjs.send(
-        'YOUR_SERVICE_ID',
-        'YOUR_AUTO_REPLY_TEMPLATE_ID',
-        autoReplyParams,
-        'YOUR_PUBLIC_KEY'
-      );
+      // 自動返信は一旦コメントアウト（まずは基本機能を動作させる）
+      // await emailjs.send(
+      //   serviceId,
+      //   'YOUR_AUTO_REPLY_TEMPLATE_ID',
+      //   autoReplyParams,
+      //   publicKey
+      // );
 
       toast.success("お問い合わせを送信しました。ありがとうございます！");
       
