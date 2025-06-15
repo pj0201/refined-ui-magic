@@ -62,10 +62,10 @@ export const ContactFormEmailJS = ({
     setIsSubmitting(true);
 
     try {
-      // EmailJSの設定値を確認
+      // EmailJSの設定値（正しい値に修正）
       const serviceId = 'service_vf5jkap';
-      const templateId = 'template_w93kdji'; // 正しいTemplate IDに修正
-      const publicKey = 'mtdgjtwpmt23468@gmail.com';
+      const templateId = 'template_w93kdji';
+      const publicKey = '5sOygxcn87FCfc_uL'; // 正しいPublic Keyに修正
 
       console.log('EmailJS設定:', { serviceId, templateId, publicKey });
 
