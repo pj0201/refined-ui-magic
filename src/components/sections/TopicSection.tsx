@@ -1,20 +1,23 @@
-
 import { TopicItem } from "./TopicItem";
 import { useTopicData } from "@/hooks/useTopicData";
 import { useEffect, useState, useCallback } from "react";
 import { toast } from "sonner";
 import { useChatWindows } from "@/components/SubsidyChat/hooks/useChatWindows";
+import { ChatDialog } from "@/components/CustomChat/ChatDialog";
+import { shorikikaSubsidyInfo, formatSubsidyContext } from "@/data/subsidyInfo";
+import { Topic } from "@/data/topicsData";
 
 export const TopicSection = () => {
   const { topics, isLoading, error } = useTopicData();
   const { 
     chatbotStatus, 
-    chatbotVisibility,
     openShoukiboChat, 
-    openShorikikaChat 
   } = useChatWindows();
   
   const [showStatus, setShowStatus] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
+  const [chatContext, setChatContext] = useState("");
+  const [chatTitle, setChatTitle] = useState("");
   
   useEffect(() => {
     const isInitialized = window.chatbotsInitialized === true;
@@ -41,39 +44,38 @@ export const TopicSection = () => {
     };
   }, [chatbotStatus]);
 
-  const handleTopicChat = useCallback((content: string) => {
-    console.log(`トピックチャット開始: ${content}`);
-    
+  const handleTopicChat = useCallback((topic: Topic) => {
+    console.log(`トピックチャット開始: ${topic.content}`);
+
     try {
-      if (!window.chatbotsInitialized && typeof window.initChatbots === 'function') {
-        console.log('チャットボットが初期化されていないため、初期化を試みます');
-        window.initChatbots();
-        setTimeout(() => {
-          openChatForTopic(content);
-        }, 1000);
+      if (topic.id === 6) { // 省力化投資補助金
+        const context = formatSubsidyContext(shorikikaSubsidyInfo);
+        setChatContext(context);
+        setChatTitle("省力化投資補助金AI相談");
+        setIsChatOpen(true);
         return;
       }
       
-      openChatForTopic(content);
+      // For other topics, use the old way for now
+      if (topic.id === 2) { // 小規模持続化補助金
+        if (!window.chatbotsInitialized && typeof window.initChatbots === 'function') {
+          console.log('チャットボットが初期化されていないため、初期化を試みます');
+          window.initChatbots();
+          setTimeout(() => openShoukiboChat(), 1000);
+          return;
+        }
+        openShoukiboChat();
+        return;
+      }
+      
+      // Fallback to shoukibo chat
+      openShoukiboChat();
+
     } catch (error) {
       console.error('チャットボットを開く際にエラーが発生しました:', error);
       toast.error('チャットボットを開けませんでした。ページを再読み込みしてください。');
     }
-  }, [openShoukiboChat, openShorikikaChat]);
-  
-  const openChatForTopic = useCallback((content: string) => {
-    if (content.includes('小規模持続化補助金')) {
-      openShoukiboChat();
-      return;
-    }
-    
-    if (content.includes('省力化投資補助金')) {
-      openShorikikaChat();
-      return;
-    }
-    
-    openShoukiboChat();
-  }, [openShoukiboChat, openShorikikaChat]);
+  }, [openShoukiboChat]);
 
   if (isLoading) return <div className="loading">トピックを読み込み中...</div>;
   
@@ -122,11 +124,17 @@ export const TopicSection = () => {
             <TopicItem 
               key={topic.id} 
               {...topic} 
-              openChatbot={() => handleTopicChat(topic.content)} 
+              openChatbot={() => handleTopicChat(topic)} 
             />
           ))}
         </div>
       </div>
+      <ChatDialog
+        isOpen={isChatOpen}
+        onOpenChange={setIsChatOpen}
+        context={chatContext}
+        title={chatTitle}
+      />
     </section>
   );
 };
