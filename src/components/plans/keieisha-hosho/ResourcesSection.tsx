@@ -1,3 +1,4 @@
+
 import { FileText } from "lucide-react";
 import { ContactForm } from "@/components/ContactForm";
 
@@ -40,9 +41,7 @@ export const ResourcesSection = () => {
           弊社の経営コンサルタントが貴社の状況に合わせたアドバイスを提供いたします。
         </p>
         <ContactForm 
-          subject="経営者保証に関するガイドラインについて相談したい"
           buttonText="ご相談・お問い合わせ"
-          variant="outline"
           className="text-cyan-600 border-cyan-600 hover:bg-cyan-50 hover:text-cyan-600"
         />
       </div>

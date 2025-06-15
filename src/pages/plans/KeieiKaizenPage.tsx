@@ -94,9 +94,7 @@ const KeieiKaizenPage = () => {
           弊社の経営コンサルタントが金融機関との調整も含めて、計画策定から実行までトータルでサポートいたします。
         </p>
         <ContactForm 
-          subject="経営改善計画策定について相談したい"
           buttonText="ご相談・お問い合わせ"
-          variant="outline"
           className="text-green-600 border-green-600 hover:bg-green-50 hover:text-green-600"
         />
       </div>

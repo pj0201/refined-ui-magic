@@ -123,9 +123,7 @@ const DDSPage = () => {
           <div className="mt-6">
             <h3 className="font-bold text-lg mb-3">お問い合わせフォーム</h3>
             <ContactForm 
-              subject="DDS（資本性劣後ローン）について相談したい" 
               buttonText="お問い合わせフォーム"
-              variant="outline"
               className="text-emerald-700 border-emerald-700 hover:bg-emerald-50 hover:text-emerald-700"
             />
           </div>

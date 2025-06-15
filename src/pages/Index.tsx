@@ -83,7 +83,7 @@ const Index = () => {
           <p className="text-gray-600 mb-8">
             経営課題についてお気軽にご相談ください。初回相談は無料です。
           </p>
-          <ContactForm subject="ホームページからのお問い合わせ" />
+          <ContactForm buttonText="お問い合わせ・無料相談" />
         </div>
       </section>
 

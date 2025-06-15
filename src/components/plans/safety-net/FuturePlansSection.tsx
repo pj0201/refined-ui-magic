@@ -95,9 +95,7 @@ export const FuturePlansSection = () => {
           弊社の経営コンサルタントが貴社の状況に合わせたアドバイスを提供いたします。
         </p>
         <ContactForm 
-          subject="危機対応後経営安定資金について相談したい"
           buttonText="ご相談・お問い合わせ"
-          variant="outline"
           className="text-blue-600 border-blue-600 hover:bg-blue-50 hover:text-blue-600"
         />
       </div>

@@ -92,9 +92,7 @@ const PosucoroPage = () => {
           弊社の経営コンサルタントが計画策定から申請までトータルでサポートいたします。
         </p>
         <ContactForm 
-          subject="早期経営改善計画策定について相談したい"
           buttonText="ご相談・お問い合わせ"
-          variant="outline"
           className="text-blue-600 border-blue-600 hover:bg-blue-50 hover:text-blue-600"
         />
       </div>

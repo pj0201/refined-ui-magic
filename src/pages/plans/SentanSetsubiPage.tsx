@@ -130,9 +130,7 @@ const SentanSetsubiPage = () => {
             弊社の経営コンサルタントが最適な設備選定から計画策定、申請までトータルでサポートいたします。
           </p>
           <ContactForm 
-            subject="先端設備等導入計画について相談したい"
             buttonText="ご相談・お問い合わせ"
-            variant="outline"
             className="text-indigo-600 border-indigo-600 hover:bg-indigo-50 hover:text-indigo-600"
           />
         </div>

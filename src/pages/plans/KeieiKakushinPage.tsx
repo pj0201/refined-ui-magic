@@ -1,4 +1,3 @@
-
 import { PlanLayout } from "@/components/plans/PlanLayout";
 import { FileCheck, Award, CreditCard, Building2, Bookmark, Mail } from "lucide-react";
 import { ContactForm } from "@/components/ContactForm";
@@ -115,9 +114,7 @@ const KeieiKakushinPage = () => {
           <div className="mt-6">
             <h3 className="font-bold text-lg mb-3">お問い合わせフォーム</h3>
             <ContactForm 
-              subject="経営革新計画について相談したい" 
               buttonText="お問い合わせフォーム"
-              variant="outline"
               className="text-yellow-600 border-yellow-600 hover:bg-yellow-50 hover:text-yellow-600"
             />
           </div>

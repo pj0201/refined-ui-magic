@@ -95,9 +95,7 @@ const BCPPage = () => {
           弊社の経営コンサルタントが貴社の事業特性やリスク分析から具体的な計画策定までサポートいたします。
         </p>
         <ContactForm 
-          subject="BCP策定について相談したい"
           buttonText="ご相談・お問い合わせ"
-          variant="outline"
           className="text-red-600 border-red-600 hover:bg-red-50 hover:text-red-600"
         />
       </div>
