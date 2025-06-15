@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -35,6 +35,12 @@ export const ContactFormEmailJS = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
 
+  // EmailJS初期化
+  useEffect(() => {
+    emailjs.init('5sOygxcn87FCfc_uL');
+    console.log('EmailJS初期化完了');
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -61,17 +67,10 @@ export const ContactFormEmailJS = ({
     setIsSubmitting(true);
 
     try {
-      // EmailJSの設定値（デバッグ情報を追加）
       const serviceId = 'service_vf5jkap';
       const templateId = 'template_w93kdji';
-      const publicKey = '5sOygxcn87FCfc_uL';
 
-      console.log('=== EmailJS送信デバッグ ===');
-      console.log('Service ID:', serviceId);
-      console.log('Template ID:', templateId);
-      console.log('Public Key:', publicKey);
-      console.log('Public Key length:', publicKey.length);
-      console.log('Public Key type:', typeof publicKey);
+      console.log('EmailJS送信開始');
 
       const templateParams = {
         from_name: formData.name,
@@ -92,16 +91,10 @@ export const ContactFormEmailJS = ({
       };
 
       console.log('送信データ:', templateParams);
-      console.log('=== 送信開始 ===');
 
-      const result = await emailjs.send(
-        serviceId,
-        templateId,
-        templateParams,
-        publicKey
-      );
+      const result = await emailjs.send(serviceId, templateId, templateParams);
 
-      console.log('=== 送信成功 ===', result);
+      console.log('送信成功:', result);
 
       toast.success("お問い合わせを送信しました。ありがとうございます！");
       
@@ -124,20 +117,7 @@ export const ContactFormEmailJS = ({
       setOpen(false);
 
     } catch (error) {
-      console.error('=== メール送信エラー詳細 ===');
-      console.error('Error object:', error);
-      console.error('Error status:', error.status);
-      console.error('Error text:', error.text);
-      console.error('Error name:', error.name);
-      console.error('Error message:', error.message);
-      
-      if (error.status === 400) {
-        console.error('400エラー: 設定に問題があります');
-        if (error.text && error.text.includes('Public Key')) {
-          console.error('Public Key が無効です');
-        }
-      }
-      
+      console.error('メール送信エラー:', error);
       toast.error("送信に失敗しました。しばらく後に再度お試しください。");
     } finally {
       setIsSubmitting(false);
