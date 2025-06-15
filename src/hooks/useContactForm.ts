@@ -37,6 +37,9 @@ const initialFormData: ContactFormData = {
   message: ''
 };
 
+// Initialize EmailJS at the module level to ensure it's done only once.
+emailjs.init({ publicKey: '5sOygxcn87FCfc_uL' });
+
 interface UseContactFormProps {
   subject: string;
   setOpen: (open: boolean) => void;
@@ -74,7 +77,6 @@ export const useContactForm = ({ subject, setOpen }: UseContactFormProps) => {
     try {
       const serviceId = 'service_vf5jkap';
       const templateId = 'template_w93kdji';
-      const publicKey = '5sOygxcn87FCfc_uL';
 
       const templateParams = {
         from_name: formData.name,
@@ -94,7 +96,7 @@ export const useContactForm = ({ subject, setOpen }: UseContactFormProps) => {
         to_email: 'mtdgjtwpmt23468@gmail.com',
       };
 
-      await emailjs.send(serviceId, templateId, templateParams, publicKey);
+      await emailjs.send(serviceId, templateId, templateParams);
 
       toast.success("お問い合わせを送信しました。ありがとうございます！");
       
