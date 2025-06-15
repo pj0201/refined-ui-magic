@@ -116,7 +116,11 @@ export type Database = {
         Returns: unknown
       }
       match_subsidy_docs: {
-        Args: { query_embedding: string; match_count?: number }
+        Args: {
+          p_query_embedding: string
+          p_match_count: number
+          p_source?: string
+        }
         Returns: {
           id: number
           content: string

@@ -1,4 +1,3 @@
-
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "https://esm.sh/@google/generative-ai@0.15.0";
@@ -41,10 +40,11 @@ serve(async (req) => {
     const embeddingResult = await embeddingModel.embedContent(lastUserMessage);
     const embedding = embeddingResult.embedding.values;
 
-    // 2. Supabase DBから関連情報を検索
+    // 2. Supabase DBから関連情報を検索 (p_source を使ってDB側でフィルタリング)
     const { data: documents, error: rpcError } = await supabase.rpc('match_subsidy_docs', {
-      query_embedding: embedding,
-      match_count: 15, // フィルタリングのために多めに取得
+      p_query_embedding: embedding,
+      p_match_count: 3, // 必要な件数だけ取得
+      p_source: subsidyKey, // subsidyKey を使ってソースでフィルタリング
     });
 
     if (rpcError) {
@@ -52,18 +52,10 @@ serve(async (req) => {
       throw new Error(`Failed to retrieve subsidy documents: ${rpcError.message}`);
     }
     
-    let contextDocs = documents;
-    if (subsidyKey && documents) {
-      console.log(`Filtering documents for source: ${subsidyKey}`);
-      contextDocs = documents.filter(doc => doc.source === subsidyKey);
-      console.log(`Found ${contextDocs.length} documents after filtering.`);
-    }
+    // DB側でフィルタリングするため、JSでのフィルタリング処理は不要になりました。
 
-    // フィルタリングされた中から上位3件を取得
-    const finalDocs = contextDocs ? contextDocs.slice(0, 3) : [];
-
-    const context = finalDocs.length > 0
-      ? finalDocs.map(doc => `・${doc.content}`).join('\n')
+    const context = documents && documents.length > 0
+      ? documents.map(doc => `・${doc.content}`).join('\n')
       : "";
 
     const systemInstruction = `あなたは、日本の補助金に関する専門家アシスタントです。提供された「コンテキスト」情報に基づいて、ユーザーからの質問に正確かつ丁寧に回答してください。コンテキストに情報がない、または無関係な場合は、推測で答えず正直に「関連情報が見つかりませんでした。より具体的なキーワードで再度お試しいただけますか？」と回答してください。回答は日本語で行ってください。\n\n以下がコンテキストです：\n---\n${context}\n---`;
