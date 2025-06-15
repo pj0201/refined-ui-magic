@@ -6,11 +6,12 @@ import { SupportAreasSection } from "@/components/sections/SupportAreasSection";
 import { BusinessPlansSection } from "@/components/sections/BusinessPlansSection";
 import { TopicSection } from "@/components/sections/TopicSection";
 import { Helmet } from 'react-helmet';
-import { ContactForm } from "@/components/ContactForm";
+// import { ContactForm } from "@/components/ContactForm";
 import { useState } from "react";
 import { PrivacyPolicyModal } from "@/components/modals/PrivacyPolicyModal";
 import { TermsOfServiceModal } from "@/components/modals/TermsOfServiceModal";
 import { BackToTopButton } from "@/components/BackToTopButton";
+import { Button } from "@/components/ui/button";
 
 const Index = () => {
   const [privacyPolicyOpen, setPrivacyPolicyOpen] = useState(false);
@@ -84,7 +85,13 @@ const Index = () => {
           <p className="text-gray-600 mb-8">
             経営課題についてお気軽にご相談ください。初回相談は無料です。
           </p>
-          <ContactForm buttonText="お問い合わせ・無料相談" />
+          <Button
+            onClick={() => window.location.href = 'mailto:hori@planjoy.net?subject=お問い合わせ・無料相談'}
+            size="lg"
+            className="bg-blue-600 hover:bg-blue-700 transition-colors duration-300"
+          >
+            お問い合わせ・無料相談
+          </Button>
         </div>
       </section>
 

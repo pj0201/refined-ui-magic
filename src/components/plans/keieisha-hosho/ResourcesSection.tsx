@@ -1,6 +1,7 @@
 
 import { FileText } from "lucide-react";
-import { ContactForm } from "@/components/ContactForm";
+// import { ContactForm } from "@/components/ContactForm";
+import { Button } from "@/components/ui/button";
 
 export const ResourcesSection = () => {
   return (
@@ -40,10 +41,14 @@ export const ResourcesSection = () => {
           専門的なサポートが必要な場合は、お気軽にご相談ください。
           弊社の経営コンサルタントが貴社の状況に合わせたアドバイスを提供いたします。
         </p>
-        <ContactForm 
-          buttonText="ご相談・お問い合わせ"
+        <Button 
+          onClick={() => window.location.href = 'mailto:hori@planjoy.net?subject=経営者保証に関するガイドラインについてのご相談'}
+          variant="outline"
+          size="lg"
           className="text-cyan-600 border-cyan-600 hover:bg-cyan-50 hover:text-cyan-600"
-        />
+        >
+          ご相談・お問い合わせ
+        </Button>
       </div>
     </>
   );

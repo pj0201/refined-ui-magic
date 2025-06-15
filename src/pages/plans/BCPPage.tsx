@@ -1,7 +1,9 @@
+
 import { PlanLayout } from "@/components/plans/PlanLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle } from "lucide-react";
-import { ContactForm } from "@/components/ContactForm";
+// import { ContactForm } from "@/components/ContactForm";
+import { Button } from "@/components/ui/button";
 
 const BCPPage = () => {
   return (
@@ -94,10 +96,14 @@ const BCPPage = () => {
           BCP策定について専門的なサポートが必要な場合は、お気軽にご相談ください。
           弊社の経営コンサルタントが貴社の事業特性やリスク分析から具体的な計画策定までサポートいたします。
         </p>
-        <ContactForm 
-          buttonText="ご相談・お問い合わせ"
+        <Button 
+          onClick={() => window.location.href = 'mailto:hori@planjoy.net?subject=BCP（事業継続計画）についてのご相談'}
+          variant="outline"
+          size="lg"
           className="text-red-600 border-red-600 hover:bg-red-50 hover:text-red-600"
-        />
+        >
+          ご相談・お問い合わせ
+        </Button>
       </div>
     </PlanLayout>
   );

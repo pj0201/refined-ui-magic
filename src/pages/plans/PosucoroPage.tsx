@@ -1,7 +1,9 @@
+
 import { PlanLayout } from "@/components/plans/PlanLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle } from "lucide-react";
-import { ContactForm } from "@/components/ContactForm";
+// import { ContactForm } from "@/components/ContactForm";
+import { Button } from "@/components/ui/button";
 
 const PosucoroPage = () => {
   return (
@@ -91,10 +93,14 @@ const PosucoroPage = () => {
           早期経営改善計画策定について専門的なサポートが必要な場合は、お気軽にご相談ください。
           弊社の経営コンサルタントが計画策定から申請までトータルでサポートいたします。
         </p>
-        <ContactForm 
-          buttonText="ご相談・お問い合わせ"
+        <Button 
+          onClick={() => window.location.href = 'mailto:hori@planjoy.net?subject=早期経営改善計画策定支援事業（ポスコロ）についてのご相談'}
+          variant="outline"
+          size="lg"
           className="text-blue-600 border-blue-600 hover:bg-blue-50 hover:text-blue-600"
-        />
+        >
+          ご相談・お問い合わせ
+        </Button>
       </div>
     </PlanLayout>
   );

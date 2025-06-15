@@ -1,5 +1,7 @@
+
 import { BarChart } from "lucide-react";
-import { ContactForm } from "@/components/ContactForm";
+// import { ContactForm } from "@/components/ContactForm";
+import { Button } from "@/components/ui/button";
 
 export const FuturePlansSection = () => {
   return (
@@ -94,10 +96,14 @@ export const FuturePlansSection = () => {
           ご相談がありましたら、お気軽にお問い合わせください。
           弊社の経営コンサルタントが貴社の状況に合わせたアドバイスを提供いたします。
         </p>
-        <ContactForm 
-          buttonText="ご相談・お問い合わせ"
+        <Button 
+          onClick={() => window.location.href = 'mailto:hori@planjoy.net?subject=危機対応後経営安定資金（セーフティネット貸付）についてのご相談'}
+          variant="outline"
+          size="lg"
           className="text-blue-600 border-blue-600 hover:bg-blue-50 hover:text-blue-600"
-        />
+        >
+          ご相談・お問い合わせ
+        </Button>
       </div>
     </>
   );
