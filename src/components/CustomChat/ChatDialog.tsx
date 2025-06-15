@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 import { Send } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -53,8 +54,7 @@ export function ChatDialog({ isOpen, onOpenChange, title, subsidyKey }: ChatDial
     setIsLoading(true);
 
     try {
-      // @ts-ignore
-      const { data, error } = await window.supabase.functions.invoke('generate-chat-response', {
+      const { data, error } = await supabase.functions.invoke('generate-chat-response', {
         body: {
           messages: [...messages, userMessage],
           subsidyKey,
