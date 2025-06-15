@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -37,10 +38,9 @@ export const ContactFormEmailJS = ({
 
   // EmailJS初期化 - 正しい方法で初期化
   useEffect(() => {
-    emailjs.init({
-      publicKey: '5sOygxcn87FCfc_uL',
-    });
-    console.log('EmailJS初期化完了');
+    // 修正点: オブジェクトではなく、公開鍵の文字列を直接渡します。
+    emailjs.init('5sOygxcn87FCfc_uL');
+    console.log('EmailJS初期化完了（修正版）');
   }, []);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -94,7 +94,7 @@ export const ContactFormEmailJS = ({
 
       console.log('送信データ:', templateParams);
 
-      // 正しいEmailJS送信方法
+      // 正しいEmailJS送信方法 (initが成功していればキーは不要)
       const result = await emailjs.send(serviceId, templateId, templateParams);
 
       console.log('送信成功:', result);
