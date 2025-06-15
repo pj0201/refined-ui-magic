@@ -1,18 +1,16 @@
 
 RewriteEngine On
 
-# ------ planjoy.net系だけ https://planjoy.net に正しくリダイレクト ------
-# www.planjoy.net → https://planjoy.net へ
-RewriteCond %{HTTP_HOST} ^www\.planjoy\.net$ [NC]
-RewriteRule ^(.*)$ https://planjoy.net/$1 [R=301,L]
+# ------- すべて「planjoy.net」以外を https://planjoy.net にリダイレクト -------
+RewriteCond %{HTTP_HOST} !^planjoy\.net$ [NC]
+RewriteRule ^(.*)$ https://planjoy.net/ [R=301,L]
 
-# http の planjoy.net → https の planjoy.net へ
+# ------- 「http://planjoy.net」を「https://planjoy.net」にリダイレクト（念のため） -------
 RewriteCond %{HTTP_HOST} ^planjoy\.net$ [NC]
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://planjoy.net/$1 [R=301,L]
 
-# ↑ここまでがplanjoy.net系列専用のリダイレクト。 
-# 下記は本来のアプリやWP用制御のままです。
+# ------- 以下、もともとのアプリやWP用・キャッシュ関連の設定 --------
 
 SetEnvIf Request_URI ".*" Ngx_Cache_NoCacheMode=off
 SetEnvIf Request_URI ".*" Ngx_Cache_AllCacheMode
