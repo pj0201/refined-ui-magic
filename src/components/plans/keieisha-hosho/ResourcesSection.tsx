@@ -1,4 +1,3 @@
-
 import { FileText } from "lucide-react";
 import { ContactForm } from "@/components/ContactForm";
 
@@ -42,9 +41,9 @@ export const ResourcesSection = () => {
         </p>
         <ContactForm 
           subject="経営者保証に関するガイドラインについて相談したい"
-          buttonColor="text-cyan-600"
-          borderColor="border-cyan-600"
-          hoverColor="hover:bg-cyan-50"
+          buttonText="ご相談・お問い合わせ"
+          variant="outline"
+          className="text-cyan-600 border-cyan-600 hover:bg-cyan-50 hover:text-cyan-600"
         />
       </div>
     </>

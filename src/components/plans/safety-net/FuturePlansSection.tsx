@@ -1,4 +1,3 @@
-
 import { BarChart } from "lucide-react";
 import { ContactForm } from "@/components/ContactForm";
 
@@ -97,9 +96,9 @@ export const FuturePlansSection = () => {
         </p>
         <ContactForm 
           subject="危機対応後経営安定資金について相談したい"
-          buttonColor="text-blue-600"
-          borderColor="border-blue-600"
-          hoverColor="hover:bg-blue-50"
+          buttonText="ご相談・お問い合わせ"
+          variant="outline"
+          className="text-blue-600 border-blue-600 hover:bg-blue-50 hover:text-blue-600"
         />
       </div>
     </>

@@ -116,9 +116,9 @@ const KeieiKakushinPage = () => {
             <h3 className="font-bold text-lg mb-3">お問い合わせフォーム</h3>
             <ContactForm 
               subject="経営革新計画について相談したい" 
-              buttonColor="text-yellow-600" 
-              borderColor="border-yellow-600" 
-              hoverColor="hover:bg-yellow-50"
+              buttonText="お問い合わせフォーム"
+              variant="outline"
+              className="text-yellow-600 border-yellow-600 hover:bg-yellow-50 hover:text-yellow-600"
             />
           </div>
         </section>

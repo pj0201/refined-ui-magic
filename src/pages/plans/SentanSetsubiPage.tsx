@@ -1,4 +1,3 @@
-
 import { PlanLayout } from "@/components/plans/PlanLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle, Cpu } from "lucide-react";
@@ -132,9 +131,9 @@ const SentanSetsubiPage = () => {
           </p>
           <ContactForm 
             subject="先端設備等導入計画について相談したい"
-            buttonColor="text-indigo-600"
-            borderColor="border-indigo-600"
-            hoverColor="hover:bg-indigo-50"
+            buttonText="ご相談・お問い合わせ"
+            variant="outline"
+            className="text-indigo-600 border-indigo-600 hover:bg-indigo-50 hover:text-indigo-600"
           />
         </div>
       </div>

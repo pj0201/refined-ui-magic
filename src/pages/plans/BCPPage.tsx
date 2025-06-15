@@ -1,4 +1,3 @@
-
 import { PlanLayout } from "@/components/plans/PlanLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle } from "lucide-react";
@@ -97,9 +96,9 @@ const BCPPage = () => {
         </p>
         <ContactForm 
           subject="BCP策定について相談したい"
-          buttonColor="text-red-600"
-          borderColor="border-red-600"
-          hoverColor="hover:bg-red-50"
+          buttonText="ご相談・お問い合わせ"
+          variant="outline"
+          className="text-red-600 border-red-600 hover:bg-red-50 hover:text-red-600"
         />
       </div>
     </PlanLayout>

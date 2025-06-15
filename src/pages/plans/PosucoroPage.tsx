@@ -1,4 +1,3 @@
-
 import { PlanLayout } from "@/components/plans/PlanLayout";
 import { Card, CardContent } from "@/components/ui/card";
 import { CheckCircle } from "lucide-react";
@@ -94,9 +93,9 @@ const PosucoroPage = () => {
         </p>
         <ContactForm 
           subject="早期経営改善計画策定について相談したい"
-          buttonColor="text-blue-600"
-          borderColor="border-blue-600"
-          hoverColor="hover:bg-blue-50"
+          buttonText="ご相談・お問い合わせ"
+          variant="outline"
+          className="text-blue-600 border-blue-600 hover:bg-blue-50 hover:text-blue-600"
         />
       </div>
     </PlanLayout>
