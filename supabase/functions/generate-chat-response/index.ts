@@ -1,8 +1,9 @@
 
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "https://esm.sh/@google/generative-ai@0.15.0";
 
-const openAIApiKey = Deno.env.get('OPENAI_API_KEY');
+const googleApiKey = Deno.env.get('GOOGLE_API_KEY');
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -15,48 +16,51 @@ serve(async (req) => {
   }
 
   try {
+    if (!googleApiKey) {
+      throw new Error('GOOGLE_API_KEY is not set in environment variables.');
+    }
+
     const { messages, context } = await req.json();
 
     if (!messages || !context) {
-      throw new Error('Messages and context are required.');
+      throw new Error('Messages and context are required in the request body.');
     }
 
-    const systemPrompt = {
-      role: 'system',
-      content: `あなたは、日本の補助金に関する専門家アシスタントです。提供された「コンテキスト」情報に基づいて、ユーザーからの質問に正確かつ丁寧に回答してください。コンテキストに情報がない場合は、その旨を正直に伝え、推測で答えないでください。回答は日本語で行ってください。
-
-以下がコンテキストです：
----
-${context}
----`
-    };
-
-    const response = await fetch('https://api.openai.com/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${openAIApiKey}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        model: 'gpt-4o-mini',
-        messages: [systemPrompt, ...messages],
-      }),
+    const genAI = new GoogleGenerativeAI(googleApiKey);
+    const model = genAI.getGenerativeModel({ 
+      model: "gemini-1.5-pro-latest",
+      systemInstruction: `あなたは、日本の補助金に関する専門家アシスタントです。提供された「コンテキスト」情報に基づいて、ユーザーからの質問に正確かつ丁寧に回答してください。コンテキストに情報がない場合は、その旨を正直に伝え、推測で答えないでください。回答は日本語で行ってください。\n\n以下がコンテキストです：\n---\n${context}\n---`,
     });
 
-    if (!response.ok) {
-      const errorBody = await response.text();
-      throw new Error(`OpenAI API error: ${response.status} ${errorBody}`);
-    }
-    
-    const data = await response.json();
-    const generatedText = data.choices[0].message.content;
+    const geminiMessages = messages.map(msg => ({
+        role: msg.role === 'assistant' ? 'model' : 'user',
+        parts: [{ text: msg.content }]
+    }));
 
+    const result = await model.generateContent({
+        contents: geminiMessages,
+        generationConfig: {
+          temperature: 0.7,
+        },
+        safetySettings: [
+            { category: HarmCategory.HARM_CATEGORY_HARASSMENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+            { category: HarmCategory.HARM_CATEGORY_HATE_SPEECH, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+            { category: HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+            { category: HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT, threshold: HarmBlockThreshold.BLOCK_MEDIUM_AND_ABOVE },
+        ],
+    });
+    
+    const response = await result.response;
+    const generatedText = response.text();
+    
     return new Response(JSON.stringify({ response: generatedText }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
+
   } catch (error) {
     console.error('Error in generate-chat-response function:', error);
-    return new Response(JSON.stringify({ error: error.message }), {
+    const errorMessage = error instanceof Error ? error.message : "An unexpected error occurred.";
+    return new Response(JSON.stringify({ error: errorMessage }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     });
