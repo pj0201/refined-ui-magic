@@ -17,7 +17,6 @@ export const ContactForm = ({
   variant = "default",
   className,
 }: ContactFormProps) => {
-  const [useState] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   
   // Google Form URL
