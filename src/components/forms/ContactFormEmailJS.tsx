@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -62,12 +61,17 @@ export const ContactFormEmailJS = ({
     setIsSubmitting(true);
 
     try {
-      // EmailJSの設定値（正しい値に修正）
+      // EmailJSの設定値（デバッグ情報を追加）
       const serviceId = 'service_vf5jkap';
       const templateId = 'template_w93kdji';
-      const publicKey = '5sOygxcn87FCfc_uL'; // 正しいPublic Keyに修正
+      const publicKey = '5sOygxcn87FCfc_uL';
 
-      console.log('EmailJS設定:', { serviceId, templateId, publicKey });
+      console.log('=== EmailJS送信デバッグ ===');
+      console.log('Service ID:', serviceId);
+      console.log('Template ID:', templateId);
+      console.log('Public Key:', publicKey);
+      console.log('Public Key length:', publicKey.length);
+      console.log('Public Key type:', typeof publicKey);
 
       const templateParams = {
         from_name: formData.name,
@@ -88,54 +92,16 @@ export const ContactFormEmailJS = ({
       };
 
       console.log('送信データ:', templateParams);
+      console.log('=== 送信開始 ===');
 
-      await emailjs.send(
+      const result = await emailjs.send(
         serviceId,
         templateId,
         templateParams,
         publicKey
       );
 
-      // 自動返信メール
-      const autoReplyParams = {
-        to_name: formData.name,
-        to_email: formData.email,
-        subject: 'お問い合わせありがとうございます - PLANNINGJOY株式会社',
-        message: `${formData.name}様
-
-この度は、PLANNINGJOY株式会社にお問い合わせいただき、誠にありがとうございます。
-
-以下の内容でお問い合わせを承りました：
-
-【お名前】${formData.name}
-【メールアドレス】${formData.email}
-【会社名】${formData.company || '未入力'}
-【役職】${formData.position || '未入力'}
-【電話番号】${formData.phone || '未入力'}
-【業種】${formData.industry || '未入力'}
-【従業員数】${formData.employees || '未入力'}
-【相談内容】${formData.consultationType || '未入力'}
-【希望連絡方法】${formData.contactMethod || '未入力'}
-【緊急度】${formData.urgency || '未入力'}
-【予算規模】${formData.budget || '未入力'}
-【相談希望時期】${formData.timeline || '未入力'}
-【お問い合わせ内容】
-${formData.message}
-
-2営業日以内にご返信いたします。
-お急ぎの場合は、直接お電話にてお問い合わせください。
-
-PLANNINGJOY株式会社
-神戸・兵庫の経営コンサルティング`
-      };
-
-      // 自動返信は一旦コメントアウト（まずは基本機能を動作させる）
-      // await emailjs.send(
-      //   serviceId,
-      //   'YOUR_AUTO_REPLY_TEMPLATE_ID',
-      //   autoReplyParams,
-      //   publicKey
-      // );
+      console.log('=== 送信成功 ===', result);
 
       toast.success("お問い合わせを送信しました。ありがとうございます！");
       
@@ -158,7 +124,20 @@ PLANNINGJOY株式会社
       setOpen(false);
 
     } catch (error) {
-      console.error('メール送信エラー:', error);
+      console.error('=== メール送信エラー詳細 ===');
+      console.error('Error object:', error);
+      console.error('Error status:', error.status);
+      console.error('Error text:', error.text);
+      console.error('Error name:', error.name);
+      console.error('Error message:', error.message);
+      
+      if (error.status === 400) {
+        console.error('400エラー: 設定に問題があります');
+        if (error.text && error.text.includes('Public Key')) {
+          console.error('Public Key が無効です');
+        }
+      }
+      
       toast.error("送信に失敗しました。しばらく後に再度お試しください。");
     } finally {
       setIsSubmitting(false);
