@@ -35,12 +35,6 @@ export const ContactFormEmailJS = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [open, setOpen] = useState(false);
 
-  // EmailJS初期化
-  useEffect(() => {
-    emailjs.init('5sOygxcn87FCfc_uL');
-    console.log('EmailJS初期化完了');
-  }, []);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -69,6 +63,7 @@ export const ContactFormEmailJS = ({
     try {
       const serviceId = 'service_vf5jkap';
       const templateId = 'template_w93kdji';
+      const publicKey = '5sOygxcn87FCfc_uL';
 
       console.log('EmailJS送信開始');
 
@@ -92,7 +87,7 @@ export const ContactFormEmailJS = ({
 
       console.log('送信データ:', templateParams);
 
-      const result = await emailjs.send(serviceId, templateId, templateParams);
+      const result = await emailjs.send(serviceId, templateId, templateParams, publicKey);
 
       console.log('送信成功:', result);
 
