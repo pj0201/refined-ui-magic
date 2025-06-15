@@ -1,5 +1,9 @@
-
 RewriteEngine On
+
+# すべての *.lovable.app アクセスを https://planjoy.net にリダイレクト
+RewriteCond %{HTTP_HOST} \.lovable\.app$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^lovable\.app$ [NC]
+RewriteRule ^(.*)$ https://planjoy.net/ [R=301,L]
 
 # ----------- すべての「planjoy.net」以外を https://planjoy.net にリダイレクト -----------
 RewriteCond %{HTTP_HOST} !^planjoy\.net$ [NC]
@@ -40,4 +44,3 @@ XPagespeed on
 XPagespeed off
 </IfFile>
 ### END XPageSpeed - Do not edit the contents of this block! ###
-
