@@ -1,3 +1,4 @@
+
 import "https://deno.land/x/xhr@0.1.0/mod.ts";
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { GoogleGenerativeAI, HarmCategory, HarmBlockThreshold } from "https://esm.sh/@google/generative-ai@0.15.0";
@@ -26,6 +27,8 @@ serve(async (req) => {
     const genAI = new GoogleGenerativeAI(googleApiKey);
 
     const { messages, subsidyKey } = await req.json();
+    console.log(`[CHAT_LOG] Received request. subsidyKey: "${subsidyKey}"`);
+
     if (!messages || !Array.isArray(messages) || messages.length === 0) {
       throw new Error('Messages are required in the request body.');
     }
@@ -34,13 +37,16 @@ serve(async (req) => {
     if (!lastUserMessage) {
       throw new Error("No user message found to generate context.");
     }
+    console.log(`[CHAT_LOG] Last user message: "${lastUserMessage}"`);
 
     // 1. ユーザーの質問の意図をベクトル化
     const embeddingModel = genAI.getGenerativeModel({ model: "text-embedding-004" });
     const embeddingResult = await embeddingModel.embedContent(lastUserMessage);
     const embedding = embeddingResult.embedding.values;
+    console.log(`[CHAT_LOG] Embedding created for user message.`);
 
     // 2. Supabase DBから関連情報を検索 (p_source を使ってDB側でフィルタリング)
+    console.log(`[CHAT_LOG] Calling RPC 'match_subsidy_docs' with p_source: "${subsidyKey}"`);
     const { data: documents, error: rpcError } = await supabase.rpc('match_subsidy_docs', {
       p_query_embedding: embedding,
       p_match_count: 3, // 必要な件数だけ取得
@@ -52,11 +58,20 @@ serve(async (req) => {
       throw new Error(`Failed to retrieve subsidy documents: ${rpcError.message}`);
     }
     
-    // DB側でフィルタリングするため、JSでのフィルタリング処理は不要になりました。
-
+    console.log(`[CHAT_LOG] RPC returned ${documents ? documents.length : 0} documents.`);
+    if (documents && documents.length > 0) {
+        console.log('[CHAT_LOG] Retrieved documents:', JSON.stringify(documents.map(d => ({ source: d.source, score: d.score, content: d.content.substring(0, 70) + '...' })), null, 2));
+    }
+    
     const context = documents && documents.length > 0
       ? documents.map(doc => `・${doc.content}`).join('\n')
       : "";
+
+    if (context === "") {
+        console.log('[CHAT_LOG] Context is empty. The AI will respond that it found no information.');
+    } else {
+        console.log('[CHAT_LOG] Context prepared for AI model.');
+    }
 
     const systemInstruction = `あなたは、日本の補助金に関する専門家アシスタントです。提供された「コンテキスト」情報に基づいて、ユーザーからの質問に正確かつ丁寧に回答してください。コンテキストに情報がない、または無関係な場合は、推測で答えず正直に「関連情報が見つかりませんでした。より具体的なキーワードで再度お試しいただけますか？」と回答してください。回答は日本語で行ってください。\n\n以下がコンテキストです：\n---\n${context}\n---`;
     
