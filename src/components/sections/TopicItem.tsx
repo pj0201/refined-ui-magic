@@ -1,4 +1,3 @@
-
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -49,15 +48,12 @@ export const TopicItem = ({
     }
   };
 
-  // AI関連アイテムかどうかを判定
-  const isAiRelated = id === 1 || id === 4 || id === 5;
+  // AI関連アイテムかどうかを判定。ID=3（経営者保証）をスタイル統一のため追加
+  const isAiRelated = id === 1 || id === 3 || id === 4 || id === 5;
 
   // 補助金関連項目かどうかを判定
   const isSubsidyRelated = id === 2 || id === 6;
   
-  // 経営者保証関連項目かどうかを判定（ID=3）
-  const isFinanceRelated = id === 3;
-
   return (
     <div
       className={cn(
@@ -106,8 +102,7 @@ export const TopicItem = ({
               variant="outline" 
               size="sm"
               className={cn(
-                isAiRelated && "bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white border-0",
-                isFinanceRelated && "bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-600 hover:to-cyan-700 text-white border-0"
+                isAiRelated && "bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white border-0"
               )}
             >
               {isAiRelated ? <Lightbulb className="h-4 w-4 mr-2" /> : <ExternalLink className="h-4 w-4 mr-2" />}
