@@ -97,7 +97,7 @@ export const FuturePlansSection = () => {
           弊社の経営コンサルタントが貴社の状況に合わせたアドバイスを提供いたします。
         </p>
         <Button 
-          onClick={() => window.location.href = 'mailto:hori@planjoy.net?subject=危機対応後経営安定資金（セーフティネット貸付）についてのご相談'}
+          onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSfGctjmssSGu73JcGfPeECrLstNGZF5w_36ePFOZLw7s-1HPg/viewform', '_blank', 'noopener,noreferrer')}
           variant="outline"
           size="lg"
           className="text-blue-600 border-blue-600 hover:bg-blue-50 hover:text-blue-600"

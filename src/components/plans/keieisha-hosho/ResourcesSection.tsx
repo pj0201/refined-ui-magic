@@ -42,7 +42,7 @@ export const ResourcesSection = () => {
           弊社の経営コンサルタントが貴社の状況に合わせたアドバイスを提供いたします。
         </p>
         <Button 
-          onClick={() => window.location.href = 'mailto:hori@planjoy.net?subject=経営者保証に関するガイドラインについてのご相談'}
+          onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSfGctjmssSGu73JcGfPeECrLstNGZF5w_36ePFOZLw7s-1HPg/viewform', '_blank', 'noopener,noreferrer')}
           variant="outline"
           size="lg"
           className="text-cyan-600 border-cyan-600 hover:bg-cyan-50 hover:text-cyan-600"

@@ -94,7 +94,7 @@ const PosucoroPage = () => {
           弊社の経営コンサルタントが計画策定から申請までトータルでサポートいたします。
         </p>
         <Button 
-          onClick={() => window.location.href = 'mailto:hori@planjoy.net?subject=早期経営改善計画策定支援事業（ポスコロ）についてのご相談'}
+          onClick={() => window.open('https://docs.google.com/forms/d/e/1FAIpQLSfGctjmssSGu73JcGfPeECrLstNGZF5w_36ePFOZLw7s-1HPg/viewform', '_blank', 'noopener,noreferrer')}
           variant="outline"
           size="lg"
           className="text-blue-600 border-blue-600 hover:bg-blue-50 hover:text-blue-600"
