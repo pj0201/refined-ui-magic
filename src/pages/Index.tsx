@@ -104,6 +104,12 @@ const Index = () => {
               >
                 利用規約
               </button>
+              <a 
+                href="/admin/login"
+                className="text-gray-300 hover:text-white transition-colors text-xs"
+              >
+                管理者
+              </a>
             </div>
           </div>
         </div>

@@ -26,6 +26,10 @@ import DDSPage from "./pages/plans/DDSPage";
 import KeieishaHoshoPage from "./pages/plans/KeieishaHoshoPage";
 import SafetyNetPage from "./pages/plans/SafetyNetPage";
 
+// 管理者ページ
+import AdminLogin from "./pages/AdminLogin";
+import AdminDashboard from "./pages/AdminDashboard";
+
 // チャットボット初期化コンポーネント
 import { ChatbotInitializer } from "./components/chatbot/ChatbotInitializer";
 
@@ -75,6 +79,10 @@ function App() {
               <Route path="/plans/dds" element={<DDSPage />} />
               <Route path="/plans/keieisha-hosho" element={<KeieishaHoshoPage />} />
               <Route path="/plans/safety-net" element={<SafetyNetPage />} />
+              
+              {/* 管理者ルート */}
+              <Route path="/admin/login" element={<AdminLogin />} />
+              <Route path="/admin/dashboard" element={<AdminDashboard />} />
               
               <Route path="*" element={<NotFound />} />
             </Routes>
