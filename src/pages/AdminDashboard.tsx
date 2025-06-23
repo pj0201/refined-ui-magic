@@ -9,20 +9,28 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { LogOut, Users, Eye } from 'lucide-react';
 
 const AdminDashboard = () => {
-  const { adminUser, logout, isAuthenticated } = useAdmin();
-  const { logs, isLoading, fetchLogs } = useVisitorLogs();
+  const { adminUser, logout, isAuthenticated, isLoading } = useAdmin();
+  const { logs, isLoading: logsLoading, fetchLogs } = useVisitorLogs();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!isAuthenticated) {
+    if (!isLoading && !isAuthenticated) {
       navigate('/admin/login');
     }
-  }, [isAuthenticated, navigate]);
+  }, [isAuthenticated, isLoading, navigate]);
 
   const handleLogout = () => {
     logout();
     navigate('/');
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div>読み込み中...</div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated) {
     return null;
@@ -100,7 +108,7 @@ const AdminDashboard = () => {
               </div>
             </CardHeader>
             <CardContent>
-              {isLoading ? (
+              {logsLoading ? (
                 <div className="text-center py-4">読み込み中...</div>
               ) : (
                 <div className="overflow-x-auto">

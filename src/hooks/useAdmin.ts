@@ -19,7 +19,11 @@ export const useAdmin = () => {
   useEffect(() => {
     const adminData = localStorage.getItem('adminUser');
     if (adminData) {
-      setAdminUser(JSON.parse(adminData));
+      try {
+        setAdminUser(JSON.parse(adminData));
+      } catch (error) {
+        localStorage.removeItem('adminUser');
+      }
     }
     setIsLoading(false);
   }, []);

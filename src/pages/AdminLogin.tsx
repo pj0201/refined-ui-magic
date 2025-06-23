@@ -63,9 +63,6 @@ const AdminLogin = () => {
               {isLoading ? 'ログイン中...' : 'ログイン'}
             </Button>
           </form>
-          <div className="mt-4 text-sm text-gray-600 text-center">
-            <p>デフォルト: admin / admin123</p>
-          </div>
         </CardContent>
       </Card>
     </div>
