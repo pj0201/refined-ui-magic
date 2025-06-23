@@ -1,3 +1,4 @@
+
 import { HeroSection } from "@/components/sections/HeroSection";
 import { ConsultingSection } from "@/components/sections/ConsultingSection";
 import { CompanyProfileSection } from "@/components/sections/CompanyProfileSection";
@@ -6,14 +7,21 @@ import { BusinessPlansSection } from "@/components/sections/BusinessPlansSection
 import { TopicSection } from "@/components/sections/TopicSection";
 import { Helmet } from 'react-helmet';
 import { ContactForm } from "@/components/ContactForm";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PrivacyPolicyModal } from "@/components/modals/PrivacyPolicyModal";
 import { TermsOfServiceModal } from "@/components/modals/TermsOfServiceModal";
 import { BackToTopButton } from "@/components/BackToTopButton";
+import { useVisitorLogs } from "@/hooks/useVisitorLogs";
 
 const Index = () => {
   const [privacyPolicyOpen, setPrivacyPolicyOpen] = useState(false);
   const [termsOfServiceOpen, setTermsOfServiceOpen] = useState(false);
+  const { logVisit } = useVisitorLogs();
+
+  // ページ訪問をログに記録
+  useEffect(() => {
+    logVisit(window.location.href);
+  }, [logVisit]);
 
   return (
     <div className="min-h-screen bg-background">
