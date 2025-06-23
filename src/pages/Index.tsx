@@ -1,4 +1,3 @@
-
 import { HeroSection } from "@/components/sections/HeroSection";
 import { ConsultingSection } from "@/components/sections/ConsultingSection";
 import { CompanyProfileSection } from "@/components/sections/CompanyProfileSection";
@@ -113,7 +112,7 @@ const Index = () => {
                 利用規約
               </button>
               <a 
-                href="/admin/login"
+                href="#/admin/login"
                 className="text-gray-300 hover:text-white transition-colors text-xs"
               >
                 管理者
