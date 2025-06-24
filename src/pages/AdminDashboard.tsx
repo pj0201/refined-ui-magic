@@ -116,9 +116,11 @@ const AdminDashboard = () => {
                     <TableHeader>
                       <TableRow>
                         <TableHead>訪問日時</TableHead>
+                        <TableHead>IPアドレス</TableHead>
+                        <TableHead>地域</TableHead>
                         <TableHead>ページURL</TableHead>
                         <TableHead>リファラー</TableHead>
-                        <TableHead>ユーザーエージェント</TableHead>
+                        <TableHead>ブラウザ</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -128,13 +130,22 @@ const AdminDashboard = () => {
                             {new Date(log.visited_at).toLocaleString('ja-JP')}
                           </TableCell>
                           <TableCell className="font-mono text-sm">
-                            {log.page_url}
+                            {log.ip_address}
                           </TableCell>
-                          <TableCell className="font-mono text-sm">
+                          <TableCell>
+                            {log.country === '日本' ? `${log.country} ${log.city}` : log.country}
+                          </TableCell>
+                          <TableCell className="font-mono text-sm max-w-xs truncate">
+                            {log.page_url.replace(window.location.origin, '')}
+                          </TableCell>
+                          <TableCell className="font-mono text-sm max-w-xs truncate">
                             {log.referrer || '-'}
                           </TableCell>
                           <TableCell className="max-w-xs truncate">
-                            {log.user_agent}
+                            {log.user_agent.includes('Chrome') ? 'Chrome' : 
+                             log.user_agent.includes('Firefox') ? 'Firefox' :
+                             log.user_agent.includes('Safari') ? 'Safari' :
+                             log.user_agent.includes('Edge') ? 'Edge' : 'その他'}
                           </TableCell>
                         </TableRow>
                       ))}

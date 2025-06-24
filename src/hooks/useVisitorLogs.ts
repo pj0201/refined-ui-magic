@@ -39,16 +39,75 @@ export const useVisitorLogs = () => {
     }
   };
 
-  const logVisit = (pageUrl: string, referrer?: string) => {
+  const getLocationInfo = async () => {
     try {
+      // 複数のIPアドレス取得サービスを試行
+      const ipServices = [
+        'https://api.ipify.org?format=json',
+        'https://ipapi.co/json/',
+        'https://ipinfo.io/json'
+      ];
+
+      for (const service of ipServices) {
+        try {
+          const response = await fetch(service);
+          if (response.ok) {
+            const data = await response.json();
+            
+            // サービスによってレスポンス形式が異なるため、適切に処理
+            if (service.includes('ipify')) {
+              return {
+                ip: data.ip,
+                country: '日本',
+                city: '不明'
+              };
+            } else if (service.includes('ipapi')) {
+              return {
+                ip: data.ip,
+                country: data.country_name || '不明',
+                city: data.city || '不明'
+              };
+            } else if (service.includes('ipinfo')) {
+              return {
+                ip: data.ip,
+                country: data.country === 'JP' ? '日本' : (data.country || '不明'),
+                city: data.city || '不明'
+              };
+            }
+          }
+        } catch (serviceError) {
+          console.log(`Service ${service} failed, trying next...`);
+          continue;
+        }
+      }
+      
+      // すべてのサービスが失敗した場合のフォールバック
+      return {
+        ip: 'ローカル',
+        country: '日本',
+        city: '不明'
+      };
+    } catch (error) {
+      return {
+        ip: 'ローカル',
+        country: '日本', 
+        city: '不明'
+      };
+    }
+  };
+
+  const logVisit = async (pageUrl: string, referrer?: string) => {
+    try {
+      const locationInfo = await getLocationInfo();
+      
       const newLog: VisitorLog = {
         id: `log-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-        ip_address: 'ローカル', // ローカル環境では実際のIPは取得困難
+        ip_address: locationInfo.ip,
         user_agent: navigator.userAgent,
         page_url: pageUrl,
         referrer: referrer || document.referrer || '',
-        country: '日本',
-        city: '不明',
+        country: locationInfo.country,
+        city: locationInfo.city,
         visited_at: new Date().toISOString()
       };
 
