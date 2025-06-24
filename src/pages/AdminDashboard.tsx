@@ -5,7 +5,9 @@ import { useVisitorLogs } from '@/hooks/useVisitorLogs';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { LogOut, Users, Eye, Calendar } from 'lucide-react';
+import { LogOut, Users, Eye, Calendar, Database } from 'lucide-react';
+import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 const AdminDashboard = () => {
   const { adminUser, logout, isAuthenticated, isLoading } = useAdmin();
@@ -23,6 +25,21 @@ const AdminDashboard = () => {
   const handleLogout = () => {
     logout();
     navigate('/');
+  };
+
+  const handleSeedData = async () => {
+    toast.info("データベースに情報を格納中です...");
+    try {
+      const { error } = await supabase.functions.invoke('seed-subsidy-data');
+
+      if (error) throw error;
+      
+      toast.success("データベースへの情報格納が完了しました！チャットをお試しください。");
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      console.error('データベースのシード中にエラー:', errorMessage);
+      toast.error(`データベースへの情報格納中にエラーが発生しました: ${errorMessage}`);
+    }
   };
 
   if (isLoading) {
@@ -47,6 +64,10 @@ const AdminDashboard = () => {
               <span className="text-sm text-gray-600">
                 ようこそ、{adminUser?.username}さん
               </span>
+              <Button onClick={handleSeedData} size="sm" className="bg-orange-500 hover:bg-orange-600 text-white">
+                <Database className="h-4 w-4 mr-2" />
+                AI用データ格納
+              </Button>
               <Button onClick={handleLogout} variant="outline" size="sm">
                 <LogOut className="h-4 w-4 mr-2" />
                 ログアウト
