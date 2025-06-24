@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 
 interface VisitorLog {
@@ -25,8 +24,16 @@ export const useVisitorLogs = () => {
       const storedLogs = localStorage.getItem(VISITOR_LOGS_KEY);
       if (storedLogs) {
         const parsedLogs = JSON.parse(storedLogs);
-        // 最新のものから最大100件まで表示
-        setLogs(parsedLogs.slice(0, 100));
+        
+        // 6月1日以降のログのみフィルタリング
+        const june1st = new Date('2024-06-01T00:00:00.000Z');
+        const filteredLogs = parsedLogs.filter((log: VisitorLog) => {
+          const logDate = new Date(log.visited_at);
+          return logDate >= june1st;
+        });
+        
+        // 最新のものから最大1000件まで表示
+        setLogs(filteredLogs.slice(0, 1000));
       } else {
         setLogs([]);
       }
@@ -173,7 +180,7 @@ export const useVisitorLogs = () => {
       // 新しいログを先頭に追加
       logs.unshift(newLog);
       
-      // 最大1000件までに制限（約3-6ヶ月分）
+      // 最大1000件までに制限
       if (logs.length > 1000) {
         logs.splice(1000);
       }
@@ -192,17 +199,16 @@ export const useVisitorLogs = () => {
     fetchLogs();
   }, []);
 
-  // ログの保存期間を計算する関数
+  // ログの保存期間を計算する関数（6月1日基準）
   const getLogRetentionInfo = () => {
     if (logs.length === 0) return { oldestDate: null, totalDays: 0 };
     
-    const oldestLog = logs[logs.length - 1];
-    const oldestDate = new Date(oldestLog.visited_at);
+    const june1st = new Date('2024-06-01');
     const now = new Date();
-    const diffTime = Math.abs(now.getTime() - oldestDate.getTime());
+    const diffTime = Math.abs(now.getTime() - june1st.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     
-    return { oldestDate, totalDays: diffDays };
+    return { oldestDate: june1st, totalDays: diffDays };
   };
 
   return {

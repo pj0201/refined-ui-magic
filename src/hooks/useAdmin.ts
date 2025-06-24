@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 
 interface AdminUser {
@@ -6,10 +5,10 @@ interface AdminUser {
   username: string;
 }
 
-// デフォルト管理者ユーザー
+// 管理者ユーザー情報
 const DEFAULT_ADMIN = {
-  username: 'admin',
-  password: 'admin123'
+  username: 'peekaboo',
+  password: 'peek009'
 };
 
 export const useAdmin = () => {

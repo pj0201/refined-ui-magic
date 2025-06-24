@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAdmin } from '@/hooks/useAdmin';
@@ -67,6 +66,7 @@ const AdminDashboard = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{logs.length}</div>
+                <div className="text-xs text-gray-500 mt-1">6月1日以降</div>
               </CardContent>
             </Card>
             
@@ -112,7 +112,7 @@ const AdminDashboard = () => {
                   }
                 </div>
                 <div className="text-xs text-gray-500 mt-1">
-                  最大1000件まで保存
+                  6月1日から現在まで
                 </div>
               </CardContent>
             </Card>
@@ -126,12 +126,10 @@ const AdminDashboard = () => {
                   更新
                 </Button>
               </div>
-              {retentionInfo.oldestDate && (
-                <div className="text-sm text-gray-600">
-                  保存期間: {retentionInfo.oldestDate.toLocaleDateString('ja-JP')} ～ 現在
-                  （{retentionInfo.totalDays}日間のデータ）
-                </div>
-              )}
+              <div className="text-sm text-gray-600">
+                表示期間: 2024年6月1日 ～ 現在
+                （{retentionInfo.totalDays}日間のデータ、{logs.length}件）
+              </div>
             </CardHeader>
             <CardContent>
               {logsLoading ? (
