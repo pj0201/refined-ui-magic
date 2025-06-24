@@ -6,12 +6,14 @@ import { useVisitorLogs } from '@/hooks/useVisitorLogs';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { LogOut, Users, Eye } from 'lucide-react';
+import { LogOut, Users, Eye, Calendar } from 'lucide-react';
 
 const AdminDashboard = () => {
   const { adminUser, logout, isAuthenticated, isLoading } = useAdmin();
-  const { logs, isLoading: logsLoading, fetchLogs } = useVisitorLogs();
+  const { logs, isLoading: logsLoading, fetchLogs, getLogRetentionInfo } = useVisitorLogs();
   const navigate = useNavigate();
+
+  const retentionInfo = getLogRetentionInfo();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -57,7 +59,7 @@ const AdminDashboard = () => {
 
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <CardTitle className="text-sm font-medium">総訪問者数</CardTitle>
@@ -96,6 +98,24 @@ const AdminDashboard = () => {
                 </div>
               </CardContent>
             </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">保存期間</CardTitle>
+                <Calendar className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-sm">
+                  {retentionInfo.oldestDate 
+                    ? `${retentionInfo.totalDays}日間`
+                    : 'データなし'
+                  }
+                </div>
+                <div className="text-xs text-gray-500 mt-1">
+                  最大1000件まで保存
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
           <Card>
@@ -106,6 +126,12 @@ const AdminDashboard = () => {
                   更新
                 </Button>
               </div>
+              {retentionInfo.oldestDate && (
+                <div className="text-sm text-gray-600">
+                  保存期間: {retentionInfo.oldestDate.toLocaleDateString('ja-JP')} ～ 現在
+                  （{retentionInfo.totalDays}日間のデータ）
+                </div>
+              )}
             </CardHeader>
             <CardContent>
               {logsLoading ? (
