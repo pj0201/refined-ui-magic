@@ -6,7 +6,7 @@ import { useVisitorLogs } from '@/hooks/useVisitorLogs';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { LogOut, Users, Eye, Calendar, Database, MapPin, FileText } from 'lucide-react';
+import { LogOut, Users, Eye, Calendar, Database, MapPin, FileText, TestTube } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -16,7 +16,9 @@ const AdminDashboard = () => {
     logs, 
     isLoading: logsLoading, 
     fetchLogs, 
-    getLogRetentionInfo,
+    logVisit,
+    generateTestLogs,
+    getDateRangeInfo,
     getUniqueVisitors,
     getLocationStats,
     getPageStats
@@ -27,13 +29,13 @@ const AdminDashboard = () => {
   console.log('logs:', logs);
   console.log('logsLoading:', logsLoading);
 
-  const retentionInfo = getLogRetentionInfo();
+  const dateRangeInfo = getDateRangeInfo();
   const uniqueVisitors = getUniqueVisitors();
   const locationStats = getLocationStats();
   const pageStats = getPageStats();
 
   console.log('計算結果:');
-  console.log('- retentionInfo:', retentionInfo);
+  console.log('- dateRangeInfo:', dateRangeInfo);
   console.log('- uniqueVisitors:', uniqueVisitors);
   console.log('- locationStats:', locationStats);
   console.log('- pageStats:', pageStats);
@@ -54,6 +56,14 @@ const AdminDashboard = () => {
     }
   }, [isAuthenticated, isLoading, navigate]);
 
+  // 管理者ダッシュボードへのアクセスをログに記録
+  useEffect(() => {
+    if (isAuthenticated) {
+      console.log('管理者ダッシュボードのアクセスをログに記録');
+      logVisit(window.location.href, document.referrer);
+    }
+  }, [isAuthenticated, logVisit]);
+
   const handleLogout = () => {
     logout();
     navigate('/');
@@ -72,6 +82,12 @@ const AdminDashboard = () => {
       console.error('データベースのシード中にエラー:', errorMessage);
       toast.error(`データベースへの情報格納中にエラーが発生しました: ${errorMessage}`);
     }
+  };
+
+  const handleGenerateTestLogs = () => {
+    console.log('テストログ生成ボタンがクリックされました');
+    generateTestLogs();
+    toast.success("テストログを生成しました！");
   };
 
   if (isLoading) {
@@ -96,6 +112,10 @@ const AdminDashboard = () => {
               <span className="text-sm text-gray-600">
                 ようこそ、{adminUser?.username}さん
               </span>
+              <Button onClick={handleGenerateTestLogs} size="sm" className="bg-purple-500 hover:bg-purple-600 text-white">
+                <TestTube className="h-4 w-4 mr-2" />
+                テストログ生成
+              </Button>
               <Button onClick={handleSeedData} size="sm" className="bg-orange-500 hover:bg-orange-600 text-white">
                 <Database className="h-4 w-4 mr-2" />
                 AI用データ格納
@@ -119,7 +139,7 @@ const AdminDashboard = () => {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{logs.length}</div>
-                <div className="text-xs text-gray-500 mt-1">6月1日以降</div>
+                <div className="text-xs text-gray-500 mt-1">全期間</div>
               </CardContent>
             </Card>
             
@@ -146,18 +166,21 @@ const AdminDashboard = () => {
 
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">保存期間</CardTitle>
+                <CardTitle className="text-sm font-medium">データ期間</CardTitle>
                 <Calendar className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-sm">
-                  {retentionInfo.oldestDate 
-                    ? `${retentionInfo.totalDays}日間`
+                  {dateRangeInfo.totalDays > 0 
+                    ? `${dateRangeInfo.totalDays}日間`
                     : 'データなし'
                   }
                 </div>
                 <div className="text-xs text-gray-500 mt-1">
-                  6月1日から現在まで
+                  {dateRangeInfo.oldestDate && dateRangeInfo.newestDate
+                    ? `${dateRangeInfo.oldestDate.toLocaleDateString()} ～ ${dateRangeInfo.newestDate.toLocaleDateString()}`
+                    : '期間なし'
+                  }
                 </div>
               </CardContent>
             </Card>
@@ -221,15 +244,24 @@ const AdminDashboard = () => {
                 </Button>
               </div>
               <div className="text-sm text-gray-600">
-                表示期間: 2024年6月1日 ～ 現在
-                （{retentionInfo.totalDays}日間のデータ、総ログ数: {logs.length}件、ユニーク訪問者: {uniqueVisitors}名）
+                {dateRangeInfo.oldestDate && dateRangeInfo.newestDate
+                  ? `表示期間: ${dateRangeInfo.oldestDate.toLocaleDateString()} ～ ${dateRangeInfo.newestDate.toLocaleDateString()}`
+                  : '表示期間: データなし'
+                }
+                （総ログ数: {logs.length}件、ユニーク訪問者: {uniqueVisitors}名）
               </div>
             </CardHeader>
             <CardContent>
               {logsLoading ? (
                 <div className="text-center py-4">読み込み中...</div>
               ) : logs.length === 0 ? (
-                <div className="text-center py-4 text-gray-500">ログデータがありません</div>
+                <div className="text-center py-4">
+                  <div className="text-gray-500 mb-4">ログデータがありません</div>
+                  <Button onClick={handleGenerateTestLogs} className="bg-purple-500 hover:bg-purple-600 text-white">
+                    <TestTube className="h-4 w-4 mr-2" />
+                    テストログを生成
+                  </Button>
+                </div>
               ) : (
                 <div className="overflow-x-auto">
                   <Table>
