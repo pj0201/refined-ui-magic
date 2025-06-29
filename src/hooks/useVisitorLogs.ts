@@ -13,7 +13,6 @@ interface VisitorLog {
 }
 
 const VISITOR_LOGS_KEY = 'visitor_logs';
-const LAST_LOG_TIME_KEY = 'last_log_time';
 
 export const useVisitorLogs = () => {
   const [logs, setLogs] = useState<VisitorLog[]>([]);
@@ -48,18 +47,31 @@ export const useVisitorLogs = () => {
     }
   };
 
-  // 短時間での重複ログをチェックする関数
-  const shouldSkipLogging = (ipAddress: string) => {
-    const lastLogTime = localStorage.getItem(LAST_LOG_TIME_KEY);
-    if (!lastLogTime) return false;
-
-    const now = Date.now();
-    const timeDiff = now - parseInt(lastLogTime);
+  // より適切な重複ログチェック（同じページへの5分以内のアクセスのみスキップ）
+  const shouldSkipLogging = (newLog: Omit<VisitorLog, 'id'>) => {
+    const existingLogs = localStorage.getItem(VISITOR_LOGS_KEY);
+    if (!existingLogs) return false;
     
-    // 30秒以内の重複ログをスキップ
-    if (timeDiff < 30000) {
-      console.log('重複ログをスキップしました（30秒以内）');
-      return true;
+    try {
+      const logs = JSON.parse(existingLogs);
+      const fiveMinutesAgo = Date.now() - (5 * 60 * 1000); // 5分前
+      
+      // 同じIPから同じページへの5分以内のアクセスをチェック
+      const recentSimilarLog = logs.find((log: VisitorLog) => {
+        const logTime = new Date(log.visited_at).getTime();
+        return (
+          log.ip_address === newLog.ip_address &&
+          log.page_url === newLog.page_url &&
+          logTime > fiveMinutesAgo
+        );
+      });
+      
+      if (recentSimilarLog) {
+        console.log('重複ログをスキップしました（同じページへの5分以内のアクセス）');
+        return true;
+      }
+    } catch (error) {
+      console.error('重複チェック中にエラー:', error);
     }
     
     return false;
@@ -178,21 +190,10 @@ export const useVisitorLogs = () => {
     try {
       console.log('Logging visit for:', pageUrl);
       
-      // 重複ログのチェック
-      if (shouldSkipLogging('temp')) {
-        return;
-      }
-      
       const locationInfo = await getLocationInfo();
       console.log('Location info obtained:', locationInfo);
       
-      // 同じIPからの重複ログをさらにチェック
-      if (shouldSkipLogging(locationInfo.ip)) {
-        return;
-      }
-      
-      const newLog: VisitorLog = {
-        id: `log-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      const newLogData = {
         ip_address: locationInfo.ip,
         user_agent: navigator.userAgent,
         page_url: pageUrl,
@@ -200,6 +201,16 @@ export const useVisitorLogs = () => {
         country: locationInfo.country,
         city: locationInfo.city,
         visited_at: new Date().toISOString()
+      };
+      
+      // 重複ログのチェック
+      if (shouldSkipLogging(newLogData)) {
+        return;
+      }
+      
+      const newLog: VisitorLog = {
+        id: `log-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        ...newLogData
       };
 
       console.log('New log entry:', newLog);
@@ -216,8 +227,6 @@ export const useVisitorLogs = () => {
       }
       
       localStorage.setItem(VISITOR_LOGS_KEY, JSON.stringify(logs));
-      // 最後のログ時間を記録
-      localStorage.setItem(LAST_LOG_TIME_KEY, Date.now().toString());
       
       console.log('Log saved successfully');
       
@@ -231,6 +240,38 @@ export const useVisitorLogs = () => {
   useEffect(() => {
     fetchLogs();
   }, []);
+
+  // ユニーク訪問者数を計算
+  const getUniqueVisitors = () => {
+    const uniqueIPs = new Set(logs.map(log => log.ip_address));
+    return uniqueIPs.size;
+  };
+
+  // 地域別統計を取得
+  const getLocationStats = () => {
+    const locationCounts: { [key: string]: number } = {};
+    logs.forEach(log => {
+      const location = log.country === '日本' ? `${log.country} ${log.city}` : log.country;
+      locationCounts[location] = (locationCounts[location] || 0) + 1;
+    });
+    
+    return Object.entries(locationCounts)
+      .sort(([,a], [,b]) => b - a)
+      .slice(0, 10); // 上位10地域
+  };
+
+  // ページ別統計を取得
+  const getPageStats = () => {
+    const pageCounts: { [key: string]: number } = {};
+    logs.forEach(log => {
+      const page = log.page_url.replace(window.location.origin, '') || '/';
+      pageCounts[page] = (pageCounts[page] || 0) + 1;
+    });
+    
+    return Object.entries(pageCounts)
+      .sort(([,a], [,b]) => b - a)
+      .slice(0, 10); // 上位10ページ
+  };
 
   // ログの保存期間を計算する関数（6月1日基準）
   const getLogRetentionInfo = () => {
@@ -250,6 +291,9 @@ export const useVisitorLogs = () => {
     error,
     fetchLogs,
     logVisit,
-    getLogRetentionInfo
+    getLogRetentionInfo,
+    getUniqueVisitors,
+    getLocationStats,
+    getPageStats
   };
 };

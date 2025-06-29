@@ -5,16 +5,27 @@ import { useVisitorLogs } from '@/hooks/useVisitorLogs';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { LogOut, Users, Eye, Calendar, Database } from 'lucide-react';
+import { LogOut, Users, Eye, Calendar, Database, MapPin, FileText } from 'lucide-react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
 const AdminDashboard = () => {
   const { adminUser, logout, isAuthenticated, isLoading } = useAdmin();
-  const { logs, isLoading: logsLoading, fetchLogs, getLogRetentionInfo } = useVisitorLogs();
+  const { 
+    logs, 
+    isLoading: logsLoading, 
+    fetchLogs, 
+    getLogRetentionInfo,
+    getUniqueVisitors,
+    getLocationStats,
+    getPageStats
+  } = useVisitorLogs();
   const navigate = useNavigate();
 
   const retentionInfo = getLogRetentionInfo();
+  const uniqueVisitors = getUniqueVisitors();
+  const locationStats = getLocationStats();
+  const pageStats = getPageStats();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -82,12 +93,23 @@ const AdminDashboard = () => {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">総訪問者数</CardTitle>
-                <Users className="h-4 w-4 text-muted-foreground" />
+                <CardTitle className="text-sm font-medium">総訪問ログ</CardTitle>
+                <Eye className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">{logs.length}</div>
                 <div className="text-xs text-gray-500 mt-1">6月1日以降</div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">ユニーク訪問者</CardTitle>
+                <Users className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{uniqueVisitors}</div>
+                <div className="text-xs text-gray-500 mt-1">実訪問者数</div>
               </CardContent>
             </Card>
             
@@ -102,20 +124,6 @@ const AdminDashboard = () => {
                     const today = new Date().toDateString();
                     return new Date(log.visited_at).toDateString() === today;
                   }).length}
-                </div>
-              </CardContent>
-            </Card>
-            
-            <Card>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">最新訪問</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="text-sm">
-                  {logs.length > 0 
-                    ? new Date(logs[0].visited_at).toLocaleString('ja-JP')
-                    : 'データなし'
-                  }
                 </div>
               </CardContent>
             </Card>
@@ -139,17 +147,58 @@ const AdminDashboard = () => {
             </Card>
           </div>
 
+          {/* 統計情報セクション */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <MapPin className="h-5 w-5 mr-2" />
+                  地域別アクセス統計
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {locationStats.map(([location, count], index) => (
+                    <div key={location} className="flex justify-between items-center">
+                      <span className="text-sm">{index + 1}. {location}</span>
+                      <span className="font-medium">{count}回</span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center">
+                  <FileText className="h-5 w-5 mr-2" />
+                  ページ別アクセス統計
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {pageStats.map(([page, count], index) => (
+                    <div key={page} className="flex justify-between items-center">
+                      <span className="text-sm truncate max-w-xs">{index + 1}. {page}</span>
+                      <span className="font-medium">{count}回</span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
           <Card>
             <CardHeader>
               <div className="flex justify-between items-center">
-                <CardTitle>訪問者ログ</CardTitle>
+                <CardTitle>訪問者ログ詳細</CardTitle>
                 <Button onClick={fetchLogs} size="sm">
                   更新
                 </Button>
               </div>
               <div className="text-sm text-gray-600">
                 表示期間: 2024年6月1日 ～ 現在
-                （{retentionInfo.totalDays}日間のデータ、{logs.length}件）
+                （{retentionInfo.totalDays}日間のデータ、総ログ数: {logs.length}件、ユニーク訪問者: {uniqueVisitors}名）
               </div>
             </CardHeader>
             <CardContent>
