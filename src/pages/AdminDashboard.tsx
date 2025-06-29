@@ -1,3 +1,4 @@
+
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAdmin } from '@/hooks/useAdmin';
@@ -22,10 +23,30 @@ const AdminDashboard = () => {
   } = useVisitorLogs();
   const navigate = useNavigate();
 
+  console.log('=== AdminDashboard レンダリング開始 ===');
+  console.log('logs:', logs);
+  console.log('logsLoading:', logsLoading);
+
   const retentionInfo = getLogRetentionInfo();
   const uniqueVisitors = getUniqueVisitors();
   const locationStats = getLocationStats();
   const pageStats = getPageStats();
+
+  console.log('計算結果:');
+  console.log('- retentionInfo:', retentionInfo);
+  console.log('- uniqueVisitors:', uniqueVisitors);
+  console.log('- locationStats:', locationStats);
+  console.log('- pageStats:', pageStats);
+
+  // 本日の訪問数を計算
+  const todayVisits = logs.filter(log => {
+    const today = new Date().toDateString();
+    const logDate = new Date(log.visited_at).toDateString();
+    return logDate === today;
+  }).length;
+
+  console.log('本日の訪問数:', todayVisits);
+  console.log('=== AdminDashboard レンダリング完了 ===');
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
@@ -119,12 +140,7 @@ const AdminDashboard = () => {
                 <Eye className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">
-                  {logs.filter(log => {
-                    const today = new Date().toDateString();
-                    return new Date(log.visited_at).toDateString() === today;
-                  }).length}
-                </div>
+                <div className="text-2xl font-bold">{todayVisits}</div>
               </CardContent>
             </Card>
 
@@ -158,12 +174,16 @@ const AdminDashboard = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {locationStats.map(([location, count], index) => (
-                    <div key={location} className="flex justify-between items-center">
-                      <span className="text-sm">{index + 1}. {location}</span>
-                      <span className="font-medium">{count}回</span>
-                    </div>
-                  ))}
+                  {locationStats.length > 0 ? (
+                    locationStats.map(([location, count], index) => (
+                      <div key={location} className="flex justify-between items-center">
+                        <span className="text-sm">{index + 1}. {location}</span>
+                        <span className="font-medium">{count}回</span>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-sm text-gray-500">データがありません</div>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -177,12 +197,16 @@ const AdminDashboard = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {pageStats.map(([page, count], index) => (
-                    <div key={page} className="flex justify-between items-center">
-                      <span className="text-sm truncate max-w-xs">{index + 1}. {page}</span>
-                      <span className="font-medium">{count}回</span>
-                    </div>
-                  ))}
+                  {pageStats.length > 0 ? (
+                    pageStats.map(([page, count], index) => (
+                      <div key={page} className="flex justify-between items-center">
+                        <span className="text-sm truncate max-w-xs">{index + 1}. {page}</span>
+                        <span className="font-medium">{count}回</span>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-sm text-gray-500">データがありません</div>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -204,6 +228,8 @@ const AdminDashboard = () => {
             <CardContent>
               {logsLoading ? (
                 <div className="text-center py-4">読み込み中...</div>
+              ) : logs.length === 0 ? (
+                <div className="text-center py-4 text-gray-500">ログデータがありません</div>
               ) : (
                 <div className="overflow-x-auto">
                   <Table>

@@ -21,29 +21,47 @@ export const useVisitorLogs = () => {
 
   const fetchLogs = () => {
     try {
+      console.log('=== fetchLogs開始 ===');
       setIsLoading(true);
       const storedLogs = localStorage.getItem(VISITOR_LOGS_KEY);
+      console.log('localStorage から取得した生データ:', storedLogs);
+      
       if (storedLogs) {
         const parsedLogs = JSON.parse(storedLogs);
+        console.log('パースされたログ数:', parsedLogs.length);
+        console.log('パースされたログの最初の3件:', parsedLogs.slice(0, 3));
         
         // 6月1日以降のログのみフィルタリング
         const june1st = new Date('2024-06-01T00:00:00.000Z');
+        console.log('フィルタリング基準日:', june1st);
+        
         const filteredLogs = parsedLogs.filter((log: VisitorLog) => {
           const logDate = new Date(log.visited_at);
-          return logDate >= june1st;
+          const isAfterJune1st = logDate >= june1st;
+          if (!isAfterJune1st) {
+            console.log('除外されたログ:', log.visited_at, logDate);
+          }
+          return isAfterJune1st;
         });
         
+        console.log('フィルタリング後のログ数:', filteredLogs.length);
+        
         // 最新のものから最大1000件まで表示
-        setLogs(filteredLogs.slice(0, 1000));
+        const finalLogs = filteredLogs.slice(0, 1000);
+        console.log('最終的なログ数:', finalLogs.length);
+        setLogs(finalLogs);
       } else {
+        console.log('localStorageにログが存在しません');
         setLogs([]);
       }
       setError(null);
     } catch (err) {
+      console.error('ログの読み込みエラー:', err);
       setError('ログの読み込みに失敗しました');
       setLogs([]);
     } finally {
       setIsLoading(false);
+      console.log('=== fetchLogs完了 ===');
     }
   };
 
@@ -243,45 +261,67 @@ export const useVisitorLogs = () => {
 
   // ユニーク訪問者数を計算
   const getUniqueVisitors = () => {
+    console.log('=== getUniqueVisitors開始 ===');
+    console.log('現在のログ数:', logs.length);
     const uniqueIPs = new Set(logs.map(log => log.ip_address));
+    console.log('ユニークIP一覧:', Array.from(uniqueIPs));
+    console.log('ユニーク訪問者数:', uniqueIPs.size);
+    console.log('=== getUniqueVisitors完了 ===');
     return uniqueIPs.size;
   };
 
   // 地域別統計を取得
   const getLocationStats = () => {
+    console.log('=== getLocationStats開始 ===');
     const locationCounts: { [key: string]: number } = {};
     logs.forEach(log => {
       const location = log.country === '日本' ? `${log.country} ${log.city}` : log.country;
       locationCounts[location] = (locationCounts[location] || 0) + 1;
     });
     
-    return Object.entries(locationCounts)
+    const result = Object.entries(locationCounts)
       .sort(([,a], [,b]) => b - a)
       .slice(0, 10); // 上位10地域
+    
+    console.log('地域別統計:', result);
+    console.log('=== getLocationStats完了 ===');
+    return result;
   };
 
   // ページ別統計を取得
   const getPageStats = () => {
+    console.log('=== getPageStats開始 ===');
     const pageCounts: { [key: string]: number } = {};
     logs.forEach(log => {
       const page = log.page_url.replace(window.location.origin, '') || '/';
       pageCounts[page] = (pageCounts[page] || 0) + 1;
     });
     
-    return Object.entries(pageCounts)
+    const result = Object.entries(pageCounts)
       .sort(([,a], [,b]) => b - a)
       .slice(0, 10); // 上位10ページ
+    
+    console.log('ページ別統計:', result);
+    console.log('=== getPageStats完了 ===');
+    return result;
   };
 
   // ログの保存期間を計算する関数（6月1日基準）
   const getLogRetentionInfo = () => {
-    if (logs.length === 0) return { oldestDate: null, totalDays: 0 };
+    console.log('=== getLogRetentionInfo開始 ===');
+    console.log('現在のログ数:', logs.length);
+    if (logs.length === 0) {
+      console.log('ログがないため、保存期間情報なし');
+      return { oldestDate: null, totalDays: 0 };
+    }
     
     const june1st = new Date('2024-06-01');
     const now = new Date();
     const diffTime = Math.abs(now.getTime() - june1st.getTime());
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     
+    console.log('保存期間:', diffDays, '日間');
+    console.log('=== getLogRetentionInfo完了 ===');
     return { oldestDate: june1st, totalDays: diffDays };
   };
 
