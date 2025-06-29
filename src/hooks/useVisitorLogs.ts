@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 
 interface VisitorLog {
@@ -12,6 +13,7 @@ interface VisitorLog {
 }
 
 const VISITOR_LOGS_KEY = 'visitor_logs';
+const LAST_LOG_TIME_KEY = 'last_log_time';
 
 export const useVisitorLogs = () => {
   const [logs, setLogs] = useState<VisitorLog[]>([]);
@@ -44,6 +46,23 @@ export const useVisitorLogs = () => {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  // 短時間での重複ログをチェックする関数
+  const shouldSkipLogging = (ipAddress: string) => {
+    const lastLogTime = localStorage.getItem(LAST_LOG_TIME_KEY);
+    if (!lastLogTime) return false;
+
+    const now = Date.now();
+    const timeDiff = now - parseInt(lastLogTime);
+    
+    // 30秒以内の重複ログをスキップ
+    if (timeDiff < 30000) {
+      console.log('重複ログをスキップしました（30秒以内）');
+      return true;
+    }
+    
+    return false;
   };
 
   const getLocationInfo = async () => {
@@ -158,8 +177,19 @@ export const useVisitorLogs = () => {
   const logVisit = async (pageUrl: string, referrer?: string) => {
     try {
       console.log('Logging visit for:', pageUrl);
+      
+      // 重複ログのチェック
+      if (shouldSkipLogging('temp')) {
+        return;
+      }
+      
       const locationInfo = await getLocationInfo();
       console.log('Location info obtained:', locationInfo);
+      
+      // 同じIPからの重複ログをさらにチェック
+      if (shouldSkipLogging(locationInfo.ip)) {
+        return;
+      }
       
       const newLog: VisitorLog = {
         id: `log-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
@@ -186,6 +216,9 @@ export const useVisitorLogs = () => {
       }
       
       localStorage.setItem(VISITOR_LOGS_KEY, JSON.stringify(logs));
+      // 最後のログ時間を記録
+      localStorage.setItem(LAST_LOG_TIME_KEY, Date.now().toString());
+      
       console.log('Log saved successfully');
       
       // ログを即座に更新
