@@ -33,42 +33,47 @@ export const CompanyProfileSection = () => {
           
           <div className="bg-white/90 rounded-lg shadow-lg border-2 border-gray-200 p-6 relative">
             <div className="text-[#403E43] space-y-6">
-              <p className="flex flex-col xs:flex-row items-start xs:items-center gap-2 xs:gap-4">
-                <strong className="min-w-24">法人名：</strong>
+              <p className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+                <strong className="min-w-24 shrink-0">法人名：</strong>
                 <span className="font-bold">
                   <span className="inline-block">PLANNING</span>
                   <span className="font-bold inline-block"><span className="text-red-500">J</span>OY</span>
                   <span className="inline-block">株式会社</span>
                 </span>
               </p>
-              <p className="flex flex-col xs:flex-row items-start xs:items-center gap-2 xs:gap-4">
-                <strong className="min-w-24">代表者：</strong>
+              <p className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4">
+                <strong className="min-w-24 shrink-0">代表者：</strong>
                 <span className="font-bold">堀上 亮（経済産業省認定 経営革新等支援機関）</span>
               </p>
-              <p className="flex flex-col xs:flex-row items-start xs:items-center gap-2 xs:gap-4">
-                <strong className="min-w-24">所在地：</strong>
-                <span className="inline-block font-bold">〒651-0084 兵庫県神戸市中央区磯辺通1-1-18</span>
-                <br className="xs:inline sm:hidden" />
-                <span className="inline-block ml-0 xs:ml-24 sm:ml-0 font-bold">カサベラ国際プラザビル707号室</span>
-              </p>
-              <div className="flex flex-col xs:flex-row items-start xs:items-center gap-2 xs:gap-4">
-                <strong className="min-w-24">連絡先：</strong>
-                <div className="space-y-2">
+              <div className="flex flex-col sm:flex-row items-start gap-2 sm:gap-4">
+                <strong className="min-w-24 shrink-0">所在地：</strong>
+                <div className="flex-1">
+                  <div className="font-bold">
+                    <span className="block sm:inline">〒651-0084</span>
+                    <span className="block sm:inline sm:ml-2">兵庫県神戸市中央区磯辺通1-1-18</span>
+                  </div>
+                  <div className="font-bold mt-1 sm:mt-0">
+                    <span className="block sm:inline">カサベラ国際プラザビル707号室</span>
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col sm:flex-row items-start gap-2 sm:gap-4">
+                <strong className="min-w-24 shrink-0">連絡先：</strong>
+                <div className="space-y-2 flex-1">
                   <p>
                     <span className="inline-block">TEL/FAX</span>
-                    <br className="xs:inline sm:hidden" />
-                    <span className="inline-block font-bold">078-600-0611</span>
+                    <span className="inline-block ml-2 font-bold">078-600-0611</span>
                   </p>
                   <p className="flex items-center gap-2">
-                    <Mail size={18} className="inline-block" />
-                    <span className="font-bold">MAIL hori@planjoy.net</span>
+                    <Mail size={18} className="inline-block shrink-0" />
+                    <span className="font-bold break-all">MAIL hori@planjoy.net</span>
                   </p>
                 </div>
               </div>
-              <div className="flex flex-col xs:flex-row items-start gap-2 xs:gap-4">
-                <strong className="min-w-24 pt-1">業務内容：</strong>
-                <div className="w-full">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
+              <div className="flex flex-col sm:flex-row items-start gap-2 sm:gap-4">
+                <strong className="min-w-24 shrink-0 pt-1">業務内容：</strong>
+                <div className="w-full flex-1">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-x-6 gap-y-2">
                     <div className="col-span-1">
                       <ul className="list-none space-y-2 font-semibold">
                         <li>経営コンサルティング</li>
