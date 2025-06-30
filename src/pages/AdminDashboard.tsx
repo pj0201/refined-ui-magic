@@ -171,7 +171,7 @@ const AdminDashboard = () => {
                 <Calendar className="h-4 w-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
-                <div className="text-sm">
+                <div className="text-sm font-bold">
                   {dateRangeInfo.totalDays > 0 
                     ? `${dateRangeInfo.totalDays}日間`
                     : 'データなし'
@@ -179,7 +179,7 @@ const AdminDashboard = () => {
                 </div>
                 <div className="text-xs text-gray-500 mt-1">
                   {dateRangeInfo.oldestDate && dateRangeInfo.newestDate
-                    ? `${dateRangeInfo.oldestDate.toLocaleDateString()} ～ ${dateRangeInfo.newestDate.toLocaleDateString()}`
+                    ? `${dateRangeInfo.oldestDate.toLocaleDateString('ja-JP')} ～ ${dateRangeInfo.newestDate.toLocaleDateString('ja-JP')}`
                     : '期間なし'
                   }
                 </div>
@@ -246,10 +246,10 @@ const AdminDashboard = () => {
               </div>
               <div className="text-sm text-gray-600">
                 {dateRangeInfo.oldestDate && dateRangeInfo.newestDate
-                  ? `表示期間: ${dateRangeInfo.oldestDate.toLocaleDateString()} ～ ${dateRangeInfo.newestDate.toLocaleDateString()}`
+                  ? `表示期間: ${dateRangeInfo.oldestDate.toLocaleDateString('ja-JP')} ～ ${dateRangeInfo.newestDate.toLocaleDateString('ja-JP')}`
                   : '表示期間: データなし'
                 }
-                （総ログ数: {logs.length}件、ユニーク訪問者: {uniqueVisitors}名）
+                （総ログ数: {logs.length}件、ユニーク訪問者: {uniqueVisitors}名、期間: {dateRangeInfo.totalDays}日間）
               </div>
             </CardHeader>
             <CardContent>

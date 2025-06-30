@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 
 interface VisitorLog {
@@ -124,7 +123,7 @@ export const useVisitorLogs = () => {
       console.log('Using fallback mock data');
       const mockIp = `192.168.1.${Math.floor(Math.random() * 254) + 1}`;
       const mockPrefectures = ['東京都', '大阪府', '愛知県', '神奈川県', '埼玉県', '千葉県', '兵庫県', '福岡県'];
-      const mockCities = ['新宿区', '渋谷区', '中央区', '大阪市', '名古屋市', '横浜市', '神戸市', '福岡市'];
+      const mockCities = ['新宿区', '渋谷区', '中央区', '大阪市', '名古屋市', '横浜市', '川崎市', '神戸市', '福岡市', '札幌市'];
       
       return {
         ip: mockIp,
@@ -334,20 +333,31 @@ export const useVisitorLogs = () => {
     return result;
   };
 
-  // 日付範囲の情報を取得
+  // 日付範囲の情報を取得（改善版）
   const getDateRangeInfo = () => {
     if (logs.length === 0) {
       return { oldestDate: null, newestDate: null, totalDays: 0 };
     }
     
-    const dates = logs.map(log => new Date(log.visited_at).getTime());
-    const oldestTime = Math.min(...dates);
-    const newestTime = Math.max(...dates);
+    // 日付順にソート
+    const sortedLogs = [...logs].sort((a, b) => 
+      new Date(a.visited_at).getTime() - new Date(b.visited_at).getTime()
+    );
     
-    const oldestDate = new Date(oldestTime);
-    const newestDate = new Date(newestTime);
-    const diffTime = Math.abs(newestTime - oldestTime);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    const oldestDate = new Date(sortedLogs[0].visited_at);
+    const newestDate = new Date(sortedLogs[sortedLogs.length - 1].visited_at);
+    
+    // 時間差を計算（ミリ秒）
+    const diffTime = Math.abs(newestDate.getTime() - oldestDate.getTime());
+    
+    // 日数を計算（最低1日とする）
+    const diffDays = Math.max(1, Math.ceil(diffTime / (1000 * 60 * 60 * 24)));
+    
+    console.log('=== getDateRangeInfo ===');
+    console.log('ログ数:', logs.length);
+    console.log('最古日:', oldestDate.toISOString());
+    console.log('最新日:', newestDate.toISOString());
+    console.log('日数差:', diffDays);
     
     return { oldestDate, newestDate, totalDays: diffDays };
   };
