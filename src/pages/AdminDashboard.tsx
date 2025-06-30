@@ -21,7 +21,8 @@ const AdminDashboard = () => {
     getDateRangeInfo,
     getUniqueVisitors,
     getLocationStats,
-    getPageStats
+    getPageStats,
+    cleanPageUrl
   } = useVisitorLogs();
   const navigate = useNavigate();
 
@@ -285,10 +286,13 @@ const AdminDashboard = () => {
                             {log.ip_address}
                           </TableCell>
                           <TableCell>
-                            {log.country === '日本' ? `${log.country} ${log.city}` : log.country}
+                            {log.country}
+                            {log.city && log.city !== '不明' && (
+                              <div className="text-xs text-gray-500">{log.city}</div>
+                            )}
                           </TableCell>
                           <TableCell className="font-mono text-sm max-w-xs truncate">
-                            {log.page_url.replace(window.location.origin, '')}
+                            {cleanPageUrl(log.page_url).replace(window.location.origin, '') || '/'}
                           </TableCell>
                           <TableCell className="font-mono text-sm max-w-xs truncate">
                             {log.referrer || '-'}

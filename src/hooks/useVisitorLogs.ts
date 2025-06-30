@@ -31,7 +31,7 @@ export const useVisitorLogs = () => {
         console.log('パースされたログ数:', parsedLogs.length);
         console.log('パースされたログの最初の3件:', parsedLogs.slice(0, 3));
         
-        // 最新のものから最大1000件まで表示（日付フィルタリングを削除）
+        // 最新のものから最大1000件まで表示
         const finalLogs = parsedLogs.slice(0, 1000);
         console.log('最終的なログ数:', finalLogs.length);
         setLogs(finalLogs);
@@ -50,7 +50,7 @@ export const useVisitorLogs = () => {
     }
   };
 
-  // 重複ログチェックを緩和（同じページへの1分以内のアクセスのみスキップ）
+  // 重複ログチェック（同じページへの1分以内のアクセスのみスキップ）
   const shouldSkipLogging = (newLog: Omit<VisitorLog, 'id'>) => {
     const existingLogs = localStorage.getItem(VISITOR_LOGS_KEY);
     if (!existingLogs) return false;
@@ -84,7 +84,7 @@ export const useVisitorLogs = () => {
     console.log('Getting location info...');
     
     try {
-      // まずipapi.coを試す
+      // ipapi.coから位置情報を取得
       try {
         console.log('Trying ipapi.co...');
         const response = await fetch('https://ipapi.co/json/', {
@@ -99,10 +99,20 @@ export const useVisitorLogs = () => {
           console.log('ipapi.co response:', data);
           
           if (data.ip) {
+            // 日本の場合は都道府県情報を使用、その他は国名
+            let displayCountry = data.country_name || data.country || '不明';
+            let displayCity = data.city || data.region || '不明';
+            
+            // 日本の場合は都道府県を優先
+            if (data.country_code === 'JP') {
+              displayCountry = data.region || data.city || '日本';
+              displayCity = data.city || '不明';
+            }
+            
             return {
               ip: data.ip,
-              country: data.country_name || data.country || '不明',
-              city: data.city || data.region || '不明'
+              country: displayCountry,
+              city: displayCity
             };
           }
         }
@@ -110,15 +120,15 @@ export const useVisitorLogs = () => {
         console.log('ipapi.co failed:', err);
       }
 
-      // フォールバック：時刻ベースのモックデータ
+      // フォールバック：地域を考慮したモックデータ
       console.log('Using fallback mock data');
       const mockIp = `192.168.1.${Math.floor(Math.random() * 254) + 1}`;
-      const mockCountries = ['日本', 'アメリカ', '中国', '韓国', 'イギリス'];
-      const mockCities = ['東京', '大阪', '名古屋', 'ニューヨーク', 'ロンドン'];
+      const mockPrefectures = ['東京都', '大阪府', '愛知県', '神奈川県', '埼玉県', '千葉県', '兵庫県', '福岡県'];
+      const mockCities = ['新宿区', '渋谷区', '中央区', '大阪市', '名古屋市', '横浜市', '神戸市', '福岡市'];
       
       return {
         ip: mockIp,
-        country: mockCountries[Math.floor(Math.random() * mockCountries.length)],
+        country: mockPrefectures[Math.floor(Math.random() * mockPrefectures.length)],
         city: mockCities[Math.floor(Math.random() * mockCities.length)]
       };
       
@@ -126,9 +136,21 @@ export const useVisitorLogs = () => {
       console.error('Location info error:', error);
       return {
         ip: `フォールバック-${Date.now()}`,
-        country: '日本',
-        city: '東京'
+        country: '東京都',
+        city: '新宿区'
       };
+    }
+  };
+
+  // URLをクリーンアップする関数
+  const cleanPageUrl = (url: string) => {
+    try {
+      const urlObj = new URL(url);
+      // クエリパラメータを除去
+      return urlObj.origin + urlObj.pathname;
+    } catch {
+      // URLの解析に失敗した場合はそのまま返す
+      return url;
     }
   };
 
@@ -139,10 +161,13 @@ export const useVisitorLogs = () => {
       const locationInfo = await getLocationInfo();
       console.log('Location info obtained:', locationInfo);
       
+      // URLをクリーンアップ
+      const cleanUrl = cleanPageUrl(pageUrl);
+      
       const newLogData = {
         ip_address: locationInfo.ip,
         user_agent: navigator.userAgent,
-        page_url: pageUrl,
+        page_url: cleanUrl,
         referrer: referrer || document.referrer || '',
         country: locationInfo.country,
         city: locationInfo.city,
@@ -190,8 +215,10 @@ export const useVisitorLogs = () => {
     console.log('=== generateTestLogs開始 ===');
     const testLogs: VisitorLog[] = [];
     const pages = ['/', '/ai-tools', '/ai-glossary', '/faq', '/plans/safety-net'];
-    const countries = ['日本', 'アメリカ', '中国', '韓国', 'イギリス'];
-    const cities = ['東京', '大阪', '名古屋', 'ニューヨーク', 'ロンドン', 'ソウル', '北京', 'ロンドン'];
+    const japanPrefectures = ['東京都', '大阪府', '愛知県', '神奈川県', '埼玉県', '千葉県', '兵庫県', '福岡県', '北海道', '宮城県'];
+    const cities = ['新宿区', '渋谷区', '中央区', '大阪市', '名古屋市', '横浜市', '川崎市', '神戸市', '福岡市', '札幌市'];
+    const foreignCountries = ['アメリカ', '中国', '韓国', 'イギリス', 'ドイツ'];
+    const foreignCities = ['ニューヨーク', '北京', 'ソウル', 'ロンドン', 'ベルリン'];
     const ips = ['192.168.1.100', '10.0.0.50', '172.16.0.25', '203.104.209.102', '8.8.8.8'];
 
     // 過去30日分のテストデータを生成
@@ -205,14 +232,26 @@ export const useVisitorLogs = () => {
       visitDate.setHours(visitDate.getHours() - hoursAgo);
       visitDate.setMinutes(visitDate.getMinutes() - minutesAgo);
 
+      // 70%の確率で日本、30%の確率で海外
+      const isJapan = Math.random() < 0.7;
+      let country, city;
+      
+      if (isJapan) {
+        country = japanPrefectures[Math.floor(Math.random() * japanPrefectures.length)];
+        city = cities[Math.floor(Math.random() * cities.length)];
+      } else {
+        country = foreignCountries[Math.floor(Math.random() * foreignCountries.length)];
+        city = foreignCities[Math.floor(Math.random() * foreignCities.length)];
+      }
+
       const testLog: VisitorLog = {
         id: `test-log-${Date.now()}-${i}`,
         ip_address: ips[Math.floor(Math.random() * ips.length)],
         user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
         page_url: window.location.origin + pages[Math.floor(Math.random() * pages.length)],
         referrer: Math.random() > 0.5 ? 'https://google.com' : '',
-        country: countries[Math.floor(Math.random() * countries.length)],
-        city: cities[Math.floor(Math.random() * cities.length)],
+        country: country,
+        city: city,
         visited_at: visitDate.toISOString()
       };
       
@@ -256,12 +295,13 @@ export const useVisitorLogs = () => {
     return uniqueIPs.size;
   };
 
-  // 地域別統計を取得
+  // 地域別統計を取得（改善版）
   const getLocationStats = () => {
     console.log('=== getLocationStats開始 ===');
     const locationCounts: { [key: string]: number } = {};
     logs.forEach(log => {
-      const location = log.country === '日本' ? `${log.country} ${log.city}` : log.country;
+      // 地域表示を改善：日本の都道府県はそのまま、海外は国名
+      const location = log.country;
       locationCounts[location] = (locationCounts[location] || 0) + 1;
     });
     
@@ -274,12 +314,14 @@ export const useVisitorLogs = () => {
     return result;
   };
 
-  // ページ別統計を取得
+  // ページ別統計を取得（改善版）
   const getPageStats = () => {
     console.log('=== getPageStats開始 ===');
     const pageCounts: { [key: string]: number } = {};
     logs.forEach(log => {
-      const page = log.page_url.replace(window.location.origin, '') || '/';
+      // URLからパスのみを抽出（クエリパラメータを除去）
+      const cleanUrl = cleanPageUrl(log.page_url);
+      const page = cleanUrl.replace(window.location.origin, '') || '/';
       pageCounts[page] = (pageCounts[page] || 0) + 1;
     });
     
@@ -320,6 +362,7 @@ export const useVisitorLogs = () => {
     getDateRangeInfo,
     getUniqueVisitors,
     getLocationStats,
-    getPageStats
+    getPageStats,
+    cleanPageUrl
   };
 };
