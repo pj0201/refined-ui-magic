@@ -18,6 +18,7 @@ const AdminDashboard = () => {
     fetchLogs, 
     logVisit,
     removeOnlyMockData,
+    generateRealSampleData,
     getDateRangeInfo,
     getUniqueVisitors,
     getLocationStats,
@@ -92,6 +93,13 @@ const AdminDashboard = () => {
     }
   };
 
+  const handleGenerateRealData = () => {
+    if (window.confirm('過去30日分の実データサンプルを生成しますか？')) {
+      generateRealSampleData();
+      toast.success("過去のデータサンプルを生成しました！");
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -114,6 +122,10 @@ const AdminDashboard = () => {
               <span className="text-sm text-gray-600">
                 ようこそ、{adminUser?.username}さん
               </span>
+              <Button onClick={handleGenerateRealData} size="sm" className="bg-green-500 hover:bg-green-600 text-white">
+                <TestTube className="h-4 w-4 mr-2" />
+                過去データ復活
+              </Button>
               <Button onClick={handleRemoveMockData} size="sm" className="bg-red-500 hover:bg-red-600 text-white">
                 <TestTube className="h-4 w-4 mr-2" />
                 モックデータ削除
