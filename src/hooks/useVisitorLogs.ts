@@ -209,74 +209,50 @@ export const useVisitorLogs = () => {
     }
   };
 
-  // テスト用のサンプルデータを生成する関数
-  const generateTestLogs = () => {
-    console.log('=== generateTestLogs開始 ===');
-    const testLogs: VisitorLog[] = [];
-    const pages = ['/', '/ai-tools', '/ai-glossary', '/faq', '/plans/safety-net'];
-    const japanPrefectures = ['東京都', '大阪府', '愛知県', '神奈川県', '埼玉県', '千葉県', '兵庫県', '福岡県', '北海道', '宮城県'];
-    const cities = ['新宿区', '渋谷区', '中央区', '大阪市', '名古屋市', '横浜市', '川崎市', '神戸市', '福岡市', '札幌市'];
-    const foreignCountries = ['アメリカ', '中国', '韓国', 'イギリス', 'ドイツ'];
-    const foreignCities = ['ニューヨーク', '北京', 'ソウル', 'ロンドン', 'ベルリン'];
-    const ips = ['192.168.1.100', '10.0.0.50', '172.16.0.25', '203.104.209.102', '8.8.8.8'];
+  // ログデータをクリアする関数
+  const clearAllLogs = () => {
+    localStorage.removeItem(VISITOR_LOGS_KEY);
+    setLogs([]);
+    console.log('全ログデータをクリアしました');
+  };
 
-    // 過去30日分のテストデータを生成
-    for (let i = 0; i < 50; i++) {
-      const daysAgo = Math.floor(Math.random() * 30);
-      const hoursAgo = Math.floor(Math.random() * 24);
-      const minutesAgo = Math.floor(Math.random() * 60);
-      
-      const visitDate = new Date();
-      visitDate.setDate(visitDate.getDate() - daysAgo);
-      visitDate.setHours(visitDate.getHours() - hoursAgo);
-      visitDate.setMinutes(visitDate.getMinutes() - minutesAgo);
-
-      // 70%の確率で日本、30%の確率で海外
-      const isJapan = Math.random() < 0.7;
-      let country, city;
-      
-      if (isJapan) {
-        country = japanPrefectures[Math.floor(Math.random() * japanPrefectures.length)];
-        city = cities[Math.floor(Math.random() * cities.length)];
-      } else {
-        country = foreignCountries[Math.floor(Math.random() * foreignCountries.length)];
-        city = foreignCities[Math.floor(Math.random() * foreignCities.length)];
-      }
-
-      const testLog: VisitorLog = {
-        id: `test-log-${Date.now()}-${i}`,
-        ip_address: ips[Math.floor(Math.random() * ips.length)],
-        user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-        page_url: window.location.origin + pages[Math.floor(Math.random() * pages.length)],
-        referrer: Math.random() > 0.5 ? 'https://google.com' : '',
-        country: country,
-        city: city,
-        visited_at: visitDate.toISOString()
-      };
-      
-      testLogs.push(testLog);
-    }
-
+  // 古いテストログを削除する関数
+  const cleanupTestLogs = () => {
     const existingLogs = localStorage.getItem(VISITOR_LOGS_KEY);
-    const allLogs = existingLogs ? JSON.parse(existingLogs) : [];
+    if (!existingLogs) return;
     
-    // テストログを追加
-    allLogs.unshift(...testLogs);
-    
-    // 重複を除去（IP+ページ+時刻の組み合わせで）
-    const uniqueLogs = allLogs.filter((log: VisitorLog, index: number, arr: VisitorLog[]) => {
-      return index === arr.findIndex(l => 
-        l.ip_address === log.ip_address && 
-        l.page_url === log.page_url && 
-        Math.abs(new Date(l.visited_at).getTime() - new Date(log.visited_at).getTime()) < 60000
-      );
-    });
-    
-    localStorage.setItem(VISITOR_LOGS_KEY, JSON.stringify(uniqueLogs));
-    console.log('テストログ生成完了:', uniqueLogs.length, '件');
-    console.log('=== generateTestLogs完了 ===');
-    
-    fetchLogs();
+    try {
+      const logs = JSON.parse(existingLogs);
+      // test-logから始まるIDや明らかに異常な古い日付のログを除去
+      const cleanedLogs = logs.filter((log: VisitorLog) => {
+        const logDate = new Date(log.visited_at);
+        const now = new Date();
+        const daysDiff = (now.getTime() - logDate.getTime()) / (1000 * 60 * 60 * 24);
+        
+        // test-logから始まるIDは削除
+        if (log.id.startsWith('test-log')) {
+          return false;
+        }
+        
+        // 30日以上古いログは削除
+        if (daysDiff > 30) {
+          return false;
+        }
+        
+        // 明らかに異常なIPアドレスを削除
+        if (log.ip_address === '123.223.213.177' || log.ip_address === '192.168.1.100' || log.ip_address === '10.0.0.50') {
+          return false;
+        }
+        
+        return true;
+      });
+      
+      localStorage.setItem(VISITOR_LOGS_KEY, JSON.stringify(cleanedLogs));
+      console.log(`クリーンアップ完了: ${logs.length}件 → ${cleanedLogs.length}件`);
+      fetchLogs();
+    } catch (error) {
+      console.error('クリーンアップ中にエラー:', error);
+    }
   };
 
   useEffect(() => {
@@ -368,7 +344,8 @@ export const useVisitorLogs = () => {
     error,
     fetchLogs,
     logVisit,
-    generateTestLogs,
+    clearAllLogs,
+    cleanupTestLogs,
     getDateRangeInfo,
     getUniqueVisitors,
     getLocationStats,

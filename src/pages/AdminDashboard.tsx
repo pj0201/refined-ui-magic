@@ -17,7 +17,8 @@ const AdminDashboard = () => {
     isLoading: logsLoading, 
     fetchLogs, 
     logVisit,
-    generateTestLogs,
+    clearAllLogs,
+    cleanupTestLogs,
     getDateRangeInfo,
     getUniqueVisitors,
     getLocationStats,
@@ -85,10 +86,16 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleGenerateTestLogs = () => {
-    console.log('テストログ生成ボタンがクリックされました');
-    generateTestLogs();
-    toast.success("テストログを生成しました！");
+  const handleClearLogs = () => {
+    if (window.confirm('全てのログデータを削除しますか？この操作は取り消せません。')) {
+      clearAllLogs();
+      toast.success("全ログデータを削除しました！");
+    }
+  };
+
+  const handleCleanupLogs = () => {
+    cleanupTestLogs();
+    toast.success("テストログと古いデータをクリーンアップしました！");
   };
 
   if (isLoading) {
@@ -113,9 +120,13 @@ const AdminDashboard = () => {
               <span className="text-sm text-gray-600">
                 ようこそ、{adminUser?.username}さん
               </span>
-              <Button onClick={handleGenerateTestLogs} size="sm" className="bg-purple-500 hover:bg-purple-600 text-white">
+              <Button onClick={handleCleanupLogs} size="sm" className="bg-blue-500 hover:bg-blue-600 text-white">
                 <TestTube className="h-4 w-4 mr-2" />
-                テストログ生成
+                ログクリーンアップ
+              </Button>
+              <Button onClick={handleClearLogs} size="sm" variant="destructive">
+                <Database className="h-4 w-4 mr-2" />
+                全ログ削除
               </Button>
               <Button onClick={handleSeedData} size="sm" className="bg-orange-500 hover:bg-orange-600 text-white">
                 <Database className="h-4 w-4 mr-2" />
@@ -258,10 +269,9 @@ const AdminDashboard = () => {
               ) : logs.length === 0 ? (
                 <div className="text-center py-4">
                   <div className="text-gray-500 mb-4">ログデータがありません</div>
-                  <Button onClick={handleGenerateTestLogs} className="bg-purple-500 hover:bg-purple-600 text-white">
-                    <TestTube className="h-4 w-4 mr-2" />
-                    テストログを生成
-                  </Button>
+                  <div className="text-xs text-gray-400">
+                    サイトの各ページにアクセスすると、自動的にログが記録されます
+                  </div>
                 </div>
               ) : (
                 <div className="overflow-x-auto">
