@@ -209,53 +209,6 @@ export const useVisitorLogs = () => {
     }
   };
 
-  // 実データサンプルを生成する関数
-  const generateRealSampleData = () => {
-    const sampleLogs: VisitorLog[] = [];
-    const realPages = ['/', '/ai-tools', '/ai-support', '/plans/safety-net', '/plans/keieisha-hosho', '/ai-glossary', '/faq'];
-    const realCities = ['東京都', '大阪府', '愛知県', '神奈川県', '兵庫県', '福岡県', '埼玉県', '千葉県'];
-    const realSubCities = ['新宿区', '渋谷区', '中央区', '大阪市', '名古屋市', '横浜市', '川崎市', '神戸市', '福岡市', 'さいたま市', '千葉市'];
-    
-    // 過去30日間のデータを生成
-    for (let i = 30; i >= 1; i--) {
-      const baseDate = new Date();
-      baseDate.setDate(baseDate.getDate() - i);
-      
-      // 1日に1-5回のアクセス
-      const accessCount = Math.floor(Math.random() * 5) + 1;
-      for (let j = 0; j < accessCount; j++) {
-        const logDate = new Date(baseDate);
-        logDate.setHours(Math.floor(Math.random() * 24), Math.floor(Math.random() * 60));
-        
-        const log: VisitorLog = {
-          id: `real-log-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-          ip_address: `2400:4153:8043:400:${Math.floor(Math.random() * 65536).toString(16)}:${Math.floor(Math.random() * 65536).toString(16)}:${Math.floor(Math.random() * 65536).toString(16)}:${Math.floor(Math.random() * 65536).toString(16)}`,
-          user_agent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36',
-          page_url: `${window.location.origin}${realPages[Math.floor(Math.random() * realPages.length)]}`,
-          referrer: Math.random() > 0.5 ? 'https://google.com/' : '',
-          country: realCities[Math.floor(Math.random() * realCities.length)],
-          city: realSubCities[Math.floor(Math.random() * realSubCities.length)],
-          visited_at: logDate.toISOString()
-        };
-        
-        sampleLogs.push(log);
-      }
-    }
-    
-    // 最新順にソート
-    sampleLogs.sort((a, b) => new Date(b.visited_at).getTime() - new Date(a.visited_at).getTime());
-    
-    // 既存のログに追加
-    const existingLogs = localStorage.getItem(VISITOR_LOGS_KEY);
-    const currentLogs = existingLogs ? JSON.parse(existingLogs) : [];
-    
-    // 重複を避けるため、既存のログと合わせて保存
-    const allLogs = [...currentLogs, ...sampleLogs].slice(0, 1000);
-    localStorage.setItem(VISITOR_LOGS_KEY, JSON.stringify(allLogs));
-    
-    console.log(`実データサンプル ${sampleLogs.length}件を生成しました`);
-    fetchLogs();
-  };
 
   // モックデータのみを削除する関数
   const removeOnlyMockData = () => {
@@ -410,7 +363,6 @@ export const useVisitorLogs = () => {
     fetchLogs,
     logVisit,
     removeOnlyMockData,
-    generateRealSampleData,
     getDateRangeInfo,
     getUniqueVisitors,
     getLocationStats,
