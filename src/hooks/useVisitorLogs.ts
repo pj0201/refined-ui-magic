@@ -209,49 +209,66 @@ export const useVisitorLogs = () => {
     }
   };
 
-  // ログデータをクリアする関数
-  const clearAllLogs = () => {
-    localStorage.removeItem(VISITOR_LOGS_KEY);
-    setLogs([]);
-    console.log('全ログデータをクリアしました');
-  };
-
-  // 古いテストログを削除する関数
-  const cleanupTestLogs = () => {
+  // モックデータのみを削除する関数
+  const removeOnlyMockData = () => {
     const existingLogs = localStorage.getItem(VISITOR_LOGS_KEY);
     if (!existingLogs) return;
     
     try {
       const logs = JSON.parse(existingLogs);
-      // test-logから始まるIDや明らかに異常な古い日付のログを除去
-      const cleanedLogs = logs.filter((log: VisitorLog) => {
-        const logDate = new Date(log.visited_at);
-        const now = new Date();
-        const daysDiff = (now.getTime() - logDate.getTime()) / (1000 * 60 * 60 * 24);
-        
+      console.log('=== モックデータ削除開始 ===');
+      console.log('処理前のログ数:', logs.length);
+      
+      // モックデータのみを特定して削除
+      const realLogs = logs.filter((log: VisitorLog) => {
         // test-logから始まるIDは削除
         if (log.id.startsWith('test-log')) {
-          return false;
-        }
-        
-        // 30日以上古いログは削除
-        if (daysDiff > 30) {
+          console.log('テストログを削除:', log.id);
           return false;
         }
         
         // 明らかに異常なIPアドレスを削除
-        if (log.ip_address === '123.223.213.177' || log.ip_address === '192.168.1.100' || log.ip_address === '10.0.0.50') {
+        const mockIPs = [
+          '123.223.213.177',
+          '192.168.1.100',
+          '10.0.0.50',
+          '192.168.1.1',
+          '10.0.0.1'
+        ];
+        
+        if (mockIPs.includes(log.ip_address)) {
+          console.log('モックIPを削除:', log.ip_address);
+          return false;
+        }
+        
+        // 「ローカル-」で始まるIPアドレスを削除
+        if (log.ip_address.startsWith('ローカル-')) {
+          console.log('ローカルIPを削除:', log.ip_address);
+          return false;
+        }
+        
+        // 「フォールバック-」で始まるIPアドレスを削除
+        if (log.ip_address.startsWith('フォールバック-')) {
+          console.log('フォールバックIPを削除:', log.ip_address);
+          return false;
+        }
+        
+        // 明らかに古すぎるテストデータ（2024年6月以前）を削除
+        const logDate = new Date(log.visited_at);
+        if (logDate < new Date('2024-06-01')) {
+          console.log('古いテストデータを削除:', log.visited_at);
           return false;
         }
         
         return true;
       });
       
-      localStorage.setItem(VISITOR_LOGS_KEY, JSON.stringify(cleanedLogs));
-      console.log(`クリーンアップ完了: ${logs.length}件 → ${cleanedLogs.length}件`);
+      localStorage.setItem(VISITOR_LOGS_KEY, JSON.stringify(realLogs));
+      console.log(`モックデータ削除完了: ${logs.length}件 → ${realLogs.length}件`);
+      console.log('=== モックデータ削除完了 ===');
       fetchLogs();
     } catch (error) {
-      console.error('クリーンアップ中にエラー:', error);
+      console.error('モックデータ削除中にエラー:', error);
     }
   };
 
@@ -344,8 +361,7 @@ export const useVisitorLogs = () => {
     error,
     fetchLogs,
     logVisit,
-    clearAllLogs,
-    cleanupTestLogs,
+    removeOnlyMockData,
     getDateRangeInfo,
     getUniqueVisitors,
     getLocationStats,

@@ -17,8 +17,7 @@ const AdminDashboard = () => {
     isLoading: logsLoading, 
     fetchLogs, 
     logVisit,
-    clearAllLogs,
-    cleanupTestLogs,
+    removeOnlyMockData,
     getDateRangeInfo,
     getUniqueVisitors,
     getLocationStats,
@@ -86,16 +85,11 @@ const AdminDashboard = () => {
     }
   };
 
-  const handleClearLogs = () => {
-    if (window.confirm('全てのログデータを削除しますか？この操作は取り消せません。')) {
-      clearAllLogs();
-      toast.success("全ログデータを削除しました！");
+  const handleRemoveMockData = () => {
+    if (window.confirm('モックデータのみを削除しますか？実際の訪問ログは保持されます。')) {
+      removeOnlyMockData();
+      toast.success("モックデータを削除しました！");
     }
-  };
-
-  const handleCleanupLogs = () => {
-    cleanupTestLogs();
-    toast.success("テストログと古いデータをクリーンアップしました！");
   };
 
   if (isLoading) {
@@ -120,13 +114,9 @@ const AdminDashboard = () => {
               <span className="text-sm text-gray-600">
                 ようこそ、{adminUser?.username}さん
               </span>
-              <Button onClick={handleCleanupLogs} size="sm" className="bg-blue-500 hover:bg-blue-600 text-white">
+              <Button onClick={handleRemoveMockData} size="sm" className="bg-red-500 hover:bg-red-600 text-white">
                 <TestTube className="h-4 w-4 mr-2" />
-                ログクリーンアップ
-              </Button>
-              <Button onClick={handleClearLogs} size="sm" variant="destructive">
-                <Database className="h-4 w-4 mr-2" />
-                全ログ削除
+                モックデータ削除
               </Button>
               <Button onClick={handleSeedData} size="sm" className="bg-orange-500 hover:bg-orange-600 text-white">
                 <Database className="h-4 w-4 mr-2" />
