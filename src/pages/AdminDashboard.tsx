@@ -17,7 +17,8 @@ const AdminDashboard = () => {
     isLoading: logsLoading, 
     fetchLogs, 
     logVisit,
-    removeOnlyMockData,
+    removeAllMockData,
+    clearAllLogs,
     getDateRangeInfo,
     getUniqueVisitors,
     getLocationStats,
@@ -86,9 +87,16 @@ const AdminDashboard = () => {
   };
 
   const handleRemoveMockData = () => {
-    if (window.confirm('モックデータのみを削除しますか？実際の訪問ログは保持されます。')) {
-      removeOnlyMockData();
+    if (window.confirm('全てのモックデータを削除しますか？')) {
+      removeAllMockData();
       toast.success("モックデータを削除しました！");
+    }
+  };
+
+  const handleClearAllLogs = () => {
+    if (window.confirm('全てのログを削除しますか？この操作は取り消せません。')) {
+      clearAllLogs();
+      toast.success("全てのログを削除しました！");
     }
   };
 
@@ -118,6 +126,9 @@ const AdminDashboard = () => {
               <Button onClick={handleRemoveMockData} size="sm" className="bg-red-500 hover:bg-red-600 text-white">
                 <TestTube className="h-4 w-4 mr-2" />
                 モックデータ削除
+              </Button>
+              <Button onClick={handleClearAllLogs} size="sm" className="bg-red-700 hover:bg-red-800 text-white">
+                全ログ削除
               </Button>
               <Button onClick={handleSeedData} size="sm" className="bg-orange-500 hover:bg-orange-600 text-white">
                 <Database className="h-4 w-4 mr-2" />

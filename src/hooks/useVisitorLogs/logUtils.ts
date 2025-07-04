@@ -43,8 +43,14 @@ export const shouldSkipLogging = (newLog: Omit<VisitorLog, 'id'>): boolean => {
   return false;
 };
 
-// モックデータのみを削除する関数
-export const removeOnlyMockData = (): void => {
+// 全てのログを削除する関数
+export const clearAllLogs = (): void => {
+  localStorage.removeItem(VISITOR_LOGS_KEY);
+  console.log('全てのログを削除しました');
+};
+
+// より厳格なモックデータ削除関数
+export const removeAllMockData = (): void => {
   const existingLogs = localStorage.getItem(VISITOR_LOGS_KEY);
   if (!existingLogs) return;
   
@@ -53,25 +59,28 @@ export const removeOnlyMockData = (): void => {
     console.log('=== モックデータ削除開始 ===');
     console.log('処理前のログ数:', logs.length);
     
-    // モックデータのみを特定して削除
+    // 実際のログのみを残す（非常に厳格な基準）
     const realLogs = logs.filter((log: VisitorLog) => {
-      // test-logから始まるIDは削除
-      if (log.id.startsWith('test-log')) {
+      // テスト関連のIDを削除
+      if (log.id.startsWith('test-') || log.id.startsWith('mock-') || log.id.startsWith('demo-')) {
         console.log('テストログを削除:', log.id);
         return false;
       }
       
-      // 192.168.1.xxxのプライベートIPアドレスを削除
-      if (log.ip_address.startsWith('192.168.1.')) {
+      // プライベートIPアドレスを全て削除
+      if (log.ip_address.startsWith('192.168.') || 
+          log.ip_address.startsWith('10.') || 
+          log.ip_address.startsWith('172.')) {
         console.log('プライベートIPを削除:', log.ip_address);
         return false;
       }
       
-      // その他の明らかに異常なIPアドレスを削除
+      // 明らかにモックっぽいIPを削除
       const mockIPs = [
         '123.223.213.177',
-        '10.0.0.50',
-        '10.0.0.1'
+        '123.456.789.123',
+        '111.111.111.111',
+        '222.222.222.222'
       ];
       
       if (mockIPs.includes(log.ip_address)) {
@@ -79,21 +88,28 @@ export const removeOnlyMockData = (): void => {
         return false;
       }
       
-      // 「ローカル-」で始まるIPアドレスを削除
-      if (log.ip_address.startsWith('ローカル-')) {
-        console.log('ローカルIPを削除:', log.ip_address);
+      // 日本語のプレフィックスがあるIPを削除
+      if (log.ip_address.includes('ローカル') || 
+          log.ip_address.includes('フォールバック') ||
+          log.ip_address.includes('テスト')) {
+        console.log('日本語プレフィックスIPを削除:', log.ip_address);
         return false;
       }
       
-      // 「フォールバック-」で始まるIPアドレスを削除
-      if (log.ip_address.startsWith('フォールバック-')) {
-        console.log('フォールバックIPを削除:', log.ip_address);
+      // 短時間に全国からアクセスが来ている場合は怪しいので、
+      // 1日以内に10件以上の異なる都道府県からのアクセスがある場合は全て削除
+      const oneDayAgo = Date.now() - (24 * 60 * 60 * 1000);
+      const recentLogs = logs.filter((l: VisitorLog) => new Date(l.visited_at).getTime() > oneDayAgo);
+      const uniqueCountries = new Set(recentLogs.map((l: VisitorLog) => l.country));
+      
+      if (uniqueCountries.size > 10) {
+        console.log('短時間での多地域アクセスを検出、全てをモックと判定');
         return false;
       }
       
-      // 明らかに古すぎるテストデータ（2024年6月以前）を削除
+      // 2025年7月4日以前のデータは削除（今日より前のテストデータ）
       const logDate = new Date(log.visited_at);
-      if (logDate < new Date('2024-06-01')) {
+      if (logDate < new Date('2025-07-04')) {
         console.log('古いテストデータを削除:', log.visited_at);
         return false;
       }

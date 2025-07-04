@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import type { VisitorLog } from './types';
 import { VISITOR_LOGS_KEY } from './constants';
 import { getLocationInfo } from './locationService';
-import { cleanPageUrl, shouldSkipLogging, removeOnlyMockData } from './logUtils';
+import { cleanPageUrl, shouldSkipLogging, removeAllMockData, clearAllLogs } from './logUtils';
 import { getUniqueVisitors, getLocationStats, getPageStats, getDateRangeInfo } from './statisticsUtils';
 
 export const useVisitorLogs = () => {
@@ -103,8 +103,13 @@ export const useVisitorLogs = () => {
     }
   };
 
-  const handleRemoveOnlyMockData = () => {
-    removeOnlyMockData();
+  const handleRemoveAllMockData = () => {
+    removeAllMockData();
+    fetchLogs();
+  };
+
+  const handleClearAllLogs = () => {
+    clearAllLogs();
     fetchLogs();
   };
 
@@ -118,7 +123,8 @@ export const useVisitorLogs = () => {
     error,
     fetchLogs,
     logVisit,
-    removeOnlyMockData: handleRemoveOnlyMockData,
+    removeAllMockData: handleRemoveAllMockData,
+    clearAllLogs: handleClearAllLogs,
     getDateRangeInfo: () => getDateRangeInfo(logs),
     getUniqueVisitors: () => getUniqueVisitors(logs),
     getLocationStats: () => getLocationStats(logs),
