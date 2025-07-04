@@ -119,25 +119,13 @@ export const useVisitorLogs = () => {
         console.log('ipapi.co failed:', err);
       }
 
-      // フォールバック：地域を考慮したモックデータ
-      console.log('Using fallback mock data');
-      const mockIp = `192.168.1.${Math.floor(Math.random() * 254) + 1}`;
-      const mockPrefectures = ['東京都', '大阪府', '愛知県', '神奈川県', '埼玉県', '千葉県', '兵庫県', '福岡県'];
-      const mockCities = ['新宿区', '渋谷区', '中央区', '大阪市', '名古屋市', '横浜市', '川崎市', '神戸市', '福岡市', '札幌市'];
-      
-      return {
-        ip: mockIp,
-        country: mockPrefectures[Math.floor(Math.random() * mockPrefectures.length)],
-        city: mockCities[Math.floor(Math.random() * mockCities.length)]
-      };
+      // 位置情報取得に失敗した場合は記録しない
+      console.log('位置情報の取得に失敗したため、ログ記録をスキップします');
+      return null;
       
     } catch (error) {
       console.error('Location info error:', error);
-      return {
-        ip: `フォールバック-${Date.now()}`,
-        country: '東京都',
-        city: '新宿区'
-      };
+      return null;
     }
   };
 
@@ -159,6 +147,12 @@ export const useVisitorLogs = () => {
       
       const locationInfo = await getLocationInfo();
       console.log('Location info obtained:', locationInfo);
+      
+      // 位置情報が取得できない場合はログ記録をスキップ
+      if (!locationInfo) {
+        console.log('位置情報が取得できないため、ログ記録をスキップします');
+        return;
+      }
       
       // URLをクリーンアップ
       const cleanUrl = cleanPageUrl(pageUrl);
@@ -228,12 +222,16 @@ export const useVisitorLogs = () => {
           return false;
         }
         
-        // 明らかに異常なIPアドレスを削除
+        // 192.168.1.xxxのプライベートIPアドレスを削除
+        if (log.ip_address.startsWith('192.168.1.')) {
+          console.log('プライベートIPを削除:', log.ip_address);
+          return false;
+        }
+        
+        // その他の明らかに異常なIPアドレスを削除
         const mockIPs = [
           '123.223.213.177',
-          '192.168.1.100',
           '10.0.0.50',
-          '192.168.1.1',
           '10.0.0.1'
         ];
         
