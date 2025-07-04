@@ -1,0 +1,1 @@
+export const VISITOR_LOGS_KEY = 'visitor_logs';
