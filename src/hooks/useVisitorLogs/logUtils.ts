@@ -13,6 +13,33 @@ export const cleanPageUrl = (url: string): string => {
   }
 };
 
+// 疑わしいIPアドレスかどうかをチェック
+export const isIpSuspicious = (ip: string): boolean => {
+  // プライベートIPアドレス
+  if (ip.startsWith('192.168.') || ip.startsWith('10.') || ip.startsWith('172.')) {
+    return true;
+  }
+  
+  // 明らかにモックっぽいIP
+  const mockIPs = [
+    '123.223.213.177',
+    '123.456.789.123', 
+    '111.111.111.111',
+    '222.222.222.222'
+  ];
+  
+  if (mockIPs.includes(ip)) {
+    return true;
+  }
+  
+  // 日本語のプレフィックスがあるIP
+  if (ip.includes('ローカル') || ip.includes('フォールバック') || ip.includes('テスト')) {
+    return true;
+  }
+  
+  return false;
+};
+
 // 重複ログチェック（同じページへの1分以内のアクセスのみスキップ）
 export const shouldSkipLogging = (newLog: Omit<VisitorLog, 'id'>): boolean => {
   const existingLogs = localStorage.getItem(VISITOR_LOGS_KEY);

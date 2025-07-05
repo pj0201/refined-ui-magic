@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import type { VisitorLog } from './types';
 import { VISITOR_LOGS_KEY } from './constants';
 import { getLocationInfo } from './locationService';
-import { cleanPageUrl, shouldSkipLogging, removeAllMockData, clearAllLogs } from './logUtils';
+import { cleanPageUrl, shouldSkipLogging, removeAllMockData, clearAllLogs, isIpSuspicious } from './logUtils';
 import { getUniqueVisitors, getLocationStats, getPageStats, getDateRangeInfo } from './statisticsUtils';
 
 export const useVisitorLogs = () => {
@@ -51,6 +51,12 @@ export const useVisitorLogs = () => {
       // 位置情報が取得できない場合はログ記録をスキップ
       if (!locationInfo) {
         console.log('位置情報が取得できないため、ログ記録をスキップします');
+        return;
+      }
+      
+      // 疑わしいIPアドレスは記録しない
+      if (isIpSuspicious(locationInfo.ip)) {
+        console.log('疑わしいIPアドレスのため、ログ記録をスキップします:', locationInfo.ip);
         return;
       }
       
