@@ -1,3 +1,4 @@
+
 RewriteEngine On
 
 # すべての *.lovable.app アクセスを https://planjoy.net にリダイレクト
@@ -15,24 +16,22 @@ RewriteCond %{HTTP_HOST} ^planjoy\.net$ [NC]
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://planjoy.net/$1 [R=301,L]
 
-# ------- 以下、もともとのアプリやWP用・キャッシュ関連の設定 --------
+# ----------- React SPA用の設定 -----------
+# 静的ファイル（JS、CSS、画像など）は直接配信
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [NC,L]
 
+# 存在しないパスはindex.htmlにリダイレクト（React Routerのため）
+RewriteRule ^.*$ /index.html [NC,L]
+
+# ----------- キャッシュ設定 -----------
 SetEnvIf Request_URI ".*" Ngx_Cache_NoCacheMode=off
 SetEnvIf Request_URI ".*" Ngx_Cache_AllCacheMode
 
-# BEGIN WordPress
-# "BEGIN WordPress" から "END WordPress" までのディレクティブ (行) は
-# 動的に生成され、WordPress フィルターによってのみ修正が可能です。
-# これらのマーカー間にあるディレクティブへのいかなる変更も上書きされてしまいます。
-<IfModule mod_rewrite.c>
-RewriteEngine On
-RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-RewriteBase /
-RewriteRule ^index\.php$ - [L]
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /index.php [L]
-</IfModule>
+# ----------- WordPressの設定（無効化） -----------
+# BEGIN WordPress - DISABLED for React App
+# WordPressの設定は無効化されています
 # END WordPress
 
 ### BEGIN XPageSpeed - Do not edit the contents of this block! ###
