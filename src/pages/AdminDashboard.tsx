@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { LogOut, Users, Eye, Calendar, Database, MapPin, FileText, TestTube } from 'lucide-react';
 import { toast } from 'sonner';
-import { supabase } from '@/integrations/supabase/client';
+// Supabase removed for static site
 
 const AdminDashboard = () => {
   const { adminUser, logout, isAuthenticated, isLoading } = useAdmin();
@@ -72,18 +72,8 @@ const AdminDashboard = () => {
   };
 
   const handleSeedData = async () => {
-    toast.info("データベースに情報を格納中です...");
-    try {
-      const { error } = await supabase.functions.invoke('seed-subsidy-data');
-
-      if (error) throw error;
-      
-      toast.success("データベースへの情報格納が完了しました！チャットをお試しください。");
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : "Unknown error";
-      console.error('データベースのシード中にエラー:', errorMessage);
-      toast.error(`データベースへの情報格納中にエラーが発生しました: ${errorMessage}`);
-    }
+    toast.info("静的サイト版では利用できません");
+    // Static site - database functionality disabled
   };
 
   const handleRemoveMockData = () => {

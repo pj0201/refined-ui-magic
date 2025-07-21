@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 import { Send } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
+// Supabase removed for static site
 
 interface Message {
   role: 'user' | 'assistant';
@@ -53,17 +53,14 @@ export function ChatDialog({ isOpen, onOpenChange, title, subsidyKey }: ChatDial
     setInput('');
     setIsLoading(true);
 
+    // Static response for demo (Supabase removed)
     try {
-      const { data, error } = await supabase.functions.invoke('generate-chat-response', {
-        body: {
-          messages: [...messages, userMessage],
-          subsidyKey,
-        },
-      });
-
-      if (error) throw error;
+      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate delay
       
-      const assistantMessage: Message = { role: 'assistant', content: data.response };
+      const assistantMessage: Message = { 
+        role: 'assistant', 
+        content: 'こちらは静的サイト版です。お問い合わせは直接ご連絡ください。' 
+      };
       setMessages(prev => [...prev, assistantMessage]);
 
     } catch (error) {

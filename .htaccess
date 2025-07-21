@@ -29,10 +29,7 @@ RewriteRule ^.*$ /index.html [NC,L]
 SetEnvIf Request_URI ".*" Ngx_Cache_NoCacheMode=off
 SetEnvIf Request_URI ".*" Ngx_Cache_AllCacheMode
 
-# ----------- WordPressの設定（無効化） -----------
-# BEGIN WordPress - DISABLED for React App
-# WordPressの設定は無効化されています
-# END WordPress
+# ----------- WordPress設定は完全削除 -----------
 
 ### BEGIN XPageSpeed - Do not edit the contents of this block! ###
 XPagespeedDisableFilters lazyload_images
