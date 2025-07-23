@@ -1,7 +1,18 @@
+// 削除されたSubsidyChatコンポーネントに依存していたため簡略化
 
-import { SubsidyInfo } from "@/components/SubsidyChat/types";
+export interface SubsidyInfo {
+  name: string;
+  description: string;
+  requirements: string[];
+  period: {
+    start: string;
+    end: string;
+  };
+  amount: string;
+  adoptionRate: string;
+}
 
-export const shorikikaSubsidyInfo: Omit<SubsidyInfo, 'question' | 'content'> = {
+export const shorikikaSubsidyInfo: SubsidyInfo = {
   name: "中小企業省力化投資補助金（一般型）",
   description: "人手不足の中小企業などが、省力化効果のあるオーダーメイド・セミオーダーメイド性のある設備やシステムなどを導入し、「労働生産性 年平均成長率4%向上」を目指す事業計画に取り組むものが対象です。",
   requirements: [
@@ -27,7 +38,7 @@ export const shorikikaSubsidyInfo: Omit<SubsidyInfo, 'question' | 'content'> = {
   adoptionRate: "公募回制での審査により決定",
 };
 
-export const shoukiboSubsidyInfo: Omit<SubsidyInfo, 'question' | 'content'> = {
+export const shoukiboSubsidyInfo: SubsidyInfo = {
   name: "小規模事業者持続化補助金（一般型）",
   description: "小規模事業者が持続的な経営に向けた経営計画を自ら策定し、販路開拓や生産性向上の取組を支援する制度です。",
   requirements: [
@@ -51,7 +62,7 @@ export const shoukiboSubsidyInfo: Omit<SubsidyInfo, 'question' | 'content'> = {
   adoptionRate: "公募回や申請枠により変動。概ね50%〜70%程度",
 };
 
-export function formatSubsidyContext(info: Omit<SubsidyInfo, 'question' | 'content'>): string {
+export function formatSubsidyContext(info: SubsidyInfo): string {
   return `
 # ${info.name}
 

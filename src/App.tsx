@@ -1,5 +1,5 @@
 
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
 import { HashRouter } from "react-router-dom";
 import { Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -8,9 +8,6 @@ import { Toaster } from "sonner";
 
 // ページコンポーネント
 import Index from "./pages/Index";
-import AIGlossary from "./pages/AIGlossary";
-import AITools from "./pages/AITools";
-import AISupportPage from "./pages/AISupportPage";
 import NotFound from "./pages/NotFound";
 import FAQPage from "./pages/FAQPage";
 
@@ -26,12 +23,6 @@ import DDSPage from "./pages/plans/DDSPage";
 import KeieishaHoshoPage from "./pages/plans/KeieishaHoshoPage";
 import SafetyNetPage from "./pages/plans/SafetyNetPage";
 
-// 管理者ページ
-import AdminLogin from "./pages/AdminLogin";
-import AdminDashboard from "./pages/AdminDashboard";
-
-// チャットボット初期化コンポーネント
-import { ChatbotInitializer } from "./components/chatbot/ChatbotInitializer";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,31 +33,15 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  // チャットボットの初期化
-  useEffect(() => {
-    console.log("App: チャットボットの初期化を開始します");
-    
-    // DOMContentLoadedイベントが既に発生している場合は直接初期化
-    if (document.readyState === 'complete' && typeof window.initChatbots === 'function') {
-      console.log("App: DOMContentLoadedイベントが既に発生しているため、直接初期化します");
-      window.initChatbots();
-    }
-  }, []);
 
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <HashRouter>
-          {/* チャットボット初期化コンポーネント - Suspenseの外に配置 */}
-          <ChatbotInitializer />
-          
           <Suspense fallback={<div className="loading">Loading...</div>}>
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/index" element={<Index />} />
-              <Route path="/ai-glossary" element={<AIGlossary />} />
-              <Route path="/ai-tools" element={<AITools />} />
-              <Route path="/ai-support" element={<AISupportPage />} />
               <Route path="/faq" element={<FAQPage />} />
               
               <Route path="/plans/posucoro" element={<PosucoroPage />} />
@@ -79,10 +54,6 @@ function App() {
               <Route path="/plans/dds" element={<DDSPage />} />
               <Route path="/plans/keieisha-hosho" element={<KeieishaHoshoPage />} />
               <Route path="/plans/safety-net" element={<SafetyNetPage />} />
-              
-              {/* 管理者ルート */}
-              <Route path="/admin/login" element={<AdminLogin />} />
-              <Route path="/admin/dashboard" element={<AdminDashboard />} />
               
               <Route path="*" element={<NotFound />} />
             </Routes>
