@@ -76,10 +76,150 @@ const aiTerms = [
     category: "ツール名",
     definition: "Microsoft 365に統合されたAI機能。Word、Excel、PowerPoint、Outlook等で業務をサポートします。",
     businessApplication: "文書作成、データ分析、プレゼン資料作成、メール対応など、日常的なオフィス業務の効率化に役立ちます。"
+  },
+  {
+    id: 11,
+    term: "Gemini",
+    category: "ツール名",
+    definition: "Googleが開発したマルチモーダルAI。テキスト、画像、動画、音声を統合的に処理することができます。",
+    businessApplication: "多様なメディアを含む資料作成、画像分析、動画コンテンツ制作、プレゼンテーション作成に活用できます。"
+  },
+  {
+    id: 12,
+    term: "AutoGPT",
+    category: "ツール名",
+    definition: "自律的にタスクを実行するAIエージェント。目標を設定すると、自動的にタスクを分解して実行します。",
+    businessApplication: "複雑なプロジェクト管理、市場調査の自動化、競合分析、定期レポート作成などに使用できます。"
+  },
+  {
+    id: 13,
+    term: "Stable Diffusion",
+    category: "ツール名",
+    definition: "テキストから高品質な画像を生成するオープンソースのAI画像生成モデルです。",
+    businessApplication: "マーケティング素材、商品画像、ソーシャルメディア投稿用画像、プレゼン資料の視覚化に活用できます。"
+  },
+  {
+    id: 14,
+    term: "ニューラルネットワーク",
+    category: "技術",
+    definition: "人間の脳の神経細胞の構造を模倣したコンピューターのアルゴリズム。情報処理と学習を行います。",
+    businessApplication: "パターン認識、予測モデル、最適化問題、画像・音声処理などの複雑な問題解決に使用されます。"
+  },
+  {
+    id: 15,
+    term: "トランスフォーマー",
+    category: "技術",
+    definition: "注意機構（Attention）を使った深層学習モデルのアーキテクチャ。ChatGPTの基盤技術です。",
+    businessApplication: "自動翻訳、文書要約、質問応答システム、コード生成など、言語理解が必要な業務に活用されます。"
+  },
+  {
+    id: 16,
+    term: "ファインチューニング",
+    category: "技術",
+    definition: "既存の訓練済みAIモデルを特定のタスクやドメインに合わせて追加学習させる手法です。",
+    businessApplication: "業界特化型AIの開発、企業固有のデータでのAI最適化、カスタマイズされたソリューション構築に使用されます。"
+  },
+  {
+    id: 17,
+    term: "エンベディング",
+    category: "技術",
+    definition: "テキストや画像などのデータを数値ベクトルに変換する技術。AIがデータの意味を理解するために使用されます。",
+    businessApplication: "文書検索、類似商品推薦、顧客セグメンテーション、コンテンツ分類などに活用されます。"
+  },
+  {
+    id: 18,
+    term: "RAG（検索拡張生成）",
+    category: "技術",
+    definition: "Retrieval-Augmented Generationの略。外部データベースから関連情報を検索してAIの回答精度を向上させる技術です。",
+    businessApplication: "企業ナレッジベースの活用、顧客サポート、法務文書検索、技術文書の質問応答システムに使用されます。"
+  },
+  {
+    id: 19,
+    term: "LLM（大規模言語モデル）",
+    category: "技術",
+    definition: "Large Language Modelの略。膨大なテキストデータで訓練された大規模なAI言語モデルです。",
+    businessApplication: "高度な文章生成、複雑な質問応答、創作活動、専門的な文書作成支援などに活用されます。"
+  },
+  {
+    id: 20,
+    term: "マルチモーダルAI",
+    category: "技術",
+    definition: "テキスト、画像、音声、動画など複数の形式のデータを同時に処理できるAI技術です。",
+    businessApplication: "包括的なコンテンツ分析、多様なメディアを活用したマーケティング、顧客体験の向上に使用されます。"
+  },
+  {
+    id: 21,
+    term: "プロンプトエンジニアリング",
+    category: "技術",
+    definition: "AIから最適な回答を得るために、効果的な指示文（プロンプト）を設計・最適化する技術です。",
+    businessApplication: "AI活用の効率化、一貫した品質の出力獲得、業務プロセスの標準化、AIツールの効果最大化に重要です。"
+  },
+  {
+    id: 22,
+    term: "コンテキストウィンドウ",
+    category: "用語",
+    definition: "AIが一度に処理できるテキストの長さの上限。モデルによって異なり、より長い文脈を理解できます。",
+    businessApplication: "長文書の分析、大量データの一括処理、複雑な指示の実行、詳細な分析レポート作成に影響します。"
+  },
+  {
+    id: 23,
+    term: "ハルシネーション",
+    category: "用語",
+    definition: "AIが事実に基づかない情報や存在しない内容を生成してしまう現象です。",
+    businessApplication: "AI出力の品質管理、事実確認プロセスの重要性、信頼性の高いAI活用のためのガイドライン策定に関連します。"
+  },
+  {
+    id: 24,
+    term: "温度パラメータ",
+    category: "用語",
+    definition: "AIの出力の創造性やランダム性を制御するパラメータ。低いほど一貫性が高く、高いほど創造的になります。",
+    businessApplication: "用途に応じたAI出力の調整、創造的タスクと分析的タスクでの最適化、品質の安定性確保に使用されます。"
+  },
+  {
+    id: 25,
+    term: "トークン",
+    category: "用語",
+    definition: "AIが処理するテキストの最小単位。料金計算や処理速度に影響する重要な概念です。",
+    businessApplication: "AI利用コストの計算、処理効率の最適化、バッチ処理の計画、予算管理に重要な要素です。"
+  },
+  {
+    id: 26,
+    term: "OpenAI GPT-4",
+    category: "ツール名",
+    definition: "OpenAIの最新大規模言語モデル。高度な推論能力と幅広いタスク対応能力を持ちます。",
+    businessApplication: "複雑な問題解決、戦略立案、高度な文書作成、コーディング支援、創造的なコンテンツ制作に活用できます。"
+  },
+  {
+    id: 27,
+    term: "Anthropic Claude 3",
+    category: "ツール名",
+    definition: "Anthropicの最新AIアシスタント。安全性と有用性を重視し、長い文脈の処理が得意です。",
+    businessApplication: "長文の契約書分析、複雑なビジネス文書の要約、リスク分析、コンプライアンス確認などに適しています。"
+  },
+  {
+    id: 28,
+    term: "Midjourney",
+    category: "ツール名",
+    definition: "Discord上で動作するAI画像生成ツール。芸術的で高品質な画像を生成することで知られています。",
+    businessApplication: "ブランドイメージ作成、マーケティング素材、商品コンセプト可視化、クリエイティブキャンペーンに活用できます。"
+  },
+  {
+    id: 29,
+    term: "DALL-E 3",
+    category: "ツール名",
+    definition: "OpenAIが開発したテキストから画像を生成するAI。詳細な指示を正確に画像に反映できます。",
+    businessApplication: "プレゼン資料の図解作成、商品イメージ作成、教育コンテンツの視覚化、ソーシャルメディア投稿画像に使用できます。"
+  },
+  {
+    id: 30,
+    term: "GitHub Copilot",
+    category: "ツール名",
+    definition: "GitHubとOpenAIが開発したAIプログラミングアシスタント。コードの自動補完と生成を行います。",
+    businessApplication: "開発効率の向上、コード品質の改善、新人プログラマーの教育、プロトタイプの迅速な作成に活用できます。"
   }
 ];
 
-const categories = ["すべて", "技術", "ツール名", "用語"];
+const categories = ["すべて", "技術", "ツール名", "用語", "概念"];
 
 export default function AIGlossaryPage() {
   const [searchTerm, setSearchTerm] = useState("");
