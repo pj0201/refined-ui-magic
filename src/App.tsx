@@ -12,6 +12,7 @@ import NotFound from "./pages/NotFound";
 import FAQPage from "./pages/FAQPage";
 import AIToolsPage from "./pages/AIToolsPage";
 import AIGlossaryPage from "./pages/AIGlossaryPage";
+import AdminPage from "./pages/AdminPage";
 
 // プランページ
 import PosucoroPage from "./pages/plans/PosucoroPage";
@@ -63,6 +64,7 @@ function App() {
               <Route path="/faq" element={<FAQPage />} />
               <Route path="/ai-tools" element={<AIToolsPage />} />
               <Route path="/ai-glossary" element={<AIGlossaryPage />} />
+              <Route path="/admin/login" element={<AdminPage />} />
               
               <Route path="/plans/posucoro" element={<PosucoroPage />} />
               <Route path="/plans/keiei-kaizen" element={<KeieiKaizenPage />} />
