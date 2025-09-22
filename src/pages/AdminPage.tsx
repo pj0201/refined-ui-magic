@@ -1,9 +1,72 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useVisitorLogs } from '@/hooks/useVisitorLogs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
-const AdminPage = () => {
+const ADMIN_CREDENTIALS = {
+  id: '729393',
+  password: '729393'
+};
+
+const AdminLoginForm = ({ onLogin }: { onLogin: () => void }) => {
+  const [loginId, setLoginId] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (loginId === ADMIN_CREDENTIALS.id && password === ADMIN_CREDENTIALS.password) {
+      onLogin();
+    } else {
+      setError('ログインIDまたはパスワードが正しくありません');
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-8">
+      <Card className="w-full max-w-md">
+        <CardHeader>
+          <CardTitle className="text-2xl text-center">管理者ログイン</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="loginId">ログインID</Label>
+              <Input
+                id="loginId"
+                type="text"
+                value={loginId}
+                onChange={(e) => setLoginId(e.target.value)}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="password">パスワード</Label>
+              <Input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+            {error && (
+              <div className="text-red-600 text-sm text-center">{error}</div>
+            )}
+            <Button type="submit" className="w-full">
+              ログイン
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
+
+const AdminDashboard = ({ onLogout }: { onLogout: () => void }) => {
   const { 
     logs, 
     isLoading, 
@@ -66,9 +129,14 @@ const AdminPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
       <div className="max-w-6xl mx-auto space-y-8">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">管理者ページ</h1>
-          <p className="text-gray-600">サイト訪問者統計</p>
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900 mb-2">管理者ページ</h1>
+            <p className="text-gray-600">サイト訪問者統計</p>
+          </div>
+          <Button onClick={onLogout} variant="outline">
+            ログアウト
+          </Button>
         </div>
 
         {/* サマリー統計 */}
@@ -173,6 +241,24 @@ const AdminPage = () => {
       </div>
     </div>
   );
+};
+
+const AdminPage = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+  };
+
+  if (!isAuthenticated) {
+    return <AdminLoginForm onLogin={handleLogin} />;
+  }
+
+  return <AdminDashboard onLogout={handleLogout} />;
 };
 
 export default AdminPage;
