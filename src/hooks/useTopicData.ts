@@ -60,12 +60,9 @@ export const useTopicData = () => {
       }
     };
 
-    // 常にフォールバックデータを使用する
-    // 本来はAPIを実装した後にこのコメントを外すべきです
-    // fetchTopics();
-    
-    // 現時点ではフォールバックデータを直接使用
+    // フォールバックデータを使用
     console.log("フォールバックトピックデータを使用しています");
+    setTopics(fallbackTopics);
     setIsLoading(false);
   }, []);
 
